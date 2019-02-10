@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <title>GameEngine</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script id="shader/vertex" type="shader/vertex" src="core/webgl/shaders/vertex-shader.glsl">
+        attribute vec4 a_position;
+        attribute vec2 a_texcoord;
+        
+        
+        varying vec2 v_texcoord;
+        
+        void main() {
+        gl_Position = a_position;
+        
+        v_texcoord = a_texcoord;
+        }
+    </script>
+    <script id="shader/fragment" type="shader/fragment" src="core/webgl/shaders/fragment-shader.glsl">
+        precision mediump float;
+
+        varying vec2 v_texcoord;
+        
+        uniform sampler2D u_texture;
+        
+        void main() {
+        gl_FragColor = texture2D(u_texture, v_texcoord);
+        }
+    </script>
+
+    <script src="/core/objects.js"></script>
+    <script src="/core/utils.js"></script>
+    <script src="/core/engine.js"></script>
+    <script src="/client.js"></script>
+
+</body>
+</html>
