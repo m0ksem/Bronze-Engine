@@ -15,13 +15,12 @@
         attribute vec4 a_position;
         attribute vec2 a_texcoord;
         
-        
         varying vec2 v_texcoord;
         
         void main() {
-        gl_Position = a_position;
-        
-        v_texcoord = a_texcoord;
+            gl_Position = a_position;
+            
+            v_texcoord = a_texcoord;
         }
     </script>
     <script id="shader/fragment" type="shader/fragment" src="core/webgl/shaders/fragment-shader.glsl">
@@ -32,7 +31,7 @@
         uniform sampler2D u_texture;
         
         void main() {
-        gl_FragColor = texture2D(u_texture, v_texcoord);
+            gl_FragColor = texture2D(u_texture, v_texcoord);
         }
     </script>
 

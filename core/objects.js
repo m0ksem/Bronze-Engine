@@ -12,6 +12,9 @@ class Texture extends Image {
             this.width = width
             this.height = height
         }
+        this.faces = [
+            
+        ]
     }
     
     /**
@@ -22,6 +25,23 @@ class Texture extends Image {
     scale (x, y) {
         this.width = width * x
         this.height = height * y
+    }
+
+    /**
+     * Setting texture map by matrix x * y.
+     * @param {Int32} x 
+     * @param {Int32} y 
+     */
+    setTextureCoords (x, y) {
+        // let coords = []
+        // for (let i = 0; i < x; i++) {
+        //     for (let k = 0; k < y; k++) {
+        //         this.coords.push()
+        //     } 
+        // }
+        
+
+        // TODO
     }
 }
 
@@ -57,6 +77,16 @@ class Polygon {
     setVertexes (vertexes) {
         this.vertexes = vertexes
     }
+
+    /**
+     * Transform vertexes array to array buffer for WebGL.
+     * @returns WebGL array buffer.
+     */
+    vertexesToBuffer () {
+        return new Float32Array(this.vertexes)
+    }
+
+    
 
     update () {
 
