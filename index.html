@@ -13,12 +13,13 @@
     <canvas id="canvas"></canvas>
     <script id="shader/vertex" type="shader/vertex" src="core/webgl/shaders/vertex-shader.glsl">
         attribute vec4 a_position;
+        uniform mat4 u_matrix;
         attribute vec2 a_texcoord;
         
         varying vec2 v_texcoord;
         
         void main() {
-            gl_Position = a_position;
+            gl_Position = u_matrix * a_position;
             
             v_texcoord = a_texcoord;
         }
@@ -35,6 +36,7 @@
         }
     </script>
 
+    <script src="/core/math.js"></script>
     <script src="/core/objects.js"></script>
     <script src="/core/utils.js"></script>
     <script src="/core/engine.js"></script>
