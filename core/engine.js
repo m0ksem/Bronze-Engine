@@ -9,6 +9,9 @@ class Engine {
         this.width = canvas.width
         this.height = canvas.height
         this.polygons = []
+        this.objects = []
+
+
         this._globalPossitionBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPossitionBuffer)
         this._globalTextureBuffer = this.webGL.createBuffer()
@@ -39,27 +42,29 @@ class Engine {
     update () {
         let temp
         this.polygons.forEach(element => {
-            // Matrix
-            temp = new ProjectionMatrix(this.width, this.height, 400)
-            // temp = temp.translate(0, 0, 0)
-            // temp = temp.rotateX(0)
-            // temp = temp.rotateY(0)
-            // temp = temp.rotateZ(0)
-            // temp = temp.scale(1, 1, 1)
-
-            this.webGL.uniformMatrix4fv(this.matrixLocation, false, temp.matrix);
-
             // Setting vertexes
             temp = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
-            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, element.vertexesToBuffer(), this.webGL.STATIC_DRAW);
+            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.vertexes), this.webGL.STATIC_DRAW);
             element._vertexesBuffer = temp
+            
+            
+            // Matrix
+            temp = new ProjectionMatrix(this.width, this.height, 200)
+            temp.translate(element.position[0], element.position[1], element.position[2])
+            temp.rotateX(0)
+            temp.rotateY(0)
+            temp.rotateZ(0)
+            temp.scale(1, 1, 1)
+
+            element._matrix = temp.matrix
+            
 
             // Setting textcoords buffer
             temp = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
-            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.texture.coords), this.webGL.STATIC_DRAW)
-            element.texture._coordsBuffer = temp
+            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.textureCoords), this.webGL.STATIC_DRAW)
+            element._coordsBuffer = temp
 
             // Setting texture
             temp = this.webGL.createTexture()
@@ -91,20 +96,22 @@ class Engine {
             this.webGL.enableVertexAttribArray(this.positionLocation)
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._vertexesBuffer)
             this.webGL.vertexAttribPointer(
-                this.positionLocation, 2, this.webGL.FLOAT, false, 0, 0
+                this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
             )
 
+            this.webGL.uniformMatrix4fv(this.matrixLocation, false, element._matrix)
+            
             this.webGL.enableVertexAttribArray(this.texcoordLocation)
-            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.texture._coordsBuffer)
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._coordsBuffer)
             this.webGL.vertexAttribPointer(
                 this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
             )
 
             this.webGL.uniform1i(this.textureLocation, 0)
+   
 
             this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 3)
         });
-        
     }
 
     /**
