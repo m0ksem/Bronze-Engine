@@ -12,9 +12,12 @@ class Texture extends Image {
             this.width = width
             this.height = height
         }
-        this.faces = [
+        this.coords = [
             
         ]
+        this.addEventListener('load', function () {
+            this.loaded = true
+        })
     }
     
     /**
@@ -28,21 +31,31 @@ class Texture extends Image {
     }
 
     /**
-     * Setting texture map by matrix x * y.
-     * @param {Int32} x 
-     * @param {Int32} y 
+     * Setting texture coords
+     * @param {Array} coords 
      */
-    setTextureCoords (x, y) {
-        // let coords = []
-        // for (let i = 0; i < x; i++) {
-        //     for (let k = 0; k < y; k++) {
-        //         this.coords.push()
-        //     } 
-        // }
-        
-
-        // TODO
+    setCoords (coords) {
+        this.coords = coords
     }
+
+    /**
+     * Setting color of polygon. The color will be shown until the texture is loaded.
+     * @param {Int32} r red value from 0 to 255
+     * @param {Int32} g green value from 0 to 255
+     * @param {Int32} b blue value from 0 to 255
+     * @param {Int32} a alpha value from 0 to 255
+     */
+    setColorRGBA (r, g, b, a) {
+        this.color = new Uint8Array([r, g, b, a])
+    }
+
+    /**
+     * Setting color of polygon. The color will be shown until the texture is loaded.
+     * @param {Int32} r red value from 0 to 255
+     * @param {Int32} g green value from 0 to 255
+     * @param {Int32} b blue value from 0 to 255
+     * @param {Int32} a alpha value from 0 to 255
+     */
 }
 
 

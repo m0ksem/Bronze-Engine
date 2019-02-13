@@ -30,6 +30,7 @@ class Engine {
         this.positionLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_position")
         this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord");
         this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture");
+        this.matrixLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_matrix")
     }
     
     /**
@@ -38,28 +39,39 @@ class Engine {
     update () {
         let temp
         this.polygons.forEach(element => {
+            // Matrix
+            temp = new ProjectionMatrix(this.width, this.height, 400)
+            // temp = temp.translate(0, 0, 0)
+            // temp = temp.rotateX(0)
+            // temp = temp.rotateY(0)
+            // temp = temp.rotateZ(0)
+            // temp = temp.scale(1, 1, 1)
+
+            this.webGL.uniformMatrix4fv(this.matrixLocation, false, temp.matrix);
+
             // Setting vertexes
             temp = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, element.vertexesToBuffer(), this.webGL.STATIC_DRAW);
             element._vertexesBuffer = temp
 
-            // Setting blue color for objects
-            // temp = this.webGL.createBuffer()
-            // this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
-            // this.webGL.bufferData(this.webGL.ARRAY_BUFFER, element.texture.coords, this.webGL.STATIC_DRAW)
-            // // Settting textcoords
+            // Setting textcoords buffer
+            temp = this.webGL.createBuffer()
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
+            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.texture.coords), this.webGL.STATIC_DRAW)
+            element.texture._coordsBuffer = temp
 
-            // element._textureCoords = temp
-
-            // temp = this.webGL.createTexture()
-            // this.webGL.bindTexture(this.webGL.TEXTURE_2D, temp)
-            // this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE,
-            //     new Uint8Array([0, 0, 255, 255]))
-            // element._colorBuffer = temp
-
-            // TODO: Setting texture image
-        });
+            // Setting texture
+            temp = this.webGL.createTexture()
+            this.webGL.bindTexture(this.webGL.TEXTURE_2D, temp)
+            if (element.texture.loaded) {
+                this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, element.texture)
+                this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
+            } else {
+                this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE,
+                    element.texture.color);
+            }
+        })
     }
 
     /**
@@ -82,11 +94,11 @@ class Engine {
                 this.positionLocation, 2, this.webGL.FLOAT, false, 0, 0
             )
 
-            // this.webGL.enableVertexAttribArray(this.texcoordLocation)
-            // this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._textureCoords)
-            // this.webGL.vertexAttribPointer(
-            //     this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
-            // )
+            this.webGL.enableVertexAttribArray(this.texcoordLocation)
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.texture._coordsBuffer)
+            this.webGL.vertexAttribPointer(
+                this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
+            )
 
             this.webGL.uniform1i(this.textureLocation, 0)
 

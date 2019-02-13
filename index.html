@@ -16,9 +16,11 @@
         attribute vec2 a_texcoord;
         
         varying vec2 v_texcoord;
+
+        uniform mat4 u_matrix; 
         
         void main() {
-            gl_Position = a_position;
+            gl_Position = a_position * u_matrix;
             
             v_texcoord = a_texcoord;
         }
@@ -35,6 +37,7 @@
         }
     </script>
 
+    <script src="/core/math.js"></script>
     <script src="/core/objects.js"></script>
     <script src="/core/utils.js"></script>
     <script src="/core/engine.js"></script>
