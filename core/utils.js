@@ -72,7 +72,7 @@ function createShaderFromScript(id, webGL) {
  * @param {CanvasRenderingContext2D} webGL WebGL context for creating program.
  * @param vertexShader compiled vertexShader.
  * @param fragmentShader compiled fragmentShader.
- * @param {Bool} deleteShaders [optional] will delete shader after attaching.
+ * @param {Bool} [deleteShaders] will delete shader after attaching.
  * 
  * @return shader program.
  */
