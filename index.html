@@ -13,14 +13,13 @@
     <canvas id="canvas"></canvas>
     <script id="shader/vertex" type="shader/vertex" src="core/webgl/shaders/vertex-shader.glsl">
         attribute vec4 a_position;
+        uniform mat4 u_matrix;
         attribute vec2 a_texcoord;
         
         varying vec2 v_texcoord;
-
-        uniform mat4 u_matrix; 
         
         void main() {
-            gl_Position = a_position * u_matrix;
+            gl_Position = u_matrix * a_position;
             
             v_texcoord = a_texcoord;
         }
