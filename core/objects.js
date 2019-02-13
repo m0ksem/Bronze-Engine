@@ -1,9 +1,9 @@
 class Texture extends Image {
     /**
      * Texture for polygons.
-     * @param {String} path path to image location.
-     * @param {Int32} width [Optional] custom width for image.
-     * @param {Int32} height [Optional] custom height for image.
+     * @param {String} path - path to image location.
+     * @param {Number} [width] - custom width for image.
+     * @param {Number} [height] - custom height for image.
      */
     constructor (path, width, height) {
         super()
@@ -22,8 +22,8 @@ class Texture extends Image {
     
     /**
      * Scale image width by x, height by y.
-     * @param {Int32} x 
-     * @param {Int32} y 
+     * @param {Number} x
+     * @param {Number} y
      */
     scale (x, y) {
         this.width = width * x
@@ -31,7 +31,7 @@ class Texture extends Image {
     }
 
     /**
-     * Setting texture coords
+     * Setting texture coords.
      * @param {Array} coords 
      */
     setCoords (coords) {
@@ -40,36 +40,31 @@ class Texture extends Image {
 
     /**
      * Setting color of polygon. The color will be shown until the texture is loaded.
-     * @param {Int32} r red value from 0 to 255
-     * @param {Int32} g green value from 0 to 255
-     * @param {Int32} b blue value from 0 to 255
-     * @param {Int32} a alpha value from 0 to 255
+     * @param {Number} r red value from 0 to 255.
+     * @param {Number} g green value from 0 to 255.
+     * @param {Number} b blue value from 0 to 255.
+     * @param {Number} a alpha value from 0 to 255.
      */
     setColorRGBA (r, g, b, a) {
         this.color = new Uint8Array([r, g, b, a])
     }
-
-    /**
-     * Setting color of polygon. The color will be shown until the texture is loaded.
-     * @param {Int32} r red value from 0 to 255
-     * @param {Int32} g green value from 0 to 255
-     * @param {Int32} b blue value from 0 to 255
-     * @param {Int32} a alpha value from 0 to 255
-     */
 }
 
 
 class Polygon {
     /**
-     * Simply square polygon
+     * Triangle polygon.
      * @param {Engine} core Engine object to which the polygon will be attached.
      */
     constructor (engine) {
-        engine.polygons.push(this)
+        if (engine) {
+            engine.polygons.push(this)
+        }
         this.webGL = engine.webGL
         this.points = []
         this.texture = null
         this.vertexes = []
+        this.position = [0, 0, 0]
     }
 
     /**
@@ -81,34 +76,156 @@ class Polygon {
     }
 
     /**
+     * Setting texture coords.
+     * @param {Array} coords array of coords of texture.
+     */
+    setTextureCoords (coords) {
+        this.textureCoords = coords
+    }
+
+    /**
      * Setting vertexes array.
-     * 
-     * @param {Vector3[]} vertexes
-     * @param {Int32} array.x
-     * @param {Int32} array.y
+     * @param {Array[Number]} vertexes
      */
     setVertexes (vertexes) {
         this.vertexes = vertexes
     }
 
     /**
-     * Transform vertexes array to array buffer for WebGL.
-     * @returns WebGL array buffer.
+     * Translate polygon for x,y,z pixels.
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
      */
-    vertexesToBuffer () {
-        return new Float32Array(this.vertexes)
-    }
-
-    
-
-    update () {
-
+    setPosition (x, y, z) {
+        this.position[0] = x
+        this.position[1] = y
+        this.position[2] = z
     }
 
     /**
-     * Drawing polygon.
+     * Update function. Can be overloaded for creation animation or smth else.
      */
-    draw() {
+    update () {
 
+    }
+}
+
+
+class Rect {
+    /**
+     * Flat rectangle with square texture.
+     * @param {Engine} engine 
+     */
+    constructor (engine) {
+        this.polygons = new Array(2)
+        let p = new Polygon(engine)
+            p.setVertexes([
+                0, 0, 0,
+                0, 100, 0,
+                100, 100, 0
+            ])
+            p.setTextureCoords([
+                0, 0,
+                0, 1,
+                1, 1
+            ])
+        this.polygons[0] = p
+            p = new Polygon(engine)
+            p.setVertexes([
+                0, 0, 0,
+                100, 100, 0,
+                100, 0, 0,
+            ])
+            p.setTextureCoords([
+                0, 0,
+                1, 1,
+                1, 0
+            ])
+        this.polygons[1] = p
+    }
+
+    /**
+     * Setting square texture for rect
+     * @param {Texture} texture
+     */
+    setTexture (texture) {
+        this.polygons[0].setTexture(texture)
+        this.polygons[1].setTexture(texture)
+    }
+
+    /**
+     * Changing size of rect
+     * @param {Number} width
+     * @param {Number} height
+     */
+    setSize (width, height) {
+        this.polygons[0].vertexes = [
+            0, 0, 0,
+            0, height, 0,
+            width, height, 0
+        ]
+        this.polygons[1].vertexes = [
+            0, 0, 0,
+            width, height, 0,
+            width, 0, 0
+        ]
+    }
+
+    /**
+     * Change position of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    setPosition(x, y, z) {
+        this.polygons[0].setPosition(x, y, z)
+        this.polygons[1].setPosition(x, y, z)
+    }
+}
+
+
+class Cube {
+    /**
+     * Cube object. Not finished.
+     * @param {Engine} engine engine object where cube need to be attached.
+     */
+    constructor (engine) {
+        engine.objects.push(this)
+        this.position = [0, 0, 0]
+        this.faces = []
+        this.size = [10, 10, 10]
+        this.faces.push(createSquarePolygon())
+    }
+
+    createSquarePolygon () {
+        let a = new Array(2)
+        let p = new Polygon(engine)
+            p.setVertexes([
+                0, 0, 0,
+                0, 100, 0,
+                100, 100, 0,
+                100, 0, 0,
+                0, 0, 0
+            ])
+            p.setTextureCoords([
+                0, 0,
+                0, 1,
+                1, 1
+            ])
+            a[0] = p
+            p = new Polygon(engine)
+            p.setVertexes([
+                0, 0, 0,
+                100, 100, 0,
+                100, 0, 0,
+            ])
+            p.setTextureCoords([
+                0, 0,
+                1, 1,
+                1, 0
+            ])
+            a[1] = p
     }
 }
