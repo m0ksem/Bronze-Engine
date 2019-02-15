@@ -10,6 +10,7 @@ class Engine {
         this.height = canvas.height
         this.polygons = []
         this.objects = []
+        this.camera
 
 
         this._globalPossitionBuffer = this.webGL.createBuffer()
@@ -31,16 +32,26 @@ class Engine {
         let fragment = createShaderFromScript("shader/fragment", this.webGL)
         this.shaderProgram = createWebGLProgram(this.webGL, vertex, fragment, false)
         this.positionLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_position")
-        this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord");
-        this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture");
+        this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord")
+        this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture")
         this.matrixLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_matrix")
     }
     
+    /**
+     * @param {Camera} camera
+     */
+    setCamera (camera) {
+        this.camera = camera
+    }
+
     /**
      * Function to update all positions, size etc.
      */
     update () {
         let temp
+        let cameraMatrix = this.camera.lookAt()
+        cameraMatrix = inverse(cameraMatrix)
+
         this.polygons.forEach(element => {
             // Setting vertexes
             temp = this.webGL.createBuffer()
@@ -51,12 +62,21 @@ class Engine {
             
             // Matrix
             temp = new ProjectionMatrix(this.width, this.height, 200)
+            if (!this.k) {
+                console.log(temp.matrix)
+                console.log(element.vertexes)
+            }
+            temp.matrix = temp.perspective(degToRad(60), this.width / this.height, 1, 200)
             temp.translate(element.position[0], element.position[1], element.position[2])
-            temp.rotateX(0)
-            temp.rotateY(0)
-            temp.rotateZ(0)
+            temp.rotateX(element.rotation[0])
+            temp.rotateY(element.rotation[1])
+            temp.rotateZ(element.rotation[2])
             temp.scale(1, 1, 1)
-
+            // temp.multiply(cameraMatrix)
+            if (!this.k) {
+                console.log(temp.perspective(degToRad(90), this.width / this.height, 1, 200))
+                this.k = 2
+            }
             element._matrix = temp.matrix
             
 
@@ -107,10 +127,9 @@ class Engine {
                 this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
             )
 
-            this.webGL.uniform1i(this.textureLocation, 0)
-   
+            this.webGL.uniform1i(this.textureLocation, 0)   
 
-            this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 3)
+            this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 16 * 6)
         });
     }
 
@@ -128,6 +147,44 @@ class Engine {
     run () {
         e = this
         requestAnimationFrameEngine()
+    }
+}
+
+
+class Camera {
+    /**
+     * Creates camera object
+     */
+    constructor () {
+        this.position = [0, 0, 100]
+        this.up = [0, 1, 0]
+        this.target = [0, 0, 0]
+        this.fieldOfView = 2
+    }
+
+    lookAt (result) {
+        result = result || new Float32Array(16)
+        let zAxis = normalize(subVec3(this.position, this.target))
+        let xAxis = normalize(cross(this.up, zAxis))
+        let yAxis = normalize(cross(zAxis, xAxis))
+    
+        result[ 0] = xAxis[0]
+        result[ 1] = xAxis[1]
+        result[ 2] = xAxis[2]
+        result[ 3] = 0
+        result[ 4] = yAxis[0]
+        result[ 5] = yAxis[1]
+        result[ 6] = yAxis[2]
+        result[ 7] = 0
+        result[ 8] = zAxis[0]
+        result[ 9] = zAxis[1]
+        result[10] = zAxis[2]
+        result[11] = 0
+        result[12] = this.position[0]
+        result[13] = this.position[1]
+        result[14] = this.position[2]
+        result[15] = 1
+        return result;
     }
 }
 

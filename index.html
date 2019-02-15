@@ -12,9 +12,11 @@
 <body>
     <canvas id="canvas"></canvas>
     <script id="shader/vertex" type="shader/vertex" src="core/webgl/shaders/vertex-shader.glsl">
+        
         attribute vec4 a_position;
-        uniform mat4 u_matrix;
         attribute vec2 a_texcoord;
+        
+        uniform mat4 u_matrix;
         
         varying vec2 v_texcoord;
         

@@ -65,6 +65,7 @@ class Polygon {
         this.texture = null
         this.vertexes = []
         this.position = [0, 0, 0]
+        this.rotation = [0, 0, 0]
     }
 
     /**
@@ -102,6 +103,18 @@ class Polygon {
         this.position[0] = x
         this.position[1] = y
         this.position[2] = z
+    }
+
+    /**
+     * Rotate for x, y, z axis.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    rotate (x, y, z) {
+        this.rotation[0] = x
+        this.rotation[1] = y
+        this.rotation[2] = z
     }
 
     /**
@@ -182,6 +195,20 @@ class Rect {
     setPosition(x, y, z) {
         this.polygons[0].setPosition(x, y, z)
         this.polygons[1].setPosition(x, y, z)
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {*} x in deg
+     * @param {*} y in deg
+     * @param {*} z in deg
+     */
+    rotate(x, y, z) {
+        let xrad = degToRad(x)
+        let yrad = degToRad(y)
+        let zrad = degToRad(z)
+        this.polygons[0].rotate(xrad, yrad, zrad)
+        this.polygons[1].rotate(xrad, yrad, zrad)
     }
 }
 
