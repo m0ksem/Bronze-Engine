@@ -66,6 +66,8 @@ class Polygon {
         this.vertexes = []
         this.position = [0, 0, 0]
         this.rotation = [0, 0, 0]
+        this.rotationPoint = [0, 0, 0]
+        this.parentRotation = [0, 0, 0]
     }
 
     /**
@@ -106,15 +108,35 @@ class Polygon {
     }
 
     /**
-     * Rotate for x, y, z axis.
+     * Add rotation for x, y, z axis for current rotation.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
      */
     rotate (x, y, z) {
+        this.rotation[0] += x
+        this.rotation[1] += y
+        this.rotation[2] += z
+    }
+
+    /**
+     * Set rotate for x, y, z axis.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    setRotation (x, y, z) {
         this.rotation[0] = x
         this.rotation[1] = y
         this.rotation[2] = z
+    }
+
+    setRotationPoint (x, y, z) {
+        this.rotationPoint = [x, y, z]
+    }
+
+    setParentRotation (x, y, z) {
+        this.parentRotation = [x, y, z]
     }
 
     /**
@@ -133,28 +155,30 @@ class Rect {
      */
     constructor (engine) {
         this.polygons = new Array(2)
+        this.position = [0, 0, 0]
+        this.rotationPoint = [0, 0, 0]
         let p = new Polygon(engine)
             p.setVertexes([
-                0, 0, 0,
+                -100, 0, 0,
                 0, 100, 0,
-                100, 100, 0
+                100, 100, 0,
             ])
             p.setTextureCoords([
-                0, 0,
                 0, 1,
-                1, 1
+                1, 0,
+                0, 0,
             ])
         this.polygons[0] = p
             p = new Polygon(engine)
             p.setVertexes([
                 0, 0, 0,
-                100, 100, 0,
-                100, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
             ])
             p.setTextureCoords([
-                0, 0,
+                1, 0,
+                0, 1,
                 1, 1,
-                1, 0
             ])
         this.polygons[1] = p
     }
@@ -174,16 +198,21 @@ class Rect {
      * @param {Number} height
      */
     setSize (width, height) {
+        this.width = width
+        this.height = height
         this.polygons[0].vertexes = [
             0, 0, 0,
+            width, height, 0,
             0, height, 0,
-            width, height, 0
+            
         ]
         this.polygons[1].vertexes = [
-            0, 0, 0,
             width, height, 0,
+            0, 0, 0,
             width, 0, 0
         ]
+        this.polygons[0].setPosition(this.position[0] - this.width / 2, this.position[1] - this.height / 2, this.position[2])
+        this.polygons[1].setPosition(this.position[0] - this.width / 2, this.position[1] - this.height / 2, this.position[2])
     }
 
     /**
@@ -193,8 +222,9 @@ class Rect {
      * @param {Number} z 
      */
     setPosition(x, y, z) {
-        this.polygons[0].setPosition(x, y, z)
-        this.polygons[1].setPosition(x, y, z)
+        this.position = [x, y, z]
+        this.polygons[0].setPosition(x - this.width / 2, y - this.height / 2, z)
+        this.polygons[1].setPosition(x - this.width / 2, y - this.height / 2, z)
     }
 
     /**
@@ -210,49 +240,157 @@ class Rect {
         this.polygons[0].rotate(xrad, yrad, zrad)
         this.polygons[1].rotate(xrad, yrad, zrad)
     }
-}
 
+    setParentRotation (x, y, z) {
+        this.polygons[0].setParentRotation(x, y, z)
+        this.polygons[1].setParentRotation(x, y, z)
+    }
+
+    setRotationPoint (x, y, z) {
+        this.polygons[0].setRotationPoint(x, y, z)
+        this.polygons[1].setRotationPoint(x, y, z)
+    }
+}
 
 class Cube {
     /**
-     * Cube object. Not finished.
-     * @param {Engine} engine engine object where cube need to be attached.
+     * Flat rectangle with square texture.
+     * @param {Engine} engine 
      */
     constructor (engine) {
-        engine.objects.push(this)
+        this.faces = [
+            new Rect(engine), // front
+            new Rect(engine), // right
+            new Rect(engine), // back
+            new Rect(engine), // left
+            new Rect(engine), // top
+            new Rect(engine)  // bottom
+        ]
         this.position = [0, 0, 0]
-        this.faces = []
-        this.size = [10, 10, 10]
-        this.faces.push(createSquarePolygon())
+        this.rotation = [0, 0, 0]
+
+        this.faces[0].rotate(0, 0, 0)
+        this.faces[0].setRotationPoint(-100, -100, 100)
+        this.faces[0].position = [0, 0, 0]
+        
+        this.faces[1].rotate(0, 90, 0)
+        this.faces[1].setRotationPoint(-100, -100, 100)
+        this.faces[1].position = [0, 0, 0]
+
+        this.faces[2].rotate(0, -180, 0)
+        this.faces[2].setRotationPoint(-100, -100, 100)
+        this.faces[2].position = [0, 0, 0]
+
+        this.faces[3].rotate(0, 270, 0)
+        this.faces[3].setRotationPoint(-100, -100, 100)
+        this.faces[3].position = [0, 0, 0]
+
+        this.faces[4].rotate(-90, 0, 0)
+        this.faces[4].setRotationPoint(-100, -100, 100)
+        this.faces[4].position = [0, 0, 0]
+
+        this.faces[5].rotate(90, 0, 0)
+        this.faces[5].setRotationPoint(-100, -100, 100)
+        this.faces[5].position = [0, 0, 0]
     }
 
-    createSquarePolygon () {
-        let a = new Array(2)
-        let p = new Polygon(engine)
-            p.setVertexes([
-                0, 0, 0,
-                0, 100, 0,
-                100, 100, 0,
-                100, 0, 0,
-                0, 0, 0
-            ])
-            p.setTextureCoords([
-                0, 0,
-                0, 1,
-                1, 1
-            ])
-            a[0] = p
-            p = new Polygon(engine)
-            p.setVertexes([
-                0, 0, 0,
-                100, 100, 0,
-                100, 0, 0,
-            ])
-            p.setTextureCoords([
-                0, 0,
-                1, 1,
-                1, 0
-            ])
-            a[1] = p
+    _updateFaces () {
+        this.faces[0].setPosition(this.position[0], this.position[1], this.position[2])
+    }
+
+    /**
+     * Setting square texture for cube.
+     * @param {Texture} front texture.
+     * @param {Texture} right texture.
+     * @param {Texture} back texture.
+     * @param {Texture} left texture.
+     * @param {Texture} top texture.
+     * @param {Texture} bottom texture.
+     */
+    setTexture (front, right, back, left, top, bottom) {
+        this.faces[0].setTexture(front)
+        this.faces[1].setTexture(right)
+        this.faces[2].setTexture(back)
+        this.faces[3].setTexture(left)
+        this.faces[4].setTexture(top)
+        this.faces[5].setTexture(bottom)
+    }
+
+    /**
+     * Changing size of rect
+     * @param {Number} width
+     * @param {Number} height
+     */
+    setSize (width, height, depth) {
+        this.width = width
+        this.height = height
+        this.depth = depth
+        this.faces.forEach(face => {
+            face.setSize(width, height)
+            face.setRotationPoint(-width / 2, -height / 2, depth / 2)
+        });
+    }
+
+    /**
+     * Change position of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    setPosition(x, y, z) {
+        this.position = [x, y, z]
+        this.faces[0].setPosition(x, y, z)
+        this.faces[1].setPosition(x, y, z)
+        this.faces[2].setPosition(x, y, z)
+        this.faces[3].setPosition(x, y, z)
+        this.faces[4].setPosition(x, y, z)
+        this.faces[5].setPosition(x, y, z)
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {*} x in deg
+     * @param {*} y in deg
+     * @param {*} z in deg
+     */
+    rotate(x, y, z) {
+        this.rotation[0] += x
+        this.rotation[1] += y
+        this.rotation[2] += z
+        let xrad = degToRad(this.rotation[0])
+        let yrad = degToRad(this.rotation[1])
+        let zrad = degToRad(this.rotation[2])
+        this.faces.forEach(face => {
+            face.setParentRotation(xrad, yrad, zrad)
+        })
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {*} x in deg
+     * @param {*} y in deg
+     * @param {*} z in deg
+     */
+    setRotation(x, y, z) {
+        let xrad = degToRad(x)
+        let yrad = degToRad(y)
+        let zrad = degToRad(z)
+        this.faces.forEach(face => {
+            face.setParentRotation(xrad, yrad, zrad)
+        })
+    }
+
+    animation () {
+        this.rotate(1, 0, 0)
+    }
+
+    /**
+     * 
+     * @param {Number} fps 
+     * @param {Function} [animateFucntion] default - animation function
+     */
+    animate (fps, animateFucntion) {
+        animateFucntion = animateFucntion || this.animation
+        setInterval(animateFucntion, 1000 / fps)
     }
 }

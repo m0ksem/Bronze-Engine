@@ -62,21 +62,26 @@ class Engine {
             
             // Matrix
             temp = new ProjectionMatrix(this.width, this.height, 200)
-            if (!this.k) {
-                console.log(temp.matrix)
-                console.log(element.vertexes)
-            }
-            temp.matrix = temp.perspective(degToRad(60), this.width / this.height, 1, 200)
+            temp.matrix = temp.perspective(degToRad(90), this.width, this.height, 1, 2000)
+            
+            
+            
+            temp.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
+            temp.translate(0, 0, -800)
             temp.translate(element.position[0], element.position[1], element.position[2])
-            temp.rotateX(element.rotation[0])
-            temp.rotateY(element.rotation[1])
-            temp.rotateZ(element.rotation[2])
-            temp.scale(1, 1, 1)
-            // temp.multiply(cameraMatrix)
-            if (!this.k) {
-                console.log(temp.perspective(degToRad(90), this.width / this.height, 1, 200))
-                this.k = 2
+            let rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
+                rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
+            if (element.parentRotation != null) {
+                let parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
+                parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
+                rot = Matrixes.multiply(parentRot, rot)
             }
+            
+            temp.multiply(rot)
+            
+            temp.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])         
+            temp.scale(1, 1, 1)
+
             element._matrix = temp.matrix
             
 
@@ -129,15 +134,15 @@ class Engine {
 
             this.webGL.uniform1i(this.textureLocation, 0)   
 
-            this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 16 * 6)
+            this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 3)
         });
     }
 
     /**
      * Rendering function.
      */
-    render () {
-        this.update()
+    async render () {
+        await this.update()
         this.draw()
     }
 
