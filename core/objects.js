@@ -211,8 +211,6 @@ class Rect {
             0, 0, 0,
             width, 0, 0
         ]
-        this.polygons[0].setPosition(this.position[0] - this.width / 2, this.position[1] - this.height / 2, this.position[2])
-        this.polygons[1].setPosition(this.position[0] - this.width / 2, this.position[1] - this.height / 2, this.position[2])
     }
 
     /**

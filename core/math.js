@@ -187,6 +187,15 @@ function cross(a, b) {
 
 
 class MatrixesClass {
+    unit () {
+        return [
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        ]
+    }
+
     /**
      * Returns translation matrix.
      * @param {Number} x 
@@ -265,6 +274,11 @@ class MatrixesClass {
         ]
     }
 
+    /**
+     * Returns multiply of two matrixes.
+     * @param {Array} matrix1 
+     * @param {Array} matrix2 
+     */
     multiply (matrix1, matrix2) {
         let a00 = matrix1[0 * 4 + 0]
         let a01 = matrix1[0 * 4 + 1]

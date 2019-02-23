@@ -22,6 +22,7 @@ class Engine {
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight
         })
+        this.initShaders()
     }
 
     /**
@@ -62,12 +63,10 @@ class Engine {
             
             // Matrix
             temp = new ProjectionMatrix(this.width, this.height, 200)
-            temp.matrix = temp.perspective(degToRad(90), this.width, this.height, 1, 2000)
-            
-            
-            
+            temp.matrix = temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            temp.multiply(inverse(this.camera.matrix))
             temp.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
-            temp.translate(0, 0, -800)
+            // temp.multiply(inverse(this.camera.matrix))
             temp.translate(element.position[0], element.position[1], element.position[2])
             let rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
                 rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
@@ -79,7 +78,7 @@ class Engine {
             
             temp.multiply(rot)
             
-            temp.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])         
+            temp.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
             temp.scale(1, 1, 1)
 
             element._matrix = temp.matrix
@@ -164,7 +163,62 @@ class Camera {
         this.position = [0, 0, 100]
         this.up = [0, 1, 0]
         this.target = [0, 0, 0]
-        this.fieldOfView = 2
+        this.fieldOfView = 90
+        this.fieldOfViewRad = degToRad(90)
+        this.matrix = Matrixes.unit()
+        this.position = [0, 0, 0]
+        this.rotation = [0, 0, 0]
+    }
+
+    setFieldOfView (angle) {
+        this.fieldOfView = angle;
+        this.fieldOfViewRad = degToRad(angle)
+    }
+
+    setPosition (x, y, z) {
+        this.position = [x, y, z]
+        this.computeMatrix()
+    }
+
+    /**
+     * Moving camera
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    move (x, y, z) {
+        this.position[0] += x
+        this.position[1] += y
+        this.position[2] += z
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(x, y, z))
+    }
+
+    /**
+     * Rotate for x, y, z deggres.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    rotate (x, y, z) {
+        this.rotation[0] += x
+        this.rotation[1] += y
+        this.rotation[2] += z
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationX(degToRad(x)))
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationY(degToRad(y)))
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationZ(degToRad(z)))
+    }
+
+    setRotation (x, y, z) {
+        this.rotation = [x, y, z]
+        this.computeMatrix()
+    }
+
+    computeMatrix () {
+        this.matrix = Matrixes.unit()
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationX(degToRad(this.rotation[0])))
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationY(degToRad(this.rotation[1])))
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationZ(degToRad(this.rotation[2])))
     }
 
     lookAt (result) {
