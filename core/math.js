@@ -264,6 +264,59 @@ class MatrixesClass {
             0, 0, 0, 1
         ]
     }
+
+    multiply (matrix1, matrix2) {
+        let a00 = matrix1[0 * 4 + 0]
+        let a01 = matrix1[0 * 4 + 1]
+        let a02 = matrix1[0 * 4 + 2]
+        let a03 = matrix1[0 * 4 + 3]
+        let a10 = matrix1[1 * 4 + 0]
+        let a11 = matrix1[1 * 4 + 1]
+        let a12 = matrix1[1 * 4 + 2]
+        let a13 = matrix1[1 * 4 + 3]
+        let a20 = matrix1[2 * 4 + 0]
+        let a21 = matrix1[2 * 4 + 1]
+        let a22 = matrix1[2 * 4 + 2]
+        let a23 = matrix1[2 * 4 + 3]
+        let a30 = matrix1[3 * 4 + 0]
+        let a31 = matrix1[3 * 4 + 1]
+        let a32 = matrix1[3 * 4 + 2]
+        let a33 = matrix1[3 * 4 + 3]
+        let b00 = matrix2[0 * 4 + 0]
+        let b01 = matrix2[0 * 4 + 1]
+        let b02 = matrix2[0 * 4 + 2]
+        let b03 = matrix2[0 * 4 + 3]
+        let b10 = matrix2[1 * 4 + 0]
+        let b11 = matrix2[1 * 4 + 1]
+        let b12 = matrix2[1 * 4 + 2]
+        let b13 = matrix2[1 * 4 + 3]
+        let b20 = matrix2[2 * 4 + 0]
+        let b21 = matrix2[2 * 4 + 1]
+        let b22 = matrix2[2 * 4 + 2]
+        let b23 = matrix2[2 * 4 + 3]
+        let b30 = matrix2[3 * 4 + 0]
+        let b31 = matrix2[3 * 4 + 1]
+        let b32 = matrix2[3 * 4 + 2]
+        let b33 = matrix2[3 * 4 + 3]
+        return [
+            b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30,
+            b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31,
+            b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32,
+            b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33,
+            b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30,
+            b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31,
+            b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32,
+            b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33,
+            b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30,
+            b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31,
+            b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32,
+            b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33,
+            b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30,
+            b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31,
+            b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32,
+            b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33
+        ]
+    }
 }
 
 
@@ -288,12 +341,12 @@ class ProjectionMatrix {
     }
 
 
-    perspective (fieldOfViewInRadians, aspect, near, far) {
+    perspective (fieldOfViewInRadians, width, height, near, far) {
         var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
         var rangeInv = 1.0 / (near - far);
         
         return [
-            f / aspect, 0, 0, 0,
+            f / (width / height), 0, 0, 0,
             0, f, 0, 0,
             0, 0, (near + far) * rangeInv, -1,
             0, 0, near * far * rangeInv * 2, 0
