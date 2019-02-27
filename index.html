@@ -12,29 +12,39 @@
 <body>
     <canvas id="canvas"></canvas>
     <script id="shader/vertex" type="shader/vertex" src="core/webgl/shaders/vertex-shader.glsl">
-        
         attribute vec4 a_position;
         attribute vec2 a_texcoord;
-        
+        attribute vec4 a_normal;
+
         uniform mat4 u_matrix;
+        uniform mat4 u_objectRotation;
         
         varying vec2 v_texcoord;
+        varying vec3 v_normal;
         
+
         void main() {
             gl_Position = u_matrix * a_position;
             
             v_texcoord = a_texcoord;
+            v_normal = vec3(u_objectRotation * a_normal);
         }
     </script>
     <script id="shader/fragment" type="shader/fragment" src="core/webgl/shaders/fragment-shader.glsl">
         precision mediump float;
 
         varying vec2 v_texcoord;
+        varying vec3 v_normal;
         
         uniform sampler2D u_texture;
+        uniform vec3 u_reverseLightDirection;
         
         void main() {
+            vec3 normal = normalize(v_normal);
+            float light = dot(normal, u_reverseLightDirection);
+
             gl_FragColor = texture2D(u_texture, v_texcoord);
+            gl_FragColor.rgb *= light;
         }
     </script>
 

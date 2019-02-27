@@ -337,34 +337,40 @@ class MatrixesClass {
 var Matrixes = new MatrixesClass()
 
 
-class ProjectionMatrix {
+class Matrix {
+    
     /**
-     * Creating matrix Projection matrix.
-     * @param {Number} width canvas width. 
-     * @param {Number} height canvas height.
-     * @param {Number} depth 
+     * Create Unit matrix
      */
-    constructor (width, height, depth) {
+    constructor() {
         this.matrix = [
-            2 / width, 0, 0, 0,
-            0, -2 / height, 0, 0,
-            0, 0, 2 / depth, 0,
-            -1, 1, 0, 1
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
         ]
         return this
     }
 
-
+    /**
+     * Setting this matrix as perspective projection matrix
+     * @param {Number} fieldOfViewInRadians fieldOfView of camera
+     * @param {Number} width canvas width
+     * @param {Number} height canvas height
+     * @param {Number} near range of drawn z-coordinates start
+     * @param {Number} far range of drawn z-coordinates end
+     */
     perspective (fieldOfViewInRadians, width, height, near, far) {
-        var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
-        var rangeInv = 1.0 / (near - far);
+        let f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians)
+        let rangeInv = 1.0 / (near - far)
         
-        return [
+        this.matrix = [
             f / (width / height), 0, 0, 0,
             0, f, 0, 0,
             0, 0, (near + far) * rangeInv, -1,
             0, 0, near * far * rangeInv * 2, 0
-        ];
+        ]
+        return this
     }
     
     /**

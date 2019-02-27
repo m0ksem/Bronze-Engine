@@ -10,7 +10,8 @@ class Engine {
         this.height = canvas.height
         this.polygons = []
         this.objects = []
-        this.camera
+        this.textures = []
+        this.camera = null
 
 
         this._globalPossitionBuffer = this.webGL.createBuffer()
@@ -36,6 +37,15 @@ class Engine {
         this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord")
         this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture")
         this.matrixLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_matrix")
+        this.objectRotationLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_objectRotation")
+        this.normalLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_normal")
+        this.everseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection");
+
+        this.webGL.useProgram(this.shaderProgram)
+                this.webGL.viewport(0, 0, this.width, this.height)
+
+        this.webGL.enable(this.webGL.CULL_FACE)
+        this.webGL.enable(this.webGL.DEPTH_TEST);
     }
     
     /**
@@ -46,49 +56,67 @@ class Engine {
     }
 
     /**
+     * Binding texture to engine.
+     * @param {Texture} texture 
+     */
+    bindTexture (texture) {
+        texture._textureBlockLocation = this.textures.length
+        this.textures.push(texture)
+        texture._WebGLtexture = this.webGL.createTexture()
+        this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation)
+        this.webGL.bindTexture(this.webGL.TEXTURE_2D, texture._WebGLtexture)
+        if (texture.loaded) {
+            this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+            this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
+        } else {
+            this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE,
+            texture.color);
+            texture.addEventListener('load', () => {
+                this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation)
+                this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+                this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
+            })
+        }
+        
+    }
+
+    /**
      * Function to update all positions, size etc.
      */
     update () {
         let temp
         let cameraMatrix = this.camera.lookAt()
+        let rot
+        let parentRot
+        let world
         cameraMatrix = inverse(cameraMatrix)
 
-        this.polygons.forEach(element => {
-            // Setting vertexes
-            temp = this.webGL.createBuffer()
-            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
-            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.vertexes), this.webGL.STATIC_DRAW);
-            element._vertexesBuffer = temp
-            
-            
-            // Matrix
-            temp = new ProjectionMatrix(this.width, this.height, 200)
-            temp.matrix = temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(inverse(this.camera.matrix))
-            temp.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
-            // temp.multiply(inverse(this.camera.matrix))
-            temp.translate(element.position[0], element.position[1], element.position[2])
-            let rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
-                rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
+        this.polygons.forEach(element => {           
+            temp = new Matrix()
+            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            temp.multiply(this.camera.inserved)
+            world = new Matrix()
+            world.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
+            world.translate(element.position[0], element.position[1], element.position[2])
+            rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
+            rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
             if (element.parentRotation != null) {
-                let parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
+                parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
                 parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
+                element._world = parentRot
                 rot = Matrixes.multiply(parentRot, rot)
             }
+            world.multiply(rot)
             
-            temp.multiply(rot)
             
-            temp.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
-            temp.scale(1, 1, 1)
-
+            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
+            world.scale(1, 1, 1)
+            
+            
+            
+            temp.multiply(world.matrix)
             element._matrix = temp.matrix
-            
-
-            // Setting textcoords buffer
-            temp = this.webGL.createBuffer()
-            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, temp)
-            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.textureCoords), this.webGL.STATIC_DRAW)
-            element._coordsBuffer = temp
+            element._rotataionMatrix = rot
         })
     }
 
@@ -96,14 +124,10 @@ class Engine {
      * Main drawing function. All polygons are drawn here.
      */
     draw () {
-        this.webGL.viewport(0, 0, this.width, this.height)
-
-        this.webGL.enable(this.webGL.CULL_FACE)
-        this.webGL.enable(this.webGL.DEPTH_TEST);
-
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
 
-        this.webGL.useProgram(this.shaderProgram)
+        this.webGL.uniform3fv(this.everseLightDirectionLocation, normalize([-0.1, 0.5, 1]))
+
         this.polygons.forEach(element => {
             this.webGL.enableVertexAttribArray(this.positionLocation)
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._vertexesBuffer)
@@ -111,26 +135,20 @@ class Engine {
                 this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
             )
 
-             // Setting texture
-             let temp = this.webGL.createTexture()
-             this.webGL.bindTexture(this.webGL.TEXTURE_2D, temp)
-             if (element.texture.loaded) {
-                 this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, element.texture)
-                 this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
-             } else {
-                 this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE,
-                     element.texture.color);
-             }
-
-            this.webGL.uniformMatrix4fv(this.matrixLocation, false, element._matrix)
-            
             this.webGL.enableVertexAttribArray(this.texcoordLocation)
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._coordsBuffer)
             this.webGL.vertexAttribPointer(
                 this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
             )
 
-            this.webGL.uniform1i(this.textureLocation, 0)   
+            this.webGL.enableVertexAttribArray(this.normalLocation);
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._normalBuffer);
+            this.webGL.vertexAttribPointer(
+                this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
+
+            this.webGL.uniform1i(this.textureLocation, element.texture._textureBlockLocation)
+            this.webGL.uniformMatrix4fv(this.matrixLocation, false, element._matrix)
+            this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, element._world)
 
             this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 3)
         });
@@ -189,7 +207,6 @@ class Camera {
         this.position[0] += x
         this.position[1] += y
         this.position[2] += z
-        //this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(x, y, z))
         this.computeMatrix()
     }
 
@@ -204,9 +221,6 @@ class Camera {
         this.rotation[1] += y
         this.rotation[2] += z
         this.computeMatrix()
-        // this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationX(degToRad(x)))
-        // this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationY(degToRad(y)))
-        // this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationZ(degToRad(z)))
     }
 
     setRotation (x, y, z) {
@@ -217,10 +231,14 @@ class Camera {
     computeMatrix () {
         this.matrix = Matrixes.unit()
         this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
-        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationY(degToRad(this.rotation[1])))
-        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationX(degToRad(this.rotation[0])))
-        this.matrix = Matrixes.multiply(this.matrix, Matrixes.rotationZ(degToRad(this.rotation[2])))
-
+        let rotation = new Matrix()
+        rotation.multiply(Matrixes.rotationY(degToRad(this.rotation[1])))
+        rotation.multiply(Matrixes.rotationX(degToRad(this.rotation[0])))
+        rotation.multiply(Matrixes.rotationZ(degToRad(this.rotation[2])))
+        
+        this.matrix = Matrixes.multiply(this.matrix, rotation.matrix)
+        this.rotationMatrix = inverse(rotation.matrix)
+        this.inserved = inverse(this.matrix)
     }
 
     lookAt (result) {

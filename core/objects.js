@@ -15,9 +15,11 @@ class Texture extends Image {
         this.coords = [
             
         ]
-        this.addEventListener('load', function () {
+        this.addEventListener('load', () => {
             this.loaded = true
         })
+        this.color = new Uint8Array([255, 255, 255, 255])
+        this._textureBlockLocation = null
     }
     
     /**
@@ -68,6 +70,12 @@ class Polygon {
         this.rotation = [0, 0, 0]
         this.rotationPoint = [0, 0, 0]
         this.parentRotation = [0, 0, 0]
+        this.normals = [
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+        ]
+        this._vertexesBuffer = null
     }
 
     /**
@@ -84,6 +92,9 @@ class Polygon {
      */
     setTextureCoords (coords) {
         this.textureCoords = coords
+        this._coordsBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._coordsBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW)
     }
 
     /**
@@ -92,6 +103,9 @@ class Polygon {
      */
     setVertexes (vertexes) {
         this.vertexes = vertexes
+        this._vertexesBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._vertexesBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
     }
 
     /**
@@ -131,10 +145,22 @@ class Polygon {
         this.rotation[2] = z
     }
 
+    /**
+     * Setting coordinates for rotation point
+     * @param {Number} x
+     * @param {Number} y 
+     * @param {Number} z 
+     */
     setRotationPoint (x, y, z) {
         this.rotationPoint = [x, y, z]
     }
 
+    /**
+     * Setting rotation values of parent object
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
     setParentRotation (x, y, z) {
         this.parentRotation = [x, y, z]
     }
@@ -143,7 +169,18 @@ class Polygon {
      * Update function. Can be overloaded for creation animation or smth else.
      */
     update () {
+        
+    }
 
+    /**
+     * Set normals for this polygon.
+     * @param {array} normals 3 normals vector. 
+     */
+    setNormals (normals) {
+        this.normals = normals
+        this._normalBuffer = this.webGL.createBuffer();
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._normalBuffer);
+            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
     }
 }
 
@@ -181,6 +218,11 @@ class Rect {
                 1, 1,
             ])
         this.polygons[1] = p
+        this.setNormals([
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        ])
     }
 
     /**
@@ -200,17 +242,17 @@ class Rect {
     setSize (width, height) {
         this.width = width
         this.height = height
-        this.polygons[0].vertexes = [
+        this.polygons[0].setVertexes([
             0, 0, 0,
             width, height, 0,
             0, height, 0,
             
-        ]
-        this.polygons[1].vertexes = [
+        ])
+        this.polygons[1].setVertexes([
             width, height, 0,
             0, 0, 0,
             width, 0, 0
-        ]
+        ])
     }
 
     /**
@@ -239,16 +281,38 @@ class Rect {
         this.polygons[1].rotate(xrad, yrad, zrad)
     }
 
+    /**
+     * Seting rotation of parent object in radians
+     * @param {Number} x parent rotation of x axis in radians
+     * @param {Number} y parent rotation of y axis in radians
+     * @param {Number} z parent rotation of z axis in radians
+     */
     setParentRotation (x, y, z) {
         this.polygons[0].setParentRotation(x, y, z)
         this.polygons[1].setParentRotation(x, y, z)
     }
 
+    /**
+     * Sets rotation point coordinats
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
     setRotationPoint (x, y, z) {
         this.polygons[0].setRotationPoint(x, y, z)
         this.polygons[1].setRotationPoint(x, y, z)
     }
+
+    /**
+     * Set normals vector
+     * @param {Array} normals 3:3 array. Every 3 elements is a vector of normal 
+     */
+    setNormals (normals) {
+        this.polygons[0].setNormals(normals)
+        this.polygons[1].setNormals(normals)
+    }
 }
+
 
 class Cube {
     /**
@@ -269,27 +333,57 @@ class Cube {
 
         this.faces[0].rotate(0, 0, 0)
         this.faces[0].setRotationPoint(-100, -100, 100)
-        this.faces[0].position = [0, 0, 0]
+        this.faces[0].setPosition(0, 0, 0)
+        this.faces[0].setNormals([
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        ])
         
         this.faces[1].rotate(0, 90, 0)
         this.faces[1].setRotationPoint(-100, -100, 100)
         this.faces[1].position = [0, 0, 0]
+        this.faces[1].setNormals([
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+        ])
 
         this.faces[2].rotate(0, -180, 0)
         this.faces[2].setRotationPoint(-100, -100, 100)
         this.faces[2].position = [0, 0, 0]
+        this.faces[2].setNormals([
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1,
+        ])
 
         this.faces[3].rotate(0, 270, 0)
         this.faces[3].setRotationPoint(-100, -100, 100)
         this.faces[3].position = [0, 0, 0]
+        this.faces[3].setNormals([
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+        ])
 
         this.faces[4].rotate(-90, 0, 0)
         this.faces[4].setRotationPoint(-100, -100, 100)
         this.faces[4].position = [0, 0, 0]
+        this.faces[4].setNormals([
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+        ])
 
         this.faces[5].rotate(90, 0, 0)
         this.faces[5].setRotationPoint(-100, -100, 100)
         this.faces[5].position = [0, 0, 0]
+        this.faces[5].setNormals([
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+        ])
     }
 
     _updateFaces () {
@@ -379,7 +473,7 @@ class Cube {
     }
 
     animation () {
-        this.rotate(1, 0, 0)
+        this.rotate(0, 0, 0)
     }
 
     /**
