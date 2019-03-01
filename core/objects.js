@@ -710,7 +710,6 @@ class Object {
         objectsLoader.open('GET', path);
         objectsLoader.onreadystatechange = function() {
             if (objectsLoader.readyState == 4) {
-                console.log(objectsLoader.responseText)
                 self.compile(objectsLoader.responseText)
             }
         }

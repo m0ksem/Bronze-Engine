@@ -235,8 +235,7 @@ let fridge = new Object(engine)
 
 let deer = new Object(engine)
     deer.setPosition(1000, 0, 800)
-    // deer.loadFromObj("assets/objects/deer.obj")
-    deer.compile(document.getElementById("object/deer").textContent)
+    deer.loadFromObj("assets/objects/deer.obj")
     deer.scale(0.3, 0.3, 0.3)
 
 let house = new Object(engine)
