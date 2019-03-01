@@ -65,6 +65,10 @@ function normalize (vector) {
     }
 }
 
+function isPowerOf2 (value) {
+    return (value & (value - 1)) === 0;
+}
+
 /**
  * Sub vector3 a and vector3 b.
  * @param {Array} a vector 3.
@@ -185,7 +189,10 @@ function cross(a, b) {
     return result;
   }
 
-
+/**
+ * Class for default matrixes
+ * @private
+ */
 class MatrixesClass {
     unit () {
         return [
@@ -333,7 +340,9 @@ class MatrixesClass {
     }
 }
 
-
+/**
+ * Default Matrixes
+ */
 var Matrixes = new MatrixesClass()
 
 
