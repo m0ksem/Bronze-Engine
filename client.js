@@ -7,11 +7,21 @@ let camera = new Camera()
     camera.setPosition(0, 800, 1500)
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
-    let xrot = 0.1, yrot = 0, zrot = 0;
-    let movz = 2
-engine.setCamera(camera)
+    engine.setCamera(camera)
 
 let controls = new Controls(engine)
+let debug = new Debugger(engine)
+    debug.setElemenent(document.getElementById('debug'))
+    debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
+    debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
+    debug.addLog("Window w", engine, "width", debug.createLogView())
+    debug.addLog("Camera", camera.position, "", debug.createLogView(), (log) => {
+        return log.name + " : " + log.object[0] + ", " + log.object[1] + ", "  + log.object[2]
+    })
+    debug.addLog("Object", camera.position, "", debug.createLogView(), (log) => {
+        return log.name + " : " + log.object[0] + ", " + log.object[1] + ", "  + log.object[2]
+    })
+
 let lastMousePositionX = null
     camera.setControl(() => {
         // All coords
@@ -127,7 +137,7 @@ let rect
     rect.setSize(1000, 1000)
     rect.setPosition(-500, 0, 500)
     rect.rotate(0, 0, 0)
-    rect.setRotationPoint(0, 0, 0)
+    rect.setRotationPoint(-100, 100, 100)
     rect.setNormals([
         0, 0, 1,
         0, 0, 1,
@@ -212,6 +222,7 @@ let cube3 = new Cube(engine)
 let object = new Object(engine)
     object.setTexture(colaTexture)
     object.setPosition(250, 0, 800)
+    object.name = "box"
     object.loadFromObj("assets/objects/cola.obj")
     // object.rotate(0, 45, 45)
     object.setRotationPoint(0, 0, 0)
@@ -234,15 +245,16 @@ let fridge = new Object(engine)
     fridge.scale(10, 10, 10)
 
 let deer = new Object(engine)
+    deer.name = "Deer"
     deer.setPosition(1000, 0, 800)
     deer.loadFromObj("assets/objects/deer.obj")
     deer.scale(0.3, 0.3, 0.3)
 
-let house = new Object(engine)
-    house.setTexture(houseTexture)
-    house.setPosition(-2000, 2, 800)
-    house.setRotation(0, 45, 0)
-    house.loadFromObj("assets/objects/house.obj")
-    house.scale(100, 100, 100)
+// let house = new Object(engine)
+//     house.setTexture(houseTexture)
+//     house.setPosition(-2000, 2, 800)
+//     house.setRotation(0, 45, 0)
+//     house.loadFromObj("assets/objects/house.obj")
+//     house.scale(100, 100, 100)
 
 engine.run()

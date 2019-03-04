@@ -51,7 +51,9 @@
             vec3 normal = normalize(v_normal);
             // float light = dot(normal, u_reverseLightDirection);
             vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
-            float light = dot(v_normal, surfaceToLightDirection) + 0.5;
+            float light = dot(v_normal, surfaceToLightDirection);
+            if (light < 0.5)
+                light = 0.5;
             
             gl_FragColor = texture2D(u_texture, v_texcoord);
             gl_FragColor.rgb *= (light);
@@ -59,7 +61,8 @@
                 discard;
         }
     </script>
-
+    <div class="debug" id="debug">
+    </div>
     <script src="/core/math.js"></script>
     <script src="/core/objects.js"></script>
     <script src="/core/utils.js"></script>

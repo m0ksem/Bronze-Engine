@@ -338,6 +338,30 @@ class MatrixesClass {
             b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33
         ]
     }
+
+    vec3Multiply (matrix, vector3) {
+        // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
+        // c21 = a21 · b11 + a22 · b21 + a23 · b31 + a24 · b41
+        // c31 = a31 · b11 + a32 · b21 + a33 · b31 + a34 · b41
+        // c41 = a41 · b11 + a42 · b21 + a43 · b31 + a44 · b41
+        // console.log(matrix[0] * vector3[0] )
+        let c1 = matrix[0] * vector3[0] + matrix[1] * vector3[1] + matrix[2] * vector3[2] + matrix[3] * vector3[3]
+        let c2 = matrix[4] * vector3[0] + matrix[5] * vector3[1] + matrix[6] * vector3[2] + matrix[7] * vector3[3]
+        let c3 = matrix[8] * vector3[0] + matrix[9] * vector3[1] + matrix[10] * vector3[2] + matrix[11] * vector3[3]
+        let c4 = matrix[12] * vector3[0] + matrix[13] * vector3[1] + matrix[14] * vector3[2] + matrix[15] * vector3[3]
+        return [c1, c2, c3, c4]
+    }
+
+    transformVector(matrix, vector) {
+        let transformed = new Float32Array(4);
+        for (var i = 0; i < 4; ++i) {
+            transformed[i] = 0.0;
+          for (var j = 0; j < 4; ++j) {
+            transformed[i] += vector[j] * matrix[j * 4 + i];
+          }
+        }
+        return transformed;
+      }
 }
 
 /**

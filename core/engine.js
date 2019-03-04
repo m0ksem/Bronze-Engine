@@ -12,9 +12,9 @@ class Engine {
         this.objects = []
         this.textures = []
         this.camera = null
+        this.debugger = null
+        this.controls = null
         
-
-
         this._globalPossitionBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPossitionBuffer)
         this._globalTextureBuffer = this.webGL.createBuffer()
@@ -75,12 +75,9 @@ class Engine {
         if (texture.loaded) {
             this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
             this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
-              // проверяем, что размер изображения равен степени двойки в обоих измерениях
             if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-                // Да, степень двойки. Генерируем мипмап.
                 this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
             } else {
-                // Нет, это не степень двойки. Отключаем мипмапы и устанавливаем режим CLAMP_TO_EDGE
                 this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
                 this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);
                 this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR);
@@ -92,10 +89,8 @@ class Engine {
                 this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation)
                 this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
                 if (isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
-                    // Да, степень двойки. Генерируем мипмап.
                     this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
                 } else {
-                    // Нет, это не степень двойки. Отключаем мипмапы и устанавливаем режим CLAMP_TO_EDGE
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR);
@@ -138,10 +133,16 @@ class Engine {
             world.scale(1, 1, 1)
                         
             temp.multiply(world.matrix)
+
+            // this.debugger.logArray[4].output = function () {
+            //     return "Mouse over " + element.name + " [" + (mousePos) + "] " 
+            // }
+
             element._matrix = temp.matrix
             element._rotataionMatrix = rot
         })
 
+        let selectedObject = null
         this.objects.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
@@ -161,6 +162,77 @@ class Engine {
             world.scale(element.scaling[0], element.scaling[1], element.scaling[2])
                         
             temp.multiply(world.matrix)
+
+            let mouseOverHitBox = true
+            element.collisionBoxes.forEach(collisionBox => {
+                let boxInPixels = [
+
+                ]
+                for (let ix = 0; ix < collisionBox.x.length; ix++) {
+                    const x = collisionBox.x[ix];
+                    for (let iy = 0; iy < collisionBox.y.length; iy++) {
+                        const y = collisionBox.y[iy];
+                        for (let iz = 0; iz < collisionBox.z.length; iz++) {
+                            const z = collisionBox.z[iz];
+                            let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
+                                coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3]
+                                coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3]
+                                coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.width;
+                                coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.height;
+                            boxInPixels.push({x: coordsInPixels[0], y: coordsInPixels[1], xyz: [ix, iy, iz]})
+                        }
+                    }
+                }
+                let smallest = [10000,  10000]
+                let biggest = [-10000, -10000]
+                for (let i = 0; i < boxInPixels.length; i++) {
+                    const box = boxInPixels[i];
+                    if (box.x < smallest[0]) {
+                        smallest[0] = box.x
+                    } else if (box.x > biggest[0]) {
+                        biggest[0] = box.x
+                    }
+                    if (box.y < smallest[1]) {
+                        smallest[1] = box.y
+                    } else if (box.y > biggest[1]) {
+                        biggest[1] = box.y
+                    }
+                }
+
+                if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
+                    this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]) {
+                    mouseOverHitBox = false
+                }
+
+
+                let mouse = this.controls.mouse
+                if (!mouseOverHitBox) {
+                    selectedObject = element
+                }
+                if(selectedObject && selectedObject.name == undefined) {
+                    this.debugger.logArray[2].output = function () {
+                        return "Hitbox x " + mouse.x + " " + smallest[0] + " " + mouse.x + " " + biggest[0]
+                    }
+                    this.debugger.logArray[3].output = function () {
+                        return "Hitbox y " + mouse.y + " " + smallest[1] + " " + mouse.y + " " + biggest[1]
+                    }
+                }
+            })
+
+            if (selectedObject != null) {
+                this.debugger.logArray[4].output = function () {
+                    return "Mouse over " + selectedObject.name
+                }
+            } else {
+                this.debugger.logArray[4].output = function () {
+                    return "There are no objects over mouse"
+                }
+            }
+
+            // this.debugger.logArray[3].output = function () {
+            //     return "HITBOX: " + element.name 
+            // }   
+
             element._matrix = temp.matrix
             element._rotataionMatrix = rot
         })
@@ -225,10 +297,13 @@ class Engine {
                 this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
                 this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
                 this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
-
+                
                 this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
             })
         });
+        if (this.debugger != null) {
+            this.debugger.updateInfo()
+        }
         // alert()
     }
 
@@ -263,6 +338,7 @@ class Camera {
         this.matrix = Matrixes.unit()
         this.position = [0, 0, 0]
         this.rotation = [0, 0, 0]
+        this._collisions = false
     }
 
     /**
@@ -272,6 +348,14 @@ class Camera {
     setFieldOfView (angle) {
         this.fieldOfView = angle;
         this.fieldOfViewRad = degToRad(angle)
+    }
+
+    /**
+     * Sets collision
+     * @param {*} bool 
+     */
+    setCollisions (bool) {
+        this._collisions = bool
     }
 
     /**
@@ -328,7 +412,6 @@ class Camera {
         rotation.multiply(Matrixes.rotationY(degToRad(this.rotation[1])))
         rotation.multiply(Matrixes.rotationX(degToRad(this.rotation[0])))
         rotation.multiply(Matrixes.rotationZ(degToRad(this.rotation[2])))
-        
         this.matrix = Matrixes.multiply(this.matrix, rotation.matrix)
         this.rotationMatrix = inverse(rotation.matrix)
         this.inserved = inverse(this.matrix)
@@ -379,6 +462,7 @@ class Controls {
      * @param {Engine} engine 
      */
     constructor (engine) {
+        engine.controls = this
         this.keys = []
         this._handlers = []
         this._mouseHandlers = [
@@ -450,6 +534,47 @@ class Controls {
      */
     onMouseMove(handler) {
         engine.canvas.addEventListener('mousemove', handler, false);
+    }
+}
+
+class Debugger {
+    /**
+     * Debuger for engine.
+     * @param {Engine} engine 
+     */
+    constructor(engine) {
+        engine.debugger = this
+        this.logArray = []
+        this.element = null
+    }
+
+    setElemenent(element) {
+        this.element = element
+    }
+
+    addLog(name, object, value, view, output) {
+        output = output || this.defaultOutput
+        this.logArray.push({name: name, object: object, value: value, view: view, output: output})
+        this.addView(view)
+    }
+
+    createLogView () {
+        let node = document.createElement('p')
+        return node
+    }
+
+    defaultOutput (log) {
+        return log.name + " : " + log.object[log.value]
+    }
+
+    addView(view) {
+        this.element.appendChild(view)
+    }
+
+    updateInfo () {
+        this.logArray.forEach(e => {
+            e.view.innerText = e.output(e)
+        })
     }
 }
 

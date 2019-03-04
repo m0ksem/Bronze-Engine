@@ -516,6 +516,7 @@ class Object {
         this.parentRotation = [0, 0, 0]
 
         this.faces = []
+        this.collisionBoxes = []
         }
 
     /**
@@ -613,9 +614,14 @@ class Object {
         let textureCoords = []
         let normals = []
         let splited = fileText.split('\n')
+        let collisionBox = {
+            x: [0, 0],
+            y: [0, 0],
+            z: [0, 0]
+        }
         splited.forEach(element => {
             let values = element.split(' ')
-            let name = 0, value1 = 1, value2 = 2, value3 = 3
+            let name = 0
             
             for(let i = values.length; i--;){
                 if (values[i] == "" || values[i] == "\r")
@@ -623,16 +629,35 @@ class Object {
             }
 
             if (values[name] == 'v') {
-                vertexes.push([parseFloat(values[value1]), 
-                                   parseFloat(values[value2]),
-                                   parseFloat(values[value3])])
+                let v1 = parseFloat(values[1])
+                let v2 = parseFloat(values[2])
+                let v3 = parseFloat(values[3])
+                if (collisionBox.x[1] < v1) {
+                    collisionBox.x[1] = v1 
+                }
+                if (collisionBox.y[1] < v2) {
+                    collisionBox.y[1] = v2 
+                }
+                if (collisionBox.z[1] < v3) {
+                    collisionBox.z[1] = v3 
+                }
+                if (collisionBox.x[0] > v1) {
+                    collisionBox.x[0] = v1 
+                }
+                if (collisionBox.y[0] > v2) {
+                    collisionBox.y[0] = v2 
+                }
+                if (collisionBox.z[0] > v3) {
+                    collisionBox.z[0] = v3 
+                }
+                vertexes.push([v1, v2, v3])
             } else if (values[name] == 'vn') {
-                normals.push([parseFloat(values[value1]), 
-                                   parseFloat(values[value2]),
-                                   parseFloat(values[value3])])
+                normals.push([parseFloat(values[1]), 
+                                   parseFloat(values[2]),
+                                   parseFloat(values[3])])
             } else if (values[name] == 'vt') {
-                textureCoords.push([parseFloat(values[value1]), 
-                                   parseFloat(values[value2])])
+                textureCoords.push([parseFloat(values[1]), 
+                                   parseFloat(values[2])])
             } else if (values[name] == "f") {
                 for (let i = 1; i < values.length; i++) {
                     const face = values[i].split('/');
@@ -698,6 +723,8 @@ class Object {
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.normalBuffer);
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
         }
+        // console.log(collisionBox)
+        this.collisionBoxes.push(collisionBox)
     }
 
     /**
