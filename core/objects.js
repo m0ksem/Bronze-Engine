@@ -197,9 +197,9 @@ class Rect {
         this.rotationPoint = [0, 0, 0]
         let p = new Polygon(engine)
             p.setVertexes([
-                -100, 0, 0,
-                0, 100, 0,
+                0,   0,   0,
                 100, 100, 0,
+                0,   100, 0,
             ])
             p.setTextureCoords([
                 0, 1,
@@ -209,9 +209,9 @@ class Rect {
         this.polygons[0] = p
             p = new Polygon(engine)
             p.setVertexes([
-                0, 0, 0,
-                0, 0, 0,
-                0, 0, 0,
+                100, 100, 0,
+                0,   0,   0,
+                100, 0,   0
             ])
             p.setTextureCoords([
                 1, 0,
@@ -244,15 +244,15 @@ class Rect {
         this.width = width
         this.height = height
         this.polygons[0].setVertexes([
-            0, 0, 0,
+            0,     0,      0,
             width, height, 0,
-            0, height, 0,
+            0,     height, 0,
             
         ])
         this.polygons[1].setVertexes([
             width, height, 0,
-            0, 0, 0,
-            width, 0, 0
+            0,     0,      0,
+            width, 0,      0
         ])
     }
 
@@ -517,7 +517,7 @@ class Object {
 
         this.faces = []
         this.collisionBoxes = []
-        }
+    }
 
     /**
      * Setting texture for object.
@@ -538,6 +538,12 @@ class Object {
         this.position[0] = x
         this.position[1] = y
         this.position[2] = z
+    }
+
+    move (x, y, z) {
+        this.position[0] += x
+        this.position[1] += y
+        this.position[2] += z
     }
 
     /**
@@ -723,7 +729,6 @@ class Object {
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.normalBuffer);
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
         }
-        // console.log(collisionBox)
         this.collisionBoxes.push(collisionBox)
     }
 

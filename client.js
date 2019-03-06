@@ -7,6 +7,7 @@ let camera = new Camera()
     camera.setPosition(0, 800, 1500)
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
+    // camera.setLookUp(100, 100, 500)
     engine.setCamera(camera)
 
 let controls = new Controls(engine)
@@ -14,15 +15,15 @@ let debug = new Debugger(engine)
     debug.setElemenent(document.getElementById('debug'))
     debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
     debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
-    debug.addLog("Window w", engine, "width", debug.createLogView())
-    debug.addLog("Camera", camera.position, "", debug.createLogView(), (log) => {
-        return log.name + " : " + log.object[0] + ", " + log.object[1] + ", "  + log.object[2]
+    debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
+        return log.name + " : " + "Unselected."
     })
-    debug.addLog("Object", camera.position, "", debug.createLogView(), (log) => {
-        return log.name + " : " + log.object[0] + ", " + log.object[1] + ", "  + log.object[2]
+    debug.addLog("Hitbox y:", camera.position, "", debug.createLogView(), (log) => {
+        return log.name + " : " + "Unselected."
     })
+    debug.addLog("Object", camera.position, "", debug.createLogView())
 
-let lastMousePositionX = null
+let lastMousePosition = null
     camera.setControl(() => {
         // All coords
         // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
@@ -56,23 +57,30 @@ let lastMousePositionX = null
             // camera.move(10, 0, 0)
             camera.move(camera.rotationMatrix[0] * 10, camera.rotationMatrix[4] * 10, camera.rotationMatrix[8] * 10)
         }
-        if (controls.mouse.buttons[0]) {
-            if (lastMousePosition == null) {
-                lastMousePosition = {
-                    x: controls.mouse.x, 
-                    y: controls.mouse.y
-                }
+
+        if (lastMousePosition == null) {
+            lastMousePosition = {
+                x: controls.mouse.x, 
+                y: controls.mouse.y
             }
+        }
+        
+        if (controls.mouse.buttons[2]) {
+            if (engine.selectedObject != null) {
+                const object = engine.selectedObject
+                object.move((controls.mouse.x - lastMousePosition.x), -(controls.mouse.y - lastMousePosition.y), 0)
+            }
+        }
+
+        if (controls.mouse.buttons[0]) {
             if (controls.keys[17]) {
                 camera.rotate(0, 0, ((controls.mouse.y - lastMousePosition.y) / 10)) //+ (controls.mouse.x - lastMousePosition.x) / 10) / 2))
             } else {
                 camera.rotate((controls.mouse.y - lastMousePosition.y) / 10, (controls.mouse.x - lastMousePosition.x) / 10, 0)
             }
-            lastMousePosition.x = controls.mouse.x
-            lastMousePosition.y = controls.mouse.y
-        } else {
-            lastMousePosition = null
         }
+        lastMousePosition.x = controls.mouse.x
+        lastMousePosition.y = controls.mouse.y
     })
 
 let dirtTexture = new Texture("./assets/texture/dirt.jpg")
@@ -224,7 +232,7 @@ let object = new Object(engine)
     object.setPosition(250, 0, 800)
     object.name = "box"
     object.loadFromObj("assets/objects/cola.obj")
-    // object.rotate(0, 45, 45)
+    object.rotate(0, 45, 45)
     object.setRotationPoint(0, 0, 0)
     object.scale(10, 10, 10)
     let xpos = 0, ypos = 0, zpos = 0, xdir = -1
@@ -239,6 +247,7 @@ let object = new Object(engine)
     }) 
 
 let fridge = new Object(engine)
+    fridge.name = "Fridge"
     fridge.setTexture(fridgeTexture)
     fridge.setPosition(-500, 0, 800)
     fridge.loadFromObj("assets/objects/fridge.obj")
@@ -250,11 +259,11 @@ let deer = new Object(engine)
     deer.loadFromObj("assets/objects/deer.obj")
     deer.scale(0.3, 0.3, 0.3)
 
-// let house = new Object(engine)
-//     house.setTexture(houseTexture)
-//     house.setPosition(-2000, 2, 800)
-//     house.setRotation(0, 45, 0)
-//     house.loadFromObj("assets/objects/house.obj")
-//     house.scale(100, 100, 100)
+let house = new Object(engine)
+    house.setTexture(houseTexture)
+    house.setPosition(-2000, 2, 800)
+    house.setRotation(0, 45, 0)
+    house.loadFromObj("assets/objects/house.obj")
+    house.scale(100, 100, 100)
 
 engine.run()

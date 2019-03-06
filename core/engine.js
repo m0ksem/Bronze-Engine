@@ -14,6 +14,7 @@ class Engine {
         this.camera = null
         this.debugger = null
         this.controls = null
+        this.selectedObject = null
         
         this._globalPossitionBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPossitionBuffer)
@@ -24,6 +25,7 @@ class Engine {
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight
         })
+
         this.initShaders()
         this.noTexture = new Texture()
         this.noTexture.setColorRGBA(219, 58, 52, 255)
@@ -46,7 +48,6 @@ class Engine {
         this.everseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection");
         this.lightWorldPositionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_lightWorldPosition");
         this.cameraLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_cameraMatrix");
-
 
         this.webGL.useProgram(this.shaderProgram)
                 this.webGL.viewport(0, 0, this.width, this.height)
@@ -112,6 +113,8 @@ class Engine {
             this.camera._controlFunction()
         }
 
+        this.selectedObject = null
+
         this.polygons.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
@@ -134,15 +137,10 @@ class Engine {
                         
             temp.multiply(world.matrix)
 
-            // this.debugger.logArray[4].output = function () {
-            //     return "Mouse over " + element.name + " [" + (mousePos) + "] " 
-            // }
-
             element._matrix = temp.matrix
             element._rotataionMatrix = rot
         })
 
-        let selectedObject = null
         this.objects.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
@@ -163,11 +161,9 @@ class Engine {
                         
             temp.multiply(world.matrix)
 
-            let mouseOverHitBox = true
+            let mouseOverHitBox = false
             element.collisionBoxes.forEach(collisionBox => {
-                let boxInPixels = [
-
-                ]
+                let boxInPixels = []
                 for (let ix = 0; ix < collisionBox.x.length; ix++) {
                     const x = collisionBox.x[ix];
                     for (let iy = 0; iy < collisionBox.y.length; iy++) {
@@ -175,14 +171,17 @@ class Engine {
                         for (let iz = 0; iz < collisionBox.z.length; iz++) {
                             const z = collisionBox.z[iz];
                             let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
-                                coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3]
-                                coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3]
+                                coordsInPixels[0] =  coordsInPixels[0] / coordsInPixels[3]
+                                coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
                                 coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.width;
                                 coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.height;
-                            boxInPixels.push({x: coordsInPixels[0], y: coordsInPixels[1], xyz: [ix, iy, iz]})
+                                if (coordsInPixels[0] > -this.width && coordsInPixels[0] < this.width &&
+                                    coordsInPixels[1] > -this.height && coordsInPixels[1] < this.height)
+                                    boxInPixels.push({x: coordsInPixels[0], y: coordsInPixels[1]})
                         }
                     }
                 }
+
                 let smallest = [10000,  10000]
                 let biggest = [-10000, -10000]
                 for (let i = 0; i < boxInPixels.length; i++) {
@@ -200,25 +199,24 @@ class Engine {
                 }
 
                 if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
-                    this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]) {
-                    mouseOverHitBox = false
+                    this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]   ) {
+                    mouseOverHitBox = true
                 }
 
 
                 let mouse = this.controls.mouse
-                if (!mouseOverHitBox) {
-                    selectedObject = element
-                }
-                if(selectedObject && selectedObject.name == undefined) {
+                if (mouseOverHitBox) {
+                    this.selectedObject = element
                     this.debugger.logArray[2].output = function () {
-                        return "Hitbox x " + mouse.x + " " + smallest[0] + " " + mouse.x + " " + biggest[0]
+                        return "Hitbox x " + mouse.x + " > " + smallest[0] + " && " + mouse.x + " < " + biggest[0]
                     }
                     this.debugger.logArray[3].output = function () {
-                        return "Hitbox y " + mouse.y + " " + smallest[1] + " " + mouse.y + " " + biggest[1]
+                        return "Hitbox y " + mouse.y + " > " + smallest[1] + " && " + mouse.y + " < " + biggest[1]
                     }
                 }
             })
 
+            let selectedObject = this.selectedObject
             if (selectedObject != null) {
                 this.debugger.logArray[4].output = function () {
                     return "Mouse over " + selectedObject.name
@@ -228,10 +226,6 @@ class Engine {
                     return "There are no objects over mouse"
                 }
             }
-
-            // this.debugger.logArray[3].output = function () {
-            //     return "HITBOX: " + element.name 
-            // }   
 
             element._matrix = temp.matrix
             element._rotataionMatrix = rot
@@ -339,6 +333,7 @@ class Camera {
         this.position = [0, 0, 0]
         this.rotation = [0, 0, 0]
         this._collisions = false
+        this._lookUpMatrix = null
     }
 
     /**
@@ -413,6 +408,14 @@ class Camera {
         rotation.multiply(Matrixes.rotationX(degToRad(this.rotation[0])))
         rotation.multiply(Matrixes.rotationZ(degToRad(this.rotation[2])))
         this.matrix = Matrixes.multiply(this.matrix, rotation.matrix)
+        if (this._lookUpMatrix != null) {
+            this.matrix = Matrixes.multiply(this.matrix, 
+            this.lookAt(
+                camera._lookUpMatrix,
+                [0, 1, 0]
+            )
+            )
+        }
         this.rotationMatrix = inverse(rotation.matrix)
         this.inserved = inverse(this.matrix)
     }
@@ -425,33 +428,44 @@ class Camera {
         this._controlFunction = handler
     }
 
+
+    setLookUp(x, y, radius) {
+        if (x == null) {
+            this._lookUpMatrix = null
+            return
+        }
+        this._lookUpMatrix = [x, y, radius]
+    }
+
     /**
      * @deprecated
      * @param {*} result 
      */
-    lookAt (result) {
-        result = result || new Float32Array(16)
-        let zAxis = normalize(subVec3(this.position, this.target))
-        let xAxis = normalize(cross(this.up, zAxis))
-        let yAxis = normalize(cross(zAxis, xAxis))
-    
-        result[ 0] = xAxis[0]
-        result[ 1] = xAxis[1]
-        result[ 2] = xAxis[2]
-        result[ 3] = 0
-        result[ 4] = yAxis[0]
-        result[ 5] = yAxis[1]
-        result[ 6] = yAxis[2]
-        result[ 7] = 0
-        result[ 8] = zAxis[0]
-        result[ 9] = zAxis[1]
-        result[10] = zAxis[2]
-        result[11] = 0
-        result[12] = this.position[0]
-        result[13] = this.position[1]
-        result[14] = this.position[2]
-        result[15] = 1
-        return result;
+    lookAt(target, up) {
+        if (target != null) {
+            var zAxis = normalize(
+                subVec3(this.position, target));
+            var xAxis = normalize(cross(up, zAxis));
+            var yAxis = normalize(cross(zAxis, xAxis));
+            
+            return [
+                xAxis[0], xAxis[1], xAxis[2], 0,
+                yAxis[0], yAxis[1], yAxis[2], 0,
+                zAxis[0], zAxis[1], zAxis[2], 0,
+                this.position[0],
+                this.position[1],
+                this.position[2],
+                1,
+            ];
+        }
+        else {
+            return [
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 0
+            ]
+        }
     }
 }
 
