@@ -1,0 +1,23 @@
+{
+  "name": "bronze",
+  "version": "0.0.1",
+  "description": "WebGL game engine.",
+  "main": "index.js",
+  "author": "m0ksem",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "path": "^0.12.7",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "babel-plugin-inline-import": "^3.0.0"
+  }
+}

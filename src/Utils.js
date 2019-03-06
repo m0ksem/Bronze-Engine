@@ -5,7 +5,7 @@
  * 
  * @return {CanvasRenderingContext2D} WebGL context.
  */
-function getWebGLById(id) {
+export function getWebGLById(id) {
     let canvas = document.getElementById(id);
     let webGL = canvas.getContext("experimental-webgl");
     window.addEventListener('resize', function () {
@@ -22,7 +22,7 @@ function getWebGLById(id) {
  * 
  * @return {CanvasRenderingContext2D} WebGL context.
  */
-function getWebGL(canvas) {
+export function getWebGL(canvas) {
     let webGL = canvas.getContext("experimental-webgl");
     window.addEventListener('resize', function () {
         canvas.width = canvas.offsetWidth
@@ -35,21 +35,19 @@ function getWebGL(canvas) {
  * Creates a shader from script DOM element source.
  * There are two types: shader/fragment and shader/vertex.
  * 
- * @param {String} id script id.
+ * @param {String} shaderText text content of shader.
  * @param {CanvasRenderingContext2D} webGL webGL context to compile shader.
  * 
  * @return compiled shader.
  */
-function createShaderFromScript(id, webGL) {
-    let shaderJS = document.getElementById(id)
-
-    let source = shaderJS.text
+export function compileShader(shaderText, type, webGL) {
+    let source = shaderText
 
     let shader
 
-    if (shaderJS.type == "shader/fragment") {
+    if (type == "fragment") {
         shader = webGL.createShader(webGL.FRAGMENT_SHADER)
-    } else if (shaderJS.type == "shader/vertex") {
+    } else if (type == "vertex") {
         shader = webGL.createShader(webGL.VERTEX_SHADER)
     } else {
         console.log("Wrong shader type")
@@ -66,6 +64,7 @@ function createShaderFromScript(id, webGL) {
     return shader
 }
 
+
 /**
  * Creates a program, attaches shaders and link program.
  * 
@@ -76,7 +75,7 @@ function createShaderFromScript(id, webGL) {
  * 
  * @return shader program.
  */
-function createWebGLProgram (webGL, vertexShader, fragmentShader, deleteShaders) {
+export function createWebGLProgram (webGL, vertexShader, fragmentShader, deleteShaders) {
     let shaderProgram = webGL.createProgram();
 
     webGL.attachShader(shaderProgram, vertexShader);

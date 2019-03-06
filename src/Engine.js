@@ -1,10 +1,18 @@
-class Engine {
+import * as Utils from "./Utils"
+import {Texture} from "./Texture"
+import {Matrix, Matrixes} from "./math/Matrixes"
+import * as Vectors from "./math/Vectors"
+import {isPowerOf2} from "./math/Math";
+import fragmentShaderSource from "./shaders/fragment-shader.glsl"
+import vertexShaderSource from "./shaders/vertex-shader.glsl"
+
+export class Engine {
     /**
      * GameEngine core class.
      * @param {HTMLElement} canvas
      */
     constructor (canvas) {
-        this.webGL = getWebGL(canvas)
+        this.webGL = Utils.getWebGL(canvas)
         this.canvas = canvas
         this.width = canvas.width
         this.height = canvas.height
@@ -15,7 +23,7 @@ class Engine {
         this.debugger = null
         this.controls = null
         this.selectedObject = null
-        
+
         this._globalPossitionBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPossitionBuffer)
         this._globalTextureBuffer = this.webGL.createBuffer()
@@ -36,9 +44,9 @@ class Engine {
      * Creating shaders and attaching to webGL context.
      */
     initShaders () {
-        let vertex = createShaderFromScript("shader/vertex", this.webGL)
-        let fragment = createShaderFromScript("shader/fragment", this.webGL)
-        this.shaderProgram = createWebGLProgram(this.webGL, vertex, fragment, false)
+        let vertex = Utils.compileShader(vertexShaderSource, "vertex", this.webGL)
+        let fragment = Utils.compileShader(fragmentShaderSource,"fragment", this.webGL)
+        this.shaderProgram = Utils.createWebGLProgram(this.webGL, vertex, fragment, false)
         this.positionLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_position")
         this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord")
         this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture")
@@ -120,7 +128,7 @@ class Engine {
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             temp.multiply(this.camera.inserved)
             world = new Matrix()
-            world.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
+            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
             rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
             rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
@@ -146,7 +154,7 @@ class Engine {
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             temp.multiply(this.camera.inserved)
             world = new Matrix()
-            world.multiply(inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
+            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
             rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
             rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
@@ -238,7 +246,7 @@ class Engine {
     draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
 
-        this.webGL.uniform3fv(this.everseLightDirectionLocation, normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.everseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.cameraLocation, false, this.camera.matrix)
 
@@ -317,281 +325,6 @@ class Engine {
         requestAnimationFrameEngine()
     }
 }
-
-
-class Camera {
-    /**
-     * Creates camera object
-     */
-    constructor () {
-        this.position = [0, 0, 100]
-        this.up = [0, 1, 0]
-        this.target = [0, 0, 0]
-        this.fieldOfView = 90
-        this.fieldOfViewRad = degToRad(90)
-        this.matrix = Matrixes.unit()
-        this.position = [0, 0, 0]
-        this.rotation = [0, 0, 0]
-        this._collisions = false
-        this._lookUpMatrix = null
-    }
-
-    /**
-     * Sets field of view for camera
-     * @param {Number} angle 
-     */
-    setFieldOfView (angle) {
-        this.fieldOfView = angle;
-        this.fieldOfViewRad = degToRad(angle)
-    }
-
-    /**
-     * Sets collision
-     * @param {*} bool 
-     */
-    setCollisions (bool) {
-        this._collisions = bool
-    }
-
-    /**
-     * Absolutly sets position for camera
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     */
-    setPosition (x, y, z) {
-        this.position = [x, y, z]
-        this.computeMatrix()
-    }
-
-    /**
-     * Moving camera
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     */
-    move (x, y, z) {
-        // let translationMatrix = Matrixes.translation(x, y, z)
-        // let matrix = Matrixes.multiply(translationMatrix, this.rotationMatrix)
-        // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
-        // let yt = y//this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
-        // let zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
-        this.position[0] += x
-        this.position[1] += y
-        this.position[2] += z
-        this.computeMatrix()
-    }
-
-    /**
-     * Rotate for x, y, z deggres.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     */
-    rotate (x, y, z) {
-        this.rotation[0] += x
-        this.rotation[1] += y
-        this.rotation[2] += z
-        this.computeMatrix()
-    }
-
-    setRotation (x, y, z) {
-        this.rotation = [x, y, z]
-        this.computeMatrix()
-    }
-
-    computeMatrix () {
-        this.matrix = Matrixes.unit()
-        this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
-        let rotation = new Matrix()
-        rotation.multiply(Matrixes.rotationY(degToRad(this.rotation[1])))
-        rotation.multiply(Matrixes.rotationX(degToRad(this.rotation[0])))
-        rotation.multiply(Matrixes.rotationZ(degToRad(this.rotation[2])))
-        this.matrix = Matrixes.multiply(this.matrix, rotation.matrix)
-        if (this._lookUpMatrix != null) {
-            this.matrix = Matrixes.multiply(this.matrix, 
-            this.lookAt(
-                camera._lookUpMatrix,
-                [0, 1, 0]
-            )
-            )
-        }
-        this.rotationMatrix = inverse(rotation.matrix)
-        this.inserved = inverse(this.matrix)
-    }
-
-    /**
-     * Sets fuction to control camera.
-     * @param {Function} handler 
-     */
-    setControl (handler) {
-        this._controlFunction = handler
-    }
-
-
-    setLookUp(x, y, radius) {
-        if (x == null) {
-            this._lookUpMatrix = null
-            return
-        }
-        this._lookUpMatrix = [x, y, radius]
-    }
-
-    /**
-     * @deprecated
-     * @param {*} result 
-     */
-    lookAt(target, up) {
-        if (target != null) {
-            var zAxis = normalize(
-                subVec3(this.position, target));
-            var xAxis = normalize(cross(up, zAxis));
-            var yAxis = normalize(cross(zAxis, xAxis));
-            
-            return [
-                xAxis[0], xAxis[1], xAxis[2], 0,
-                yAxis[0], yAxis[1], yAxis[2], 0,
-                zAxis[0], zAxis[1], zAxis[2], 0,
-                this.position[0],
-                this.position[1],
-                this.position[2],
-                1,
-            ];
-        }
-        else {
-            return [
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 0
-            ]
-        }
-    }
-}
-
-
-class Controls {
-    /**
-     * Help class for creating user controls
-     * @param {Engine} engine 
-     */
-    constructor (engine) {
-        engine.controls = this
-        this.keys = []
-        this._handlers = []
-        this._mouseHandlers = [
-            null, null,
-            null, null, null,
-            null
-        ]
-        this.mouse = {
-            x: 0,
-            y: 0,
-            buttons: [false, false, false]
-        }
-
-        let self = this
-
-        for (let i = 0; i < 255; i++) {
-            this.keys[i] = false
-            this._handlers[i] = null
-        }
-        window.onkeydown = function(event){
-            self.keys[event.keyCode] = true;
-            if (self._handlers[event.keyCode] != null) {
-                self._handlers[event.keyCode]()
-            }
-        };
-        window.onkeyup = function(event){
-            self.keys[event.keyCode] = false;
-        };
-
-        engine.canvas.addEventListener('mousemove', function (evt) {
-            let mousePos = engine.canvas.getBoundingClientRect()
-            let x = evt.clientX - mousePos.left
-            let y = evt.clientY - mousePos.top
-            self.mouse.x = x
-            self.mouse.y = y
-        }, false);
-
-        window.onmousedown = function (event) {
-            self.mouse.buttons[event.button] = true
-            if (self._mouseHandlers[2 + event.button] != null) self._mouseHandlers[2 + event.button]()
-        }
-
-        window.onmouseup = function (event) {
-            self.mouse.buttons[event.button] = false
-        }
-    }
-
-    /**
-     * Sets handler for keyboard key down
-     * @param {Number} keyCode 
-     * @param {Function} handler 
-     */
-    onKeyDown(keyCode, handler) {
-        this._handlers[keyCode] = handler
-    }
-
-    /**
-     * Sets handler for mouse key down.
-     * @param {Number} keyCode 
-     * @param {Function} handler 
-     */
-    onMouseDown(keyCode, handler) {
-        this._mouseHandlers[2 + keyCode] = handler
-    }
-    
-    /**
-     * Sets handler for mouse moving
-     * @param {Function} handler 
-     */
-    onMouseMove(handler) {
-        engine.canvas.addEventListener('mousemove', handler, false);
-    }
-}
-
-class Debugger {
-    /**
-     * Debuger for engine.
-     * @param {Engine} engine 
-     */
-    constructor(engine) {
-        engine.debugger = this
-        this.logArray = []
-        this.element = null
-    }
-
-    setElemenent(element) {
-        this.element = element
-    }
-
-    addLog(name, object, value, view, output) {
-        output = output || this.defaultOutput
-        this.logArray.push({name: name, object: object, value: value, view: view, output: output})
-        this.addView(view)
-    }
-
-    createLogView () {
-        let node = document.createElement('p')
-        return node
-    }
-
-    defaultOutput (log) {
-        return log.name + " : " + log.object[log.value]
-    }
-
-    addView(view) {
-        this.element.appendChild(view)
-    }
-
-    updateInfo () {
-        this.logArray.forEach(e => {
-            e.view.innerText = e.output(e)
-        })
-    }
-}
-
 
 let e
 
