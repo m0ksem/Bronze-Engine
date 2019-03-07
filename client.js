@@ -3,7 +3,15 @@ let canvas = document.getElementById("canvas")
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
+
 let engine = new Bronze.Engine(canvas)
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    engine.canvasResized()
+})
+
 let camera = new Bronze.Camera()
     camera.setPosition(0, 800, 1500)
     camera.setRotation(-45, 0, 0)

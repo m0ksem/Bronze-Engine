@@ -29,11 +29,6 @@ export class Engine {
         this._globalTextureBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer)
 
-        canvas.addEventListener('resize', function () {
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
-        })
-
         this.initShaders()
         this.noTexture = new Texture()
         this.noTexture.setColorRGBA(219, 58, 52, 255)
@@ -58,7 +53,7 @@ export class Engine {
         this.cameraLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_cameraMatrix");
 
         this.webGL.useProgram(this.shaderProgram)
-                this.webGL.viewport(0, 0, this.width, this.height)
+        this.webGL.viewport(0, 0, this.width, this.height)
 
         this.webGL.enable(this.webGL.CULL_FACE)
         this.webGL.enable(this.webGL.DEPTH_TEST);
@@ -69,6 +64,18 @@ export class Engine {
      */
     setCamera (camera) {
         this.camera = camera
+    }
+
+    /**
+     * Update drawing parameters for correct drawing resized canvas.
+     */
+    canvasResized ()  {
+        this.canvas.width = this.canvas.clientWidth
+        this.canvas.height = this.canvas.clientHeight
+        this.width = this.canvas.clientWidth
+        this.height = this.canvas.clientHeight
+        this.webGL.viewport(0, 0, this.width, this.height)
+        console.log(this.canvas)
     }
 
     /**
