@@ -1,8 +1,8 @@
-<h1 align="center"> Bronze-Engine </h1>
+<h1 align="center"> Bronze-Engine 🧱</h1>
 
 <h4 align="center">Simple game engine based on WebGL with JavaScript.  </h4>
 
-<div align="center">
+<div style="text-align:center" align="center">
 <a href="https://github.com/m0ksem/Bronze-Engine/wiki">Docs</a> -
 <a href="https://github.com/m0ksem/Bronze-Engine/projects/2">Development plan</a>
 </div>
@@ -42,4 +42,4 @@ yarn run build.
  - Added .obj loading.
  
 ## Author
-  <a href="https://github.com/m0ksem">m0ksem</a>
+ ⚰️ <a href="https://github.com/m0ksem">m0ksem</a>
