@@ -1,11 +1,13 @@
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
     entry: {
-        etue: './src/Bronze.js'
+        'Bronze': './src/Bronze.js',
+        'Bronze.min': './src/Bronze.js'
     },
     output: {
-        filename: 'Bronze.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist',
         library: "Bronze",
@@ -23,5 +25,11 @@ module.exports = {
                 exclude: '/node_modules/'
             }
         ]
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [new UglifyJsPlugin({
+          include: /\.min\.js$/
+        })]
     }
 }

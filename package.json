@@ -18,6 +18,7 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
-    "babel-plugin-inline-import": "^3.0.0"
+    "babel-plugin-inline-import": "^3.0.0",
+    "uglifyjs-webpack-plugin": "^2.1.2"
   }
 }
