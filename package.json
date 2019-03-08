@@ -11,14 +11,15 @@
     "path": "^0.12.7",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.2.1",
+    "babel-plugin-inline-import": "^3.0.0",
+    "uglifyjs-webpack-plugin": "^2.1.2"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production"
   },
   "dependencies": {
-    "babel-plugin-inline-import": "^3.0.0",
-    "uglifyjs-webpack-plugin": "^2.1.2"
+
   }
 }
