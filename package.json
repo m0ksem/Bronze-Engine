@@ -8,19 +8,18 @@
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "babel-loader": "^8.0.5",
+    "babel-plugin-inline-import": "^3.0.0",
     "path": "^0.12.7",
+    "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1",
-    "babel-plugin-inline-import": "^3.0.0",
-    "uglifyjs-webpack-plugin": "^2.1.2"
+    "@pixi/jsdoc-template": "^2.4.2",
+    "jsdoc": "^3.5.5"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
-    "docs:build": "documentation build src/** -f html -o docs"
-  },
-  "dependencies": {
-
+    "build-docs": "jsdoc -c conf.json"
   }
 }
