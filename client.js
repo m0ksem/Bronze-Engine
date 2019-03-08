@@ -19,19 +19,19 @@ let camera = new Bronze.Camera()
     engine.setCamera(camera)
 
 let controls = new Bronze.Controls(engine)
-// Setting Debugger @OnlyForDevelopment
-let debug = new Bronze.Debugger(engine)
-    debug.setElement(document.getElementById('debug'))
-    debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
-    debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
-    debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
-        return log.name + " : " + "Unselected."
-    })
-    debug.addLog("Hitbox y:", camera.position, "", debug.createLogView(), (log) => {
-        return log.name + " : " + "Unselected."
-    })
-    debug.addLog("Object", camera.position, "", debug.createLogView())
-    debug.addLog("Z", camera.position, "", debug.createLogView())
+// // Setting Debugger @OnlyForDevelopment
+// let debug = new Bronze.Debugger(engine)
+//     debug.setElement(document.getElementById('debug'))
+//     debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
+//     debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
+//     debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
+//         return log.name + " : " + "Unselected."
+//     })
+//     debug.addLog("Hitbox y:", camera.position, "", debug.createLogView(), (log) => {
+//         return log.name + " : " + "Unselected."
+//     })
+//     debug.addLog("Object", camera.position, "", debug.createLogView())
+//     debug.addLog("Z", camera.position, "", debug.createLogView())
 
 // Setting control function for camera
 let lastMousePosition = null

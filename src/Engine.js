@@ -322,28 +322,9 @@ export class Engine {
                     if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
                         selectedObject = element
                     }
-
-                    this.debugger.logArray[2].output = function () {
-                        return "Hitbox x " + mouse.x + " > " + smallest[0] + " && " + mouse.x + " < " + biggest[0]
-                    }
-                    this.debugger.logArray[3].output = function () {
-                        return "Hitbox y " + mouse.y + " > " + smallest[1] + " && " + mouse.y + " < " + biggest[1]
-                    }
-                    this.debugger.logArray[5].output = function () {
-                        return "Hitbox z " + smallest[2]
-                    }
                 }
             })
 
-            if (selectedObject != null) {
-                this.debugger.logArray[4].output = function () {
-                    return "Mouse over " + selectedObject.name
-                }
-            } else {
-                this.debugger.logArray[4].output = function () {
-                    return "There are no objects over mouse"
-                }
-            }
             this.selectedObject = selectedObject
 
             element._matrix = temp.matrix
