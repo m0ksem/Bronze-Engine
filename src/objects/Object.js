@@ -1,7 +1,14 @@
+import { Matrixes } from "../math/Matrixes"
+
 export class Object {
+    /**
+     * Creates and bind to engine object. The object must be loaded from .obj file.
+     * @param {Engine} engine 
+     */
     constructor (engine) {
         engine.objects.push(this)
         this.webGL = engine.webGL
+        this.camera = engine.camera
 
         this.texture = engine.noTexture
         this.position = [0, 0, 0]
@@ -35,10 +42,30 @@ export class Object {
         this.position[2] = z
     }
 
+    /**
+     * Adds values to position which moves object.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
     move (x, y, z) {
         this.position[0] += x
         this.position[1] += y
         this.position[2] += z
+    }
+
+    /**
+     * Moves object around x, y, z axis relative to the camera angles.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    moveRelativeToTheCamera (x, y, z) {
+        let pos = [x, y, z, 1]
+            pos = Matrixes.vec3Multiply(this.camera.inventedMatrix, pos)
+        this.position[0] += pos[0]
+        this.position[1] += pos[1]
+        this.position[2] += pos[2]
     }
 
     /**
@@ -66,7 +93,7 @@ export class Object {
     }
 
     /**
-     * Setting coordinates for rotation point
+     * Setting coordinates for rotation point.
      * @param {Number} x
      * @param {Number} y 
      * @param {Number} z 
@@ -76,7 +103,7 @@ export class Object {
     }
 
     /**
-     * Setting rotation values of parent object
+     * Setting rotation values of parent object.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
@@ -90,20 +117,20 @@ export class Object {
     }
 
     /**
-     * Default animation function for overload
+     * Default animation function for overload.
      */
     animation () {
         this.rotate(0, 0, 0)
     }
 
     /**
-     * 
-     * @param {Number} fps 
-     * @param {Function} [animateFucntion] default - animation function
+     * Sets the animation function which execute every engine update.
+     * @param {Number} fps
+     * @param {Function} [animateFunction] default - animation function.
      */
-    animate (fps, animateFucntion) {
-        animateFucntion = animateFucntion || this.animation
-        setInterval(animateFucntion, 1000 / fps)
+    animate (fps, animateFunction) {
+        animateFunction = animateFunction || this.animation
+        setInterval(animateFunction, 1000 / fps)
     }
 
     /**
@@ -114,13 +141,13 @@ export class Object {
         let vertexes = []
         let textureCoords = []
         let normals = []
-        let splited = fileText.split('\n')
+        let splitted = fileText.split('\n')
         let collisionBox = {
             x: [0, 0],
             y: [0, 0],
             z: [0, 0]
         }
-        splited.forEach(element => {
+        splitted.forEach(element => {
             let values = element.split(' ')
             let name = 0
             
