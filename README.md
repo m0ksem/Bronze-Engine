@@ -3,8 +3,9 @@
 <h4 align="center">Simple game engine based on WebGL with JavaScript.  </h4>
 
 <div style="text-align:center" align="center">
-<a href="https://github.com/m0ksem/Bronze-Engine/wiki">Docs</a> -
-<a href="https://github.com/m0ksem/Bronze-Engine/projects/2">Development plan</a>
+ <a href="http://m0ksem.design/Bronze-Engine/"><b>Deployment</b></a> -
+<a href="http://m0ksem.design/Bronze-Engine/docs/"><b>Docs</b></a> -
+<a href="https://github.com/m0ksem/Bronze-Engine/projects/2"><b>Development plan</b></a>
 </div>
 
 ## Using
