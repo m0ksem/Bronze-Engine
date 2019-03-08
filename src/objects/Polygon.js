@@ -1,31 +1,82 @@
+/**
+ * Triangle polygon.
+ * @param {Engine} core Engine object to which the polygon will be attached.
+ * @class
+ * @constructor
+ */
 export class Polygon {
-    /**
-     * Triangle polygon.
-     * @param {Engine} core Engine object to which the polygon will be attached.
-     */
     constructor (engine) {
         if (engine) {
             engine.polygons.push(this)
         }
         this.webGL = engine.webGL
-        this.points = []
+        
+        /**
+         * Texture of polygon
+         * @type {Texture}
+         * @readonly
+         */
         this.texture = null
+
+        /**
+         * Vertexes of polygon.
+         * @type {Array}
+         * @readonly
+         */
         this.vertexes = []
+
+        /**
+         * Polygon position.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.position = [0, 0, 0]
+
+        /**
+         * Polygon rotation.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.rotation = [0, 0, 0]
+
+        /**
+         * Polygon rotation point.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.rotationPoint = [0, 0, 0]
+
+         /**
+         * Polygon parent rotation.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.parentRotation = [0, 0, 0]
+
+         /**
+         * Polygon normals.
+         * @readonly
+         * @type {Array.<{0: Number, 1: Number, 2: Number,
+         *                3: Number, 4: Number, 5: Number,
+         *                6: Number, 7: Number, 8: Number,}>} matrix 9
+         */
         this.normals = [
             0, 1, 0,
             0, 1, 0,
             0, 1, 0,
         ]
+
+        /**
+         * WebGL texture buffer.
+         * @private
+         */
         this._vertexesBuffer = null
     }
 
     /**
      * Setting texture for polygon.
      * @param {Texture} texture 
+     * @public
      */
     setTexture (texture) {
         this.texture = texture
@@ -34,6 +85,7 @@ export class Polygon {
     /**
      * Setting texture coords.
      * @param {Array} coords array of coords of texture.
+     * @public
      */
     setTextureCoords (coords) {
         this.textureCoords = coords
@@ -45,6 +97,7 @@ export class Polygon {
     /**
      * Setting vertexes array.
      * @param {Array[Number]} vertexes
+     * @public
      */
     setVertexes (vertexes) {
         this.vertexes = vertexes
@@ -59,6 +112,7 @@ export class Polygon {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setPosition (x, y, z) {
         this.position[0] = x
@@ -71,6 +125,7 @@ export class Polygon {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     rotate (x, y, z) {
         this.rotation[0] += x
@@ -83,6 +138,7 @@ export class Polygon {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setRotation (x, y, z) {
         this.rotation[0] = x
@@ -95,6 +151,7 @@ export class Polygon {
      * @param {Number} x
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setRotationPoint (x, y, z) {
         this.rotationPoint = [x, y, z]
@@ -105,6 +162,7 @@ export class Polygon {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setParentRotation (x, y, z) {
         this.parentRotation = [x, y, z]
@@ -120,6 +178,7 @@ export class Polygon {
     /**
      * Set normals for this polygon.
      * @param {array} normals 3 normals vector. 
+     * @public
      */
     setNormals (normals) {
         this.normals = normals

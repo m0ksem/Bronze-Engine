@@ -1,29 +1,106 @@
 import { Matrixes } from "../math/Matrixes"
 
+ /**
+ * Creates and bind to engine object. The object must be loaded from .obj file.
+ * @class
+ * @constructor
+ * @param {Engine} engine 
+ */
 export class Object {
-    /**
-     * Creates and bind to engine object. The object must be loaded from .obj file.
-     * @param {Engine} engine 
-     */
     constructor (engine) {
         engine.objects.push(this)
+        /**
+         * WebGL context of engine
+         * @private
+         */
         this.webGL = engine.webGL
+
+        /**
+         * Camera of engine.
+         * @type {Camera}
+         * @private
+         */
         this.camera = engine.camera
 
+        /**
+         * Object texture.
+         * @type {Texture} texture
+         * @readonly
+         */
         this.texture = engine.noTexture
-        this.position = [0, 0, 0]
-        this.rotation = [0, 0, 0]
-        this.scaling = [1, 1, 1]
-        this.rotationPoint = [0, 0, 0]
-        this.parentRotation = [0, 0, 0]
 
+        /**
+         * Object position.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.position = [0, 0, 0]
+
+        /**
+         * Object rotation.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotation = [0, 0, 0]
+
+        /**
+         * Object scaling.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.scaling = [1, 1, 1]
+
+        /**
+         * The point around which the object rotates.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotationPoint = [0, 0, 0]
+
+        /**
+         * The point around which the parent object rotates.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.parentRotation = [0, 0, 0]
+        
+
+        /**
+         * @readonly
+         * 
+         * @Type {
+         *       x: {
+                    left: Number,
+                    right: Number
+                },
+                y: {
+                    top: Number,
+                    bottom: Number
+                },
+                depth: Number
+            }
+         */
+        this.relativeCameraPosition = null
+
+        /**
+         * Faces of object. Needs to draw object. Creates when object is compiled.
+         * @private
+         * @type {Array}
+         */
         this.faces = []
+
+        /**
+         * Collision boxes coordinates array.
+         * @type {Array}
+         * @public
+         */
         this.collisionBoxes = []
     }
 
     /**
      * Setting texture for object.
      * @param {Texture} texture 
+     * @public
      */
     setTexture (texture) {
         this.texture = texture
@@ -35,6 +112,7 @@ export class Object {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setPosition (x, y, z) {
         this.position[0] = x
@@ -47,6 +125,7 @@ export class Object {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     move (x, y, z) {
         this.position[0] += x
@@ -59,6 +138,7 @@ export class Object {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     moveRelativeToTheCamera (x, y, z) {
         let pos = [x, y, z, 1]
@@ -72,7 +152,8 @@ export class Object {
      * Add rotation for x, y, z axis for current rotation.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public
      */
     rotate (x, y, z) {
         this.rotation[0] += x
@@ -84,7 +165,8 @@ export class Object {
      * Set rotate for x, y, z axis.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public 
      */
     setRotation (x, y, z) {
         this.rotation[0] = x
@@ -96,7 +178,8 @@ export class Object {
      * Setting coordinates for rotation point.
      * @param {Number} x
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public
      */
     setRotationPoint (x, y, z) {
         this.rotationPoint = [x, y, z]
@@ -106,12 +189,20 @@ export class Object {
      * Setting rotation values of parent object.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public
      */
     setParentRotation (x, y, z) {
         this.parentRotation = [x, y, z]
     }
 
+    /**
+     * Set scaling for object.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
     scale (x, y, z) {
         this.scaling = [x, y, z]
     }
@@ -136,6 +227,7 @@ export class Object {
     /**
      * Function to compile object from text of .obj file.
      * @param {String} fileText
+     * @public
      */
     compile(fileText) {
         let vertexes = []
@@ -256,7 +348,8 @@ export class Object {
 
     /**
      * Async load object using ajax and compile on load.
-     * @param {String} path 
+     * @param {String} path
+     * @public
      */
     loadFromObj (path) {
         let self = this

@@ -1,12 +1,19 @@
 import {Rect} from "./Rect"
 import * as Math from "../math/Math"
 
+/**
+ * Cube object created from polygons.
+ * @param {Engine} engine
+ * @class
+ * @constructor
+ */
 export class Cube {
-    /**
-     * Flat rectangle with square texture.
-     * @param {Engine} engine
-     */
     constructor (engine) {
+        /**
+         * Faces of cube
+         * @private
+         * @type {Array.<{Rect}>}
+         */
         this.faces = [
             new Rect(engine), // front
             new Rect(engine), // right
@@ -15,7 +22,19 @@ export class Cube {
             new Rect(engine), // top
             new Rect(engine)  // bottom
         ]
+
+        /**
+         * Cube position.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.position = [0, 0, 0]
+
+        /**
+         * Cube rotation.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.rotation = [0, 0, 0]
 
         this.faces[0].rotate(0, 0, 0)
@@ -73,6 +92,10 @@ export class Cube {
         ])
     }
 
+    /**
+     * Method updating faces.
+     * @private
+     */
     _updateFaces () {
         this.faces[0].setPosition(this.position[0], this.position[1], this.position[2])
     }
@@ -85,6 +108,7 @@ export class Cube {
      * @param {Texture} left texture.
      * @param {Texture} top texture.
      * @param {Texture} bottom texture.
+     * @public
      */
     setTexture (front, right, back, left, top, bottom) {
         this.faces[0].setTexture(front)
@@ -99,6 +123,7 @@ export class Cube {
      * Changing size of rect
      * @param {Number} width
      * @param {Number} height
+     * @public
      */
     setSize (width, height, depth) {
         this.width = width
@@ -115,6 +140,7 @@ export class Cube {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setPosition(x, y, z) {
         this.position = [x, y, z]
@@ -131,6 +157,7 @@ export class Cube {
      * @param {*} x in degrees.
      * @param {*} y in degrees.
      * @param {*} z in degrees.
+     * @public
      */
     rotate(x, y, z) {
         this.rotation[0] += x
@@ -149,6 +176,7 @@ export class Cube {
      * @param {*} x in degrees.
      * @param {*} y in degrees.
      * @param {*} z in degrees.
+     * @public
      */
     setRotation(x, y, z) {
         let xRad = Math.degToRad(x)
@@ -159,6 +187,10 @@ export class Cube {
         })
     }
 
+    /**
+     * Default animation function
+     * @private
+     */
     animation () {
         this.rotate(1, 1, 1)
     }
@@ -167,6 +199,7 @@ export class Cube {
      * Setting the animation function which execute every engine update.
      * @param {Number} [fps = 60] default - 60. Frame per second for this animation.
      * @param {Function} [animateFunction] default - animation function.
+     * @public
      */
     animate (fps, animateFunction) {
         animateFunction = animateFunction || this.animation
@@ -175,6 +208,7 @@ export class Cube {
 
     /**
      * Removes animation.
+     * @public
      */
     removeAnimation () {
         clearInterval(this._animationInterval)

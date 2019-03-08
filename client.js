@@ -31,6 +31,7 @@ let debug = new Bronze.Debugger(engine)
         return log.name + " : " + "Unselected."
     })
     debug.addLog("Object", camera.position, "", debug.createLogView())
+    debug.addLog("Z", camera.position, "", debug.createLogView())
 
 // Setting control function for camera
 let lastMousePosition = null

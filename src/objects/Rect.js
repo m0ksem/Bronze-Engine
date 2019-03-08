@@ -1,15 +1,39 @@
 import {Polygon} from "./Polygon"
 import * as Math from "../math/Math"
 
+/**
+ * Rect object created from polygons.
+ * @param {Engine} engine
+ * @class
+ * @constructor
+ */
 export class Rect {
     /**
      * Flat rectangle with square texture.
      * @param {Engine} engine 
      */
     constructor (engine) {
+        /**
+         * Rect polygons.
+         * @private
+         * @type {Array.<{0: Polygon, 1: Polygon}>} vector 3
+         */
         this.polygons = new Array(2)
+
+        /**
+         * Rect position.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.position = [0, 0, 0]
+
+        /**
+         * Rect rotation point.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.rotationPoint = [0, 0, 0]
+
         let p = new Polygon(engine)
             p.setVertexes([
                 0,   0,   0,
@@ -44,6 +68,7 @@ export class Rect {
     /**
      * Setting square texture for rect.
      * @param {Texture} texture
+     * @public
      */
     setTexture (texture) {
         this.polygons[0].setTexture(texture)
@@ -54,6 +79,7 @@ export class Rect {
      * Changing size of rect.
      * @param {Number} width
      * @param {Number} height
+     * @public
      */
     setSize (width, height) {
         this.width = width
@@ -76,6 +102,7 @@ export class Rect {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z
+     * @public
      */
     setPosition(x, y, z) {
         this.position = [x, y, z]
@@ -88,6 +115,7 @@ export class Rect {
      * @param {*} x in deg.
      * @param {*} y in deg.
      * @param {*} z in deg.
+     * @public
      */
     rotate(x, y, z) {
         let xRad = Math.degToRad(x)
@@ -102,6 +130,7 @@ export class Rect {
      * @param {Number} x parent rotation of x axis in radians.
      * @param {Number} y parent rotation of y axis in radians.
      * @param {Number} z parent rotation of z axis in radians.
+     * @public
      */
     setParentRotation (x, y, z) {
         this.polygons[0].setParentRotation(x, y, z)
@@ -113,6 +142,7 @@ export class Rect {
      * @param {Number} x
      * @param {Number} y
      * @param {Number} z
+     * @public
      */
     setRotationPoint (x, y, z) {
         this.polygons[0].setRotationPoint(x, y, z)
@@ -122,6 +152,7 @@ export class Rect {
     /**
      * Set normals vector.
      * @param {Array} normals 3:3 array. Every 3 elements is a vector of normal.
+     * @public
      */
     setNormals (normals) {
         this.polygons[0].setNormals(normals)

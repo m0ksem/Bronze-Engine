@@ -2,26 +2,65 @@ import * as Math from "./math/Math"
 import {Matrixes} from "./math/Matrixes"
 import {Matrix} from "./math/Matrixes"
 
+/**
+ * Creates camera object.
+ * @class
+ * @constructor
+ */
 export class Camera {
-    /**
-     * Creates camera object.
-     */
     constructor () {
+
+        /**
+         * Camera position.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.position = [0, 0, 100]
+
         this.up = [0, 1, 0]
         this.target = [0, 0, 0]
+
+        /**
+         * Field of view for drawing in angles.
+         * @readonly
+         * @type {Number} angle in degrees
+         */
         this.fieldOfView = 90
+
+        /**
+         * Field of view in radians.
+         * @readonly
+         * @type {Number} field of view in radians.
+         */
         this.fieldOfViewRad = Math.degToRad(90)
+
+        /**
+         * Matrix of camera.
+         * @public
+         * @type {Array.Array} matrix 4x4
+         */
         this.matrix = Matrixes.unit()
-        this.position = [0, 0, 0]
+
+        /**
+         * Camera rotation.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this.rotation = [0, 0, 0]
+
+        /**
+         * Sets collision for camera.
+         * @readonly
+         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         */
         this._collisions = false
         this._lookUpMatrix = null
     }
 
     /**
      * Sets field of view for camera.
-     * @param {Number} angle 
+     * @param {Number} angle
+     * @public
      */
     setFieldOfView (angle) {
         this.fieldOfView = angle;
@@ -30,7 +69,8 @@ export class Camera {
 
     /**
      * Sets collision.
-     * @param {*} bool 
+     * @param {boolean} bool 
+     * @public
      */
     setCollisions (bool) {
         this._collisions = bool
@@ -41,6 +81,7 @@ export class Camera {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     setPosition (x, y, z) {
         this.position = [x, y, z]
@@ -51,7 +92,8 @@ export class Camera {
      * Moving camera.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public
      */
     move (x, y, z) {
         // let translationMatrix = Matrixes.translation(x, y, z)
@@ -69,7 +111,8 @@ export class Camera {
      * Rotate for x, y, z degrees.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
+     * @public
      */
     rotate (x, y, z) {
         this.rotation[0] += x
@@ -78,11 +121,22 @@ export class Camera {
         this.computeMatrix()
     }
 
+    /**
+     * Sets rotation angles
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
     setRotation (x, y, z) {
         this.rotation = [x, y, z]
         this.computeMatrix()
     }
 
+    /**
+     * Compute camera matrix with rotation, positions.
+     * @private
+     */
     computeMatrix () {
         this.matrix = Matrixes.unit()
         this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
@@ -105,7 +159,8 @@ export class Camera {
 
     /**
      * Sets function to control camera.
-     * @param {Function} handler 
+     * @param {Function} handler
+     * @public
      */
     setControl (handler) {
         this._controlFunction = handler

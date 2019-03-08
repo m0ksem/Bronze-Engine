@@ -1,7 +1,10 @@
+/**
+ * Matrix class with math matrix methods.
+ * @class
+ * @constructor
+ * @public
+ */
 export class Matrix {
-    /**
-     * Create Unit matrix.
-     */
     constructor() {
         this.matrix = [
             1, 0, 0, 0,
@@ -19,6 +22,7 @@ export class Matrix {
      * @param {Number} height canvas height.
      * @param {Number} near range of drawn z-coordinates start.
      * @param {Number} far range of drawn z-coordinates end.
+     * @public
      */
     perspective (fieldOfViewInRadians, width, height, near, far) {
         let f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians)
@@ -36,6 +40,7 @@ export class Matrix {
     /**
      * Multiplying this matrix by another.
      * @param {Array} matrix 
+     * @public
      */
     multiply (matrix) {
         let a00 = this.matrix[0 * 4 + 0]
@@ -94,6 +99,7 @@ export class Matrix {
      * Return multiply this matrix by another.
      * @param {Array} matrix
      * @return {Array} result of multiply.
+     * @public
      */
     multiply_ (matrix) {
         let a00 = this.matrix[0 * 4 + 0]
@@ -153,6 +159,7 @@ export class Matrix {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     translate (x, y, z) {
         this.multiply(Matrixes.translation(x, y, z));
@@ -163,6 +170,7 @@ export class Matrix {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     translate_ (x, y, z) {
         return this.multiply_(Matrixes.translation(x, y, z));
@@ -171,6 +179,7 @@ export class Matrix {
     /**
      * Multiplying matrix by rotationX(angle).
      * @param {Number} angle in radians.
+     * @public
      */
     rotateX (angle) {
         this.multiply(Matrixes.rotationX(angle))
@@ -179,6 +188,7 @@ export class Matrix {
     /**
      * Multiplying matrix by rotationY(angle).
      * @param {Number} angle in radians.
+     * @public
      */
     rotateY (angle) {
         this.multiply(Matrixes.rotationY(angle))
@@ -187,6 +197,7 @@ export class Matrix {
     /**
      * Multiplying matrix by rotationZ(angle).
      * @param {Number} angle in radians.
+     * @public
      */
     rotateZ (angle) {
         this.multiply(Matrixes.rotationZ(angle))
@@ -198,6 +209,7 @@ export class Matrix {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @public
      */
     scale (x, y, z) {
         this.multiply(Matrixes.scaling(x, y, z))
@@ -206,11 +218,15 @@ export class Matrix {
 
 /**
  * Class for default matrixes.
+ * @constructor
+ * @class
  * @private
  */
 class MatrixesClass {
     /**
      * Returns unit matrix.
+     * @returns {Array}
+     * @public
      */
     unit () {
         return [
@@ -226,6 +242,8 @@ class MatrixesClass {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @returns {Array}
+     * @public
      */
     translation (x, y, z) {
         return [
@@ -239,6 +257,8 @@ class MatrixesClass {
     /**
      * Returns rotation matrix for x axis.
      * @param {Number} angle angle in radians.
+     * @returns {Array}
+     * @public
      */
     rotationX (angle) {
         let c = Math.cos(angle)
@@ -255,6 +275,8 @@ class MatrixesClass {
     /**
      * Returns rotation matrix for y axis.
      * @param {Number} angle angle in radians.
+     * @returns {Array}
+     * @public
      */
     rotationY (angle) {
         let c = Math.cos(angle)
@@ -271,6 +293,8 @@ class MatrixesClass {
     /**
      * Returns rotation matrix for z axis.
      * @param {Number} angle angle in radians.
+     * @returns {Array}
+     * @public
      */
     rotationZ (angle) {
         let c = Math.cos(angle)
@@ -289,6 +313,8 @@ class MatrixesClass {
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
+     * @returns {Array}
+     * @public
      */
     scaling (x, y, z) {
         return [
@@ -303,6 +329,8 @@ class MatrixesClass {
      * Returns multiply of two matrixes.
      * @param {Array} matrix1 
      * @param {Array} matrix2 
+     * @returns {Array}
+     * @public
      */
     multiply (matrix1, matrix2) {
         let a00 = matrix1[0 * 4 + 0]
@@ -363,6 +391,7 @@ class MatrixesClass {
      * @param {Array} vector4
      * 
      * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
+     * @public
      */
     vec3Multiply (matrix, vector4) {
         // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
@@ -390,8 +419,9 @@ class MatrixesClass {
 
     /**
    * Computes the inverse of a matrix.
-   * @param {Matrix4} matrix matrix to compute inverse of.
-   * @return {Matrix4} new result matrix.
+   * @param {Array} matrix matrix to compute inverse of.
+   * @return {Array} new result matrix.
+   * @public
    */
     inverse(matrix) {
         let result = new Float32Array(16);
@@ -481,7 +511,8 @@ class MatrixesClass {
 }
 
 /**
- * Default Matrixes.
+ * Default Matrixes object.
+ * @type {MatrixesClass}
  */
 export let Matrixes = new MatrixesClass()
 

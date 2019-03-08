@@ -1,8 +1,10 @@
+/**
+ * Debugger for engine. Only for development.
+ * @param {Engine} engine 
+ * @class
+ * @constructor
+ */
 export class Debugger {
-    /**
-     * Debugger for engine.
-     * @param {Engine} engine 
-     */
     constructor(engine) {
         engine.debugger = this
         this.logArray = []
@@ -25,7 +27,10 @@ export class Debugger {
     }
 
     defaultOutput (log) {
-        return log.name + " : " + log.object[log.value]
+        if (object != null) {
+            return log.name + " : " + log.object[log.value]
+        }
+        return "log.name"
     }
 
     addView(view) {

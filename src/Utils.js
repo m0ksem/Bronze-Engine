@@ -36,6 +36,7 @@ export function getWebGL(canvas) {
  * There are two types: shader/fragment and shader/vertex.
  * 
  * @param {String} shaderText text content of shader.
+ * @param {String} type type of shader.
  * @param {CanvasRenderingContext2D} webGL webGL context to compile shader.
  * 
  * @return compiled shader.

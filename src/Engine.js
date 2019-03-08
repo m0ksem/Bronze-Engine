@@ -7,22 +7,81 @@ import fragmentShaderSource from "./shaders/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/vertex-shader.glsl"
 import {Map} from "./map/Map.js"
 
+
+/**
+ * GameEngine core class.
+ * @class
+ * @constructor
+ * @param {HTMLElement|HTMLCanvasElement} canvas
+ */
 export class Engine {
-    /**
-     * GameEngine core class.
-     * @param {HTMLElement} canvas
-     */
     constructor (canvas) {
+
+        /**
+         * WebGL context of canvas
+         * @private
+         */
         this.webGL = Utils.getWebGL(canvas)
+
+        /**
+         * Canvas for drawing.
+         * @readonly
+         */
         this.canvas = canvas
+
+        /**
+         * Width of drawing resolution
+         * @type {Number}
+         */
         this.width = canvas.width
+
+        /**
+         * Height of drawing resolution.
+         * @type {Number}
+         */
         this.height = canvas.height
+
+        /**
+         * @type {Array.<{Polygon}>}
+         * @private
+         */
         this.polygons = []
+
+        /**
+         * @type {Array.<{Objects}>}
+         * @private
+         */
         this.objects = []
+
+        /**
+         * @type {Array.<{Texture}>}
+         * @private
+         */
         this.textures = []
+
+        /**
+         * @type {Camera}
+         * @private
+         */
         this.camera = null
+
+        /**
+         * @type {Debugger}
+         * @private
+         */
         this.debugger = null
+
+        /**
+         * @type {Controls}
+         * @private
+         */
         this.controls = null
+
+        /**
+         * An object that is under the cursor now.
+         * @type {Object}
+         * @readonly
+         */
         this.selectedObject = null
 
         this._globalPositionBuffer = this.webGL.createBuffer()
@@ -31,6 +90,12 @@ export class Engine {
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer)
 
         this._initShaders()
+
+        /**
+         * Default texture for all object.
+         * @type {Texture}
+         * @public
+         */
         this.noTexture = new Texture()
         this.noTexture.setColorRGBA(219, 58, 52, 255)
         this.bindTexture(this.noTexture)
@@ -38,6 +103,7 @@ export class Engine {
 
     /**
      * Creating shaders and attaching to webGL context.
+     * @private
      */
     _initShaders () {
         let vertex = Utils.compileShader(vertexShaderSource, "vertex", this.webGL)
@@ -63,6 +129,7 @@ export class Engine {
     /**
      * Setting a camera to the engine. There are can be only one camera.
      * @param {Camera} camera
+     * @public
      */
     setCamera (camera) {
         this.camera = camera
@@ -70,6 +137,7 @@ export class Engine {
 
     /**
      * Update drawing parameters for correct drawing resized canvas.
+     * @public
      */
     canvasResized ()  {
         this.canvas.width = this.canvas.clientWidth
@@ -82,6 +150,7 @@ export class Engine {
     /**
      * Binding texture to engine.
      * @param {Texture} texture 
+     * @public
      */
     bindTexture (texture) {
         texture._textureBlockLocation = this.textures.length
@@ -119,6 +188,7 @@ export class Engine {
 
     /**
      * Function to update all positions, size etc.
+     * @private
      */
     _update () {
         let temp
@@ -157,6 +227,8 @@ export class Engine {
             element._rotationMatrix = rot
         })
 
+        let selectedObject = null
+
         this.objects.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
@@ -191,27 +263,50 @@ export class Engine {
                                 coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
                                 coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.width;
                                 coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.height;
-                                if (coordsInPixels[0] > -this.width && coordsInPixels[0] < this.width &&
-                                    coordsInPixels[1] > -this.height && coordsInPixels[1] < this.height)
-                                    boxInPixels.push({x: coordsInPixels[0], y: coordsInPixels[1]})
+                                
+                                coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0]
+                                coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1]
+
+                                coordsInPixels[0] = coordsInPixels[0] > this.width ? this.width : coordsInPixels[0]
+                                coordsInPixels[1] = coordsInPixels[1] > this.height ? this.height : coordsInPixels[1]
+
+                                if (coordsInPixels[2] >= 0) {
+                                    boxInPixels.push(coordsInPixels) 
+                                }
+                                    
                         }
                     }
                 }
 
-                let smallest = [10000,  10000]
+                let smallest = [10000,  10000, -1000]
                 let biggest = [-10000, -10000]
                 for (let i = 0; i < boxInPixels.length; i++) {
                     const box = boxInPixels[i];
-                    if (box.x < smallest[0]) {
-                        smallest[0] = box.x
-                    } else if (box.x > biggest[0]) {
-                        biggest[0] = box.x
+                    if (box[0] < smallest[0]) {
+                        smallest[0] = box[0]
+                    } else if (box[0] > biggest[0]) {
+                        biggest[0] = box[0]
                     }
-                    if (box.y < smallest[1]) {
-                        smallest[1] = box.y
-                    } else if (box.y > biggest[1]) {
-                        biggest[1] = box.y
+                    if (box[1] < smallest[1]) {
+                        smallest[1] = box[1]
+                    } else if (box[1] > biggest[1]) {
+                        biggest[1] = box[1]
                     }
+                    if (box[2] > smallest[2]) {
+                        smallest[2] = box[2]
+                    }
+                }
+
+                element.relativeCameraPosition = {
+                    x: {
+                        left: smallest[0],
+                        right: biggest[0]
+                    },
+                    y: {
+                        top: biggest[1],
+                        bottom: smallest[1]
+                    },
+                    depth: smallest[2]
                 }
 
                 if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
@@ -219,20 +314,27 @@ export class Engine {
                     mouseOverHitBox = true
                 }
 
-
                 let mouse = this.controls.mouse
                 if (mouseOverHitBox) {
-                    this.selectedObject = element
+                    if (selectedObject == null) {
+                        selectedObject = element
+                    }
+                    if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
+                        selectedObject = element
+                    }
+
                     this.debugger.logArray[2].output = function () {
                         return "Hitbox x " + mouse.x + " > " + smallest[0] + " && " + mouse.x + " < " + biggest[0]
                     }
                     this.debugger.logArray[3].output = function () {
                         return "Hitbox y " + mouse.y + " > " + smallest[1] + " && " + mouse.y + " < " + biggest[1]
                     }
+                    this.debugger.logArray[5].output = function () {
+                        return "Hitbox z " + smallest[2]
+                    }
                 }
             })
 
-            let selectedObject = this.selectedObject
             if (selectedObject != null) {
                 this.debugger.logArray[4].output = function () {
                     return "Mouse over " + selectedObject.name
@@ -242,6 +344,7 @@ export class Engine {
                     return "There are no objects over mouse"
                 }
             }
+            this.selectedObject = selectedObject
 
             element._matrix = temp.matrix
             element._rotationMatrix = rot
@@ -250,6 +353,7 @@ export class Engine {
 
     /**
      * Main drawing function. All polygons are drawn here.
+     * @private
      */
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
@@ -318,6 +422,7 @@ export class Engine {
 
     /**
      * Rendering function.
+     * @public
      */
     render () {
         this._update()
@@ -326,6 +431,7 @@ export class Engine {
 
     /**
      * Start rendering with default requestAnimationFrame function.
+     * @public
      */
     run () {
         _engine = this

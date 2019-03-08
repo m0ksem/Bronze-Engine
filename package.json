@@ -17,7 +17,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "docs:build": "documentation build src/** -f html -o docs"
   },
   "dependencies": {
 
