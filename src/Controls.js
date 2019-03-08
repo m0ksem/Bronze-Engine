@@ -5,6 +5,7 @@ export class Controls {
      */
     constructor (engine) {
         engine.controls = this
+        this.engine = engine
         this.keys = []
         this._handlers = []
         this._mouseHandlers = [
@@ -18,41 +19,43 @@ export class Controls {
             buttons: [false, false, false]
         }
 
-        let self = this
-
         for (let i = 0; i < 255; i++) {
             this.keys[i] = false
             this._handlers[i] = null
         }
-        window.onkeydown = function(event){
-            self.keys[event.keyCode] = true;
-            if (self._handlers[event.keyCode] != null) {
-                self._handlers[event.keyCode]()
+        window.onkeydown = (event) => {
+            this.keys[event.keyCode] = true;
+            if (this._handlers[event.keyCode] != null) {
+                this._handlers[event.keyCode]()
             }
             return false
         };
-        window.onkeyup = function(event){
-            self.keys[event.keyCode] = false;
+        window.onkeyup = (event) => {
+            this.keys[event.keyCode] = false;
             return false
         };
 
-        engine.canvas.addEventListener('mousemove', function (evt) {
+        engine.canvas.addEventListener('mousemove', (event) => {
             let mousePos = engine.canvas.getBoundingClientRect()
-            let x = evt.clientX - mousePos.left
-            let y = evt.clientY - mousePos.top
-            self.mouse.x = x
-            self.mouse.y = y
+            let x = event.clientX - mousePos.left
+            let y = event.clientY - mousePos.top
+            this.mouse.x = x
+            this.mouse.y = y
         }, false);
 
-        window.onmousedown = function (event) {
-            self.mouse.buttons[event.button] = true
-            if (self._mouseHandlers[2 + event.button] != null) self._mouseHandlers[2 + event.button]()
+        window.onmousedown = (event) => {
+            this.mouse.buttons[event.button] = true
+            if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button]()
             return false
         }
 
-        window.onmouseup = function (event) {
-            self.mouse.buttons[event.button] = false
+        window.onmouseup = (event) => {
+            this.mouse.buttons[event.button] = false
             return false
+        }
+
+        engine.canvas.oncontextmenu = function() {
+            return false;
         }
     }
 
@@ -79,6 +82,14 @@ export class Controls {
      * @param {Function} handler 
      */
     onMouseMove(handler) {
-        engine.canvas.addEventListener('mousemove', handler, false);
+        this.engine.canvas.addEventListener('mousemove', handler, false);
+    }
+
+    /**
+     * Sets function on right click for context menu.
+     * @param {Function} handler 
+     */
+    onContextMenu (handler) {
+        this.engine.canvas.oncontextmenu = handler
     }
 }
