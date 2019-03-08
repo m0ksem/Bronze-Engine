@@ -4,7 +4,7 @@
 
 <div style="text-align:center" align="center">
  <a href="http://m0ksem.design/Bronze-Engine/"><b>Deployment</b></a> -
-<a href="http://m0ksem.design/Bronze-Engine/docs/"><b>Docs</b></a> -
+<a href="http://m0ksem.design/Bronze-Engine/docs/global"><b>Docs</b></a> -
 <a href="https://github.com/m0ksem/Bronze-Engine/projects/2"><b>Development plan</b></a>
 </div>
 
