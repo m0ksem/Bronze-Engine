@@ -1,19 +1,19 @@
 /**
- * Converting radians to degress
- * @param {Number} rad radians
- * @return {Number} degress
+ * Converting radians to degrees
+ * @param {Number} radians
+ * @return {Number} degrees
  */
-export function radToDeg(rad) {
-    return rad * 180 / Math.PI;
+export function radToDeg(radians) {
+    return radians * 180 / Math.PI;
 }
 
 /**
- * Converting degress to radians
- * @param {Number} deg
+ * Converting degrees to radians
+ * @param {Number} degrees
  * @return {Number} radians
  */
-export function degToRad(deg) {
-    return deg * Math.PI / 180;
+export function degToRad(degrees) {
+    return degrees * Math.PI / 180;
 }
 
 /**

@@ -1,6 +1,6 @@
 export class Controls {
     /**
-     * Help class for creating user controls
+     * Help class for creating user controls.
      * @param {Engine} engine 
      */
     constructor (engine) {
@@ -57,7 +57,7 @@ export class Controls {
     }
 
     /**
-     * Sets handler for keyboard key down
+     * Sets handler for keyboard key down.
      * @param {Number} keyCode 
      * @param {Function} handler 
      */
@@ -75,7 +75,7 @@ export class Controls {
     }
     
     /**
-     * Sets handler for mouse moving
+     * Sets handler for mouse moving.
      * @param {Function} handler 
      */
     onMouseMove(handler) {

@@ -16,13 +16,12 @@ let camera = new Bronze.Camera()
     camera.setPosition(0, 800, 1500)
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
-    // camera.setLookUp(100, 100, 500)
     engine.setCamera(camera)
 
 let controls = new Bronze.Controls(engine)
-// Setting Debbuger @OnlyForDevelopment
+// Setting Debugger @OnlyForDevelopment
 let debug = new Bronze.Debugger(engine)
-    debug.setElemenent(document.getElementById('debug'))
+    debug.setElement(document.getElementById('debug'))
     debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
     debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
     debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
@@ -33,7 +32,7 @@ let debug = new Bronze.Debugger(engine)
     })
     debug.addLog("Object", camera.position, "", debug.createLogView())
 
-// Setting control fuction for camera
+// Setting control function for camera
 let lastMousePosition = null
 camera.setControl(() => {
     // All coords
@@ -79,7 +78,7 @@ camera.setControl(() => {
     if (controls.mouse.buttons[2]) {
         if (engine.selectedObject != null) {
             const object = engine.selectedObject
-            object.move((controls.mouse.x - lastMousePosition.x), -(controls.mouse.y - lastMousePosition.y), 0)
+            object.moveRelativeToTheCamera((controls.mouse.x - lastMousePosition.x), -(controls.mouse.y - lastMousePosition.y), 0)
         }
     }
 
@@ -238,7 +237,6 @@ let cube3 = new Bronze.Cube(engine)
     cube3.animate(60, () => {
         cube3.rotate(0, 1, 0)
     })
-
 
 
 let object = new Bronze.Object(engine)

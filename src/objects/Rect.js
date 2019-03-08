@@ -42,7 +42,7 @@ export class Rect {
     }
 
     /**
-     * Setting square texture for rect
+     * Setting square texture for rect.
      * @param {Texture} texture
      */
     setTexture (texture) {
@@ -51,7 +51,7 @@ export class Rect {
     }
 
     /**
-     * Changing size of rect
+     * Changing size of rect.
      * @param {Number} width
      * @param {Number} height
      */
@@ -75,7 +75,7 @@ export class Rect {
      * Change position of all polygons in rect.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
      */
     setPosition(x, y, z) {
         this.position = [x, y, z]
@@ -85,23 +85,23 @@ export class Rect {
 
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in deg
-     * @param {*} y in deg
-     * @param {*} z in deg
+     * @param {*} x in deg.
+     * @param {*} y in deg.
+     * @param {*} z in deg.
      */
     rotate(x, y, z) {
-        let xrad = Math.degToRad(x)
-        let yrad = Math.degToRad(y)
-        let zrad = Math.degToRad(z)
-        this.polygons[0].rotate(xrad, yrad, zrad)
-        this.polygons[1].rotate(xrad, yrad, zrad)
+        let xRad = Math.degToRad(x)
+        let yRad = Math.degToRad(y)
+        let zRad = Math.degToRad(z)
+        this.polygons[0].rotate(xRad, yRad, zRad)
+        this.polygons[1].rotate(xRad, yRad, zRad)
     }
 
     /**
-     * Seting rotation of parent object in radians
-     * @param {Number} x parent rotation of x axis in radians
-     * @param {Number} y parent rotation of y axis in radians
-     * @param {Number} z parent rotation of z axis in radians
+     * Setting rotation of parent object in radians.
+     * @param {Number} x parent rotation of x axis in radians.
+     * @param {Number} y parent rotation of y axis in radians.
+     * @param {Number} z parent rotation of z axis in radians.
      */
     setParentRotation (x, y, z) {
         this.polygons[0].setParentRotation(x, y, z)
@@ -109,10 +109,10 @@ export class Rect {
     }
 
     /**
-     * Sets rotation point coordinats
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
+     * Sets rotation point coordinates.
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
      */
     setRotationPoint (x, y, z) {
         this.polygons[0].setRotationPoint(x, y, z)
@@ -120,8 +120,8 @@ export class Rect {
     }
 
     /**
-     * Set normals vector
-     * @param {Array} normals 3:3 array. Every 3 elements is a vector of normal 
+     * Set normals vector.
+     * @param {Array} normals 3:3 array. Every 3 elements is a vector of normal.
      */
     setNormals (normals) {
         this.polygons[0].setNormals(normals)

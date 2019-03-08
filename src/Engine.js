@@ -5,6 +5,7 @@ import * as Vectors from "./math/Vectors"
 import {isPowerOf2} from "./math/Math";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/vertex-shader.glsl"
+import {Map} from "./map/Map.js"
 
 export class Engine {
     /**
@@ -24,12 +25,12 @@ export class Engine {
         this.controls = null
         this.selectedObject = null
 
-        this._globalPossitionBuffer = this.webGL.createBuffer()
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPossitionBuffer)
+        this._globalPositionBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPositionBuffer)
         this._globalTextureBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer)
 
-        this.initShaders()
+        this._initShaders()
         this.noTexture = new Texture()
         this.noTexture.setColorRGBA(219, 58, 52, 255)
         this.bindTexture(this.noTexture)
@@ -38,17 +39,17 @@ export class Engine {
     /**
      * Creating shaders and attaching to webGL context.
      */
-    initShaders () {
+    _initShaders () {
         let vertex = Utils.compileShader(vertexShaderSource, "vertex", this.webGL)
         let fragment = Utils.compileShader(fragmentShaderSource,"fragment", this.webGL)
         this.shaderProgram = Utils.createWebGLProgram(this.webGL, vertex, fragment, false)
         this.positionLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_position")
-        this.texcoordLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord")
+        this.textureCoordinatesLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_texcoord")
         this.textureLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_texture")
         this.matrixLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_matrix")
         this.objectRotationLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_objectRotation")
         this.normalLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_normal")
-        this.everseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection");
+        this.reverseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection");
         this.lightWorldPositionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_lightWorldPosition");
         this.cameraLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_cameraMatrix");
 
@@ -60,6 +61,7 @@ export class Engine {
     }
     
     /**
+     * Setting a camera to the engine. There are can be only one camera.
      * @param {Camera} camera
      */
     setCamera (camera) {
@@ -75,7 +77,6 @@ export class Engine {
         this.width = this.canvas.clientWidth
         this.height = this.canvas.clientHeight
         this.webGL.viewport(0, 0, this.width, this.height)
-        console.log(this.canvas)
     }
 
     /**
@@ -119,7 +120,7 @@ export class Engine {
     /**
      * Function to update all positions, size etc.
      */
-    update () {
+    _update () {
         let temp
         let rot
         let parentRot
@@ -133,7 +134,7 @@ export class Engine {
         this.polygons.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(this.camera.inserved)
+            temp.multiply(this.camera.inventedMatrix)
             world = new Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
@@ -153,13 +154,13 @@ export class Engine {
             temp.multiply(world.matrix)
 
             element._matrix = temp.matrix
-            element._rotataionMatrix = rot
+            element._rotationMatrix = rot
         })
 
         this.objects.forEach(element => {           
             temp = new Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(this.camera.inserved)
+            temp.multiply(this.camera.inventedMatrix)
             world = new Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
@@ -243,17 +244,17 @@ export class Engine {
             }
 
             element._matrix = temp.matrix
-            element._rotataionMatrix = rot
+            element._rotationMatrix = rot
         })
     }
 
     /**
      * Main drawing function. All polygons are drawn here.
      */
-    draw () {
+    _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
 
-        this.webGL.uniform3fv(this.everseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.cameraLocation, false, this.camera.matrix)
 
@@ -264,10 +265,10 @@ export class Engine {
                 this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
             )
     
-            this.webGL.enableVertexAttribArray(this.texcoordLocation)
+            this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._coordsBuffer)
             this.webGL.vertexAttribPointer(
-                this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
+                this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
             )
 
             this.webGL.enableVertexAttribArray(this.normalLocation);
@@ -292,10 +293,10 @@ export class Engine {
                     this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
                 )
 
-                this.webGL.enableVertexAttribArray(this.texcoordLocation)
+                this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
                 this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
                 this.webGL.vertexAttribPointer(
-                    this.texcoordLocation, 2, this.webGL.FLOAT, false, 0, 0
+                    this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
                 )
 
                 this.webGL.enableVertexAttribArray(this.normalLocation);
@@ -313,36 +314,35 @@ export class Engine {
         if (this.debugger != null) {
             this.debugger.updateInfo()
         }
-        // alert()
     }
 
     /**
      * Rendering function.
      */
     render () {
-        this.update()
-        this.draw()
+        this._update()
+        this._draw()
     }
 
     /**
-     * Start rendering.
+     * Start rendering with default requestAnimationFrame function.
      */
     run () {
-        engine = this
+        _engine = this
         requestAnimationFrameEngine()
     }
+
 }
 
-let engine
+let _engine
 
 /**
  * RequestAnimationFrame wrapper for Engine rendering.
  */
 function requestAnimationFrameEngine () { 
     requestAnimationFrame(requestAnimationFrameEngine)
-    engine.render()
+    _engine.render()
 }
-
 
 (function() {
     let lastTime = 0;
@@ -366,4 +366,5 @@ function requestAnimationFrameEngine () {
         window.cancelAnimationFrame = function(id) {
             clearTimeout(id);
         };
+    
 }());

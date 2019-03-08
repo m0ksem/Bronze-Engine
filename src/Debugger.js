@@ -1,6 +1,6 @@
 export class Debugger {
     /**
-     * Debuger for engine.
+     * Debugger for engine.
      * @param {Engine} engine 
      */
     constructor(engine) {
@@ -9,7 +9,7 @@ export class Debugger {
         this.element = null
     }
 
-    setElemenent(element) {
+    setElement(element) {
         this.element = element
     }
 

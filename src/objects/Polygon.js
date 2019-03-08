@@ -91,7 +91,7 @@ export class Polygon {
     }
 
     /**
-     * Setting coordinates for rotation point
+     * Setting coordinates for rotation point.
      * @param {Number} x
      * @param {Number} y 
      * @param {Number} z 
@@ -101,7 +101,7 @@ export class Polygon {
     }
 
     /**
-     * Setting rotation values of parent object
+     * Setting rotation values of parent object.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 

@@ -4,7 +4,7 @@ import * as Math from "../math/Math"
 export class Cube {
     /**
      * Flat rectangle with square texture.
-     * @param {Engine} engine 
+     * @param {Engine} engine
      */
     constructor (engine) {
         this.faces = [
@@ -128,48 +128,55 @@ export class Cube {
 
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in deg
-     * @param {*} y in deg
-     * @param {*} z in deg
+     * @param {*} x in degrees.
+     * @param {*} y in degrees.
+     * @param {*} z in degrees.
      */
     rotate(x, y, z) {
         this.rotation[0] += x
         this.rotation[1] += y
         this.rotation[2] += z
-        let xrad = Math.degToRad(this.rotation[0])
-        let yrad = Math.degToRad(this.rotation[1])
-        let zrad = Math.degToRad(this.rotation[2])
+        let xRad = Math.degToRad(this.rotation[0])
+        let yRad = Math.degToRad(this.rotation[1])
+        let zRad = Math.degToRad(this.rotation[2])
         this.faces.forEach(face => {
-            face.setParentRotation(xrad, yrad, zrad)
+            face.setParentRotation(xRad, yRad, zRad)
         })
     }
 
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in deg
-     * @param {*} y in deg
-     * @param {*} z in deg
+     * @param {*} x in degrees.
+     * @param {*} y in degrees.
+     * @param {*} z in degrees.
      */
     setRotation(x, y, z) {
-        let xrad = Math.degToRad(x)
-        let yrad = Math.degToRad(y)
-        let zrad = Math.degToRad(z)
+        let xRad = Math.degToRad(x)
+        let yRad = Math.degToRad(y)
+        let zRad = Math.degToRad(z)
         this.faces.forEach(face => {
-            face.setParentRotation(xrad, yrad, zrad)
+            face.setParentRotation(xRad, yRad, zRad)
         })
     }
 
     animation () {
-        this.rotate(0, 0, 0)
+        this.rotate(1, 1, 1)
     }
 
     /**
-     * 
-     * @param {Number} fps 
-     * @param {Function} [animateFucntion] default - animation function
+     * Setting the animation function which execute every engine update.
+     * @param {Number} [fps = 60] default - 60. Frame per second for this animation.
+     * @param {Function} [animateFunction] default - animation function.
      */
-    animate (fps, animateFucntion) {
-        animateFucntion = animateFucntion || this.animation
-        setInterval(animateFucntion, 1000 / fps)
+    animate (fps, animateFunction) {
+        animateFunction = animateFunction || this.animation
+        this._animationInterval = setInterval(animateFunction, 1000 / fps)
+    }
+
+    /**
+     * Removes animation.
+     */
+    removeAnimation () {
+        clearInterval(this._animationInterval)
     }
 }

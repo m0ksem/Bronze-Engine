@@ -4,7 +4,7 @@ import {Matrix} from "./math/Matrixes"
 
 export class Camera {
     /**
-     * Creates camera object
+     * Creates camera object.
      */
     constructor () {
         this.position = [0, 0, 100]
@@ -20,7 +20,7 @@ export class Camera {
     }
 
     /**
-     * Sets field of view for camera
+     * Sets field of view for camera.
      * @param {Number} angle 
      */
     setFieldOfView (angle) {
@@ -29,7 +29,7 @@ export class Camera {
     }
 
     /**
-     * Sets collision
+     * Sets collision.
      * @param {*} bool 
      */
     setCollisions (bool) {
@@ -37,7 +37,7 @@ export class Camera {
     }
 
     /**
-     * Absolutly sets position for camera
+     * Absolutely sets position for camera.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
@@ -48,7 +48,7 @@ export class Camera {
     }
 
     /**
-     * Moving camera
+     * Moving camera.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
@@ -66,7 +66,7 @@ export class Camera {
     }
 
     /**
-     * Rotate for x, y, z deggres.
+     * Rotate for x, y, z degrees.
      * @param {Number} x 
      * @param {Number} y 
      * @param {Number} z 
@@ -100,11 +100,11 @@ export class Camera {
             )
         }
         this.rotationMatrix = Matrixes.inverse(rotation.matrix)
-        this.inserved = Matrixes.inverse(this.matrix)
+        this.inventedMatrix = Matrixes.inverse(this.matrix)
     }
 
     /**
-     * Sets fuction to control camera.
+     * Sets function to control camera.
      * @param {Function} handler 
      */
     setControl (handler) {
@@ -121,6 +121,7 @@ export class Camera {
     }
 
     /**
+     * Sets camera to the coordinates
      * @deprecated
      * @param {*} result 
      */
