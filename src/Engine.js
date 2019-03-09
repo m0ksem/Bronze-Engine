@@ -54,6 +54,15 @@ export class Engine {
         this.objects = []
 
         /**
+         * @type {Object}
+         * @property {Array} ui.objects
+         * @private
+         */
+        this.ui = {
+            objects: []
+        }
+
+        /**
          * @type {Array.<{Texture}>}
          * @private
          */
@@ -99,6 +108,13 @@ export class Engine {
         this.noTexture = new Texture()
         this.noTexture.setColorRGBA(219, 58, 52, 255)
         this.bindTexture(this.noTexture)
+
+        /**
+         * Execute every time when object is selected
+         * @type {Function}
+         * @private
+         */
+        this._objectSelectHandler
     }
 
     /**
@@ -145,6 +161,10 @@ export class Engine {
         this.width = this.canvas.clientWidth
         this.height = this.canvas.clientHeight
         this.webGL.viewport(0, 0, this.width, this.height)
+    }
+
+    onObjectSelect (handler) {
+        this._objectSelectHandler = handler
     }
 
     /**
@@ -197,6 +217,8 @@ export class Engine {
         let world
         if (this.camera._controlFunction != null) {
             this.camera._controlFunction()
+            this.controls.mouse.movement.x = 0
+            this.controls.mouse.movement.y = 0
         }
 
         this.selectedObject = null
@@ -308,7 +330,7 @@ export class Engine {
                     },
                     depth: smallest[2]
                 }
-
+                
                 if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
                     this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]   ) {
                     mouseOverHitBox = true
@@ -326,6 +348,33 @@ export class Engine {
             })
 
             this.selectedObject = selectedObject
+            if (!this.selectedObject && this._objectSelectHandler != null) {
+                this._objectSelectHandler()
+            }
+
+            element._matrix = temp.matrix
+            element._rotationMatrix = rot
+        })
+        
+        this.ui.objects.forEach(element => {
+            temp = new Matrix()
+            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            // temp.multiply(this.camera.rotationMatrix)
+            world = new Matrix()
+            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
+            world.translate(element.position[0], element.position[1], element.position[2])
+            rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
+            rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
+            parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
+            parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
+            element._world = parentRot
+            rot = Matrixes.multiply(parentRot, rot)
+            world.multiply(rot)
+            
+            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
+            world.scale(element.scaling[0], element.scaling[1], element.scaling[2])
+                        
+            temp.multiply(world.matrix)
 
             element._matrix = temp.matrix
             element._rotationMatrix = rot
@@ -396,6 +445,36 @@ export class Engine {
                 this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
             })
         });
+
+        this.ui.objects.forEach(o => {
+            o.faces.forEach(face => {
+                // console.log(face)
+               
+                this.webGL.enableVertexAttribArray(this.positionLocation)
+                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.vertexesBuffer)
+                this.webGL.vertexAttribPointer(
+                    this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
+                )
+
+                this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
+                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
+                this.webGL.vertexAttribPointer(
+                    this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
+                )
+
+                this.webGL.enableVertexAttribArray(this.normalLocation);
+                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.normalBuffer);
+                this.webGL.vertexAttribPointer(
+                    this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
+
+                this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
+                this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
+                this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
+                
+                this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
+            })
+        });
+
         if (this.debugger != null) {
             this.debugger.updateInfo()
         }
@@ -405,9 +484,9 @@ export class Engine {
      * Rendering function.
      * @public
      */
-    render () {
-        this._update()
-        this._draw()
+    async render () {
+        await this._update()
+        await this._draw()
     }
 
     /**
@@ -418,13 +497,13 @@ export class Engine {
         _engine = this
         requestAnimationFrameEngine()
     }
-
 }
 
 let _engine
 
 /**
  * RequestAnimationFrame wrapper for Engine rendering.
+ * @private
  */
 function requestAnimationFrameEngine () { 
     requestAnimationFrame(requestAnimationFrameEngine)

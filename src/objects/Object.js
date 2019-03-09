@@ -9,6 +9,7 @@ import { Matrixes } from "../math/Matrixes"
 export class Object {
     constructor (engine) {
         engine.objects.push(this)
+        
         /**
          * WebGL context of engine
          * @private

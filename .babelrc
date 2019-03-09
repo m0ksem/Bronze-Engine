@@ -3,10 +3,23 @@
         "@babel/preset-env"
     ],
     "plugins": [
-        ["babel-plugin-inline-import", {
-          "extensions": [
-            ".glsl"
-          ]
-        }]
-      ]
+      ["babel-plugin-inline-import", {
+        "extensions": [
+          ".glsl"
+        ]
+      }],
+      ["@babel/transform-runtime"]
+    ]
 }
+
+// ["babel-plugin-inline-import", {
+//   "extensions": [
+//     ".glsl"
+//   ]
+// }]
+// "plugins": [
+//   ["transform-runtime", {
+//     "polyfill": false,
+//     "regenerator": true
+//   }]
+// ]

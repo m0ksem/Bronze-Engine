@@ -6,7 +6,7 @@ body, html {
 }
 
 body {
-    overflow: hidden;
+    /* overflow: hidden; */
     background: black;
 }
 
@@ -27,6 +27,11 @@ canvas {
 
 .debug h2 {
     margin: 0 0 5px 0;
+}
+
+.aaa {
+    height: 100px;
+    width: 100px;
 }
 
 .debug p {
