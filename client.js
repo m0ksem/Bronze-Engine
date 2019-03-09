@@ -34,7 +34,9 @@ let controls = new Bronze.Controls(engine)
 //     debug.addLog("Z", camera.position, "", debug.createLogView())
 
 // Setting control function for camera
-let lastMousePosition = null
+controls.setSensitivity(1)
+controls.lockPointer(true)
+
 camera.setControl(() => {
     // All coords
     // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
@@ -69,29 +71,21 @@ camera.setControl(() => {
         camera.move(camera.rotationMatrix[0] * 10, camera.rotationMatrix[4] * 10, camera.rotationMatrix[8] * 10)
     }
 
-    if (lastMousePosition == null) {
-        lastMousePosition = {
-            x: controls.mouse.x, 
-            y: controls.mouse.y
-        }
-    }
     
     if (controls.mouse.buttons[2]) {
         if (engine.selectedObject != null) {
             const object = engine.selectedObject
-            object.moveRelativeToTheCamera((controls.mouse.x - lastMousePosition.x), -(controls.mouse.y - lastMousePosition.y), 0)
+            object.moveRelativeToTheCamera(controls.mouse.movement.x, -controls.mouse.movement.y, 0)
         }
     }
 
-    if (controls.mouse.buttons[0]) {
+    if (controls.mouse.buttons[0] || controls.pointerLocked) {
         if (controls.keys[17]) {
-            camera.rotate(0, 0, ((controls.mouse.y - lastMousePosition.y) / 10)) //+ (controls.mouse.x - lastMousePosition.x) / 10) / 2))
+            camera.rotate(0, 0, (controls.mouse.movement.y / 10)) //+ controls.mouse.movement.x / 10) / 2))
         } else {
-            camera.rotate((controls.mouse.y - lastMousePosition.y) / 10, (controls.mouse.x - lastMousePosition.x) / 10, 0)
+            camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
         }
     }
-    lastMousePosition.x = controls.mouse.x
-    lastMousePosition.y = controls.mouse.y
 })
 
 // Loading textures
@@ -240,24 +234,24 @@ let cube3 = new Bronze.Cube(engine)
     })
 
 
-let object = new Bronze.Object(engine)
+let object = new Bronze.ObjectUI(engine)
     object.setTexture(colaTexture)
-    object.setPosition(250, 0, 800)
+    object.setPosition(100, -50, -100)
     object.name = "box"
     object.loadFromObj("assets/objects/cola.obj")
-    object.rotate(0, 45, 45)
     object.setRotationPoint(0, 0, 0)
-    object.scale(10, 10, 10)
-    let xpos = 0, ypos = 0, zpos = 0, xdir = -1
-    object.animate(30, () => {
-        object.setPosition(250 + xpos, 0, zpos + 800)
-        xpos += xdir
-        if (xpos < -3) {
-            xdir = 1
-        } else if (xpos > 3) {
-            xdir = -1
-        }
-    }) 
+    object.setRotation(45, 45, 45)
+    object.scale(1.5, 1.5, 1.5)
+    // let xpos = 0, ypos = 0, zpos = 0, xdir = -1
+    // object.animate(30, () => {
+    //     object.setPosition(250 + xpos, 0, zpos + 800)
+    //     xpos += xdir
+    //     if (xpos < -3) {
+    //         xdir = 1
+    //     } else if (xpos > 3) {
+    //         xdir = -1
+    //     }
+    // }) 
 
 let fridge = new Bronze.Object(engine)
     fridge.name = "Fridge"
