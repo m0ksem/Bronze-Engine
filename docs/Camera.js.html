@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Camera.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Camera.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as Math from "./math/Math"
+import * as Matrixes from "./math/Matrixes"
+
+/**
+ * Creates camera object.
+ * @class
+ * @constructor
+ */
+export class Camera {
+    constructor () {
+
+        /**
+         * Camera position.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.position = [0, 0, 100]
+
+        this.up = [0, 1, 0]
+        this.target = [0, 0, 0]
+
+        /**
+         * Field of view for drawing in angles.
+         * @readonly
+         * @type {Number} angle in degrees
+         */
+        this.fieldOfView = 90
+
+        /**
+         * Field of view in radians.
+         * @readonly
+         * @type {Number} field of view in radians.
+         */
+        this.fieldOfViewRad = Math.degToRad(90)
+
+        /**
+         * Matrix of camera.
+         * @public
+         * @type {Array.Array} matrix 4x4
+         */
+        this.matrix = Matrixes.unit()
+
+        /**
+         * Camera rotation.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotation = [0, 0, 0]
+
+        /**
+         * Sets collision for camera.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this._collisions = false
+        this._lookUpMatrix = null
+    }
+
+    /**
+     * Sets field of view for camera.
+     * @param {Number} angle
+     * @public
+     */
+    setFieldOfView (angle) {
+        this.fieldOfView = angle;
+        this.fieldOfViewRad = Math.degToRad(angle)
+    }
+
+    /**
+     * Sets collision.
+     * @param {boolean} bool 
+     * @public
+     */
+    setCollisions (bool) {
+        this._collisions = bool
+    }
+
+    /**
+     * Absolutely sets position for camera.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setPosition (x, y, z) {
+        this.position = [x, y, z]
+        this.computeMatrix()
+    }
+
+    /**
+     * Moving camera.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+    move (x, y, z) {
+        // let translationMatrix = Matrixes.translation(x, y, z)
+        // let matrix = Matrixes.multiply(translationMatrix, this.rotationMatrix)
+        // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
+        // let yt = y//this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
+        // let zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
+        this.position[0] += x
+        this.position[1] += y
+        this.position[2] += z
+        this.computeMatrix()
+    }
+
+    /**
+     * Rotate for x, y, z degrees.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+    rotate (x, y, z) {
+        this.rotation[0] += x
+        this.rotation[1] += y
+        this.rotation[2] += z
+        this.computeMatrix()
+    }
+
+    /**
+     * Sets rotation angles
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setRotation (x, y, z) {
+        this.rotation = [x, y, z]
+        this.computeMatrix()
+    }
+
+    /**
+     * Compute camera matrix with rotation, positions.
+     * @private
+     */
+    computeMatrix () {
+        this.matrix = Matrixes.unit()
+        this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
+        let rotation = new Matrixes.Matrix()
+        rotation.multiply(Matrixes.rotationY(Math.degToRad(this.rotation[1])))
+        rotation.multiply(Matrixes.rotationX(Math.degToRad(this.rotation[0])))
+        rotation.multiply(Matrixes.rotationZ(Math.degToRad(this.rotation[2])))
+        this.matrix = Matrixes.multiply(this.matrix, rotation.matrix)
+        if (this._lookUpMatrix != null) {
+            this.matrix = Matrixes.multiply(this.matrix, 
+            this.lookAt(
+                camera._lookUpMatrix,
+                [0, 1, 0]
+            )
+            )
+        }
+        this.rotationMatrix = Matrixes.inverse(rotation.matrix)
+        this.inventedMatrix = Matrixes.inverse(this.matrix)
+    }
+
+    /**
+     * Sets function to control camera.
+     * @param {Function} handler
+     * @public
+     */
+    setControl (handler) {
+        this._controlFunction = handler
+    }
+
+
+    setLookUp(x, y, radius) {
+        if (x == null) {
+            this._lookUpMatrix = null
+            return
+        }
+        this._lookUpMatrix = [x, y, radius]
+    }
+
+    /**
+     * Sets camera to the coordinates
+     * @deprecated
+     * @param {*} result 
+     */
+    lookAt(target, up) {
+        if (target != null) {
+            var zAxis = normalize(
+                subVec3(this.position, target));
+            var xAxis = normalize(cross(up, zAxis));
+            var yAxis = normalize(cross(zAxis, xAxis));
+            
+            return [
+                xAxis[0], xAxis[1], xAxis[2], 0,
+                yAxis[0], yAxis[1], yAxis[2], 0,
+                zAxis[0], zAxis[1], zAxis[2], 0,
+                this.position[0],
+                this.position[1],
+                this.position[2],
+                1,
+            ];
+        }
+        else {
+            return [
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 0
+            ]
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

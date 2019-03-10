@@ -1,706 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: Cube</title>
-    
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
-    <script src="scripts/jquery.min.js"></script>
+    <title>JSDoc: Class: Cube</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/main.css">
-    
-    
-    <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{}};
-    </script>
-    
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Cube</h1>
 
     
-</head>
-<body>
-<div id="wrap" class="clearfix">
-    
-<div class="navigation">
-    <h3 class="applicationName"><a href="index.html"></a></h3>
-    <button id="menuToggle" class="btn btn-link btn-lg menu-toggle">
-        <span class="glyphicon glyphicon-menu-hamburger"></span>
-    </button>
-    <div class="search">
-        <input id="search" type="text" class="form-control input-md" placeholder="Search...">
-    </div>
-    <ul class="list">
-    
-        <li class="item" data-name="global">
-            <span class="title namespace ">
-                
-                <span class="namespaceTag">
-                    <span class="glyphicon glyphicon-globe"></span>
-                </span>
-                
-                <a href="global.html">Global</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Matrixes"><a href="global.html#Matrixes">Matrixes</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="compileShader"><a href="global.html#compileShader">compileShader</a></li>
-            
-                <li class="parent  " data-name="createWebGLProgram"><a href="global.html#createWebGLProgram">createWebGLProgram</a></li>
-            
-                <li class="parent  " data-name="degToRad"><a href="global.html#degToRad">degToRad</a></li>
-            
-                <li class="parent  " data-name="getWebGL"><a href="global.html#getWebGL">getWebGL</a></li>
-            
-                <li class="parent  " data-name="getWebGLById"><a href="global.html#getWebGLById">getWebGLById</a></li>
-            
-                <li class="parent  " data-name="isPowerOf2"><a href="global.html#isPowerOf2">isPowerOf2</a></li>
-            
-                <li class="parent  " data-name="normalize"><a href="global.html#normalize">normalize</a></li>
-            
-                <li class="parent  " data-name="radToDeg"><a href="global.html#radToDeg">radToDeg</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Camera">
-            <span class="title  ">
-                
-                <a href="Camera.html">Camera</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Camera#_collisions"><a href="Camera.html#_collisions">_collisions</a></li>
-            
-                <li class="parent " data-name="Camera#fieldOfView"><a href="Camera.html#fieldOfView">fieldOfView</a></li>
-            
-                <li class="parent " data-name="Camera#fieldOfViewRad"><a href="Camera.html#fieldOfViewRad">fieldOfViewRad</a></li>
-            
-                <li class="parent " data-name="Camera#matrix"><a href="Camera.html#matrix">matrix</a></li>
-            
-                <li class="parent " data-name="Camera#position"><a href="Camera.html#position">position</a></li>
-            
-                <li class="parent " data-name="Camera#rotation"><a href="Camera.html#rotation">rotation</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  status-deprecated" data-name="Camera#lookAt"><a href="Camera.html#lookAt">lookAt</a></li>
-            
-                <li class="parent  " data-name="Camera#move"><a href="Camera.html#move">move</a></li>
-            
-                <li class="parent  " data-name="Camera#rotate"><a href="Camera.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="Camera#setCollisions"><a href="Camera.html#setCollisions">setCollisions</a></li>
-            
-                <li class="parent  " data-name="Camera#setControl"><a href="Camera.html#setControl">setControl</a></li>
-            
-                <li class="parent  " data-name="Camera#setFieldOfView"><a href="Camera.html#setFieldOfView">setFieldOfView</a></li>
-            
-                <li class="parent  " data-name="Camera#setPosition"><a href="Camera.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="Camera#setRotation"><a href="Camera.html#setRotation">setRotation</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Controls">
-            <span class="title  ">
-                
-                <a href="Controls.html">Controls</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Controls#isFocused"><a href="Controls.html#isFocused">isFocused</a></li>
-            
-                <li class="parent " data-name="Controls#keys"><a href="Controls.html#keys">keys</a></li>
-            
-                <li class="parent " data-name="Controls#mouse"><a href="Controls.html#mouse">mouse</a></li>
-            
-                <li class="parent " data-name="Controls#mouseOverCanvas"><a href="Controls.html#mouseOverCanvas">mouseOverCanvas</a></li>
-            
-                <li class="parent " data-name="Controls#pointerLocked"><a href="Controls.html#pointerLocked">pointerLocked</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Controls#addOnBlurHandler"><a href="Controls.html#addOnBlurHandler">addOnBlurHandler</a></li>
-            
-                <li class="parent  " data-name="Controls#addOnFocusHandler"><a href="Controls.html#addOnFocusHandler">addOnFocusHandler</a></li>
-            
-                <li class="parent  " data-name="Controls#globalRebind"><a href="Controls.html#globalRebind">globalRebind</a></li>
-            
-                <li class="parent  " data-name="Controls#lockPointer"><a href="Controls.html#lockPointer">lockPointer</a></li>
-            
-                <li class="parent  " data-name="Controls#onContextMenu"><a href="Controls.html#onContextMenu">onContextMenu</a></li>
-            
-                <li class="parent  " data-name="Controls#onKeyDown"><a href="Controls.html#onKeyDown">onKeyDown</a></li>
-            
-                <li class="parent  " data-name="Controls#onMouseDown"><a href="Controls.html#onMouseDown">onMouseDown</a></li>
-            
-                <li class="parent  " data-name="Controls#onMouseMove"><a href="Controls.html#onMouseMove">onMouseMove</a></li>
-            
-                <li class="parent  " data-name="Controls#rebindDefaultBrowserActions"><a href="Controls.html#rebindDefaultBrowserActions">rebindDefaultBrowserActions</a></li>
-            
-                <li class="parent  " data-name="Controls#setSensitivity"><a href="Controls.html#setSensitivity">setSensitivity</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Cube">
-            <span class="title  ">
-                
-                <a href="Cube.html">Cube</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Cube#position"><a href="Cube.html#position">position</a></li>
-            
-                <li class="parent " data-name="Cube#rotation"><a href="Cube.html#rotation">rotation</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Cube#animate"><a href="Cube.html#animate">animate</a></li>
-            
-                <li class="parent  " data-name="Cube#removeAnimation"><a href="Cube.html#removeAnimation">removeAnimation</a></li>
-            
-                <li class="parent  " data-name="Cube#rotate"><a href="Cube.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="Cube#setPosition"><a href="Cube.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="Cube#setRotation"><a href="Cube.html#setRotation">setRotation</a></li>
-            
-                <li class="parent  " data-name="Cube#setSize"><a href="Cube.html#setSize">setSize</a></li>
-            
-                <li class="parent  " data-name="Cube#setTexture"><a href="Cube.html#setTexture">setTexture</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Debugger">
-            <span class="title  ">
-                
-                <a href="Debugger.html">Debugger</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Engine">
-            <span class="title  ">
-                
-                <a href="Engine.html">Engine</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Engine#canvas"><a href="Engine.html#canvas">canvas</a></li>
-            
-                <li class="parent " data-name="Engine#height"><a href="Engine.html#height">height</a></li>
-            
-                <li class="parent " data-name="Engine#noTexture"><a href="Engine.html#noTexture">noTexture</a></li>
-            
-                <li class="parent " data-name="Engine#selectedObject"><a href="Engine.html#selectedObject">selectedObject</a></li>
-            
-                <li class="parent " data-name="Engine#width"><a href="Engine.html#width">width</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Engine#bindTexture"><a href="Engine.html#bindTexture">bindTexture</a></li>
-            
-                <li class="parent  " data-name="Engine#canvasResized"><a href="Engine.html#canvasResized">canvasResized</a></li>
-            
-                <li class="parent  " data-name="Engine#render"><a href="Engine.html#render">render</a></li>
-            
-                <li class="parent  " data-name="Engine#run"><a href="Engine.html#run">run</a></li>
-            
-                <li class="parent  " data-name="Engine#setCamera"><a href="Engine.html#setCamera">setCamera</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Matrix">
-            <span class="title  ">
-                
-                <a href="Matrix.html">Matrix</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Matrix#multiply"><a href="Matrix.html#multiply">multiply</a></li>
-            
-                <li class="parent  " data-name="Matrix#multiply_"><a href="Matrix.html#multiply_">multiply_</a></li>
-            
-                <li class="parent  " data-name="Matrix#perspective"><a href="Matrix.html#perspective">perspective</a></li>
-            
-                <li class="parent  " data-name="Matrix#rotateX"><a href="Matrix.html#rotateX">rotateX</a></li>
-            
-                <li class="parent  " data-name="Matrix#rotateY"><a href="Matrix.html#rotateY">rotateY</a></li>
-            
-                <li class="parent  " data-name="Matrix#rotateZ"><a href="Matrix.html#rotateZ">rotateZ</a></li>
-            
-                <li class="parent  " data-name="Matrix#scale"><a href="Matrix.html#scale">scale</a></li>
-            
-                <li class="parent  " data-name="Matrix#translate"><a href="Matrix.html#translate">translate</a></li>
-            
-                <li class="parent  " data-name="Matrix#translate_"><a href="Matrix.html#translate_">translate_</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Object">
-            <span class="title  ">
-                
-                <a href="Object.html">Object</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Object#collisionBoxes"><a href="Object.html#collisionBoxes">collisionBoxes</a></li>
-            
-                <li class="parent " data-name="Object#parentRotation"><a href="Object.html#parentRotation">parentRotation</a></li>
-            
-                <li class="parent " data-name="Object#position"><a href="Object.html#position">position</a></li>
-            
-                <li class="parent " data-name="Object#relativeCameraPosition"><a href="Object.html#relativeCameraPosition">relativeCameraPosition</a></li>
-            
-                <li class="parent " data-name="Object#rotation"><a href="Object.html#rotation">rotation</a></li>
-            
-                <li class="parent " data-name="Object#rotationPoint"><a href="Object.html#rotationPoint">rotationPoint</a></li>
-            
-                <li class="parent " data-name="Object#scaling"><a href="Object.html#scaling">scaling</a></li>
-            
-                <li class="parent " data-name="Object#texture"><a href="Object.html#texture">texture</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Object#animate"><a href="Object.html#animate">animate</a></li>
-            
-                <li class="parent  " data-name="Object#animation"><a href="Object.html#animation">animation</a></li>
-            
-                <li class="parent  " data-name="Object#compile"><a href="Object.html#compile">compile</a></li>
-            
-                <li class="parent  " data-name="Object#loadFromObj"><a href="Object.html#loadFromObj">loadFromObj</a></li>
-            
-                <li class="parent  " data-name="Object#move"><a href="Object.html#move">move</a></li>
-            
-                <li class="parent  " data-name="Object#moveRelativeToTheCamera"><a href="Object.html#moveRelativeToTheCamera">moveRelativeToTheCamera</a></li>
-            
-                <li class="parent  " data-name="Object#rotate"><a href="Object.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="Object#scale"><a href="Object.html#scale">scale</a></li>
-            
-                <li class="parent  " data-name="Object#setParentRotation"><a href="Object.html#setParentRotation">setParentRotation</a></li>
-            
-                <li class="parent  " data-name="Object#setPosition"><a href="Object.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="Object#setRotation"><a href="Object.html#setRotation">setRotation</a></li>
-            
-                <li class="parent  " data-name="Object#setRotationPoint"><a href="Object.html#setRotationPoint">setRotationPoint</a></li>
-            
-                <li class="parent  " data-name="Object#setTexture"><a href="Object.html#setTexture">setTexture</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ObjectUI">
-            <span class="title  ">
-                
-                <a href="ObjectUI.html">ObjectUI</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="ObjectUI#collisionBoxes"><a href="ObjectUI.html#collisionBoxes">collisionBoxes</a></li>
-            
-                <li class="parent " data-name="ObjectUI#parentRotation"><a href="ObjectUI.html#parentRotation">parentRotation</a></li>
-            
-                <li class="parent " data-name="ObjectUI#position"><a href="ObjectUI.html#position">position</a></li>
-            
-                <li class="parent " data-name="ObjectUI#relativeCameraPosition"><a href="ObjectUI.html#relativeCameraPosition">relativeCameraPosition</a></li>
-            
-                <li class="parent " data-name="ObjectUI#rotation"><a href="ObjectUI.html#rotation">rotation</a></li>
-            
-                <li class="parent " data-name="ObjectUI#rotationPoint"><a href="ObjectUI.html#rotationPoint">rotationPoint</a></li>
-            
-                <li class="parent " data-name="ObjectUI#scaling"><a href="ObjectUI.html#scaling">scaling</a></li>
-            
-                <li class="parent " data-name="ObjectUI#texture"><a href="ObjectUI.html#texture">texture</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="ObjectUI#animate"><a href="ObjectUI.html#animate">animate</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#animation"><a href="ObjectUI.html#animation">animation</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#compile"><a href="ObjectUI.html#compile">compile</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#loadFromObj"><a href="ObjectUI.html#loadFromObj">loadFromObj</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#move"><a href="ObjectUI.html#move">move</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#moveRelativeToTheCamera"><a href="ObjectUI.html#moveRelativeToTheCamera">moveRelativeToTheCamera</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#rotate"><a href="ObjectUI.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#scale"><a href="ObjectUI.html#scale">scale</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#setParentRotation"><a href="ObjectUI.html#setParentRotation">setParentRotation</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#setPosition"><a href="ObjectUI.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#setRotation"><a href="ObjectUI.html#setRotation">setRotation</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#setRotationPoint"><a href="ObjectUI.html#setRotationPoint">setRotationPoint</a></li>
-            
-                <li class="parent  " data-name="ObjectUI#setTexture"><a href="ObjectUI.html#setTexture">setTexture</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Polygon">
-            <span class="title  ">
-                
-                <a href="Polygon.html">Polygon</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Polygon#normals"><a href="Polygon.html#normals">normals</a></li>
-            
-                <li class="parent " data-name="Polygon#parentRotation"><a href="Polygon.html#parentRotation">parentRotation</a></li>
-            
-                <li class="parent " data-name="Polygon#position"><a href="Polygon.html#position">position</a></li>
-            
-                <li class="parent " data-name="Polygon#rotation"><a href="Polygon.html#rotation">rotation</a></li>
-            
-                <li class="parent " data-name="Polygon#rotationPoint"><a href="Polygon.html#rotationPoint">rotationPoint</a></li>
-            
-                <li class="parent " data-name="Polygon#texture"><a href="Polygon.html#texture">texture</a></li>
-            
-                <li class="parent " data-name="Polygon#vertexes"><a href="Polygon.html#vertexes">vertexes</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Polygon#rotate"><a href="Polygon.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="Polygon#setNormals"><a href="Polygon.html#setNormals">setNormals</a></li>
-            
-                <li class="parent  " data-name="Polygon#setParentRotation"><a href="Polygon.html#setParentRotation">setParentRotation</a></li>
-            
-                <li class="parent  " data-name="Polygon#setPosition"><a href="Polygon.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="Polygon#setRotation"><a href="Polygon.html#setRotation">setRotation</a></li>
-            
-                <li class="parent  " data-name="Polygon#setRotationPoint"><a href="Polygon.html#setRotationPoint">setRotationPoint</a></li>
-            
-                <li class="parent  " data-name="Polygon#setTexture"><a href="Polygon.html#setTexture">setTexture</a></li>
-            
-                <li class="parent  " data-name="Polygon#setTextureCoords"><a href="Polygon.html#setTextureCoords">setTextureCoords</a></li>
-            
-                <li class="parent  " data-name="Polygon#setVertexes"><a href="Polygon.html#setVertexes">setVertexes</a></li>
-            
-                <li class="parent  " data-name="Polygon#update"><a href="Polygon.html#update">update</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Rect">
-            <span class="title  ">
-                
-                <a href="Rect.html">Rect</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Rect#position"><a href="Rect.html#position">position</a></li>
-            
-                <li class="parent " data-name="Rect#rotationPoint"><a href="Rect.html#rotationPoint">rotationPoint</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Rect#rotate"><a href="Rect.html#rotate">rotate</a></li>
-            
-                <li class="parent  " data-name="Rect#setNormals"><a href="Rect.html#setNormals">setNormals</a></li>
-            
-                <li class="parent  " data-name="Rect#setParentRotation"><a href="Rect.html#setParentRotation">setParentRotation</a></li>
-            
-                <li class="parent  " data-name="Rect#setPosition"><a href="Rect.html#setPosition">setPosition</a></li>
-            
-                <li class="parent  " data-name="Rect#setRotationPoint"><a href="Rect.html#setRotationPoint">setRotationPoint</a></li>
-            
-                <li class="parent  " data-name="Rect#setSize"><a href="Rect.html#setSize">setSize</a></li>
-            
-                <li class="parent  " data-name="Rect#setTexture"><a href="Rect.html#setTexture">setTexture</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Texture">
-            <span class="title  ">
-                
-                <a href="Texture.html">Texture</a>
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li class="parent " data-name="Texture#color"><a href="Texture.html#color">color</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li class="parent  " data-name="Texture#scale"><a href="Texture.html#scale">scale</a></li>
-            
-                <li class="parent  " data-name="Texture#setColorRGBA"><a href="Texture.html#setColorRGBA">setColorRGBA</a></li>
-            
-                <li class="parent  " data-name="Texture#setCoords"><a href="Texture.html#setCoords">setCoords</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-    </ul>
-</div>
-    <div class="main">
-        <h1 class="page-title" data-filename="Cube.html">Class: Cube</h1>
-        
+
 
 
 
 <section>
-    
-<header>
-    <div class="header content-size">
-        <h2>Cube
-        </h2>
-        
-    </div>
-</header>  
 
-<article class="content-size">
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Cube<span class="signature">(engine)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
     <div class="container-overview">
     
-    
-    
         
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="Cube">
-            <a class="share-icon" href="#Cube"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                new Cube
-            </span>
-            <span class="signature">(engine)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
     
 
     
+    <h4 class="name" id="Cube"><span class="type-signature"></span>new Cube<span class="signature">(engine)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>engine</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -709,241 +92,305 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line10">line 10</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     </div>
+
     
+
     
+
     
+
     
+
     
+
     
-    
-    
-    
-    
-    
+
     
         <h3 class="subsection-title">Members</h3>
+
         
-        <dl class="list-members">
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="position">
-            <a class="share-icon" href="#position"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">position</span>
-            <span class="type-signature type">Array.&lt;{x: Number, y: Number, z: Number}></span>
+<h4 class="name" id="position"><span class="type-signature">(readonly) </span>position<span class="type-signature"> :Array.&lt;{x: Number, y: Number, z: Number}></span></h4>
+
+
+
+
+<div class="description">
+    Cube position.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
-            <span class="access-signature">readonly</span>
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Cube position.
-    </div>
-    
-    
-    
+<span class="param-type">Array.&lt;{x: Number, y: Number, z: Number}></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line31">line 31</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
-</dd>
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="rotation">
-            <a class="share-icon" href="#rotation"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">rotation</span>
-            <span class="type-signature type">Array.&lt;{x: Number, y: Number, z: Number}></span>
+<h4 class="name" id="rotation"><span class="type-signature">(readonly) </span>rotation<span class="type-signature"> :Array.&lt;{x: Number, y: Number, z: Number}></span></h4>
+
+
+
+
+<div class="description">
+    Cube rotation.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
-            <span class="access-signature">readonly</span>
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Cube rotation.
-    </div>
-    
-    
-    
+<span class="param-type">Array.&lt;{x: Number, y: Number, z: Number}></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line38">line 38</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
-</dd>
 
-        </dl>
+
+
+
+
+        
     
-    
+
     
         <h3 class="subsection-title">Methods</h3>
-        
-        <dl class="list-methods">
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="animate">
-            <a class="share-icon" href="#animate"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                animate
-            </span>
-            <span class="signature">(<span class="optional">fps</span>, <span class="optional">animateFunction</span>)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Setting the animation function which execute every engine update.
-    </div>
+        
+            
+
     
 
     
+    <h4 class="name" id="animate"><span class="type-signature"></span>animate<span class="signature">(fps<span class="signature-attributes">opt</span>, animateFunction<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Setting the animation function which execute every engine update.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>fps</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -952,7 +399,19 @@
 
             
             </td>
+
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
             
                 <td class="default">
                 
@@ -960,26 +419,17 @@
                 
                 </td>
             
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                default - 60. Frame per second for this animation.</td>
+
+            <td class="description last">default - 60. Frame per second for this animation.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>animateFunction</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -988,198 +438,233 @@
 
             
             </td>
+
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
             
                 <td class="default">
                 
                 </td>
             
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                default - animation function.</td>
+
+            <td class="description last">default - animation function.</td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line204">line 204</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="removeAnimation">
-            <a class="share-icon" href="#removeAnimation"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                removeAnimation
-            </span>
-            <span class="signature">()</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Removes animation.
-    </div>
     
 
     
+    <h4 class="name" id="removeAnimation"><span class="type-signature"></span>removeAnimation<span class="signature">()</span><span class="type-signature"></span></h4>
     
+
     
-    
-    
-    
-    
+
+
+
+<div class="description">
+    Removes animation.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line213">line 213</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="rotate">
-            <a class="share-icon" href="#rotate"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                rotate
-            </span>
-            <span class="signature">(x, y, z)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Set rotation for x, y, z axis.
-    </div>
     
 
     
+    <h4 class="name" id="rotate"><span class="type-signature"></span>rotate<span class="signature">(x, y, z)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Set rotation for x, y, z axis.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>x</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1188,21 +673,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>y</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1211,21 +696,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>z</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1234,115 +719,133 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line162">line 162</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setPosition">
-            <a class="share-icon" href="#setPosition"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                setPosition
-            </span>
-            <span class="signature">(x, y, z)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Change position of all polygons in rect.
-    </div>
     
 
     
+    <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">(x, y, z)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Change position of all polygons in rect.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>x</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1351,21 +854,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>y</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1374,21 +877,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>z</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1397,115 +900,133 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line145">line 145</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setRotation">
-            <a class="share-icon" href="#setRotation"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                setRotation
-            </span>
-            <span class="signature">(x, y, z)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Set rotation for x, y, z axis.
-    </div>
     
 
     
+    <h4 class="name" id="setRotation"><span class="type-signature"></span>setRotation<span class="signature">(x, y, z)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Set rotation for x, y, z axis.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>x</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1514,21 +1035,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>y</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1537,21 +1058,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>z</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1560,115 +1081,133 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                in degrees.</td>
+
+            <td class="description last">in degrees.</td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line181">line 181</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setSize">
-            <a class="share-icon" href="#setSize"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                setSize
-            </span>
-            <span class="signature">(width, height)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Changing size of rect
-    </div>
     
 
     
+    <h4 class="name" id="setSize"><span class="type-signature"></span>setSize<span class="signature">(width, height)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Changing size of rect
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>width</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1677,21 +1216,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>height</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1700,115 +1239,133 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                </td>
+
+            <td class="description last"></td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line128">line 128</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
-    
 
-    
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setTexture">
-            <a class="share-icon" href="#setTexture"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                setTexture
-            </span>
-            <span class="signature">(front, right, back, left, top, bottom)</span>
-            
-            
-            
-            
-        </h4>
-    
-        
-    </div>
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Setting square texture for cube.
-    </div>
     
 
     
+    <h4 class="name" id="setTexture"><span class="type-signature"></span>setTexture<span class="signature">(front, right, back, left, top, bottom)</span><span class="type-signature"></span></h4>
     
+
     
+
+
+
+<div class="description">
+    Setting square texture for cube.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-    
-        
 
 <table class="params">
     <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
         <tr>
             
                 <td class="name"><code>front</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1817,21 +1374,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>right</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1840,21 +1397,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>back</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1863,21 +1420,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>left</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1886,21 +1443,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>top</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1909,21 +1466,21 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	
+
+    
+
         <tr>
             
                 <td class="name"><code>bottom</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1932,82 +1489,106 @@
 
             
             </td>
+
             
+
             
-            
-            <td class="description last">
-                
-                texture.</td>
+
+            <td class="description last">texture.</td>
         </tr>
-	
-	
-	</tbody>
+
+    
+    </tbody>
 </table>
-    
-    
-    
+
+
+
+
+
+
 <dl class="details">
+
     
-        
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_Cube.js.html">objects/Cube.js</a>, <a href="objects_Cube.js.html#line113">line 113</a>
+    </li></ul></dd>
     
+
     
+
     
-    
+
     
 </dl>
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
     
 
     
 </article>
 
-</section>  
+</section>
 
 
 
 
-
-        
-
-        <footer class="content-size">
-            <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 09 2019 12:01:10 GMT+0200 (Eastern European Standard Time)
-            </div>
-        </footer>
-    </div>
 </div>
-<script>prettyPrint();</script>
-<script src="scripts/main.js"></script>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>

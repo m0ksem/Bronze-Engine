@@ -1,4 +1,32 @@
-import { Object } from "../objects/Object";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: objects/Object.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: objects/Object.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as Matrixes from "../math/Matrixes"
 
  /**
  * Creates and bind to engine object. The object must be loaded from .obj file.
@@ -6,9 +34,16 @@ import { Object } from "../objects/Object";
  * @constructor
  * @param {Engine} engine 
  */
-export class ObjectUI {
+export class Object {
     constructor (engine) {
-        engine.ui.objects.push(this)
+        engine.objects.push(this)
+        
+        /**
+         * Engine where object attached.
+         * @type {Engine}
+         * @private
+         */
+        this.engine = engine
 
         /**
          * WebGL context of engine
@@ -26,76 +61,99 @@ export class ObjectUI {
         /**
          * Object texture.
          * @type {Texture} texture
-         * @readonly
+         * @public
          */
         this.texture = engine.noTexture
 
         /**
-         * Object position.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x position on axis x
+         * @property {Number} y position on axis y
+         * @property {Number} z position on axis z
          */
         this.position = [0, 0, 0]
 
         /**
-         * Object rotation.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation on axis x
+         * @property {Number} y rotation on axis y
+         * @property {Number} z rotation on axis z
          */
         this.rotation = [0, 0, 0]
 
         /**
-         * Object scaling.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x scaling on axis x
+         * @property {Number} y scaling on axis x
+         * @property {Number} z scaling on axis x
          */
         this.scaling = [1, 1, 1]
 
         /**
-         * The point around which the object rotates.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation point coordinate on axis x
+         * @property {Number} y rotation point coordinate on axis y
+         * @property {Number} z rotation point coordinate on axis z
          */
         this.rotationPoint = [0, 0, 0]
 
         /**
-         * The point around which the parent object rotates.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x parent rotation on axis x
+         * @property {Number} y parent rotation on axis y
+         * @property {Number} z parent rotation on axis z
          */
         this.parentRotation = [0, 0, 0]
-        
 
         /**
+         * These are the edges of the object on the monitor.
          * @readonly
-         * 
-         * @Type {
-         *       x: {
-                    left: Number,
-                    right: Number
-                },
-                y: {
-                    top: Number,
-                    bottom: Number
-                },
-                depth: Number
-            }
+         * @Type {Object}   
+         * @property {Number} relativeCameraPosition.x.left
+         * @property {Number} relativeCameraPosition.x.right
+         * @property {Number} relativeCameraPosition.y.top
+         * @property {Number} relativeCameraPosition.y.bottom
+         * @property {Number} relativeCameraPosition.depth
          */
         this.relativeCameraPosition = null
 
         /**
          * Faces of object. Needs to draw object. Creates when object is compiled.
-         * @private
+         * @readonly
          * @type {Array}
          */
         this.faces = []
 
         /**
          * Collision boxes coordinates array.
-         * @type {Array}
+         * @type {
+         *      x: Number[2],
+         *      y: Number[2],
+         *      z: Number[2]
+         *  }
+         * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
+         * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
+         * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
          * @public
          */
         this.collisionBoxes = []
+
+        /**
+         * Sets whether the object will be attached to the camera like UI element.
+         * @type {boolean}
+         * @public
+         */
+        this.UIElement = false 
     }
 
     /**
@@ -209,7 +267,8 @@ export class ObjectUI {
     }
 
     /**
-     * Default animation function for overload.
+     * Default animation function.
+     * @private
      */
     animation () {
         this.rotate(0, 0, 0)
@@ -219,10 +278,19 @@ export class ObjectUI {
      * Sets the animation function which execute every engine update.
      * @param {Number} fps
      * @param {Function} [animateFunction] default - animation function.
+     * @public
      */
     animate (fps, animateFunction) {
         animateFunction = animateFunction || this.animation
         setInterval(animateFunction, 1000 / fps)
+    }
+
+    /**
+     * Function detaches from engine. If you need to clean memory, you this method and then you default javascript operator `delete`.
+     * @public
+     */
+    destroy() {
+        this.engine.splice(this.engine.objects.indexOf(this), 1)
     }
 
     /**
@@ -253,13 +321,13 @@ export class ObjectUI {
                 let v1 = parseFloat(values[1])
                 let v2 = parseFloat(values[2])
                 let v3 = parseFloat(values[3])
-                if (collisionBox.x[1] < v1) {
+                if (collisionBox.x[1] &lt; v1) {
                     collisionBox.x[1] = v1 
                 }
-                if (collisionBox.y[1] < v2) {
+                if (collisionBox.y[1] &lt; v2) {
                     collisionBox.y[1] = v2 
                 }
-                if (collisionBox.z[1] < v3) {
+                if (collisionBox.z[1] &lt; v3) {
                     collisionBox.z[1] = v3 
                 }
                 if (collisionBox.x[0] > v1) {
@@ -280,13 +348,13 @@ export class ObjectUI {
                 textureCoords.push([parseFloat(values[1]), 
                                    parseFloat(values[2])])
             } else if (values[name] == "f") {
-                for (let i = 1; i < values.length; i++) {
+                for (let i = 1; i &lt; values.length; i++) {
                     const face = values[i].split('/');
                     if (face[length - 1] == "\r") {
                         break;
                     }
                     let faceVertexes = null, faceTextureCoords = null, faceNormals
-                    for (let k = 0; k < this.faces.length; k++) {
+                    for (let k = 0; k &lt; this.faces.length; k++) {
                         const element = this.faces[k];
                         if (element.vertexesCount == values.length - 1) {
                             faceVertexes = element.vertexes
@@ -306,11 +374,11 @@ export class ObjectUI {
                         faceNormals = this.faces[this.faces.length - 1].normals
                     } 
                     let vertexPosition = parseFloat(face[0])
-                        if (vertexPosition < 0) vertexPosition = vertexes.length + vertexPosition + 1
+                        if (vertexPosition &lt; 0) vertexPosition = vertexes.length + vertexPosition + 1
                     let textureCoordPosition = parseFloat(face[1])
-                        if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1 
+                        if (textureCoordPosition &lt; 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1 
                     let normalPosition = parseFloat(face[2])
-                        if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1
+                        if (normalPosition &lt; 0) normalPosition = normals.length + normalPosition + 1
                     vertexes[vertexPosition - 1].forEach(vertex => {
                         faceVertexes.push(vertex)
                     })
@@ -330,7 +398,7 @@ export class ObjectUI {
                 }
             }
         });
-        for (let i = 0; i < this.faces.length; i++) {
+        for (let i = 0; i &lt; this.faces.length; i++) {
             const element = this.faces[i];
             element.vertexesBuffer = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.vertexesBuffer)
@@ -364,3 +432,26 @@ export class ObjectUI {
         objectsLoader.send();
     }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

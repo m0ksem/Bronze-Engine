@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: objects/Polygon.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: objects/Polygon.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Triangle polygon.
+ * @param {Engine} core Engine object to which the polygon will be attached.
+ * @class
+ * @constructor
+ */
+export class Polygon {
+    constructor (engine) {
+        if (engine) {
+            engine.polygons.push(this)
+        }
+        this.webGL = engine.webGL
+        
+        /**
+         * Texture of polygon
+         * @type {Texture}
+         * @readonly
+         */
+        this.texture = null
+
+        /**
+         * Vertexes of polygon.
+         * @type {Array}
+         * @readonly
+         */
+        this.vertexes = []
+
+        /**
+         * Polygon position.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.position = [0, 0, 0]
+
+        /**
+         * Polygon rotation.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotation = [0, 0, 0]
+
+        /**
+         * Polygon rotation point.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotationPoint = [0, 0, 0]
+
+         /**
+         * Polygon parent rotation.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.parentRotation = [0, 0, 0]
+
+         /**
+         * Polygon normals.
+         * @readonly
+         * @type {Array.&lt;{0: Number, 1: Number, 2: Number,
+         *                3: Number, 4: Number, 5: Number,
+         *                6: Number, 7: Number, 8: Number,}>} matrix 9
+         */
+        this.normals = [
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+        ]
+
+        /**
+         * WebGL texture buffer.
+         * @private
+         */
+        this._vertexesBuffer = null
+    }
+
+    /**
+     * Setting texture for polygon.
+     * @param {Texture} texture 
+     * @public
+     */
+    setTexture (texture) {
+        this.texture = texture
+    }
+
+    /**
+     * Setting texture coords.
+     * @param {Array} coords array of coords of texture.
+     * @public
+     */
+    setTextureCoords (coords) {
+        this.textureCoords = coords
+        this._coordsBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._coordsBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW)
+    }
+
+    /**
+     * Setting vertexes array.
+     * @param {Array[Number]} vertexes
+     * @public
+     */
+    setVertexes (vertexes) {
+        this.vertexes = vertexes
+        this._vertexesBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._vertexesBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+    }
+
+    /**
+     * Translate polygon for x,y,z pixels.
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setPosition (x, y, z) {
+        this.position[0] = x
+        this.position[1] = y
+        this.position[2] = z
+    }
+
+    /**
+     * Add rotation for x, y, z axis for current rotation.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    rotate (x, y, z) {
+        this.rotation[0] += x
+        this.rotation[1] += y
+        this.rotation[2] += z
+    }
+
+    /**
+     * Set rotate for x, y, z axis.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setRotation (x, y, z) {
+        this.rotation[0] = x
+        this.rotation[1] = y
+        this.rotation[2] = z
+    }
+
+    /**
+     * Setting coordinates for rotation point.
+     * @param {Number} x
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setRotationPoint (x, y, z) {
+        this.rotationPoint = [x, y, z]
+    }
+
+    /**
+     * Setting rotation values of parent object.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    setParentRotation (x, y, z) {
+        this.parentRotation = [x, y, z]
+    }
+
+    /**
+     * Update function. Can be overloaded for creation animation or smth else.
+     */
+    update () {
+        
+    }
+
+    /**
+     * Set normals for this polygon.
+     * @param {array} normals 3 normals vector. 
+     * @public
+     */
+    setNormals (normals) {
+        this.normals = normals
+        this._normalBuffer = this.webGL.createBuffer();
+            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._normalBuffer);
+            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

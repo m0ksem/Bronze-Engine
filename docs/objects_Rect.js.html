@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: objects/Rect.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: objects/Rect.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Polygon} from "./Polygon"
+import * as Math from "../math/Math"
+
+/**
+ * Rect object created from polygons.
+ * @param {Engine} engine
+ * @class
+ * @constructor
+ */
+export class Rect {
+    /**
+     * Flat rectangle with square texture.
+     * @param {Engine} engine 
+     */
+    constructor (engine) {
+        /**
+         * Rect polygons.
+         * @private
+         * @type {Array.&lt;{0: Polygon, 1: Polygon}>} vector 3
+         */
+        this.polygons = new Array(2)
+
+        /**
+         * Rect position.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.position = [0, 0, 0]
+
+        /**
+         * Rect rotation point.
+         * @readonly
+         * @type {Array.&lt;{x: Number, y: Number, z: Number}>} vector 3
+         */
+        this.rotationPoint = [0, 0, 0]
+
+        let p = new Polygon(engine)
+            p.setVertexes([
+                0,   0,   0,
+                100, 100, 0,
+                0,   100, 0,
+            ])
+            p.setTextureCoords([
+                0, 1,
+                1, 0,
+                0, 0,
+            ])
+        this.polygons[0] = p
+            p = new Polygon(engine)
+            p.setVertexes([
+                100, 100, 0,
+                0,   0,   0,
+                100, 0,   0
+            ])
+            p.setTextureCoords([
+                1, 0,
+                0, 1,
+                1, 1,
+            ])
+        this.polygons[1] = p
+        this.setNormals([
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        ])
+    }
+
+    /**
+     * Setting square texture for rect.
+     * @param {Texture} texture
+     * @public
+     */
+    setTexture (texture) {
+        this.polygons[0].setTexture(texture)
+        this.polygons[1].setTexture(texture)
+    }
+
+    /**
+     * Changing size of rect.
+     * @param {Number} width
+     * @param {Number} height
+     * @public
+     */
+    setSize (width, height) {
+        this.width = width
+        this.height = height
+        this.polygons[0].setVertexes([
+            0,     0,      0,
+            width, height, 0,
+            0,     height, 0,
+            
+        ])
+        this.polygons[1].setVertexes([
+            width, height, 0,
+            0,     0,      0,
+            width, 0,      0
+        ])
+    }
+
+    /**
+     * Change position of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+    setPosition(x, y, z) {
+        this.position = [x, y, z]
+        this.polygons[0].setPosition(x, y, z)
+        this.polygons[1].setPosition(x, y, z)
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {*} x in deg.
+     * @param {*} y in deg.
+     * @param {*} z in deg.
+     * @public
+     */
+    rotate(x, y, z) {
+        let xRad = Math.degToRad(x)
+        let yRad = Math.degToRad(y)
+        let zRad = Math.degToRad(z)
+        this.polygons[0].rotate(xRad, yRad, zRad)
+        this.polygons[1].rotate(xRad, yRad, zRad)
+    }
+
+    /**
+     * Setting rotation of parent object in radians.
+     * @param {Number} x parent rotation of x axis in radians.
+     * @param {Number} y parent rotation of y axis in radians.
+     * @param {Number} z parent rotation of z axis in radians.
+     * @public
+     */
+    setParentRotation (x, y, z) {
+        this.polygons[0].setParentRotation(x, y, z)
+        this.polygons[1].setParentRotation(x, y, z)
+    }
+
+    /**
+     * Sets rotation point coordinates.
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @public
+     */
+    setRotationPoint (x, y, z) {
+        this.polygons[0].setRotationPoint(x, y, z)
+        this.polygons[1].setRotationPoint(x, y, z)
+    }
+
+    /**
+     * Set normals vector.
+     * @param {Array} normals 3:3 array. Every 3 elements is a vector of normal.
+     * @public
+     */
+    setNormals (normals) {
+        this.polygons[0].setNormals(normals)
+        this.polygons[1].setNormals(normals)
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

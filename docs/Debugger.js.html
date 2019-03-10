@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Debugger</title>
+    <title>JSDoc: Source: Debugger.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,180 +17,62 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Debugger</h1>
+    <h1 class="page-title">Source: Debugger.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Debugger<span class="signature">(engine)</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="Debugger"><span class="type-signature"></span>new Debugger<span class="signature">(engine)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>engine</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Engine.html">Engine</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Debugger.js.html">Debugger.js</a>, <a href="Debugger.js.html#line7">line 7</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Debugger for engine. Only for development.
+ * @param {Engine} engine 
+ * @class
+ * @constructor
+ */
+export class Debugger {
+    constructor(engine) {
+        engine.debugger = this
+        this.logArray = []
+        this.element = null
+    }
+
+    setElement(element) {
+        this.element = element
+    }
+
+    addLog(name, object, value, view, output) {
+        output = output || this.defaultOutput
+        this.logArray.push({name: name, object: object, value: value, view: view, output: output})
+        this.addView(view)
+    }
+
+    createLogView () {
+        let node = document.createElement('p')
+        return node
+    }
+
+    defaultOutput (log) {
+        if (object != null) {
+            return log.name + " : " + log.object[log.value]
+        }
+        return "log.name"
+    }
+
+    addView(view) {
+        this.element.appendChild(view)
+    }
+
+    updateInfo () {
+        this.logArray.forEach(e => {
+            e.view.innerText = e.output(e)
+        })
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 
