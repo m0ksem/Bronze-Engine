@@ -1141,14 +1141,34 @@ module.exports = _construct;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(4);
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+// CONCATENATED MODULE: ./src/math/Math.js
+/** @module Math */
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(5);
-var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
+/**
+ * Converting radians to degrees.
+ * @param {Number} radians
+ * @return {Number} degrees
+ */
+function radToDeg(radians) {
+  return radians * 180 / Math.PI;
+}
+/**
+ * Converting degrees to radians.
+ * @param {Number} degrees
+ * @return {Number} radians
+ */
 
+function degToRad(degrees) {
+  return degrees * Math.PI / 180;
+}
+/**
+ * Returns true if value is square.
+ * @param {Number} value 
+ */
+
+function isPowerOf2(value) {
+  return (value & value - 1) === 0;
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__(0);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
@@ -1156,6 +1176,456 @@ var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/createClass.js
 var createClass = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
+
+// CONCATENATED MODULE: ./src/math/Matrixes.js
+
+
+
+/** @module Matrixes */
+
+/**
+ * Matrix class with math matrix methods.
+ * @class
+ * @constructor
+ * @public
+ */
+var Matrixes_Matrix =
+/*#__PURE__*/
+function () {
+  function Matrix() {
+    classCallCheck_default()(this, Matrix);
+
+    this.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    return this;
+  }
+  /**
+   * Setting this matrix as perspective projection matrix.
+   * @param {Number} fieldOfViewInRadians fieldOfView of camera.
+   * @param {Number} width canvas width.
+   * @param {Number} height canvas height.
+   * @param {Number} near range of drawn z-coordinates start.
+   * @param {Number} far range of drawn z-coordinates end.
+   * @public
+   */
+
+
+  createClass_default()(Matrix, [{
+    key: "perspective",
+    value: function perspective(fieldOfViewInRadians, width, height, near, far) {
+      var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
+      var rangeInv = 1.0 / (near - far);
+      this.matrix = [f / (width / height), 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
+      return this;
+    }
+    /**
+     * Multiplying this matrix by another.
+     * @param {Array} matrix 
+     * @public
+     */
+
+  }, {
+    key: "multiply",
+    value: function multiply(matrix) {
+      var a00 = this.matrix[0 * 4 + 0];
+      var a01 = this.matrix[0 * 4 + 1];
+      var a02 = this.matrix[0 * 4 + 2];
+      var a03 = this.matrix[0 * 4 + 3];
+      var a10 = this.matrix[1 * 4 + 0];
+      var a11 = this.matrix[1 * 4 + 1];
+      var a12 = this.matrix[1 * 4 + 2];
+      var a13 = this.matrix[1 * 4 + 3];
+      var a20 = this.matrix[2 * 4 + 0];
+      var a21 = this.matrix[2 * 4 + 1];
+      var a22 = this.matrix[2 * 4 + 2];
+      var a23 = this.matrix[2 * 4 + 3];
+      var a30 = this.matrix[3 * 4 + 0];
+      var a31 = this.matrix[3 * 4 + 1];
+      var a32 = this.matrix[3 * 4 + 2];
+      var a33 = this.matrix[3 * 4 + 3];
+      var b00 = matrix[0 * 4 + 0];
+      var b01 = matrix[0 * 4 + 1];
+      var b02 = matrix[0 * 4 + 2];
+      var b03 = matrix[0 * 4 + 3];
+      var b10 = matrix[1 * 4 + 0];
+      var b11 = matrix[1 * 4 + 1];
+      var b12 = matrix[1 * 4 + 2];
+      var b13 = matrix[1 * 4 + 3];
+      var b20 = matrix[2 * 4 + 0];
+      var b21 = matrix[2 * 4 + 1];
+      var b22 = matrix[2 * 4 + 2];
+      var b23 = matrix[2 * 4 + 3];
+      var b30 = matrix[3 * 4 + 0];
+      var b31 = matrix[3 * 4 + 1];
+      var b32 = matrix[3 * 4 + 2];
+      var b33 = matrix[3 * 4 + 3];
+      this.matrix = [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
+    }
+    /**
+     * Return multiply this matrix by another.
+     * @param {Array} matrix
+     * @return {Array} result of multiply.
+     * @public
+     */
+
+  }, {
+    key: "multiply_",
+    value: function multiply_(matrix) {
+      var a00 = this.matrix[0 * 4 + 0];
+      var a01 = this.matrix[0 * 4 + 1];
+      var a02 = this.matrix[0 * 4 + 2];
+      var a03 = this.matrix[0 * 4 + 3];
+      var a10 = this.matrix[1 * 4 + 0];
+      var a11 = this.matrix[1 * 4 + 1];
+      var a12 = this.matrix[1 * 4 + 2];
+      var a13 = this.matrix[1 * 4 + 3];
+      var a20 = this.matrix[2 * 4 + 0];
+      var a21 = this.matrix[2 * 4 + 1];
+      var a22 = this.matrix[2 * 4 + 2];
+      var a23 = this.matrix[2 * 4 + 3];
+      var a30 = this.matrix[3 * 4 + 0];
+      var a31 = this.matrix[3 * 4 + 1];
+      var a32 = this.matrix[3 * 4 + 2];
+      var a33 = this.matrix[3 * 4 + 3];
+      var b00 = matrix[0 * 4 + 0];
+      var b01 = matrix[0 * 4 + 1];
+      var b02 = matrix[0 * 4 + 2];
+      var b03 = matrix[0 * 4 + 3];
+      var b10 = matrix[1 * 4 + 0];
+      var b11 = matrix[1 * 4 + 1];
+      var b12 = matrix[1 * 4 + 2];
+      var b13 = matrix[1 * 4 + 3];
+      var b20 = matrix[2 * 4 + 0];
+      var b21 = matrix[2 * 4 + 1];
+      var b22 = matrix[2 * 4 + 2];
+      var b23 = matrix[2 * 4 + 3];
+      var b30 = matrix[3 * 4 + 0];
+      var b31 = matrix[3 * 4 + 1];
+      var b32 = matrix[3 * 4 + 2];
+      var b33 = matrix[3 * 4 + 3];
+      return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
+    }
+    /**
+     * Multiplying matrix by transition matrix (x, y, z).
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+
+  }, {
+    key: "translate",
+    value: function translate(x, y, z) {
+      this.multiply(translation(x, y, z));
+    }
+    /**
+     * Multiplying matrix by transition matrix (x, y, z).
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+
+  }, {
+    key: "translate_",
+    value: function translate_(x, y, z) {
+      return this.multiply_(translation(x, y, z));
+    }
+    /**
+     * Multiplying matrix by rotationX(angle).
+     * @param {Number} angle in radians.
+     * @public
+     */
+
+  }, {
+    key: "rotateX",
+    value: function rotateX(angle) {
+      this.multiply(rotationX(angle));
+    }
+    /**
+     * Multiplying matrix by rotationY(angle).
+     * @param {Number} angle in radians.
+     * @public
+     */
+
+  }, {
+    key: "rotateY",
+    value: function rotateY(angle) {
+      this.multiply(rotationY(angle));
+    }
+    /**
+     * Multiplying matrix by rotationZ(angle).
+     * @param {Number} angle in radians.
+     * @public
+     */
+
+  }, {
+    key: "rotateZ",
+    value: function rotateZ(angle) {
+      this.multiply(rotationZ(angle));
+    }
+    /**
+     * Multiplying matrix by scale matrix (x, y, z).
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this.multiply(scaling(x, y, z));
+    }
+  }]);
+
+  return Matrix;
+}();
+/**
+ * Returns unit matrix.
+ * @returns {Array}
+ * @public
+ */
+
+function unit() {
+  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns translation matrix.
+ * @param {Number} x 
+ * @param {Number} y 
+ * @param {Number} z 
+ * @returns {Array}
+ * @public
+ */
+
+function translation(x, y, z) {
+  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
+}
+/**
+ * Returns rotation matrix for x axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function rotationX(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns rotation matrix for y axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function rotationY(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns rotation matrix for z axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function rotationZ(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns scaling matrix for every axis.
+ * @param {Number} x 
+ * @param {Number} y 
+ * @param {Number} z 
+ * @returns {Array}
+ * @public
+ */
+
+function scaling(x, y, z) {
+  return [x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns multiply of two matrixes.
+ * @param {Array} matrix1 
+ * @param {Array} matrix2 
+ * @returns {Array}
+ * @public
+ */
+
+function multiply(matrix1, matrix2) {
+  var a00 = matrix1[0 * 4 + 0];
+  var a01 = matrix1[0 * 4 + 1];
+  var a02 = matrix1[0 * 4 + 2];
+  var a03 = matrix1[0 * 4 + 3];
+  var a10 = matrix1[1 * 4 + 0];
+  var a11 = matrix1[1 * 4 + 1];
+  var a12 = matrix1[1 * 4 + 2];
+  var a13 = matrix1[1 * 4 + 3];
+  var a20 = matrix1[2 * 4 + 0];
+  var a21 = matrix1[2 * 4 + 1];
+  var a22 = matrix1[2 * 4 + 2];
+  var a23 = matrix1[2 * 4 + 3];
+  var a30 = matrix1[3 * 4 + 0];
+  var a31 = matrix1[3 * 4 + 1];
+  var a32 = matrix1[3 * 4 + 2];
+  var a33 = matrix1[3 * 4 + 3];
+  var b00 = matrix2[0 * 4 + 0];
+  var b01 = matrix2[0 * 4 + 1];
+  var b02 = matrix2[0 * 4 + 2];
+  var b03 = matrix2[0 * 4 + 3];
+  var b10 = matrix2[1 * 4 + 0];
+  var b11 = matrix2[1 * 4 + 1];
+  var b12 = matrix2[1 * 4 + 2];
+  var b13 = matrix2[1 * 4 + 3];
+  var b20 = matrix2[2 * 4 + 0];
+  var b21 = matrix2[2 * 4 + 1];
+  var b22 = matrix2[2 * 4 + 2];
+  var b23 = matrix2[2 * 4 + 3];
+  var b30 = matrix2[3 * 4 + 0];
+  var b31 = matrix2[3 * 4 + 1];
+  var b32 = matrix2[3 * 4 + 2];
+  var b33 = matrix2[3 * 4 + 3];
+  return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
+}
+/**
+ * 
+ * @param {Array} matrix
+ * @param {Array} vector4
+ * 
+ * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
+ * @public
+ */
+
+function vec3Multiply(matrix, vector4) {
+  // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
+  // c21 = a21 · b11 + a22 · b21 + a23 · b31 + a24 · b41
+  // c31 = a31 · b11 + a32 · b21 + a33 · b31 + a34 · b41
+  // c41 = a41 · b11 + a42 · b21 + a43 · b31 + a44 · b41
+  // console.log(matrix[0] * vector4[0] )
+  var c1 = matrix[0] * vector4[0] + matrix[1] * vector4[1] + matrix[2] * vector4[2] + matrix[3] * vector4[3];
+  var c2 = matrix[4] * vector4[0] + matrix[5] * vector4[1] + matrix[6] * vector4[2] + matrix[7] * vector4[3];
+  var c3 = matrix[8] * vector4[0] + matrix[9] * vector4[1] + matrix[10] * vector4[2] + matrix[11] * vector4[3];
+  var c4 = matrix[12] * vector4[0] + matrix[13] * vector4[1] + matrix[14] * vector4[2] + matrix[15] * vector4[3];
+  return [c1, c2, c3, c4];
+}
+function transformVector(matrix, vector) {
+  var transformed = new Float32Array(4);
+
+  for (var i = 0; i < 4; ++i) {
+    transformed[i] = 0.0;
+
+    for (var j = 0; j < 4; ++j) {
+      transformed[i] += vector[j] * matrix[j * 4 + i];
+    }
+  }
+
+  return transformed;
+}
+/**
+ * Computes the inverse of a matrix.
+ * @param {Array} matrix matrix to compute inverse of.
+ * @return {Array} new result matrix.
+ * @public
+ */
+
+function inverse(matrix) {
+  var result = new Float32Array(16);
+  var m00 = matrix[0 * 4 + 0];
+  var m01 = matrix[0 * 4 + 1];
+  var m02 = matrix[0 * 4 + 2];
+  var m03 = matrix[0 * 4 + 3];
+  var m10 = matrix[1 * 4 + 0];
+  var m11 = matrix[1 * 4 + 1];
+  var m12 = matrix[1 * 4 + 2];
+  var m13 = matrix[1 * 4 + 3];
+  var m20 = matrix[2 * 4 + 0];
+  var m21 = matrix[2 * 4 + 1];
+  var m22 = matrix[2 * 4 + 2];
+  var m23 = matrix[2 * 4 + 3];
+  var m30 = matrix[3 * 4 + 0];
+  var m31 = matrix[3 * 4 + 1];
+  var m32 = matrix[3 * 4 + 2];
+  var m33 = matrix[3 * 4 + 3];
+  var tmp_0 = m22 * m33;
+  var tmp_1 = m32 * m23;
+  var tmp_2 = m12 * m33;
+  var tmp_3 = m32 * m13;
+  var tmp_4 = m12 * m23;
+  var tmp_5 = m22 * m13;
+  var tmp_6 = m02 * m33;
+  var tmp_7 = m32 * m03;
+  var tmp_8 = m02 * m23;
+  var tmp_9 = m22 * m03;
+  var tmp_10 = m02 * m13;
+  var tmp_11 = m12 * m03;
+  var tmp_12 = m20 * m31;
+  var tmp_13 = m30 * m21;
+  var tmp_14 = m10 * m31;
+  var tmp_15 = m30 * m11;
+  var tmp_16 = m10 * m21;
+  var tmp_17 = m20 * m11;
+  var tmp_18 = m00 * m31;
+  var tmp_19 = m30 * m01;
+  var tmp_20 = m00 * m21;
+  var tmp_21 = m20 * m01;
+  var tmp_22 = m00 * m11;
+  var tmp_23 = m10 * m01;
+  var t0 = tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31 - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
+  var t1 = tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31 - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
+  var t2 = tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31 - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
+  var t3 = tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21 - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
+  var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
+  result[0] = d * t0;
+  result[1] = d * t1;
+  result[2] = d * t2;
+  result[3] = d * t3;
+  result[4] = d * (tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30 - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
+  result[5] = d * (tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30 - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
+  result[6] = d * (tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30 - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
+  result[7] = d * (tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20 - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
+  result[8] = d * (tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33 - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
+  result[9] = d * (tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33 - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
+  result[10] = d * (tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33 - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
+  result[11] = d * (tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23 - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
+  result[12] = d * (tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12 - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
+  result[13] = d * (tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22 - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
+  result[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
+  result[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
+  return result;
+}
+// CONCATENATED MODULE: ./src/math/Vectors.js
+/** @module Vectors */
+
+/**
+ * Normalize a vector.
+ * @param {Array[3]} vector vector to normalize.
+ * @return {Array[3]} normalized vector
+ */
+function Vectors_normalize(vector) {
+  var result = new Float32Array(3);
+  var length = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
+
+  if (length > 0.00001) {
+    result[0] = vector[0] / length;
+    result[1] = vector[1] / length;
+    result[2] = vector[2] / length;
+    return result;
+  } else {
+    return false;
+  }
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
+var regenerator = __webpack_require__(4);
+var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__(5);
+var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // CONCATENATED MODULE: ./src/Utils.js
 /**
@@ -1368,515 +1838,6 @@ function (_Image) {
 }(wrapNativeSuper_default()(Image));
 
 
-// CONCATENATED MODULE: ./src/math/Matrixes.js
-
-
-
-/**
- * Matrix class with math matrix methods.
- * @class
- * @constructor
- * @public
- */
-var Matrixes_Matrix =
-/*#__PURE__*/
-function () {
-  function Matrix() {
-    classCallCheck_default()(this, Matrix);
-
-    this.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    return this;
-  }
-  /**
-   * Setting this matrix as perspective projection matrix.
-   * @param {Number} fieldOfViewInRadians fieldOfView of camera.
-   * @param {Number} width canvas width.
-   * @param {Number} height canvas height.
-   * @param {Number} near range of drawn z-coordinates start.
-   * @param {Number} far range of drawn z-coordinates end.
-   * @public
-   */
-
-
-  createClass_default()(Matrix, [{
-    key: "perspective",
-    value: function perspective(fieldOfViewInRadians, width, height, near, far) {
-      var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
-      var rangeInv = 1.0 / (near - far);
-      this.matrix = [f / (width / height), 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
-      return this;
-    }
-    /**
-     * Multiplying this matrix by another.
-     * @param {Array} matrix 
-     * @public
-     */
-
-  }, {
-    key: "multiply",
-    value: function multiply(matrix) {
-      var a00 = this.matrix[0 * 4 + 0];
-      var a01 = this.matrix[0 * 4 + 1];
-      var a02 = this.matrix[0 * 4 + 2];
-      var a03 = this.matrix[0 * 4 + 3];
-      var a10 = this.matrix[1 * 4 + 0];
-      var a11 = this.matrix[1 * 4 + 1];
-      var a12 = this.matrix[1 * 4 + 2];
-      var a13 = this.matrix[1 * 4 + 3];
-      var a20 = this.matrix[2 * 4 + 0];
-      var a21 = this.matrix[2 * 4 + 1];
-      var a22 = this.matrix[2 * 4 + 2];
-      var a23 = this.matrix[2 * 4 + 3];
-      var a30 = this.matrix[3 * 4 + 0];
-      var a31 = this.matrix[3 * 4 + 1];
-      var a32 = this.matrix[3 * 4 + 2];
-      var a33 = this.matrix[3 * 4 + 3];
-      var b00 = matrix[0 * 4 + 0];
-      var b01 = matrix[0 * 4 + 1];
-      var b02 = matrix[0 * 4 + 2];
-      var b03 = matrix[0 * 4 + 3];
-      var b10 = matrix[1 * 4 + 0];
-      var b11 = matrix[1 * 4 + 1];
-      var b12 = matrix[1 * 4 + 2];
-      var b13 = matrix[1 * 4 + 3];
-      var b20 = matrix[2 * 4 + 0];
-      var b21 = matrix[2 * 4 + 1];
-      var b22 = matrix[2 * 4 + 2];
-      var b23 = matrix[2 * 4 + 3];
-      var b30 = matrix[3 * 4 + 0];
-      var b31 = matrix[3 * 4 + 1];
-      var b32 = matrix[3 * 4 + 2];
-      var b33 = matrix[3 * 4 + 3];
-      this.matrix = [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
-    }
-    /**
-     * Return multiply this matrix by another.
-     * @param {Array} matrix
-     * @return {Array} result of multiply.
-     * @public
-     */
-
-  }, {
-    key: "multiply_",
-    value: function multiply_(matrix) {
-      var a00 = this.matrix[0 * 4 + 0];
-      var a01 = this.matrix[0 * 4 + 1];
-      var a02 = this.matrix[0 * 4 + 2];
-      var a03 = this.matrix[0 * 4 + 3];
-      var a10 = this.matrix[1 * 4 + 0];
-      var a11 = this.matrix[1 * 4 + 1];
-      var a12 = this.matrix[1 * 4 + 2];
-      var a13 = this.matrix[1 * 4 + 3];
-      var a20 = this.matrix[2 * 4 + 0];
-      var a21 = this.matrix[2 * 4 + 1];
-      var a22 = this.matrix[2 * 4 + 2];
-      var a23 = this.matrix[2 * 4 + 3];
-      var a30 = this.matrix[3 * 4 + 0];
-      var a31 = this.matrix[3 * 4 + 1];
-      var a32 = this.matrix[3 * 4 + 2];
-      var a33 = this.matrix[3 * 4 + 3];
-      var b00 = matrix[0 * 4 + 0];
-      var b01 = matrix[0 * 4 + 1];
-      var b02 = matrix[0 * 4 + 2];
-      var b03 = matrix[0 * 4 + 3];
-      var b10 = matrix[1 * 4 + 0];
-      var b11 = matrix[1 * 4 + 1];
-      var b12 = matrix[1 * 4 + 2];
-      var b13 = matrix[1 * 4 + 3];
-      var b20 = matrix[2 * 4 + 0];
-      var b21 = matrix[2 * 4 + 1];
-      var b22 = matrix[2 * 4 + 2];
-      var b23 = matrix[2 * 4 + 3];
-      var b30 = matrix[3 * 4 + 0];
-      var b31 = matrix[3 * 4 + 1];
-      var b32 = matrix[3 * 4 + 2];
-      var b33 = matrix[3 * 4 + 3];
-      return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
-    }
-    /**
-     * Multiplying matrix by transition matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "translate",
-    value: function translate(x, y, z) {
-      this.multiply(Matrixes_Matrixes.translation(x, y, z));
-    }
-    /**
-     * Multiplying matrix by transition matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "translate_",
-    value: function translate_(x, y, z) {
-      return this.multiply_(Matrixes_Matrixes.translation(x, y, z));
-    }
-    /**
-     * Multiplying matrix by rotationX(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateX",
-    value: function rotateX(angle) {
-      this.multiply(Matrixes_Matrixes.rotationX(angle));
-    }
-    /**
-     * Multiplying matrix by rotationY(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateY",
-    value: function rotateY(angle) {
-      this.multiply(Matrixes_Matrixes.rotationY(angle));
-    }
-    /**
-     * Multiplying matrix by rotationZ(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateZ",
-    value: function rotateZ(angle) {
-      this.multiply(Matrixes_Matrixes.rotationZ(angle));
-    }
-    /**
-     * Multiplying matrix by scale matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.multiply(Matrixes_Matrixes.scaling(x, y, z));
-    }
-  }]);
-
-  return Matrix;
-}();
-/**
- * Class for default matrixes.
- * @constructor
- * @class
- * @private
- */
-
-var Matrixes_MatrixesClass =
-/*#__PURE__*/
-function () {
-  function MatrixesClass() {
-    classCallCheck_default()(this, MatrixesClass);
-  }
-
-  createClass_default()(MatrixesClass, [{
-    key: "unit",
-
-    /**
-     * Returns unit matrix.
-     * @returns {Array}
-     * @public
-     */
-    value: function unit() {
-      return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    }
-    /**
-     * Returns translation matrix.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "translation",
-    value: function translation(x, y, z) {
-      return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
-    }
-    /**
-     * Returns rotation matrix for x axis.
-     * @param {Number} angle angle in radians.
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "rotationX",
-    value: function rotationX(angle) {
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
-    }
-    /**
-     * Returns rotation matrix for y axis.
-     * @param {Number} angle angle in radians.
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "rotationY",
-    value: function rotationY(angle) {
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
-    }
-    /**
-     * Returns rotation matrix for z axis.
-     * @param {Number} angle angle in radians.
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "rotationZ",
-    value: function rotationZ(angle) {
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    }
-    /**
-     * Returns scaling matrix for every axis.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "scaling",
-    value: function scaling(x, y, z) {
-      return [x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1];
-    }
-    /**
-     * Returns multiply of two matrixes.
-     * @param {Array} matrix1 
-     * @param {Array} matrix2 
-     * @returns {Array}
-     * @public
-     */
-
-  }, {
-    key: "multiply",
-    value: function multiply(matrix1, matrix2) {
-      var a00 = matrix1[0 * 4 + 0];
-      var a01 = matrix1[0 * 4 + 1];
-      var a02 = matrix1[0 * 4 + 2];
-      var a03 = matrix1[0 * 4 + 3];
-      var a10 = matrix1[1 * 4 + 0];
-      var a11 = matrix1[1 * 4 + 1];
-      var a12 = matrix1[1 * 4 + 2];
-      var a13 = matrix1[1 * 4 + 3];
-      var a20 = matrix1[2 * 4 + 0];
-      var a21 = matrix1[2 * 4 + 1];
-      var a22 = matrix1[2 * 4 + 2];
-      var a23 = matrix1[2 * 4 + 3];
-      var a30 = matrix1[3 * 4 + 0];
-      var a31 = matrix1[3 * 4 + 1];
-      var a32 = matrix1[3 * 4 + 2];
-      var a33 = matrix1[3 * 4 + 3];
-      var b00 = matrix2[0 * 4 + 0];
-      var b01 = matrix2[0 * 4 + 1];
-      var b02 = matrix2[0 * 4 + 2];
-      var b03 = matrix2[0 * 4 + 3];
-      var b10 = matrix2[1 * 4 + 0];
-      var b11 = matrix2[1 * 4 + 1];
-      var b12 = matrix2[1 * 4 + 2];
-      var b13 = matrix2[1 * 4 + 3];
-      var b20 = matrix2[2 * 4 + 0];
-      var b21 = matrix2[2 * 4 + 1];
-      var b22 = matrix2[2 * 4 + 2];
-      var b23 = matrix2[2 * 4 + 3];
-      var b30 = matrix2[3 * 4 + 0];
-      var b31 = matrix2[3 * 4 + 1];
-      var b32 = matrix2[3 * 4 + 2];
-      var b33 = matrix2[3 * 4 + 3];
-      return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
-    }
-    /**
-     * 
-     * @param {Array} matrix
-     * @param {Array} vector4
-     * 
-     * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
-     * @public
-     */
-
-  }, {
-    key: "vec3Multiply",
-    value: function vec3Multiply(matrix, vector4) {
-      // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
-      // c21 = a21 · b11 + a22 · b21 + a23 · b31 + a24 · b41
-      // c31 = a31 · b11 + a32 · b21 + a33 · b31 + a34 · b41
-      // c41 = a41 · b11 + a42 · b21 + a43 · b31 + a44 · b41
-      // console.log(matrix[0] * vector4[0] )
-      var c1 = matrix[0] * vector4[0] + matrix[1] * vector4[1] + matrix[2] * vector4[2] + matrix[3] * vector4[3];
-      var c2 = matrix[4] * vector4[0] + matrix[5] * vector4[1] + matrix[6] * vector4[2] + matrix[7] * vector4[3];
-      var c3 = matrix[8] * vector4[0] + matrix[9] * vector4[1] + matrix[10] * vector4[2] + matrix[11] * vector4[3];
-      var c4 = matrix[12] * vector4[0] + matrix[13] * vector4[1] + matrix[14] * vector4[2] + matrix[15] * vector4[3];
-      return [c1, c2, c3, c4];
-    }
-  }, {
-    key: "transformVector",
-    value: function transformVector(matrix, vector) {
-      var transformed = new Float32Array(4);
-
-      for (var i = 0; i < 4; ++i) {
-        transformed[i] = 0.0;
-
-        for (var j = 0; j < 4; ++j) {
-          transformed[i] += vector[j] * matrix[j * 4 + i];
-        }
-      }
-
-      return transformed;
-    }
-    /**
-    * Computes the inverse of a matrix.
-    * @param {Array} matrix matrix to compute inverse of.
-    * @return {Array} new result matrix.
-    * @public
-    */
-
-  }, {
-    key: "inverse",
-    value: function inverse(matrix) {
-      var result = new Float32Array(16);
-      var m00 = matrix[0 * 4 + 0];
-      var m01 = matrix[0 * 4 + 1];
-      var m02 = matrix[0 * 4 + 2];
-      var m03 = matrix[0 * 4 + 3];
-      var m10 = matrix[1 * 4 + 0];
-      var m11 = matrix[1 * 4 + 1];
-      var m12 = matrix[1 * 4 + 2];
-      var m13 = matrix[1 * 4 + 3];
-      var m20 = matrix[2 * 4 + 0];
-      var m21 = matrix[2 * 4 + 1];
-      var m22 = matrix[2 * 4 + 2];
-      var m23 = matrix[2 * 4 + 3];
-      var m30 = matrix[3 * 4 + 0];
-      var m31 = matrix[3 * 4 + 1];
-      var m32 = matrix[3 * 4 + 2];
-      var m33 = matrix[3 * 4 + 3];
-      var tmp_0 = m22 * m33;
-      var tmp_1 = m32 * m23;
-      var tmp_2 = m12 * m33;
-      var tmp_3 = m32 * m13;
-      var tmp_4 = m12 * m23;
-      var tmp_5 = m22 * m13;
-      var tmp_6 = m02 * m33;
-      var tmp_7 = m32 * m03;
-      var tmp_8 = m02 * m23;
-      var tmp_9 = m22 * m03;
-      var tmp_10 = m02 * m13;
-      var tmp_11 = m12 * m03;
-      var tmp_12 = m20 * m31;
-      var tmp_13 = m30 * m21;
-      var tmp_14 = m10 * m31;
-      var tmp_15 = m30 * m11;
-      var tmp_16 = m10 * m21;
-      var tmp_17 = m20 * m11;
-      var tmp_18 = m00 * m31;
-      var tmp_19 = m30 * m01;
-      var tmp_20 = m00 * m21;
-      var tmp_21 = m20 * m01;
-      var tmp_22 = m00 * m11;
-      var tmp_23 = m10 * m01;
-      var t0 = tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31 - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
-      var t1 = tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31 - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
-      var t2 = tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31 - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
-      var t3 = tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21 - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
-      var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
-      result[0] = d * t0;
-      result[1] = d * t1;
-      result[2] = d * t2;
-      result[3] = d * t3;
-      result[4] = d * (tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30 - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
-      result[5] = d * (tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30 - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
-      result[6] = d * (tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30 - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
-      result[7] = d * (tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20 - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
-      result[8] = d * (tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33 - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
-      result[9] = d * (tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33 - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
-      result[10] = d * (tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33 - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
-      result[11] = d * (tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23 - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
-      result[12] = d * (tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12 - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
-      result[13] = d * (tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22 - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
-      result[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
-      result[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
-      return result;
-    }
-  }]);
-
-  return MatrixesClass;
-}();
-/**
- * Default Matrixes object.
- * @type {MatrixesClass}
- */
-
-
-var Matrixes_Matrixes = new Matrixes_MatrixesClass();
-// CONCATENATED MODULE: ./src/math/Vectors.js
-/**
- * Normalize a vector.
- * @param {Array[3]} vector vector to normalize.
- * @return {Array[3]} normalized vector
- */
-function Vectors_normalize(vector) {
-  var result = new Float32Array(3);
-  var length = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
-
-  if (length > 0.00001) {
-    result[0] = vector[0] / length;
-    result[1] = vector[1] / length;
-    result[2] = vector[2] / length;
-    return result;
-  } else {
-    return false;
-  }
-}
-// CONCATENATED MODULE: ./src/math/Math.js
-/**
- * Converting radians to degrees
- * @param {Number} radians
- * @return {Number} degrees
- */
-function radToDeg(radians) {
-  return radians * 180 / Math.PI;
-}
-/**
- * Converting degrees to radians
- * @param {Number} degrees
- * @return {Number} radians
- */
-
-function degToRad(degrees) {
-  return degrees * Math.PI / 180;
-}
-/**
- * Returns true if value is square.
- * @param {Number} value 
- */
-
-function isPowerOf2(value) {
-  return (value & value - 1) === 0;
-}
 // CONCATENATED MODULE: ./src/objects/Object.js
 
 
@@ -1896,6 +1857,13 @@ function () {
 
     engine.objects.push(this);
     /**
+     * Engine where object attached.
+     * @type {Engine}
+     * @private
+     */
+
+    this.engine = engine;
+    /**
      * WebGL context of engine
      * @private
      */
@@ -1911,76 +1879,100 @@ function () {
     /**
      * Object texture.
      * @type {Texture} texture
-     * @readonly
+     * @public
      */
 
     this.texture = engine.noTexture;
     /**
-     * Object position.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
+     * @public
+     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+     * @property {Number} x position on axis x
+     * @property {Number} y position on axis y
+     * @property {Number} z position on axis z
      */
 
     this.position = [0, 0, 0];
     /**
-     * Object rotation.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+     * @public
+     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+     * @property {Number} x rotation on axis x
+     * @property {Number} y rotation on axis y
+     * @property {Number} z rotation on axis z
      */
 
     this.rotation = [0, 0, 0];
     /**
-     * Object scaling.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
+     * @public
+     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+     * @property {Number} x scaling on axis x
+     * @property {Number} y scaling on axis x
+     * @property {Number} z scaling on axis x
      */
 
     this.scaling = [1, 1, 1];
     /**
-     * The point around which the object rotates.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
+     * @public
+     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+     * @property {Number} x rotation point coordinate on axis x
+     * @property {Number} y rotation point coordinate on axis y
+     * @property {Number} z rotation point coordinate on axis z
      */
 
     this.rotationPoint = [0, 0, 0];
     /**
-     * The point around which the parent object rotates.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
+     * @public
+     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+     * @property {Number} x parent rotation on axis x
+     * @property {Number} y parent rotation on axis y
+     * @property {Number} z parent rotation on axis z
      */
 
     this.parentRotation = [0, 0, 0];
     /**
+     * These are the edges of the object on the monitor.
      * @readonly
-     * 
-     * @Type {
-     *       x: {
-                left: Number,
-                right: Number
-            },
-            y: {
-                top: Number,
-                bottom: Number
-            },
-            depth: Number
-        }
+     * @Type {Object}   
+     * @property {Number} relativeCameraPosition.x.left
+     * @property {Number} relativeCameraPosition.x.right
+     * @property {Number} relativeCameraPosition.y.top
+     * @property {Number} relativeCameraPosition.y.bottom
+     * @property {Number} relativeCameraPosition.depth
      */
 
     this.relativeCameraPosition = null;
     /**
      * Faces of object. Needs to draw object. Creates when object is compiled.
-     * @private
+     * @readonly
      * @type {Array}
      */
 
     this.faces = [];
     /**
      * Collision boxes coordinates array.
-     * @type {Array}
+     * @type {
+     *      x: Number[2],
+     *      y: Number[2],
+     *      z: Number[2]
+     *  }
+     * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
+     * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
+     * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
      * @public
      */
 
     this.collisionBoxes = [];
+    /**
+     * Sets whether the object will be attached to the camera like UI element.
+     * @type {boolean}
+     * @public
+     */
+
+    this.UIElement = false;
   }
   /**
    * Setting texture for object.
@@ -2037,7 +2029,7 @@ function () {
     key: "moveRelativeToTheCamera",
     value: function moveRelativeToTheCamera(x, y, z) {
       var pos = [x, y, z, 1];
-      pos = Matrixes_Matrixes.vec3Multiply(this.camera.inventedMatrix, pos);
+      pos = vec3Multiply(this.camera.inventedMatrix, pos);
       this.position[0] += pos[0];
       this.position[1] += pos[1];
       this.position[2] += pos[2];
@@ -2112,7 +2104,8 @@ function () {
       this.scaling = [x, y, z];
     }
     /**
-     * Default animation function for overload.
+     * Default animation function.
+     * @private
      */
 
   }, {
@@ -2124,6 +2117,7 @@ function () {
      * Sets the animation function which execute every engine update.
      * @param {Number} fps
      * @param {Function} [animateFunction] default - animation function.
+     * @public
      */
 
   }, {
@@ -2131,6 +2125,16 @@ function () {
     value: function animate(fps, animateFunction) {
       animateFunction = animateFunction || this.animation;
       setInterval(animateFunction, 1000 / fps);
+    }
+    /**
+     * Function detaches from engine. If you need to clean memory, you this method and then you default javascript operator `delete`.
+     * @public
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.engine.splice(this.engine.objects.indexOf(this), 1);
     }
     /**
      * Function to compile object from text of .obj file.
@@ -2410,21 +2414,22 @@ function () {
 
     this.height = canvas.height;
     /**
-     * @type {Array.<{Polygon}>}
+     * @type {Polygon[]}
      * @private
      */
 
     this.polygons = [];
     /**
-     * @type {Array.<{Objects}>}
-     * @private
+     * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
+     * @type {Objects[]}
+     * @public
      */
 
     this.objects = [];
     /**
      * @type {Object}
      * @property {Array} ui.objects
-     * @private
+     * @public
      */
 
     this.ui = {
@@ -2437,20 +2442,23 @@ function () {
     };
     this.textures = [];
     /**
+     * The camera that is attached to the engine.
      * @type {Camera}
-     * @private
+     * @public
      */
 
     this.camera = null;
     /**
+     * The debugger that is attached to the engine.
      * @type {Debugger}
-     * @private
+     * @public
      */
 
     this.debugger = null;
     /**
+     * The controls that is attached to the engine.
      * @type {Controls}
-     * @private
+     * @public
      */
 
     this.controls = null;
@@ -2536,6 +2544,12 @@ function () {
       this.height = this.canvas.clientHeight;
       this.webGL.viewport(0, 0, this.width, this.height);
     }
+    /**
+     * Sets function when object is selected.
+     * @param {Function(object)} handler
+     * @public
+     */
+
   }, {
     key: "onObjectSelect",
     value: function onObjectSelect(handler) {
@@ -2616,16 +2630,16 @@ function () {
         temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
         temp.multiply(_this2.camera.inventedMatrix);
         world = new Matrixes_Matrix();
-        world.multiply(Matrixes_Matrixes.inverse(Matrixes_Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
+        world.multiply(inverse(translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
         world.translate(element.position[0], element.position[1], element.position[2]);
-        rot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.rotation[0]), Matrixes_Matrixes.rotationY(element.rotation[1]));
-        rot = Matrixes_Matrixes.multiply(rot, Matrixes_Matrixes.rotationZ(element.rotation[2]));
+        rot = multiply(rotationX(element.rotation[0]), rotationY(element.rotation[1]));
+        rot = multiply(rot, rotationZ(element.rotation[2]));
 
         if (element.parentRotation != null) {
-          parentRot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.parentRotation[0]), Matrixes_Matrixes.rotationY(element.parentRotation[1]));
-          parentRot = Matrixes_Matrixes.multiply(parentRot, Matrixes_Matrixes.rotationZ(element.parentRotation[2]));
+          parentRot = multiply(rotationX(element.parentRotation[0]), rotationY(element.parentRotation[1]));
+          parentRot = multiply(parentRot, rotationZ(element.parentRotation[2]));
           element._world = parentRot;
-          rot = Matrixes_Matrixes.multiply(parentRot, rot);
+          rot = multiply(parentRot, rot);
         }
 
         world.multiply(rot);
@@ -2639,126 +2653,114 @@ function () {
       this.objects.forEach(function (element) {
         temp = new Matrixes_Matrix();
         temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
-        temp.multiply(_this2.camera.inventedMatrix);
+
+        if (!element.UIElement) {
+          temp.multiply(_this2.camera.inventedMatrix);
+        }
+
         world = new Matrixes_Matrix();
-        world.multiply(Matrixes_Matrixes.inverse(Matrixes_Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
+        world.multiply(inverse(translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
         world.translate(element.position[0], element.position[1], element.position[2]);
-        rot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.rotation[0]), Matrixes_Matrixes.rotationY(element.rotation[1]));
-        rot = Matrixes_Matrixes.multiply(rot, Matrixes_Matrixes.rotationZ(element.rotation[2]));
-        parentRot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.parentRotation[0]), Matrixes_Matrixes.rotationY(element.parentRotation[1]));
-        parentRot = Matrixes_Matrixes.multiply(parentRot, Matrixes_Matrixes.rotationZ(element.parentRotation[2]));
+        rot = multiply(rotationX(element.rotation[0]), rotationY(element.rotation[1]));
+        rot = multiply(rot, rotationZ(element.rotation[2]));
+        parentRot = multiply(rotationX(element.parentRotation[0]), rotationY(element.parentRotation[1]));
+        parentRot = multiply(parentRot, rotationZ(element.parentRotation[2]));
         element._world = parentRot;
-        rot = Matrixes_Matrixes.multiply(parentRot, rot);
+        rot = multiply(parentRot, rot);
         world.multiply(rot);
         world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2]);
         world.scale(element.scaling[0], element.scaling[1], element.scaling[2]);
         temp.multiply(world.matrix);
-        var mouseOverHitBox = false;
-        element.collisionBoxes.forEach(function (collisionBox) {
-          var boxInPixels = [];
 
-          for (var ix = 0; ix < collisionBox.x.length; ix++) {
-            var x = collisionBox.x[ix];
+        if (!element.UIElement) {
+          var mouseOverHitBox = false;
+          element.collisionBoxes.forEach(function (collisionBox) {
+            var boxInPixels = [];
 
-            for (var iy = 0; iy < collisionBox.y.length; iy++) {
-              var y = collisionBox.y[iy];
+            for (var ix = 0; ix < collisionBox.x.length; ix++) {
+              var x = collisionBox.x[ix];
 
-              for (var iz = 0; iz < collisionBox.z.length; iz++) {
-                var z = collisionBox.z[iz];
-                var coordsInPixels = Matrixes_Matrixes.transformVector(temp.matrix, [x, y, z, 1]);
-                coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
-                coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
-                coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * _this2.width;
-                coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * _this2.height;
-                coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
-                coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
-                coordsInPixels[0] = coordsInPixels[0] > _this2.width ? _this2.width : coordsInPixels[0];
-                coordsInPixels[1] = coordsInPixels[1] > _this2.height ? _this2.height : coordsInPixels[1];
+              for (var iy = 0; iy < collisionBox.y.length; iy++) {
+                var y = collisionBox.y[iy];
 
-                if (coordsInPixels[2] >= 0) {
-                  boxInPixels.push(coordsInPixels);
+                for (var iz = 0; iz < collisionBox.z.length; iz++) {
+                  var z = collisionBox.z[iz];
+                  var coordsInPixels = transformVector(temp.matrix, [x, y, z, 1]);
+                  coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
+                  coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
+                  coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * _this2.width;
+                  coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * _this2.height;
+                  coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
+                  coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
+                  coordsInPixels[0] = coordsInPixels[0] > _this2.width ? _this2.width : coordsInPixels[0];
+                  coordsInPixels[1] = coordsInPixels[1] > _this2.height ? _this2.height : coordsInPixels[1];
+
+                  if (coordsInPixels[2] >= 0) {
+                    boxInPixels.push(coordsInPixels);
+                  }
                 }
               }
             }
-          }
 
-          var smallest = [10000, 10000, -1000];
-          var biggest = [-10000, -10000];
+            var smallest = [10000, 10000, -1000];
+            var biggest = [-10000, -10000];
 
-          for (var i = 0; i < boxInPixels.length; i++) {
-            var box = boxInPixels[i];
+            for (var i = 0; i < boxInPixels.length; i++) {
+              var box = boxInPixels[i];
 
-            if (box[0] < smallest[0]) {
-              smallest[0] = box[0];
-            } else if (box[0] > biggest[0]) {
-              biggest[0] = box[0];
+              if (box[0] < smallest[0]) {
+                smallest[0] = box[0];
+              } else if (box[0] > biggest[0]) {
+                biggest[0] = box[0];
+              }
+
+              if (box[1] < smallest[1]) {
+                smallest[1] = box[1];
+              } else if (box[1] > biggest[1]) {
+                biggest[1] = box[1];
+              }
+
+              if (box[2] > smallest[2]) {
+                smallest[2] = box[2];
+              }
             }
 
-            if (box[1] < smallest[1]) {
-              smallest[1] = box[1];
-            } else if (box[1] > biggest[1]) {
-              biggest[1] = box[1];
+            element.relativeCameraPosition = {
+              x: {
+                left: smallest[0],
+                right: biggest[0]
+              },
+              y: {
+                top: biggest[1],
+                bottom: smallest[1]
+              },
+              depth: smallest[2]
+            };
+
+            if (_this2.controls.mouse.x > smallest[0] && _this2.controls.mouse.x < biggest[0] && _this2.controls.mouse.y > smallest[1] && _this2.controls.mouse.y < biggest[1]) {
+              mouseOverHitBox = true;
             }
 
-            if (box[2] > smallest[2]) {
-              smallest[2] = box[2];
+            var mouse = _this2.controls.mouse;
+
+            if (mouseOverHitBox) {
+              if (selectedObject == null) {
+                selectedObject = element;
+              }
+
+              if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
+                selectedObject = element;
+              }
             }
-          }
-
-          element.relativeCameraPosition = {
-            x: {
-              left: smallest[0],
-              right: biggest[0]
-            },
-            y: {
-              top: biggest[1],
-              bottom: smallest[1]
-            },
-            depth: smallest[2]
-          };
-
-          if (_this2.controls.mouse.x > smallest[0] && _this2.controls.mouse.x < biggest[0] && _this2.controls.mouse.y > smallest[1] && _this2.controls.mouse.y < biggest[1]) {
-            mouseOverHitBox = true;
-          }
-
-          var mouse = _this2.controls.mouse;
-
-          if (mouseOverHitBox) {
-            if (selectedObject == null) {
-              selectedObject = element;
-            }
-
-            if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
-              selectedObject = element;
-            }
-          }
-        });
-        _this2.selectedObject = selectedObject;
-
-        if (!_this2.selectedObject && _this2._objectSelectHandler != null) {
-          _this2._objectSelectHandler();
+          });
         }
 
-        element._matrix = temp.matrix;
-        element._rotationMatrix = rot;
-      });
-      this.ui.objects.forEach(function (element) {
-        temp = new Matrixes_Matrix();
-        temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000); // temp.multiply(this.camera.rotationMatrix)
+        _this2.selectedObject = selectedObject;
 
-        world = new Matrixes_Matrix();
-        world.multiply(Matrixes_Matrixes.inverse(Matrixes_Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
-        world.translate(element.position[0], element.position[1], element.position[2]);
-        rot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.rotation[0]), Matrixes_Matrixes.rotationY(element.rotation[1]));
-        rot = Matrixes_Matrixes.multiply(rot, Matrixes_Matrixes.rotationZ(element.rotation[2]));
-        parentRot = Matrixes_Matrixes.multiply(Matrixes_Matrixes.rotationX(element.parentRotation[0]), Matrixes_Matrixes.rotationY(element.parentRotation[1]));
-        parentRot = Matrixes_Matrixes.multiply(parentRot, Matrixes_Matrixes.rotationZ(element.parentRotation[2]));
-        element._world = parentRot;
-        rot = Matrixes_Matrixes.multiply(parentRot, rot);
-        world.multiply(rot);
-        world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2]);
-        world.scale(element.scaling[0], element.scaling[1], element.scaling[2]);
-        temp.multiply(world.matrix);
+        if (!element.UIElement && !_this2.selectedObject && _this2._objectSelectHandler != null) {
+          _this2._objectSelectHandler(selectedObject);
+        }
+
         element._matrix = temp.matrix;
         element._rotationMatrix = rot;
       });
@@ -2833,6 +2835,8 @@ function () {
 
           _this3.webGL.drawArrays(_this3.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount);
         });
+
+        _this3.webGL.enable(_this3.webGL.DEPTH_TEST);
       });
       this.ui.objects.forEach(function (o) {
         o.faces.forEach(function (face) {
@@ -2914,6 +2918,13 @@ function () {
     key: "run",
     value: function run() {
       _engine = this;
+      console.log();
+      console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running");
+      console.log();
+      console.info('     Version : 0.0.1');
+      console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global');
+      console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine');
+      console.log();
       requestAnimationFrameEngine();
     }
   }]);
@@ -2961,7 +2972,6 @@ function requestAnimationFrameEngine() {
 
 
 
-
 /**
  * Creates camera object.
  * @class
@@ -3002,7 +3012,7 @@ function () {
      * @type {Array.Array} matrix 4x4
      */
 
-    this.matrix = Matrixes_Matrixes.unit();
+    this.matrix = unit();
     /**
      * Camera rotation.
      * @readonly
@@ -3116,20 +3126,20 @@ function () {
   }, {
     key: "computeMatrix",
     value: function computeMatrix() {
-      this.matrix = Matrixes_Matrixes.unit();
-      this.matrix = Matrixes_Matrixes.multiply(this.matrix, Matrixes_Matrixes.translation(this.position[0], this.position[1], this.position[2]));
+      this.matrix = unit();
+      this.matrix = multiply(this.matrix, translation(this.position[0], this.position[1], this.position[2]));
       var rotation = new Matrixes_Matrix();
-      rotation.multiply(Matrixes_Matrixes.rotationY(degToRad(this.rotation[1])));
-      rotation.multiply(Matrixes_Matrixes.rotationX(degToRad(this.rotation[0])));
-      rotation.multiply(Matrixes_Matrixes.rotationZ(degToRad(this.rotation[2])));
-      this.matrix = Matrixes_Matrixes.multiply(this.matrix, rotation.matrix);
+      rotation.multiply(rotationY(degToRad(this.rotation[1])));
+      rotation.multiply(rotationX(degToRad(this.rotation[0])));
+      rotation.multiply(rotationZ(degToRad(this.rotation[2])));
+      this.matrix = multiply(this.matrix, rotation.matrix);
 
       if (this._lookUpMatrix != null) {
-        this.matrix = Matrixes_Matrixes.multiply(this.matrix, this.lookAt(camera._lookUpMatrix, [0, 1, 0]));
+        this.matrix = multiply(this.matrix, this.lookAt(camera._lookUpMatrix, [0, 1, 0]));
       }
 
-      this.rotationMatrix = Matrixes_Matrixes.inverse(rotation.matrix);
-      this.inventedMatrix = Matrixes_Matrixes.inverse(this.matrix);
+      this.rotationMatrix = inverse(rotation.matrix);
+      this.inventedMatrix = inverse(this.matrix);
     }
     /**
      * Sets function to control camera.
@@ -3316,7 +3326,7 @@ function () {
         _this.keys[event.keyCode] = true;
 
         if (_this._handlers[event.keyCode] != null) {
-          _this._handlers[event.keyCode]();
+          _this._handlers[event.keyCode](event);
         }
 
         return !_this._rebind;
@@ -3370,16 +3380,20 @@ function () {
       if (x < canvasPos.right && x > canvasPos.left && y < canvasPos.bottom && y > canvasPos.top) {
         _this.mouseOverCanvas = true;
 
-        if (!_this._focusOnlyIfClick) {
+        if (!_this._focusOnlyIfClick && !_this.isFocused) {
           engine.canvas.focus();
         }
       } else {
         _this.mouseOverCanvas = false;
+
+        if (!_this._focusOnlyIfClick) {
+          engine.canvas.blur();
+        }
       }
     });
 
     engine.canvas.onclick = function () {
-      if (_this._focusOnlyIfClick) {
+      if (_this._focusOnlyIfClick && !_this.isFocused) {
         engine.canvas.focus();
       }
 
@@ -3390,7 +3404,7 @@ function () {
 
     engine.canvas.onmousedown = function (event) {
       _this.mouse.buttons[event.button] = true;
-      if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button]();
+      if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button](event);
       return false;
     };
 
@@ -3428,14 +3442,24 @@ function () {
     }, false);
   }
   /**
-   * Set sensitivity for mouse movement
-   * @default 1
-   * @param {Number} sensitivity 
-   * @public
+   * 
    */
 
 
   createClass_default()(Controls, [{
+    key: "clickForFocus",
+    value: function clickForFocus(bool) {
+      bool = bool || !this._focusOnlyIfClick;
+      this._focusOnlyIfClick = bool;
+    }
+    /**
+     * Set sensitivity for mouse movement
+     * @default 1
+     * @param {Number} sensitivity 
+     * @public
+     */
+
+  }, {
     key: "setSensitivity",
     value: function setSensitivity(sensitivity) {
       this.mouse.sensitivity = sensitivity;
@@ -3461,7 +3485,7 @@ function () {
   }, {
     key: "globalRebind",
     value: function globalRebind(bool) {
-      bool || !this._globalRebind;
+      bool = bool || !this._globalRebind;
       this._globalRebind = bool;
     }
     /**
@@ -4202,432 +4226,22 @@ function () {
 
   return Cube;
 }();
-// CONCATENATED MODULE: ./src/UI/ObjectUI.js
-
-
-
-/**
-* Creates and bind to engine object. The object must be loaded from .obj file.
-* @class
-* @constructor
-* @param {Engine} engine 
-*/
-
-var ObjectUI_ObjectUI =
-/*#__PURE__*/
-function () {
-  function ObjectUI(engine) {
-    classCallCheck_default()(this, ObjectUI);
-
-    engine.ui.objects.push(this);
-    /**
-     * WebGL context of engine
-     * @private
-     */
-
-    this.webGL = engine.webGL;
-    /**
-     * Camera of engine.
-     * @type {Camera}
-     * @private
-     */
-
-    this.camera = engine.camera;
-    /**
-     * Object texture.
-     * @type {Texture} texture
-     * @readonly
-     */
-
-    this.texture = engine.noTexture;
-    /**
-     * Object position.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Object rotation.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.rotation = [0, 0, 0];
-    /**
-     * Object scaling.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.scaling = [1, 1, 1];
-    /**
-     * The point around which the object rotates.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    /**
-     * The point around which the parent object rotates.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.parentRotation = [0, 0, 0];
-    /**
-     * @readonly
-     * 
-     * @Type {
-     *       x: {
-                left: Number,
-                right: Number
-            },
-            y: {
-                top: Number,
-                bottom: Number
-            },
-            depth: Number
-        }
-     */
-
-    this.relativeCameraPosition = null;
-    /**
-     * Faces of object. Needs to draw object. Creates when object is compiled.
-     * @private
-     * @type {Array}
-     */
-
-    this.faces = [];
-    /**
-     * Collision boxes coordinates array.
-     * @type {Array}
-     * @public
-     */
-
-    this.collisionBoxes = [];
-  }
-  /**
-   * Setting texture for object.
-   * @param {Texture} texture 
-   * @public
-   */
-
-
-  createClass_default()(ObjectUI, [{
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-    }
-    /**
-     * Translate polygon for x,y,z pixels.
-     * 
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      this.position[0] = x;
-      this.position[1] = y;
-      this.position[2] = z;
-    }
-    /**
-     * Adds values to position which moves object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "move",
-    value: function move(x, y, z) {
-      this.position[0] += x;
-      this.position[1] += y;
-      this.position[2] += z;
-    }
-    /**
-     * Moves object around x, y, z axis relative to the camera angles.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "moveRelativeToTheCamera",
-    value: function moveRelativeToTheCamera(x, y, z) {
-      var pos = [x, y, z, 1];
-      pos = Matrixes.vec3Multiply(this.camera.inventedMatrix, pos);
-      this.position[0] += pos[0];
-      this.position[1] += pos[1];
-      this.position[2] += pos[2];
-    }
-    /**
-     * Add rotation for x, y, z axis for current rotation.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      this.rotation[0] += x;
-      this.rotation[1] += y;
-      this.rotation[2] += z;
-    }
-    /**
-     * Set rotate for x, y, z axis.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public 
-     */
-
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      this.rotation[0] = x;
-      this.rotation[1] = y;
-      this.rotation[2] = z;
-    }
-    /**
-     * Setting coordinates for rotation point.
-     * @param {Number} x
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setRotationPoint",
-    value: function setRotationPoint(x, y, z) {
-      this.rotationPoint = [x, y, z];
-    }
-    /**
-     * Setting rotation values of parent object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setParentRotation",
-    value: function setParentRotation(x, y, z) {
-      this.parentRotation = [x, y, z];
-    }
-    /**
-     * Set scaling for object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.scaling = [x, y, z];
-    }
-    /**
-     * Default animation function for overload.
-     */
-
-  }, {
-    key: "animation",
-    value: function animation() {
-      this.rotate(0, 0, 0);
-    }
-    /**
-     * Sets the animation function which execute every engine update.
-     * @param {Number} fps
-     * @param {Function} [animateFunction] default - animation function.
-     */
-
-  }, {
-    key: "animate",
-    value: function animate(fps, animateFunction) {
-      animateFunction = animateFunction || this.animation;
-      setInterval(animateFunction, 1000 / fps);
-    }
-    /**
-     * Function to compile object from text of .obj file.
-     * @param {String} fileText
-     * @public
-     */
-
-  }, {
-    key: "compile",
-    value: function compile(fileText) {
-      var _this = this;
-
-      var vertexes = [];
-      var textureCoords = [];
-      var normals = [];
-      var splitted = fileText.split('\n');
-      var collisionBox = {
-        x: [0, 0],
-        y: [0, 0],
-        z: [0, 0]
-      };
-      splitted.forEach(function (element) {
-        var values = element.split(' ');
-        var name = 0;
-
-        for (var i = values.length; i--;) {
-          if (values[i] == "" || values[i] == "\r") values.splice(i, 1);
-        }
-
-        if (values[name] == 'v') {
-          var v1 = parseFloat(values[1]);
-          var v2 = parseFloat(values[2]);
-          var v3 = parseFloat(values[3]);
-
-          if (collisionBox.x[1] < v1) {
-            collisionBox.x[1] = v1;
-          }
-
-          if (collisionBox.y[1] < v2) {
-            collisionBox.y[1] = v2;
-          }
-
-          if (collisionBox.z[1] < v3) {
-            collisionBox.z[1] = v3;
-          }
-
-          if (collisionBox.x[0] > v1) {
-            collisionBox.x[0] = v1;
-          }
-
-          if (collisionBox.y[0] > v2) {
-            collisionBox.y[0] = v2;
-          }
-
-          if (collisionBox.z[0] > v3) {
-            collisionBox.z[0] = v3;
-          }
-
-          vertexes.push([v1, v2, v3]);
-        } else if (values[name] == 'vn') {
-          normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
-        } else if (values[name] == 'vt') {
-          textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
-        } else if (values[name] == "f") {
-          var _loop = function _loop(_i) {
-            var face = values[_i].split('/');
-
-            if (face[length - 1] == "\r") {
-              return "break";
-            }
-
-            var faceVertexes = null,
-                faceTextureCoords = null,
-                faceNormals = void 0;
-
-            for (var k = 0; k < _this.faces.length; k++) {
-              var _element = _this.faces[k];
-
-              if (_element.vertexesCount == values.length - 1) {
-                faceVertexes = _element.vertexes;
-                faceTextureCoords = _element.textureCoords;
-                faceNormals = _element.normals;
-              }
-            }
-
-            if (faceVertexes == null) {
-              _this.faces.push({
-                vertexesCount: values.length - 1,
-                vertexes: [],
-                textureCoords: [],
-                normals: []
-              });
-
-              faceVertexes = _this.faces[_this.faces.length - 1].vertexes;
-              faceTextureCoords = _this.faces[_this.faces.length - 1].textureCoords;
-              faceNormals = _this.faces[_this.faces.length - 1].normals;
-            }
-
-            var vertexPosition = parseFloat(face[0]);
-            if (vertexPosition < 0) vertexPosition = vertexes.length + vertexPosition + 1;
-            var textureCoordPosition = parseFloat(face[1]);
-            if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1;
-            var normalPosition = parseFloat(face[2]);
-            if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
-            vertexes[vertexPosition - 1].forEach(function (vertex) {
-              faceVertexes.push(vertex);
-            });
-
-            if (textureCoords.length > 0) {
-              textureCoords[textureCoordPosition - 1].forEach(function (textureCoord) {
-                faceTextureCoords.push(textureCoord);
-              });
-            }
-
-            if (face[2] != undefined) {
-              normals[normalPosition - 1].forEach(function (normal) {
-                faceNormals.push(normal);
-              });
-            } else {
-              faceNormals.push(0, 0, 0);
-            }
-          };
-
-          for (var _i = 1; _i < values.length; _i++) {
-            var _ret = _loop(_i);
-
-            if (_ret === "break") break;
-          }
-        }
-      });
-
-      for (var i = 0; i < this.faces.length; i++) {
-        var element = this.faces[i];
-        element.vertexesBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.vertexesBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.vertexes), this.webGL.STATIC_DRAW);
-        element.coordsBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.coordsBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.textureCoords), this.webGL.STATIC_DRAW);
-        element.normalBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.normalBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
-      }
-
-      this.collisionBoxes.push(collisionBox);
-    }
-    /**
-     * Async load object using ajax and compile on load.
-     * @param {String} path
-     * @public
-     */
-
-  }, {
-    key: "loadFromObj",
-    value: function loadFromObj(path) {
-      var self = this;
-      var objectsLoader = new XMLHttpRequest();
-      objectsLoader.open('GET', path);
-
-      objectsLoader.onreadystatechange = function () {
-        if (objectsLoader.readyState == 4) {
-          self.compile(objectsLoader.responseText);
-        }
-      };
-
-      objectsLoader.send();
-    }
-  }]);
-
-  return ObjectUI;
-}();
 // CONCATENATED MODULE: ./src/Bronze.js
+/* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
+/* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
+/* concated harmony reexport isPowerOf2 */__webpack_require__.d(__webpack_exports__, "isPowerOf2", function() { return isPowerOf2; });
+/* concated harmony reexport Matrix */__webpack_require__.d(__webpack_exports__, "Matrix", function() { return Matrixes_Matrix; });
+/* concated harmony reexport unit */__webpack_require__.d(__webpack_exports__, "unit", function() { return unit; });
+/* concated harmony reexport translation */__webpack_require__.d(__webpack_exports__, "translation", function() { return translation; });
+/* concated harmony reexport rotationX */__webpack_require__.d(__webpack_exports__, "rotationX", function() { return rotationX; });
+/* concated harmony reexport rotationY */__webpack_require__.d(__webpack_exports__, "rotationY", function() { return rotationY; });
+/* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return rotationZ; });
+/* concated harmony reexport scaling */__webpack_require__.d(__webpack_exports__, "scaling", function() { return scaling; });
+/* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return multiply; });
+/* concated harmony reexport vec3Multiply */__webpack_require__.d(__webpack_exports__, "vec3Multiply", function() { return vec3Multiply; });
+/* concated harmony reexport transformVector */__webpack_require__.d(__webpack_exports__, "transformVector", function() { return transformVector; });
+/* concated harmony reexport inverse */__webpack_require__.d(__webpack_exports__, "inverse", function() { return inverse; });
+/* concated harmony reexport normalize */__webpack_require__.d(__webpack_exports__, "normalize", function() { return Vectors_normalize; });
 /* concated harmony reexport Engine */__webpack_require__.d(__webpack_exports__, "Engine", function() { return Engine_Engine; });
 /* concated harmony reexport Camera */__webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera_Camera; });
 /* concated harmony reexport Controls */__webpack_require__.d(__webpack_exports__, "Controls", function() { return Controls_Controls; });
@@ -4636,8 +4250,9 @@ function () {
 /* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect_Rect; });
 /* concated harmony reexport Cube */__webpack_require__.d(__webpack_exports__, "Cube", function() { return Cube_Cube; });
 /* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
-/* concated harmony reexport ObjectUI */__webpack_require__.d(__webpack_exports__, "ObjectUI", function() { return ObjectUI_ObjectUI; });
 /* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
+
+
 
 
 

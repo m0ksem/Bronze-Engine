@@ -6,25 +6,27 @@
   "author": "m0ksem",
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
+    "@babel/runtime": "^7.3.4",
     "@pixi/jsdoc-template": "^2.4.2",
     "babel-loader": "^8.0.5",
+    "babel-plugin-inline-import": "^3.0.0",
+    "babel-polyfill": "^6.26.0",
     "jsdoc": "^3.5.5",
     "path": "^0.12.7",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.2.1",
+    "copyfiles": "^2.1.0"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
     "build-docs": "jsdoc -c conf.json",
     "build-production": "yarn run build && yarn run build-docs",
-    "@babel/plugin-transform-runtime": "^7.3.4",
-    "@babel/runtime": "^7.3.4",
-    "babel-plugin-inline-import": "^3.0.0",
-    "babel-polyfill": "^6.26.0"
+    "build-package": "copyfiles --flat ./src/*.* package/src && copyfiles --flat ./*.* package"
   },
   "keywords": [
     "game",
@@ -32,5 +34,8 @@
     "bronze",
     "game engine",
     "WebGL"
-  ]
+  ],
+  "dependencies": {
+    
+  }
 }

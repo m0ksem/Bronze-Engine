@@ -1,4 +1,4 @@
-import { Matrixes } from "../math/Matrixes"
+import * as Matrixes from "../math/Matrixes"
 
  /**
  * Creates and bind to engine object. The object must be loaded from .obj file.
@@ -10,6 +10,13 @@ export class Object {
     constructor (engine) {
         engine.objects.push(this)
         
+        /**
+         * Engine where object attached.
+         * @type {Engine}
+         * @private
+         */
+        this.engine = engine
+
         /**
          * WebGL context of engine
          * @private
@@ -26,76 +33,99 @@ export class Object {
         /**
          * Object texture.
          * @type {Texture} texture
-         * @readonly
+         * @public
          */
         this.texture = engine.noTexture
 
         /**
-         * Object position.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x position on axis x
+         * @property {Number} y position on axis y
+         * @property {Number} z position on axis z
          */
         this.position = [0, 0, 0]
 
         /**
-         * Object rotation.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation on axis x
+         * @property {Number} y rotation on axis y
+         * @property {Number} z rotation on axis z
          */
         this.rotation = [0, 0, 0]
 
         /**
-         * Object scaling.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x scaling on axis x
+         * @property {Number} y scaling on axis x
+         * @property {Number} z scaling on axis x
          */
         this.scaling = [1, 1, 1]
 
         /**
-         * The point around which the object rotates.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation point coordinate on axis x
+         * @property {Number} y rotation point coordinate on axis y
+         * @property {Number} z rotation point coordinate on axis z
          */
         this.rotationPoint = [0, 0, 0]
 
         /**
-         * The point around which the parent object rotates.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x parent rotation on axis x
+         * @property {Number} y parent rotation on axis y
+         * @property {Number} z parent rotation on axis z
          */
         this.parentRotation = [0, 0, 0]
-        
 
         /**
+         * These are the edges of the object on the monitor.
          * @readonly
-         * 
-         * @Type {
-         *       x: {
-                    left: Number,
-                    right: Number
-                },
-                y: {
-                    top: Number,
-                    bottom: Number
-                },
-                depth: Number
-            }
+         * @Type {Object}   
+         * @property {Number} relativeCameraPosition.x.left
+         * @property {Number} relativeCameraPosition.x.right
+         * @property {Number} relativeCameraPosition.y.top
+         * @property {Number} relativeCameraPosition.y.bottom
+         * @property {Number} relativeCameraPosition.depth
          */
         this.relativeCameraPosition = null
 
         /**
          * Faces of object. Needs to draw object. Creates when object is compiled.
-         * @private
+         * @readonly
          * @type {Array}
          */
         this.faces = []
 
         /**
          * Collision boxes coordinates array.
-         * @type {Array}
+         * @type {
+         *      x: Number[2],
+         *      y: Number[2],
+         *      z: Number[2]
+         *  }
+         * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
+         * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
+         * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
          * @public
          */
         this.collisionBoxes = []
+
+        /**
+         * Sets whether the object will be attached to the camera like UI element.
+         * @type {boolean}
+         * @public
+         */
+        this.UIElement = false 
     }
 
     /**
@@ -209,7 +239,8 @@ export class Object {
     }
 
     /**
-     * Default animation function for overload.
+     * Default animation function.
+     * @private
      */
     animation () {
         this.rotate(0, 0, 0)
@@ -219,10 +250,19 @@ export class Object {
      * Sets the animation function which execute every engine update.
      * @param {Number} fps
      * @param {Function} [animateFunction] default - animation function.
+     * @public
      */
     animate (fps, animateFunction) {
         animateFunction = animateFunction || this.animation
         setInterval(animateFunction, 1000 / fps)
+    }
+
+    /**
+     * Function detaches from engine. If you need to clean memory, you this method and then you default javascript operator `delete`.
+     * @public
+     */
+    destroy() {
+        this.engine.splice(this.engine.objects.indexOf(this), 1)
     }
 
     /**

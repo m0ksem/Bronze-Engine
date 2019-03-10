@@ -9,7 +9,7 @@
     },
     "meta": {
         "title": "Bronze Engine docs",
-        "description": "",
+        "description": "Simple webGL game engine",
         "keyword": "Bronze Game Engine Docs"
     },
     "linenums": true,
@@ -25,7 +25,8 @@
         "recurse": true,
         "private": false,
         "lenient": true,
-        "destination": "./docs",
-        "template": "./node_modules/@pixi/jsdoc-template"
+        "destination": "./docs"
     }
 }
+
+

@@ -1,6 +1,6 @@
 import * as Utils from "./Utils"
 import {Texture} from "./Texture"
-import {Matrix, Matrixes} from "./math/Matrixes"
+import * as Matrixes from "./math/Matrixes"
 import * as Vectors from "./math/Vectors"
 import {isPowerOf2} from "./math/Math";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl"
@@ -42,21 +42,22 @@ export class Engine {
         this.height = canvas.height
 
         /**
-         * @type {Array.<{Polygon}>}
+         * @type {Polygon[]}
          * @private
          */
         this.polygons = []
 
         /**
-         * @type {Array.<{Objects}>}
-         * @private
+         * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
+         * @type {Objects[]}
+         * @public
          */
         this.objects = []
 
         /**
          * @type {Object}
          * @property {Array} ui.objects
-         * @private
+         * @public
          */
         this.ui = {
             objects: []
@@ -69,20 +70,23 @@ export class Engine {
         this.textures = []
 
         /**
+         * The camera that is attached to the engine.
          * @type {Camera}
-         * @private
+         * @public
          */
         this.camera = null
 
         /**
+         * The debugger that is attached to the engine.
          * @type {Debugger}
-         * @private
+         * @public
          */
         this.debugger = null
 
         /**
+         * The controls that is attached to the engine.
          * @type {Controls}
-         * @private
+         * @public
          */
         this.controls = null
 
@@ -131,15 +135,15 @@ export class Engine {
         this.matrixLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_matrix")
         this.objectRotationLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_objectRotation")
         this.normalLocation = this.webGL.getAttribLocation(this.shaderProgram, "a_normal")
-        this.reverseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection");
-        this.lightWorldPositionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_lightWorldPosition");
-        this.cameraLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_cameraMatrix");
+        this.reverseLightDirectionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_reverseLightDirection")
+        this.lightWorldPositionLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_lightWorldPosition")
+        this.cameraLocation = this.webGL.getUniformLocation(this.shaderProgram, "u_cameraMatrix")
 
         this.webGL.useProgram(this.shaderProgram)
         this.webGL.viewport(0, 0, this.width, this.height)
 
         this.webGL.enable(this.webGL.CULL_FACE)
-        this.webGL.enable(this.webGL.DEPTH_TEST);
+        this.webGL.enable(this.webGL.DEPTH_TEST)
     }
     
     /**
@@ -163,6 +167,11 @@ export class Engine {
         this.webGL.viewport(0, 0, this.width, this.height)
     }
 
+    /**
+     * Sets function when object is selected.
+     * @param {Function(object)} handler
+     * @public
+     */
     onObjectSelect (handler) {
         this._objectSelectHandler = handler
     }
@@ -224,10 +233,10 @@ export class Engine {
         this.selectedObject = null
 
         this.polygons.forEach(element => {           
-            temp = new Matrix()
+            temp = new Matrixes.Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             temp.multiply(this.camera.inventedMatrix)
-            world = new Matrix()
+            world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
             rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
@@ -252,10 +261,12 @@ export class Engine {
         let selectedObject = null
 
         this.objects.forEach(element => {           
-            temp = new Matrix()
+            temp = new Matrixes.Matrix()
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(this.camera.inventedMatrix)
-            world = new Matrix()
+            if (!element.UIElement) {
+                temp.multiply(this.camera.inventedMatrix)
+            }
+            world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
             rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
@@ -270,111 +281,89 @@ export class Engine {
             world.scale(element.scaling[0], element.scaling[1], element.scaling[2])
                         
             temp.multiply(world.matrix)
-
-            let mouseOverHitBox = false
-            element.collisionBoxes.forEach(collisionBox => {
-                let boxInPixels = []
-                for (let ix = 0; ix < collisionBox.x.length; ix++) {
-                    const x = collisionBox.x[ix];
-                    for (let iy = 0; iy < collisionBox.y.length; iy++) {
-                        const y = collisionBox.y[iy];
-                        for (let iz = 0; iz < collisionBox.z.length; iz++) {
-                            const z = collisionBox.z[iz];
-                            let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
-                                coordsInPixels[0] =  coordsInPixels[0] / coordsInPixels[3]
-                                coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
-                                coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.width;
-                                coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.height;
-                                
-                                coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0]
-                                coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1]
-
-                                coordsInPixels[0] = coordsInPixels[0] > this.width ? this.width : coordsInPixels[0]
-                                coordsInPixels[1] = coordsInPixels[1] > this.height ? this.height : coordsInPixels[1]
-
-                                if (coordsInPixels[2] >= 0) {
-                                    boxInPixels.push(coordsInPixels) 
-                                }
+            
+            if (!element.UIElement) {
+                let mouseOverHitBox = false
+                element.collisionBoxes.forEach(collisionBox => {
+                    let boxInPixels = []
+                    for (let ix = 0; ix < collisionBox.x.length; ix++) {
+                        const x = collisionBox.x[ix];
+                        for (let iy = 0; iy < collisionBox.y.length; iy++) {
+                            const y = collisionBox.y[iy];
+                            for (let iz = 0; iz < collisionBox.z.length; iz++) {
+                                const z = collisionBox.z[iz];
+                                let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
+                                    coordsInPixels[0] =  coordsInPixels[0] / coordsInPixels[3]
+                                    coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
+                                    coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.width;
+                                    coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.height;
                                     
+                                    coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0]
+                                    coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1]
+
+                                    coordsInPixels[0] = coordsInPixels[0] > this.width ? this.width : coordsInPixels[0]
+                                    coordsInPixels[1] = coordsInPixels[1] > this.height ? this.height : coordsInPixels[1]
+
+                                    if (coordsInPixels[2] >= 0) {
+                                        boxInPixels.push(coordsInPixels) 
+                                    }
+                                        
+                            }
                         }
                     }
-                }
 
-                let smallest = [10000,  10000, -1000]
-                let biggest = [-10000, -10000]
-                for (let i = 0; i < boxInPixels.length; i++) {
-                    const box = boxInPixels[i];
-                    if (box[0] < smallest[0]) {
-                        smallest[0] = box[0]
-                    } else if (box[0] > biggest[0]) {
-                        biggest[0] = box[0]
+                    let smallest = [10000,  10000, -1000]
+                    let biggest = [-10000, -10000]
+                    for (let i = 0; i < boxInPixels.length; i++) {
+                        const box = boxInPixels[i];
+                        if (box[0] < smallest[0]) {
+                            smallest[0] = box[0]
+                        } else if (box[0] > biggest[0]) {
+                            biggest[0] = box[0]
+                        }
+                        if (box[1] < smallest[1]) {
+                            smallest[1] = box[1]
+                        } else if (box[1] > biggest[1]) {
+                            biggest[1] = box[1]
+                        }
+                        if (box[2] > smallest[2]) {
+                            smallest[2] = box[2]
+                        }
                     }
-                    if (box[1] < smallest[1]) {
-                        smallest[1] = box[1]
-                    } else if (box[1] > biggest[1]) {
-                        biggest[1] = box[1]
-                    }
-                    if (box[2] > smallest[2]) {
-                        smallest[2] = box[2]
-                    }
-                }
 
-                element.relativeCameraPosition = {
-                    x: {
-                        left: smallest[0],
-                        right: biggest[0]
-                    },
-                    y: {
-                        top: biggest[1],
-                        bottom: smallest[1]
-                    },
-                    depth: smallest[2]
-                }
-                
-                if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
-                    this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]   ) {
-                    mouseOverHitBox = true
-                }
-
-                let mouse = this.controls.mouse
-                if (mouseOverHitBox) {
-                    if (selectedObject == null) {
-                        selectedObject = element
+                    element.relativeCameraPosition = {
+                        x: {
+                            left: smallest[0],
+                            right: biggest[0]
+                        },
+                        y: {
+                            top: biggest[1],
+                            bottom: smallest[1]
+                        },
+                        depth: smallest[2]
                     }
-                    if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
-                        selectedObject = element
+                    
+                    if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
+                        this.controls.mouse.y > smallest[1] && this.controls.mouse.y < biggest[1]   ) {
+                        mouseOverHitBox = true
                     }
-                }
-            })
 
-            this.selectedObject = selectedObject
-            if (!this.selectedObject && this._objectSelectHandler != null) {
-                this._objectSelectHandler()
+                    let mouse = this.controls.mouse
+                    if (mouseOverHitBox) {
+                        if (selectedObject == null) {
+                            selectedObject = element
+                        }
+                        if (selectedObject.relativeCameraPosition.depth >= smallest[2]) {
+                            selectedObject = element
+                        }
+                    }
+                })
             }
 
-            element._matrix = temp.matrix
-            element._rotationMatrix = rot
-        })
-        
-        this.ui.objects.forEach(element => {
-            temp = new Matrix()
-            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            // temp.multiply(this.camera.rotationMatrix)
-            world = new Matrix()
-            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
-            world.translate(element.position[0], element.position[1], element.position[2])
-            rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
-            rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
-            parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
-            parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
-            element._world = parentRot
-            rot = Matrixes.multiply(parentRot, rot)
-            world.multiply(rot)
-            
-            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
-            world.scale(element.scaling[0], element.scaling[1], element.scaling[2])
-                        
-            temp.multiply(world.matrix)
+            this.selectedObject = selectedObject
+            if (!element.UIElement && !this.selectedObject && this._objectSelectHandler != null) {
+                this._objectSelectHandler(selectedObject)
+            }
 
             element._matrix = temp.matrix
             element._rotationMatrix = rot
@@ -441,9 +430,10 @@ export class Engine {
                 this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
                 this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
                 this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
-                
+
                 this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
             })
+            this.webGL.enable(this.webGL.DEPTH_TEST)
         });
 
         this.ui.objects.forEach(o => {
@@ -495,6 +485,13 @@ export class Engine {
      */
     run () {
         _engine = this
+        console.log()
+        console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running")
+        console.log()
+        console.info('     Version : 0.0.1')
+        console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
+        console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
+        console.log()
         requestAnimationFrameEngine()
     }
 }

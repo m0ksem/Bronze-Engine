@@ -1,3 +1,5 @@
+/** @module Vectors */
+
 /**
  * Normalize a vector.
  * @param {Array[3]} vector vector to normalize.

@@ -132,14 +132,14 @@ export class Controls {
             if (this.isFocused) {
                 this.keys[event.keyCode] = true;
                 if (this._handlers[event.keyCode] != null) {
-                    this._handlers[event.keyCode]()
+                    this._handlers[event.keyCode](event)
                 }
                 return !this._rebind
             }
             else {
                 if (this._globalRebind) {
                     return !this._rebind
-                } 
+                }
                 else {
                     return true
                 }
@@ -186,17 +186,20 @@ export class Controls {
             if (x < canvasPos.right  && x > canvasPos.left &&
                 y < canvasPos.bottom && y > canvasPos.top    ) {
                 this.mouseOverCanvas = true
-                if (!this._focusOnlyIfClick) {
+                if (!this._focusOnlyIfClick && !this.isFocused) {
                     engine.canvas.focus()
                 }
             }
             else {
                 this.mouseOverCanvas = false
+                if (!this._focusOnlyIfClick) {
+                    engine.canvas.blur()
+                }
             }
         })
 
         engine.canvas.onclick = () => {
-            if (this._focusOnlyIfClick) {
+            if (this._focusOnlyIfClick && !this.isFocused) {
                 engine.canvas.focus()
             }
             if (this._lockPointer) {
@@ -206,7 +209,7 @@ export class Controls {
 
         engine.canvas.onmousedown = (event) => {
             this.mouse.buttons[event.button] = true
-            if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button]()
+            if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button](event)
             return false
         }
 
@@ -244,6 +247,14 @@ export class Controls {
     }
 
     /**
+     * 
+     */
+    clickForFocus (bool) {
+        bool = bool || !this._focusOnlyIfClick
+        this._focusOnlyIfClick = bool
+    }
+
+    /**
      * Set sensitivity for mouse movement
      * @default 1
      * @param {Number} sensitivity 
@@ -269,7 +280,7 @@ export class Controls {
      * @param {boolean} bool 
      */
     globalRebind (bool) {
-        bool || !this._globalRebind
+        bool = bool || !this._globalRebind
         this._globalRebind = bool
     }
 

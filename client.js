@@ -35,7 +35,8 @@ let controls = new Bronze.Controls(engine)
 
 // Setting control function for camera
 controls.setSensitivity(1)
-controls.lockPointer(true)
+controls.lockPointer(false)
+
 
 camera.setControl(() => {
     // All coords
@@ -233,15 +234,6 @@ let cube3 = new Bronze.Cube(engine)
         cube3.rotate(0, 1, 0)
     })
 
-
-let object = new Bronze.ObjectUI(engine)
-    object.setTexture(colaTexture)
-    object.setPosition(100, -50, -100)
-    object.name = "box"
-    object.loadFromObj("assets/objects/cola.obj")
-    object.setRotationPoint(0, 0, 0)
-    object.setRotation(45, 45, 45)
-    object.scale(1.5, 1.5, 1.5)
     // let xpos = 0, ypos = 0, zpos = 0, xdir = -1
     // object.animate(30, () => {
     //     object.setPosition(250 + xpos, 0, zpos + 800)
@@ -273,6 +265,16 @@ let house = new Bronze.Object(engine)
     house.loadFromObj("assets/objects/house.obj")
     house.scale(100, 100, 100)
 
+
+let object = new Bronze.Object(engine)
+    object.UIElement = true
+    object.setTexture(colaTexture)
+    object.setPosition(100, -50, -100)
+    object.name = "box"
+    object.loadFromObj("assets/objects/cola.obj")
+    object.setRotationPoint(0, 0, 0)
+    object.setRotation(45, 45, 45)
+    object.scale(1.5, 1.5, 1.5)
 
 // Run engine
 engine.run()

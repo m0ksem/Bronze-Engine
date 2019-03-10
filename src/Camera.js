@@ -1,6 +1,5 @@
 import * as Math from "./math/Math"
-import {Matrixes} from "./math/Matrixes"
-import {Matrix} from "./math/Matrixes"
+import * as Matrixes from "./math/Matrixes"
 
 /**
  * Creates camera object.
@@ -140,7 +139,7 @@ export class Camera {
     computeMatrix () {
         this.matrix = Matrixes.unit()
         this.matrix = Matrixes.multiply(this.matrix, Matrixes.translation(this.position[0], this.position[1], this.position[2]))
-        let rotation = new Matrix()
+        let rotation = new Matrixes.Matrix()
         rotation.multiply(Matrixes.rotationY(Math.degToRad(this.rotation[1])))
         rotation.multiply(Matrixes.rotationX(Math.degToRad(this.rotation[0])))
         rotation.multiply(Matrixes.rotationZ(Math.degToRad(this.rotation[2])))

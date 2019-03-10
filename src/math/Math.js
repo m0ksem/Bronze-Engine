@@ -1,5 +1,7 @@
+/** @module Math */
+
 /**
- * Converting radians to degrees
+ * Converting radians to degrees.
  * @param {Number} radians
  * @return {Number} degrees
  */
@@ -8,7 +10,7 @@ export function radToDeg(radians) {
 }
 
 /**
- * Converting degrees to radians
+ * Converting degrees to radians.
  * @param {Number} degrees
  * @return {Number} radians
  */
