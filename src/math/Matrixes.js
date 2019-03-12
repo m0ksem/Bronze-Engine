@@ -38,6 +38,21 @@ export class Matrix {
         ]
         return this
     }
+
+    /**
+     * Sets this matrxi to projection matrix without perscpective.
+     * @param {Number} width 
+     * @param {Number} height
+     * @public 
+     */
+    projection (width, height) {
+        this.matrix = [
+            2 / width, 0, 0,
+            0, -2 / height, 0,
+            -1, 1, 1
+        ]
+        return this
+    }
     
     /**
      * Multiplying this matrix by another.

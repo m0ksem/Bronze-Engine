@@ -16,21 +16,21 @@ export class Rect {
         /**
          * Rect polygons.
          * @private
-         * @type {Array.<{0: Polygon, 1: Polygon}>} vector 3
+         * @type {Array.{0: Polygon, 1: Polygon}} vector 3
          */
         this.polygons = new Array(2)
 
         /**
          * Rect position.
          * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.position = [0, 0, 0]
 
         /**
          * Rect rotation point.
          * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.rotationPoint = [0, 0, 0]
 
@@ -112,9 +112,9 @@ export class Rect {
 
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in deg.
-     * @param {*} y in deg.
-     * @param {*} z in deg.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
      * @public
      */
     rotate(x, y, z) {
@@ -157,5 +157,14 @@ export class Rect {
     setNormals (normals) {
         this.polygons[0].setNormals(normals)
         this.polygons[1].setNormals(normals)
+    }
+
+    /**
+     * Sets whether the all polygons will be attached to the camera like UI element.
+     * @param {bolean} bool 
+     */
+    setAsUIElement (bool) {
+        this.polygons[0].UIElement = bool
+        this.polygons[1].UIElement = bool
     }
 }

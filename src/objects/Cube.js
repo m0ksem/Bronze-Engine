@@ -213,4 +213,18 @@ export class Cube {
     removeAnimation () {
         clearInterval(this._animationInterval)
     }
+
+    /**
+     * Sets whether the all polygons will be attached to the camera like UI element.
+     * @deprecated
+     * @param {bolean} bool 
+     */
+    setAsUIElement (bool) {
+        this.faces[0].setAsUIElement(bool)
+        this.faces[1].setAsUIElement(bool)
+        this.faces[2].setAsUIElement(bool)
+        this.faces[3].setAsUIElement(bool)
+        this.faces[4].setAsUIElement(bool)
+        this.faces[5].setAsUIElement(bool)
+    }
 }

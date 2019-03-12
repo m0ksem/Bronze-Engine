@@ -18,16 +18,20 @@ export class Engine {
     constructor (canvas) {
 
         /**
-         * WebGL context of canvas
          * @private
          */
-        this.webGL = Utils.getWebGL(canvas)
 
         /**
          * Canvas for drawing.
          * @readonly
          */
         this.canvas = canvas
+
+        /**
+         * WebGL context of canvas
+         * @private
+         */
+        this.webGL = Utils.getWebGL(this.canvas)
 
         /**
          * Width of drawing resolution
@@ -234,8 +238,12 @@ export class Engine {
 
         this.polygons.forEach(element => {           
             temp = new Matrixes.Matrix()
+            
             temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(this.camera.inventedMatrix)
+            if (!element.UIElement) {
+                temp.multiply(this.camera.inventedMatrix)
+            }
+
             world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])

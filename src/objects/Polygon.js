@@ -27,38 +27,38 @@ export class Polygon {
 
         /**
          * Polygon position.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @public
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.position = [0, 0, 0]
 
         /**
          * Polygon rotation.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @public
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.rotation = [0, 0, 0]
 
         /**
          * Polygon rotation point.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @public
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.rotationPoint = [0, 0, 0]
 
          /**
          * Polygon parent rotation.
-         * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @public
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.parentRotation = [0, 0, 0]
 
          /**
          * Polygon normals.
-         * @readonly
-         * @type {Array.<{0: Number, 1: Number, 2: Number,
+         * @public
+         * @type {Array.{0: Number, 1: Number, 2: Number,
          *                3: Number, 4: Number, 5: Number,
-         *                6: Number, 7: Number, 8: Number,}>} matrix 9
+         *                6: Number, 7: Number, 8: Number,}} matrix 9
          */
         this.normals = [
             0, 1, 0,
@@ -71,6 +71,13 @@ export class Polygon {
          * @private
          */
         this._vertexesBuffer = null
+
+        /**
+         * Sets whether the object will be attached to the camera like UI element.
+         * @type {boolean}
+         * @public
+         */
+        this.UIElement = false
     }
 
     /**
