@@ -404,11 +404,6 @@ export function multiply (matrix1, matrix2) {
  * @public
  */
 export function vec3Multiply (matrix, vector4) {
-    // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
-    // c21 = a21 · b11 + a22 · b21 + a23 · b31 + a24 · b41
-    // c31 = a31 · b11 + a32 · b21 + a33 · b31 + a34 · b41
-    // c41 = a41 · b11 + a42 · b21 + a43 · b31 + a44 · b41
-    // console.log(matrix[0] * vector4[0] )
     let c1 = matrix[0] * vector4[0] + matrix[1] * vector4[1] + matrix[2] * vector4[2] + matrix[3] * vector4[3]
     let c2 = matrix[4] * vector4[0] + matrix[5] * vector4[1] + matrix[6] * vector4[2] + matrix[7] * vector4[3]
     let c3 = matrix[8] * vector4[0] + matrix[9] * vector4[1] + matrix[10] * vector4[2] + matrix[11] * vector4[3]

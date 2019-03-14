@@ -15,17 +15,23 @@ import {Map} from "./map/Map.js"
  * @param {HTMLElement|HTMLCanvasElement} canvas
  */
 export class Engine {
-    constructor (canvas) {
+    constructor (div) {
 
         /**
          * @private
          */
+        this.div = div
+        this.div.style = "position: relative;"
 
         /**
          * Canvas for drawing.
          * @readonly
          */
-        this.canvas = canvas
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = div.width
+        this.canvas.height = div.height
+
+        div.appendChild(this.canvas)
 
         /**
          * WebGL context of canvas
@@ -37,13 +43,13 @@ export class Engine {
          * Width of drawing resolution
          * @type {Number}
          */
-        this.width = canvas.width
+        this.width = div.width
 
         /**
          * Height of drawing resolution.
          * @type {Number}
          */
-        this.height = canvas.height
+        this.height = div.height
 
         /**
          * @type {Polygon[]}
@@ -59,13 +65,10 @@ export class Engine {
         this.objects = []
 
         /**
-         * @type {Object}
-         * @property {Array} ui.objects
-         * @public
+         * @type {UI}
+         * @private
          */
-        this.ui = {
-            objects: []
-        }
+        this.ui = null
 
         /**
          * @type {Array.<{Texture}>}
@@ -444,37 +447,18 @@ export class Engine {
             this.webGL.enable(this.webGL.DEPTH_TEST)
         });
 
-        this.ui.objects.forEach(o => {
-            o.faces.forEach(face => {
-                // console.log(face)
-               
-                this.webGL.enableVertexAttribArray(this.positionLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.vertexesBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.normalLocation);
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.normalBuffer);
-                this.webGL.vertexAttribPointer(
-                    this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
-
-                this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
-                this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
-                this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
-                
-                this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
-            })
-        });
-
         if (this.debugger != null) {
             this.debugger.updateInfo()
+        }
+    }
+
+    /**
+     * Drawing UI function.
+     * @private
+     */
+    _drawUI () {
+        if (this.ui !== null) {
+            this.ui._draw()
         }
     }
 
@@ -485,6 +469,7 @@ export class Engine {
     async render () {
         await this._update()
         await this._draw()
+        await this._drawUI()
     }
 
     /**

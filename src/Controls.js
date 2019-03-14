@@ -150,13 +150,13 @@ export class Controls {
             return !this._rebind
         };
 
-        engine.canvas.setAttribute('tabindex','0');
+        engine.div.setAttribute('tabindex','0');
 
         let lastMousePosition = null
 
-        engine.canvas.addEventListener('mousemove', (event) => {
+        engine.div.addEventListener('mousemove', (event) => {
             if (!this.pointerLocked) {
-                let mousePos = engine.canvas.getBoundingClientRect()
+                let mousePos = engine.div.getBoundingClientRect()
                 let x = event.clientX - mousePos.left
                 let y = event.clientY - mousePos.top
                 this.mouse.x = x
@@ -180,56 +180,56 @@ export class Controls {
         }, false);
 
         window.addEventListener('mousemove', (event) => {
-            let canvasPos = engine.canvas.getBoundingClientRect()
+            let canvasPos = engine.div.getBoundingClientRect()
             let x = event.clientX
             let y = event.clientY
             if (x < canvasPos.right  && x > canvasPos.left &&
                 y < canvasPos.bottom && y > canvasPos.top    ) {
                 this.mouseOverCanvas = true
                 if (!this._focusOnlyIfClick && !this.isFocused) {
-                    engine.canvas.focus()
+                    engine.div.focus()
                 }
             }
             else {
                 this.mouseOverCanvas = false
                 if (!this._focusOnlyIfClick) {
-                    engine.canvas.blur()
+                    engine.div.blur()
                 }
             }
         })
 
-        engine.canvas.onclick = () => {
+        engine.div.onclick = () => {
             if (this._focusOnlyIfClick && !this.isFocused) {
-                engine.canvas.focus()
+                engine.div.focus()
             }
             if (this._lockPointer) {
-                engine.canvas.requestPointerLock();
+                engine.div.requestPointerLock();
             }
         }
 
-        engine.canvas.onmousedown = (event) => {
+        engine.div.onmousedown = (event) => {
             this.mouse.buttons[event.button] = true
             if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button](event)
             return false
         }
 
-        engine.canvas.onmouseup = (event) => {
+        engine.div.onmouseup = (event) => {
             this.mouse.buttons[event.button] = false
             return false
         }
 
-        engine.canvas.oncontextmenu = function() {
+        engine.div.oncontextmenu = function() {
             return false;
         }
 
-        engine.canvas.onblur = () => {
+        engine.div.onblur = () => {
             this.isFocused = false
             for (let i = 0; i < this._focusHandlers.length; i++) {
                 this._blurHandlers[i]()
             }
         }
 
-        engine.canvas.onfocus = () => {
+        engine.div.onfocus = () => {
             this.isFocused = true
             for (let i = 0; i < this._focusHandlers.length; i++) {
                 this._focusHandlers[i]()
@@ -237,7 +237,7 @@ export class Controls {
         }
 
         document.addEventListener('pointerlockchange', () => {
-            if(document.pointerLockElement === engine.canvas){
+            if(document.pointerLockElement === engine.div){
                 this.pointerLocked = true
             }
             else {
@@ -326,7 +326,7 @@ export class Controls {
      * @public
      */
     onMouseMove(handler) {
-        this.engine.canvas.addEventListener('mousemove', handler, false);
+        this.engine.div.addEventListener('mousemove', handler, false);
     }
 
     /**
@@ -335,7 +335,7 @@ export class Controls {
      * @public
      */
     onContextMenu (handler) {
-        this.engine.canvas.oncontextmenu = handler
+        this.engine.div.oncontextmenu = handler
     }
 
     /**

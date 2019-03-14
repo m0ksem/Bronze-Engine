@@ -1,10 +1,11 @@
 // Getting canvas
-let canvas = document.getElementById("canvas")
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
 
 
-let engine = new Bronze.Engine(canvas)
+let div = document.getElementById('bronze')
+    div.width = window.innerWidth
+    div.height = window.innerHeight
+
+let engine = new Bronze.Engine(div)
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth
@@ -35,8 +36,9 @@ let controls = new Bronze.Controls(engine)
 
 // Setting control function for camera
 controls.setSensitivity(1)
-controls.lockPointer(false)
+controls.lockPointer(true)
 
+let ui = new Bronze.UI(engine)
 
 camera.setControl(() => {
     // All coords
@@ -228,8 +230,9 @@ let cube1 = new Bronze.Cube(engine)
 let cube3 = new Bronze.Cube(engine)
     cube3.setTexture(rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture)
     cube3.setSize(200, 200, 200)
-    cube3.setPosition(-100, 0, 1600)
+    cube3.setPosition(0, 0, 0)
     cube3.rotate(-15, 45, 0)
+    cube3.setAsUIElement(true)
     cube3.animate(60, () => {
         cube3.rotate(0, 1, 0)
     })

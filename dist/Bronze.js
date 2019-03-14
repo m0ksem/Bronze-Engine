@@ -1218,6 +1218,19 @@ function () {
       return this;
     }
     /**
+     * Sets this matrxi to projection matrix without perscpective.
+     * @param {Number} width 
+     * @param {Number} height
+     * @public 
+     */
+
+  }, {
+    key: "projection",
+    value: function projection(width, height) {
+      this.matrix = [2 / width, 0, 0, 0, -2 / height, 0, -1, 1, 1];
+      return this;
+    }
+    /**
      * Multiplying this matrix by another.
      * @param {Array} matrix 
      * @public
@@ -1502,11 +1515,6 @@ function multiply(matrix1, matrix2) {
  */
 
 function vec3Multiply(matrix, vector4) {
-  // c11 = a11 · b11 + a12 · b21 + a13 · b31 + a14 · b41
-  // c21 = a21 · b11 + a22 · b21 + a23 · b31 + a24 · b41
-  // c31 = a31 · b11 + a32 · b21 + a33 · b31 + a34 · b41
-  // c41 = a41 · b11 + a42 · b21 + a43 · b31 + a44 · b41
-  // console.log(matrix[0] * vector4[0] )
   var c1 = matrix[0] * vector4[0] + matrix[1] * vector4[1] + matrix[2] * vector4[2] + matrix[3] * vector4[3];
   var c2 = matrix[4] * vector4[0] + matrix[5] * vector4[1] + matrix[6] * vector4[2] + matrix[7] * vector4[3];
   var c3 = matrix[8] * vector4[0] + matrix[9] * vector4[1] + matrix[10] * vector4[2] + matrix[11] * vector4[3];
@@ -2387,32 +2395,41 @@ var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoor
 var Engine_Engine =
 /*#__PURE__*/
 function () {
-  function Engine(canvas) {
+  function Engine(div) {
     classCallCheck_default()(this, Engine);
 
     /**
-     * WebGL context of canvas
      * @private
      */
-    this.webGL = getWebGL(canvas);
+    this.div = div;
+    this.div.style = "position: relative;";
     /**
      * Canvas for drawing.
      * @readonly
      */
 
-    this.canvas = canvas;
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = div.width;
+    this.canvas.height = div.height;
+    div.appendChild(this.canvas);
+    /**
+     * WebGL context of canvas
+     * @private
+     */
+
+    this.webGL = getWebGL(this.canvas);
     /**
      * Width of drawing resolution
      * @type {Number}
      */
 
-    this.width = canvas.width;
+    this.width = div.width;
     /**
      * Height of drawing resolution.
      * @type {Number}
      */
 
-    this.height = canvas.height;
+    this.height = div.height;
     /**
      * @type {Polygon[]}
      * @private
@@ -2427,19 +2444,16 @@ function () {
 
     this.objects = [];
     /**
-     * @type {Object}
-     * @property {Array} ui.objects
-     * @public
+     * @type {UI}
+     * @private
      */
 
-    this.ui = {
-      objects: []
-      /**
-       * @type {Array.<{Texture}>}
-       * @private
-       */
+    this.ui = null;
+    /**
+     * @type {Array.<{Texture}>}
+     * @private
+     */
 
-    };
     this.textures = [];
     /**
      * The camera that is attached to the engine.
@@ -2628,7 +2642,11 @@ function () {
       this.polygons.forEach(function (element) {
         temp = new Matrixes_Matrix();
         temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
-        temp.multiply(_this2.camera.inventedMatrix);
+
+        if (!element.UIElement) {
+          temp.multiply(_this2.camera.inventedMatrix);
+        }
+
         world = new Matrixes_Matrix();
         world.multiply(inverse(translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
         world.translate(element.position[0], element.position[1], element.position[2]);
@@ -2838,39 +2856,21 @@ function () {
 
         _this3.webGL.enable(_this3.webGL.DEPTH_TEST);
       });
-      this.ui.objects.forEach(function (o) {
-        o.faces.forEach(function (face) {
-          // console.log(face)
-          _this3.webGL.enableVertexAttribArray(_this3.positionLocation);
-
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.vertexesBuffer);
-
-          _this3.webGL.vertexAttribPointer(_this3.positionLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
-
-          _this3.webGL.enableVertexAttribArray(_this3.textureCoordinatesLocation);
-
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.coordsBuffer);
-
-          _this3.webGL.vertexAttribPointer(_this3.textureCoordinatesLocation, 2, _this3.webGL.FLOAT, false, 0, 0);
-
-          _this3.webGL.enableVertexAttribArray(_this3.normalLocation);
-
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.normalBuffer);
-
-          _this3.webGL.vertexAttribPointer(_this3.normalLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
-
-          _this3.webGL.uniform1i(_this3.textureLocation, o.texture._textureBlockLocation);
-
-          _this3.webGL.uniformMatrix4fv(_this3.matrixLocation, false, o._matrix);
-
-          _this3.webGL.uniformMatrix4fv(_this3.objectRotationLocation, false, o._world);
-
-          _this3.webGL.drawArrays(_this3.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount);
-        });
-      });
 
       if (this.debugger != null) {
         this.debugger.updateInfo();
+      }
+    }
+    /**
+     * Drawing UI function.
+     * @private
+     */
+
+  }, {
+    key: "_drawUI",
+    value: function _drawUI() {
+      if (this.ui !== null) {
+        this.ui._draw();
       }
     }
     /**
@@ -2896,6 +2896,10 @@ function () {
                 return this._draw();
 
               case 4:
+                _context.next = 6;
+                return this._drawUI();
+
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -3344,11 +3348,11 @@ function () {
       return !_this._rebind;
     };
 
-    engine.canvas.setAttribute('tabindex', '0');
+    engine.div.setAttribute('tabindex', '0');
     var lastMousePosition = null;
-    engine.canvas.addEventListener('mousemove', function (event) {
+    engine.div.addEventListener('mousemove', function (event) {
       if (!_this.pointerLocked) {
-        var mousePos = engine.canvas.getBoundingClientRect();
+        var mousePos = engine.div.getBoundingClientRect();
         var x = event.clientX - mousePos.left;
         var y = event.clientY - mousePos.top;
         _this.mouse.x = x;
@@ -3373,7 +3377,7 @@ function () {
       }
     }, false);
     window.addEventListener('mousemove', function (event) {
-      var canvasPos = engine.canvas.getBoundingClientRect();
+      var canvasPos = engine.div.getBoundingClientRect();
       var x = event.clientX;
       var y = event.clientY;
 
@@ -3381,43 +3385,43 @@ function () {
         _this.mouseOverCanvas = true;
 
         if (!_this._focusOnlyIfClick && !_this.isFocused) {
-          engine.canvas.focus();
+          engine.div.focus();
         }
       } else {
         _this.mouseOverCanvas = false;
 
         if (!_this._focusOnlyIfClick) {
-          engine.canvas.blur();
+          engine.div.blur();
         }
       }
     });
 
-    engine.canvas.onclick = function () {
+    engine.div.onclick = function () {
       if (_this._focusOnlyIfClick && !_this.isFocused) {
-        engine.canvas.focus();
+        engine.div.focus();
       }
 
       if (_this._lockPointer) {
-        engine.canvas.requestPointerLock();
+        engine.div.requestPointerLock();
       }
     };
 
-    engine.canvas.onmousedown = function (event) {
+    engine.div.onmousedown = function (event) {
       _this.mouse.buttons[event.button] = true;
       if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button](event);
       return false;
     };
 
-    engine.canvas.onmouseup = function (event) {
+    engine.div.onmouseup = function (event) {
       _this.mouse.buttons[event.button] = false;
       return false;
     };
 
-    engine.canvas.oncontextmenu = function () {
+    engine.div.oncontextmenu = function () {
       return false;
     };
 
-    engine.canvas.onblur = function () {
+    engine.div.onblur = function () {
       _this.isFocused = false;
 
       for (var _i = 0; _i < _this._focusHandlers.length; _i++) {
@@ -3425,7 +3429,7 @@ function () {
       }
     };
 
-    engine.canvas.onfocus = function () {
+    engine.div.onfocus = function () {
       _this.isFocused = true;
 
       for (var _i2 = 0; _i2 < _this._focusHandlers.length; _i2++) {
@@ -3434,7 +3438,7 @@ function () {
     };
 
     document.addEventListener('pointerlockchange', function () {
-      if (document.pointerLockElement === engine.canvas) {
+      if (document.pointerLockElement === engine.div) {
         _this.pointerLocked = true;
       } else {
         _this.pointerLocked = false;
@@ -3541,7 +3545,7 @@ function () {
   }, {
     key: "onMouseMove",
     value: function onMouseMove(handler) {
-      this.engine.canvas.addEventListener('mousemove', handler, false);
+      this.engine.div.addEventListener('mousemove', handler, false);
     }
     /**
      * Sets function on right click for context menu.
@@ -3552,7 +3556,7 @@ function () {
   }, {
     key: "onContextMenu",
     value: function onContextMenu(handler) {
-      this.engine.canvas.oncontextmenu = handler;
+      this.engine.div.oncontextmenu = handler;
     }
     /**
      * Lock pointer on canvas. Useful for FPS Games.
@@ -3677,38 +3681,38 @@ function () {
     this.vertexes = [];
     /**
      * Polygon position.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * @public
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
      */
 
     this.position = [0, 0, 0];
     /**
      * Polygon rotation.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * @public
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
      */
 
     this.rotation = [0, 0, 0];
     /**
      * Polygon rotation point.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * @public
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
      */
 
     this.rotationPoint = [0, 0, 0];
     /**
     * Polygon parent rotation.
-    * @readonly
-    * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+    * @public
+    * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
     */
 
     this.parentRotation = [0, 0, 0];
     /**
     * Polygon normals.
-    * @readonly
-    * @type {Array.<{0: Number, 1: Number, 2: Number,
+    * @public
+    * @type {Array.{0: Number, 1: Number, 2: Number,
     *                3: Number, 4: Number, 5: Number,
-    *                6: Number, 7: Number, 8: Number,}>} matrix 9
+    *                6: Number, 7: Number, 8: Number,}} matrix 9
     */
 
     this.normals = [0, 1, 0, 0, 1, 0, 0, 1, 0];
@@ -3718,6 +3722,13 @@ function () {
      */
 
     this._vertexesBuffer = null;
+    /**
+     * Sets whether the object will be attached to the camera like UI element.
+     * @type {boolean}
+     * @public
+     */
+
+    this.UIElement = false;
   }
   /**
    * Setting texture for polygon.
@@ -3881,20 +3892,20 @@ function () {
     /**
      * Rect polygons.
      * @private
-     * @type {Array.<{0: Polygon, 1: Polygon}>} vector 3
+     * @type {Array.{0: Polygon, 1: Polygon}} vector 3
      */
     this.polygons = new Array(2);
     /**
      * Rect position.
      * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
      */
 
     this.position = [0, 0, 0];
     /**
      * Rect rotation point.
      * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
      */
 
     this.rotationPoint = [0, 0, 0];
@@ -3953,9 +3964,9 @@ function () {
     }
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in deg.
-     * @param {*} y in deg.
-     * @param {*} z in deg.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
      * @public
      */
 
@@ -4007,6 +4018,17 @@ function () {
     value: function setNormals(normals) {
       this.polygons[0].setNormals(normals);
       this.polygons[1].setNormals(normals);
+    }
+    /**
+     * Sets whether the all polygons will be attached to the camera like UI element.
+     * @param {bolean} bool 
+     */
+
+  }, {
+    key: "setAsUIElement",
+    value: function setAsUIElement(bool) {
+      this.polygons[0].UIElement = bool;
+      this.polygons[1].UIElement = bool;
     }
   }]);
 
@@ -4222,9 +4244,100 @@ function () {
     value: function removeAnimation() {
       clearInterval(this._animationInterval);
     }
+    /**
+     * Sets whether the all polygons will be attached to the camera like UI element.
+     * @deprecated
+     * @param {bolean} bool 
+     */
+
+  }, {
+    key: "setAsUIElement",
+    value: function setAsUIElement(bool) {
+      this.faces[0].setAsUIElement(bool);
+      this.faces[1].setAsUIElement(bool);
+      this.faces[2].setAsUIElement(bool);
+      this.faces[3].setAsUIElement(bool);
+      this.faces[4].setAsUIElement(bool);
+      this.faces[5].setAsUIElement(bool);
+    }
   }]);
 
   return Cube;
+}();
+// CONCATENATED MODULE: ./src/ui/UI.js
+
+
+
+/**
+ * @class
+ * @constructor
+ * @param {Engine} e
+ */
+var UI_UI =
+/*#__PURE__*/
+function () {
+  function UI(engine) {
+    classCallCheck_default()(this, UI);
+
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = engine.div.width;
+    this.canvas.height = engine.div.height;
+    this.canvas.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;';
+    this.div = document.createElement('div');
+    this.div.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;';
+    engine.div.appendChild(this.canvas);
+    engine.div.appendChild(this.div);
+    /**
+     * 2D context for UI drawing. 
+     * @type {CanvasRenderingContext2D}
+     */
+
+    this.context = this.canvas.getContext('2d');
+    /**
+     * There are objects which object needs to draw.
+     * @type {Objects[]}
+     */
+
+    this.elements = [];
+    engine.ui = this;
+  }
+  /**
+   * Adds object to draw.
+   * @param {Object} element some UI element. 
+   */
+
+
+  createClass_default()(UI, [{
+    key: "addElement",
+    value: function addElement(element) {
+      this.elements.push(element);
+    }
+    /**
+     * Removes element from drawing function.
+     * @param {Object} element 
+     */
+
+  }, {
+    key: "removeElement",
+    value: function removeElement(element) {
+      var index = this.elements.indexOf(element);
+      this.elements.removeAt(index);
+    }
+    /**
+     * This function draws all elements.
+     * @private
+     */
+
+  }, {
+    key: "_draw",
+    value: function _draw() {
+      this.elements.forEach(function (element) {
+        element.draw();
+      });
+    }
+  }]);
+
+  return UI;
 }();
 // CONCATENATED MODULE: ./src/Bronze.js
 /* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
@@ -4251,6 +4364,8 @@ function () {
 /* concated harmony reexport Cube */__webpack_require__.d(__webpack_exports__, "Cube", function() { return Cube_Cube; });
 /* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
 /* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
+/* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
+
 
 
 
