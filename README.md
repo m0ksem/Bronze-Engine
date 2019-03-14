@@ -9,6 +9,10 @@
  <a href="https://github.com/m0ksem/Bronze-Editor"><b>Editor</b></a>
 </div>
 
+## Examples
+ - 🎯 <a href="http://m0ksem.design/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game for train aim.
+ - 🏗 <a href="https://github.com/m0ksem/Bronze-Editor"><b>Dev ploygon</b></a> - polygon for testing new features.
+
 ## Using
  1. Setup  
  Download last realese and use it `<script src="Bronze.js"></script>`  
