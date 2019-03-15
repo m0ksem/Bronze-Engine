@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: Math</title>
+    <title>JSDoc: Class: UI</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: Math</h1>
+    <h1 class="page-title">Class: UI</h1>
 
     
 
@@ -28,6 +28,7 @@
 
 <header>
     
+        <h2><span class="attribs"><span class="type-signature"></span></span>UI<span class="signature">(e)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -37,7 +38,134 @@
     
         
 
+    
+
+    
+    <h4 class="name" id="UI"><span class="type-signature"></span>new UI<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
         
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Engine.html">Engine</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
@@ -54,6 +182,154 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="context"><span class="type-signature"></span>context<span class="type-signature"> :CanvasRenderingContext2D</span></h4>
+
+
+
+
+<div class="description">
+    2D context for UI drawing.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">CanvasRenderingContext2D</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="elements"><span class="type-signature"></span>elements<span class="type-signature"> :Array.&lt;Objects></span></h4>
+
+
+
+
+<div class="description">
+    There are objects which object needs to draw.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;Objects></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -64,7 +340,7 @@
     
 
     
-    <h4 class="name" id=".degToRad"><span class="type-signature">(static) </span>degToRad<span class="signature">(degrees)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <h4 class="name" id="addElement"><span class="type-signature"></span>addElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
     
 
     
@@ -72,7 +348,7 @@
 
 
 <div class="description">
-    Converting degrees to radians.
+    Adds object to draw.
 </div>
 
 
@@ -108,13 +384,148 @@
 
         <tr>
             
-                <td class="name"><code>degrees</code></td>
+                <td class="name"><code>element</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">some UI element.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="appendDOMElement"><span class="type-signature"></span>appendDOMElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Adding DOM element upper game engine canvas.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
 
 
             
@@ -165,7 +576,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_Math.js.html">math/Math.js</a>, <a href="math_Math.js.html#line17">line 17</a>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -188,28 +599,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    radians
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Number</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -221,7 +610,7 @@
     
 
     
-    <h4 class="name" id=".isPowerOf2"><span class="type-signature">(static) </span>isPowerOf2<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeElement"><span class="type-signature"></span>removeElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
     
 
     
@@ -229,7 +618,7 @@
 
 
 <div class="description">
-    Returns true if value is square.
+    Removes element from drawing function.
 </div>
 
 
@@ -265,13 +654,13 @@
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>element</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type"><a href="Object.html">Object</a></span>
 
 
             
@@ -322,7 +711,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_Math.js.html">math/Math.js</a>, <a href="math_Math.js.html#line25">line 25</a>
+        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -345,163 +734,6 @@
 
 
 
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".radToDeg"><span class="type-signature">(static) </span>radToDeg<span class="signature">(radians)</span><span class="type-signature"> &rarr; {Number}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Converting radians to degrees.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>radians</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_Math.js.html">math/Math.js</a>, <a href="math_Math.js.html#line8">line 8</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    degrees
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Number</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 

@@ -43,31 +43,41 @@ import {Map} from "./map/Map.js"
  * @param {HTMLElement|HTMLCanvasElement} canvas
  */
 export class Engine {
-    constructor (canvas) {
+    constructor (div) {
 
         /**
-         * WebGL context of canvas
          * @private
          */
-        this.webGL = Utils.getWebGL(canvas)
+        this.div = div
+        this.div.style = "position: relative;"
 
         /**
          * Canvas for drawing.
          * @readonly
          */
-        this.canvas = canvas
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = div.width
+        this.canvas.height = div.height
+
+        div.appendChild(this.canvas)
+
+        /**
+         * WebGL context of canvas
+         * @private
+         */
+        this.webGL = Utils.getWebGL(this.canvas)
 
         /**
          * Width of drawing resolution
          * @type {Number}
          */
-        this.width = canvas.width
+        this.width = div.width
 
         /**
          * Height of drawing resolution.
          * @type {Number}
          */
-        this.height = canvas.height
+        this.height = div.height
 
         /**
          * @type {Polygon[]}
@@ -83,13 +93,10 @@ export class Engine {
         this.objects = []
 
         /**
-         * @type {Object}
-         * @property {Array} ui.objects
-         * @public
+         * @type {UI}
+         * @private
          */
-        this.ui = {
-            objects: []
-        }
+        this.ui = null
 
         /**
          * @type {Array.&lt;{Texture}>}
@@ -262,8 +269,15 @@ export class Engine {
 
         this.polygons.forEach(element => {           
             temp = new Matrixes.Matrix()
-            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            temp.multiply(this.camera.inventedMatrix)
+            
+            // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            if (!element.UIElement) {
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+                temp.multiply(this.camera.inventedMatrix)
+            } else {
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            }
+
             world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
@@ -277,8 +291,7 @@ export class Engine {
             }
             world.multiply(rot)
             
-            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
-            world.scale(1, 1, 1)
+            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])
                         
             temp.multiply(world.matrix)
 
@@ -290,9 +303,12 @@ export class Engine {
 
         this.objects.forEach(element => {           
             temp = new Matrixes.Matrix()
-            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            //temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             if (!element.UIElement) {
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
                 temp.multiply(this.camera.inventedMatrix)
+            } else {
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             }
             world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
@@ -464,37 +480,18 @@ export class Engine {
             this.webGL.enable(this.webGL.DEPTH_TEST)
         });
 
-        this.ui.objects.forEach(o => {
-            o.faces.forEach(face => {
-                // console.log(face)
-               
-                this.webGL.enableVertexAttribArray(this.positionLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.vertexesBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.normalLocation);
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.normalBuffer);
-                this.webGL.vertexAttribPointer(
-                    this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
-
-                this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
-                this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
-                this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
-                
-                this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
-            })
-        });
-
         if (this.debugger != null) {
             this.debugger.updateInfo()
+        }
+    }
+
+    /**
+     * Drawing UI function.
+     * @private
+     */
+    _drawUI () {
+        if (this.ui !== null) {
+            this.ui._draw()
         }
     }
 
@@ -505,6 +502,7 @@ export class Engine {
     async render () {
         await this._update()
         await this._draw()
+        await this._drawUI()
     }
 
     /**
@@ -569,13 +567,13 @@ function requestAnimationFrameEngine () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 15 2019 21:55:16 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -178,13 +178,13 @@ export class Controls {
             return !this._rebind
         };
 
-        engine.canvas.setAttribute('tabindex','0');
+        engine.div.setAttribute('tabindex','0');
 
         let lastMousePosition = null
 
-        engine.canvas.addEventListener('mousemove', (event) => {
+        engine.div.addEventListener('mousemove', (event) => {
             if (!this.pointerLocked) {
-                let mousePos = engine.canvas.getBoundingClientRect()
+                let mousePos = engine.div.getBoundingClientRect()
                 let x = event.clientX - mousePos.left
                 let y = event.clientY - mousePos.top
                 this.mouse.x = x
@@ -208,56 +208,56 @@ export class Controls {
         }, false);
 
         window.addEventListener('mousemove', (event) => {
-            let canvasPos = engine.canvas.getBoundingClientRect()
+            let canvasPos = engine.div.getBoundingClientRect()
             let x = event.clientX
             let y = event.clientY
             if (x &lt; canvasPos.right  &amp;&amp; x > canvasPos.left &amp;&amp;
                 y &lt; canvasPos.bottom &amp;&amp; y > canvasPos.top    ) {
                 this.mouseOverCanvas = true
                 if (!this._focusOnlyIfClick &amp;&amp; !this.isFocused) {
-                    engine.canvas.focus()
+                    engine.div.focus()
                 }
             }
             else {
                 this.mouseOverCanvas = false
                 if (!this._focusOnlyIfClick) {
-                    engine.canvas.blur()
+                    engine.div.blur()
                 }
             }
         })
 
-        engine.canvas.onclick = () => {
+        engine.div.onclick = () => {
             if (this._focusOnlyIfClick &amp;&amp; !this.isFocused) {
-                engine.canvas.focus()
+                engine.div.focus()
             }
             if (this._lockPointer) {
-                engine.canvas.requestPointerLock();
+                engine.div.requestPointerLock();
             }
         }
 
-        engine.canvas.onmousedown = (event) => {
+        engine.div.onmousedown = (event) => {
             this.mouse.buttons[event.button] = true
             if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button](event)
             return false
         }
 
-        engine.canvas.onmouseup = (event) => {
+        engine.div.onmouseup = (event) => {
             this.mouse.buttons[event.button] = false
             return false
         }
 
-        engine.canvas.oncontextmenu = function() {
+        engine.div.oncontextmenu = function() {
             return false;
         }
 
-        engine.canvas.onblur = () => {
+        engine.div.onblur = () => {
             this.isFocused = false
             for (let i = 0; i &lt; this._focusHandlers.length; i++) {
                 this._blurHandlers[i]()
             }
         }
 
-        engine.canvas.onfocus = () => {
+        engine.div.onfocus = () => {
             this.isFocused = true
             for (let i = 0; i &lt; this._focusHandlers.length; i++) {
                 this._focusHandlers[i]()
@@ -265,7 +265,7 @@ export class Controls {
         }
 
         document.addEventListener('pointerlockchange', () => {
-            if(document.pointerLockElement === engine.canvas){
+            if(document.pointerLockElement === engine.div){
                 this.pointerLocked = true
             }
             else {
@@ -354,7 +354,7 @@ export class Controls {
      * @public
      */
     onMouseMove(handler) {
-        this.engine.canvas.addEventListener('mousemove', handler, false);
+        this.engine.div.addEventListener('mousemove', handler, false);
     }
 
     /**
@@ -363,7 +363,7 @@ export class Controls {
      * @public
      */
     onContextMenu (handler) {
-        this.engine.canvas.oncontextmenu = handler
+        this.engine.div.oncontextmenu = handler
     }
 
     /**
@@ -386,13 +386,13 @@ export class Controls {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 10 2019 14:24:57 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 15 2019 21:55:16 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

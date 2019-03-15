@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Texture.js</title>
+    <title>JSDoc: Source: ui/UI.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Texture.js</h1>
+    <h1 class="page-title">Source: ui/UI.js</h1>
 
     
 
@@ -27,81 +27,78 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Texture for polygons or objects.
  * @class
  * @constructor
- * @param {String} path - path to image location.
- * @param {Number} [width] - custom width for image.
- * @param {Number} [height] - custom height for image.
+ * @param {Engine} e
  */
-class Texture extends Image {
-    constructor (path, width, height) {
+export class UI {
+    constructor (engine) {
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = engine.div.width
+        this.canvas.height = engine.div.height
+        this.canvas.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;'
+
+        this.div = document.createElement('div')
+        this.div.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;'
+
+        engine.div.appendChild(this.canvas)
+        engine.div.appendChild(this.div)
+
+        /**
+         * 2D context for UI drawing. 
+         * @type {CanvasRenderingContext2D}
+         */
+        this.context = this.canvas.getContext('2d')
+
+        /**
+         * There are objects which object needs to draw.
+         * @type {Objects[]}
+         */
+        this.elements = []
         
-        super()
-        this.src = path
-        if (width != null &amp;&amp; height != null) {
-            this.width = width
-            this.height = height
+        engine.ui = this
+    }
+
+    /**
+     * Adds object to draw.
+     * @param {Object} element some UI element. 
+     */
+    addElement (element) {
+        this.elements.push(element)
+    }
+
+    /**
+     * Removes element from drawing function.
+     * @param {Object} element 
+     */
+    removeElement (element) {
+        let index = this.elements.indexOf(element)
+        this.elements.removeAt(index)
+    }
+
+    /**
+     * Adding DOM element upper game engine canvas.
+     * @param {HTMLElement} element 
+     */
+    appendDOMElement (element, properties) {
+        let style = ''
+        for (let property in properties) {
+            style += property + ':  ' + properties[property] + ';'
         }
+        element.style = style
+        this.div.appendChild(element)
+    }
 
-        /**
-         * Texture coordinates.
-         * @private
-         */
-        this.coords = [
-            
-        ]
-        this.addEventListener('load', () => {
-            this.loaded = true
+    /**
+     * This function draws all elements.
+     * @private
+     */
+    _draw () {
+        this.elements.forEach(element => {
+            element.draw()
         })
-
-        /**
-         * Color of texture. Texture drawing with color if image was not set.
-         * @readonly
-         */
-        this.color = new Uint8Array([255, 255, 255, 255])
-
-        /**
-         * Location of texture block in engine.
-         * @private
-         */
-        this._textureBlockLocation = null
     }
-    
-    /**
-     * Scale image width by x, height by y.
-     * @param {Number} x
-     * @param {Number} y
-     * @public
-     */
-    scale (x, y) {
-        this.width = width * x
-        this.height = height * y
-    }
-
-    /**
-     * Setting texture coords.
-     * @param {Array} coords 
-     * @public
-     */
-    setCoords (coords) {
-        this.coords = coords
-    }
-
-    /**
-     * Setting color of polygon. The color will be shown until the texture is loaded.
-     * @param {Number} r red value from 0 to 255.
-     * @param {Number} g green value from 0 to 255.
-     * @param {Number} b blue value from 0 to 255.
-     * @param {Number} a alpha value from 0 to 255.
-     * @public
-     */
-    setColorRGBA (r, g, b, a) {
-        this.color = new Uint8Array([r, g, b, a])
-    }
-}
-
-export {Texture}</code></pre>
+}</code></pre>
         </article>
     </section>
 
