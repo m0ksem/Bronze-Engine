@@ -111,6 +111,18 @@ export class Rect {
     }
 
     /**
+     * Change scaling of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+    scale(x, y, z) {
+        this.polygons[0].scale(x, y, z)
+        this.polygons[1].scale(x, y, z)
+    }
+
+    /**
      * Set rotation for x, y, z axis.
      * @param {Number} x in deg.
      * @param {Number} y in deg.

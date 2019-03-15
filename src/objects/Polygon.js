@@ -40,6 +40,13 @@ export class Polygon {
         this.rotation = [0, 0, 0]
 
         /**
+         * Polygon scaling.
+         * @readonly
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
+         */
+        this.scaling = [1, 1, 1]
+
+        /**
          * Polygon rotation point.
          * @public
          * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
@@ -125,6 +132,20 @@ export class Polygon {
         this.position[0] = x
         this.position[1] = y
         this.position[2] = z
+    }
+
+    /**
+     * Scaling polygon for x,y,z percent.
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    scale (x, y, z) {
+        this.scaling[0] = x
+        this.scaling[1] = y
+        this.scaling[2] = z
     }
 
     /**

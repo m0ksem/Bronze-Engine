@@ -9,6 +9,9 @@ import * as Math from "../math/Math"
  */
 export class Cube {
     constructor (engine) {
+
+        this.engine = engine
+
         /**
          * Faces of cube
          * @private
@@ -36,6 +39,12 @@ export class Cube {
          * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
          */
         this.rotation = [0, 0, 0]
+
+        /**
+         * @type {boolean}
+         * @readonly
+         */
+        this.UIElement = false
 
         this.faces[0].rotate(0, 0, 0)
         this.faces[0].setRotationPoint(-100, -100, 100)
@@ -143,13 +152,23 @@ export class Cube {
      * @public
      */
     setPosition(x, y, z) {
-        this.position = [x, y, z]
-        this.faces[0].setPosition(x, y, z)
-        this.faces[1].setPosition(x, y, z)
-        this.faces[2].setPosition(x, y, z)
-        this.faces[3].setPosition(x, y, z)
-        this.faces[4].setPosition(x, y, z)
-        this.faces[5].setPosition(x, y, z)
+        if (!this.UIElement) {
+            this.position = [x, y, z]
+            this.faces[0].setPosition(x, y, z)
+            this.faces[1].setPosition(x, y, z)
+            this.faces[2].setPosition(x, y, z)
+            this.faces[3].setPosition(x, y, z)
+            this.faces[4].setPosition(x, y, z)
+            this.faces[5].setPosition(x, y, z)
+        } else {
+            this.faces[0].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.faces[1].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.faces[2].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.faces[3].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.faces[4].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.faces[5].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
+            this.position = [this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z]
+        }
     }
 
     /**
@@ -169,6 +188,16 @@ export class Cube {
         this.faces.forEach(face => {
             face.setParentRotation(xRad, yRad, zRad)
         })
+    }
+
+    /**
+     * Setting scaling for cube in percent 
+     * @param {Number} x scaling in percent 
+     * @param {Number} y scaling in percent 
+     * @param {Number} z scaling in percent 
+     */
+    scale (x, y, z) {
+        this.setSize(this.width * x, this.height * y, this.depth * z)
     }
 
     /**
@@ -220,6 +249,7 @@ export class Cube {
      * @param {bolean} bool 
      */
     setAsUIElement (bool) {
+        this.UIElement = bool
         this.faces[0].setAsUIElement(bool)
         this.faces[1].setAsUIElement(bool)
         this.faces[2].setAsUIElement(bool)
