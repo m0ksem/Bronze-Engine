@@ -1226,8 +1226,9 @@ function () {
 
   }, {
     key: "projection",
-    value: function projection(width, height) {
-      this.matrix = [2 / width, 0, 0, 0, -2 / height, 0, -1, 1, 1];
+    value: function projection(fieldOfViewInRadians, width, height, near, far) {
+      this.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1];
+      this.matrix = [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / far, 0, 0, 0, 0, 1];
       return this;
     }
     /**
@@ -1850,6 +1851,7 @@ function (_Image) {
 
 
 
+
 /**
 * Creates and bind to engine object. The object must be loaded from .obj file.
 * @class
@@ -2006,9 +2008,15 @@ function () {
   }, {
     key: "setPosition",
     value: function setPosition(x, y, z) {
-      this.position[0] = x;
-      this.position[1] = y;
-      this.position[2] = z;
+      if (!this.UIElement) {
+        this.position[0] = x;
+        this.position[1] = y;
+        this.position[2] = z;
+      } else {
+        this.position[0] = this.engine.width / 2 * x / 100;
+        this.position[1] = this.engine.height / 2 * y / 100;
+        this.position[2] = z;
+      }
     }
     /**
      * Adds values to position which moves object.
@@ -2068,9 +2076,9 @@ function () {
   }, {
     key: "setRotation",
     value: function setRotation(x, y, z) {
-      this.rotation[0] = x;
-      this.rotation[1] = y;
-      this.rotation[2] = z;
+      this.rotation[0] = degToRad(x);
+      this.rotation[1] = degToRad(y);
+      this.rotation[2] = degToRad(z);
     }
     /**
      * Setting coordinates for rotation point.
@@ -2640,11 +2648,13 @@ function () {
 
       this.selectedObject = null;
       this.polygons.forEach(function (element) {
-        temp = new Matrixes_Matrix();
-        temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+        temp = new Matrixes_Matrix(); // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
 
         if (!element.UIElement) {
+          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
           temp.multiply(_this2.camera.inventedMatrix);
+        } else {
+          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
         }
 
         world = new Matrixes_Matrix();
@@ -2662,18 +2672,19 @@ function () {
 
         world.multiply(rot);
         world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2]);
-        world.scale(1, 1, 1);
         temp.multiply(world.matrix);
         element._matrix = temp.matrix;
         element._rotationMatrix = rot;
       });
       var selectedObject = null;
       this.objects.forEach(function (element) {
-        temp = new Matrixes_Matrix();
-        temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+        temp = new Matrixes_Matrix(); //temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
 
         if (!element.UIElement) {
+          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
           temp.multiply(_this2.camera.inventedMatrix);
+        } else {
+          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
         }
 
         world = new Matrixes_Matrix();
@@ -3602,12 +3613,8 @@ function () {
     }
   }, {
     key: "addLog",
-    value: function addLog(name, object, value, view, output) {
-      output = output || this.defaultOutput;
+    value: function addLog(view, output) {
       this.logArray.push({
-        name: name,
-        object: object,
-        value: value,
         view: view,
         output: output
       });
@@ -3620,15 +3627,6 @@ function () {
       return node;
     }
   }, {
-    key: "defaultOutput",
-    value: function defaultOutput(log) {
-      if (object != null) {
-        return log.name + " : " + log.object[log.value];
-      }
-
-      return "log.name";
-    }
-  }, {
     key: "addView",
     value: function addView(view) {
       this.element.appendChild(view);
@@ -3639,6 +3637,21 @@ function () {
       this.logArray.forEach(function (e) {
         e.view.innerText = e.output(e);
       });
+    }
+  }, {
+    key: "logObject",
+    value: function logObject(object) {
+      var output = '{\n';
+
+      for (var property in object) {
+        if (property[0] != '_') {
+          output += property + ': ' + object[property] + ',';
+        }
+      }
+
+      output.slice(-1, 1);
+      output += '}\n';
+      return output;
     }
   }]);
 
@@ -3693,6 +3706,13 @@ function () {
      */
 
     this.rotation = [0, 0, 0];
+    /**
+     * Polygon scaling.
+     * @readonly
+     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
+     */
+
+    this.scaling = [1, 1, 1];
     /**
      * Polygon rotation point.
      * @public
@@ -3785,6 +3805,22 @@ function () {
       this.position[0] = x;
       this.position[1] = y;
       this.position[2] = z;
+    }
+    /**
+     * Scaling polygon for x,y,z percent.
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this.scaling[0] = x;
+      this.scaling[1] = y;
+      this.scaling[2] = z;
     }
     /**
      * Add rotation for x, y, z axis for current rotation.
@@ -3963,6 +3999,20 @@ function () {
       this.polygons[1].setPosition(x, y, z);
     }
     /**
+     * Change scaling of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this.polygons[0].scale(x, y, z);
+      this.polygons[1].scale(x, y, z);
+    }
+    /**
      * Set rotation for x, y, z axis.
      * @param {Number} x in deg.
      * @param {Number} y in deg.
@@ -4052,11 +4102,13 @@ function () {
   function Cube(engine) {
     classCallCheck_default()(this, Cube);
 
+    this.engine = engine;
     /**
      * Faces of cube
      * @private
      * @type {Array.<{Rect}>}
      */
+
     this.faces = [new Rect_Rect(engine), // front
     new Rect_Rect(engine), // right
     new Rect_Rect(engine), // back
@@ -4078,6 +4130,12 @@ function () {
      */
 
     this.rotation = [0, 0, 0];
+    /**
+     * @type {boolean}
+     * @readonly
+     */
+
+    this.UIElement = false;
     this.faces[0].rotate(0, 0, 0);
     this.faces[0].setRotationPoint(-100, -100, 100);
     this.faces[0].setPosition(0, 0, 0);
@@ -4164,13 +4222,23 @@ function () {
   }, {
     key: "setPosition",
     value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
-      this.faces[0].setPosition(x, y, z);
-      this.faces[1].setPosition(x, y, z);
-      this.faces[2].setPosition(x, y, z);
-      this.faces[3].setPosition(x, y, z);
-      this.faces[4].setPosition(x, y, z);
-      this.faces[5].setPosition(x, y, z);
+      if (!this.UIElement) {
+        this.position = [x, y, z];
+        this.faces[0].setPosition(x, y, z);
+        this.faces[1].setPosition(x, y, z);
+        this.faces[2].setPosition(x, y, z);
+        this.faces[3].setPosition(x, y, z);
+        this.faces[4].setPosition(x, y, z);
+        this.faces[5].setPosition(x, y, z);
+      } else {
+        this.faces[0].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.faces[1].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.faces[2].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.faces[3].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.faces[4].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.faces[5].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z);
+        this.position = [this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z];
+      }
     }
     /**
      * Set rotation for x, y, z axis.
@@ -4192,6 +4260,18 @@ function () {
       this.faces.forEach(function (face) {
         face.setParentRotation(xRad, yRad, zRad);
       });
+    }
+    /**
+     * Setting scaling for cube in percent 
+     * @param {Number} x scaling in percent 
+     * @param {Number} y scaling in percent 
+     * @param {Number} z scaling in percent 
+     */
+
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this.setSize(this.width * x, this.height * y, this.depth * z);
     }
     /**
      * Set rotation for x, y, z axis.
@@ -4253,6 +4333,7 @@ function () {
   }, {
     key: "setAsUIElement",
     value: function setAsUIElement(bool) {
+      this.UIElement = bool;
       this.faces[0].setAsUIElement(bool);
       this.faces[1].setAsUIElement(bool);
       this.faces[2].setAsUIElement(bool);
@@ -4322,6 +4403,23 @@ function () {
     value: function removeElement(element) {
       var index = this.elements.indexOf(element);
       this.elements.removeAt(index);
+    }
+    /**
+     * Adding DOM element upper game engine canvas.
+     * @param {HTMLElement} element 
+     */
+
+  }, {
+    key: "appendDOMElement",
+    value: function appendDOMElement(element, properties) {
+      var style = '';
+
+      for (var property in properties) {
+        style += property + ':  ' + properties[property] + ';';
+      }
+
+      element.style = style;
+      this.div.appendChild(element);
     }
     /**
      * This function draws all elements.
