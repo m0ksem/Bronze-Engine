@@ -49,6 +49,19 @@ export class UI {
     }
 
     /**
+     * Adding DOM element upper game engine canvas.
+     * @param {HTMLElement} element 
+     */
+    appendDOMElement (element, properties) {
+        let style = ''
+        for (let property in properties) {
+            style += property + ':  ' + properties[property] + ';'
+        }
+        element.style = style
+        this.div.appendChild(element)
+    }
+
+    /**
      * This function draws all elements.
      * @private
      */
