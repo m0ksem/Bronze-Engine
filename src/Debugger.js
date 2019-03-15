@@ -15,22 +15,14 @@ export class Debugger {
         this.element = element
     }
 
-    addLog(name, object, value, view, output) {
-        output = output || this.defaultOutput
-        this.logArray.push({name: name, object: object, value: value, view: view, output: output})
+    addLog(view, output) {
+        this.logArray.push({view: view, output: output})
         this.addView(view)
     }
 
     createLogView () {
         let node = document.createElement('p')
         return node
-    }
-
-    defaultOutput (log) {
-        if (object != null) {
-            return log.name + " : " + log.object[log.value]
-        }
-        return "log.name"
     }
 
     addView(view) {
@@ -41,5 +33,17 @@ export class Debugger {
         this.logArray.forEach(e => {
             e.view.innerText = e.output(e)
         })
+    }
+
+    logObject (object) {
+        let output = '{\n'
+        for (let property in object) {
+            if (property[0] != '_') {
+                output += property + ': ' + object[property] + ','
+            }
+        }
+        output.slice(-1, 1)
+        output += '}\n'
+        return output
     }
 }
