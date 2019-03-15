@@ -20,25 +20,26 @@ let camera = new Bronze.Camera()
     engine.setCamera(camera)
 
 let controls = new Bronze.Controls(engine)
-// // Setting Debugger @OnlyForDevelopment
-// let debug = new Bronze.Debugger(engine)
-//     debug.setElement(document.getElementById('debug'))
-//     debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
-//     debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
-//     debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
-//         return log.name + " : " + "Unselected."
-//     })
-//     debug.addLog("Hitbox y:", camera.position, "", debug.createLogView(), (log) => {
-//         return log.name + " : " + "Unselected."
-//     })
-//     debug.addLog("Object", camera.position, "", debug.createLogView())
-//     debug.addLog("Z", camera.position, "", debug.createLogView())
+
+let debug = new Bronze.Debugger(engine)
+    debug.setElement(document.getElementById('debug'))
+    debug.addLog(debug.createLogView(), () => {
+        return 'Mouse x: ' + controls.mouse.x + ' y: ' + controls.mouse.y
+    })
+    debug.addLog(debug.createLogView(), () => {
+        if (engine.selectedObject == null) {
+            return 'No objects selected'
+        } else {
+            return 'Selected object ' + engine.selectedObject.name
+        }
+    })
+
+let ui = new Bronze.UI(engine)
+    ui.appendDOMElement(debug.element, {width: '500px'})
 
 // Setting control function for camera
 controls.setSensitivity(1)
 controls.lockPointer(true)
-
-let ui = new Bronze.UI(engine)
 
 camera.setControl(() => {
     // All coords
@@ -230,12 +231,12 @@ let cube1 = new Bronze.Cube(engine)
 let cube3 = new Bronze.Cube(engine)
     cube3.setTexture(rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture)
     cube3.setSize(200, 200, 200)
-    cube3.setPosition(0, 0, 0)
-    cube3.rotate(-15, 45, 0)
     cube3.setAsUIElement(true)
+    cube3.setPosition(-95, -75, 0)
     cube3.animate(60, () => {
         cube3.rotate(0, 1, 0)
     })
+    cube3.scale(0.5, 0.5, 0.5)
 
     // let xpos = 0, ypos = 0, zpos = 0, xdir = -1
     // object.animate(30, () => {
@@ -272,12 +273,15 @@ let house = new Bronze.Object(engine)
 let object = new Bronze.Object(engine)
     object.UIElement = true
     object.setTexture(colaTexture)
-    object.setPosition(100, -50, -100)
+    object.setPosition(90, 60, 0)
     object.name = "box"
     object.loadFromObj("assets/objects/cola.obj")
     object.setRotationPoint(0, 0, 0)
-    object.setRotation(45, 45, 45)
-    object.scale(1.5, 1.5, 1.5)
+    object.setRotation(90, -45, 30)
+    // // object.animate(60, () => {
+    //     object.rotate(90, 90, 90)
+    // // })
+    object.scale(7, 7, 7)
 
 // Run engine
 engine.run()

@@ -242,9 +242,12 @@ export class Engine {
         this.polygons.forEach(element => {           
             temp = new Matrixes.Matrix()
             
-            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             if (!element.UIElement) {
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
                 temp.multiply(this.camera.inventedMatrix)
+            } else {
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             }
 
             world = new Matrixes.Matrix()
@@ -260,8 +263,7 @@ export class Engine {
             }
             world.multiply(rot)
             
-            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])     
-            world.scale(1, 1, 1)
+            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])
                         
             temp.multiply(world.matrix)
 
@@ -273,9 +275,12 @@ export class Engine {
 
         this.objects.forEach(element => {           
             temp = new Matrixes.Matrix()
-            temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+            //temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             if (!element.UIElement) {
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
                 temp.multiply(this.camera.inventedMatrix)
+            } else {
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             }
             world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))

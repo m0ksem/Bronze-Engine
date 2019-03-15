@@ -1,4 +1,5 @@
 import * as Matrixes from "../math/Matrixes"
+import * as Math from '../math/Math'
 
  /**
  * Creates and bind to engine object. The object must be loaded from .obj file.
@@ -146,9 +147,15 @@ export class Object {
      * @public
      */
     setPosition (x, y, z) {
-        this.position[0] = x
-        this.position[1] = y
-        this.position[2] = z
+        if (!this.UIElement) {
+            this.position[0] = x
+            this.position[1] = y
+            this.position[2] = z
+        } else {
+            this.position[0] = this.engine.width / 2 * x / 100
+            this.position[1] = this.engine.height / 2 * y / 100
+            this.position[2] = z
+        }
     }
 
     /**
@@ -200,9 +207,9 @@ export class Object {
      * @public 
      */
     setRotation (x, y, z) {
-        this.rotation[0] = x
-        this.rotation[1] = y
-        this.rotation[2] = z
+        this.rotation[0] = Math.degToRad(x)
+        this.rotation[1] = Math.degToRad(y)
+        this.rotation[2] = Math.degToRad(z)
     }
 
     /**

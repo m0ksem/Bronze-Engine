@@ -45,12 +45,20 @@ export class Matrix {
      * @param {Number} height
      * @public 
      */
-    projection (width, height) {
+    projection (fieldOfViewInRadians, width, height, near, far) {
+        
         this.matrix = [
-            2 / width, 0, 0,
-            0, -2 / height, 0,
-            -1, 1, 1
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 1,
+            0, 0, 0, 1
         ]
+        this.matrix = ([
+            2 / width, 0, 0, 0,
+            0, -2 / height, 0, 0,
+            0, 0, 2 / far, 0,
+            0, 0, 0, 1,
+        ])
         return this
     }
     
