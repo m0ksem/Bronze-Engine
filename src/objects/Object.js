@@ -126,7 +126,14 @@ export class Object {
          * @type {boolean}
          * @public
          */
-        this.UIElement = false 
+        this.UIElement = false
+
+        /**
+         * True if the object is behind the camera.
+         * @type {boolean}
+         * @readonly
+         */
+        this.behindTheCamera = false
     }
 
     /**

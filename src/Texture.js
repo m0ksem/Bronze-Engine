@@ -53,7 +53,7 @@ class Texture extends Image {
 
     /**
      * Setting texture coords.
-     * @param {Array} coords 
+     * @param {Number[]} coords 
      * @public
      */
     setCoords (coords) {

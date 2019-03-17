@@ -1818,7 +1818,7 @@ function (_Image) {
     }
     /**
      * Setting texture coords.
-     * @param {Array} coords 
+     * @param {Number[]} coords 
      * @public
      */
 
@@ -1983,6 +1983,13 @@ function () {
      */
 
     this.UIElement = false;
+    /**
+     * True if the object is behind the camera.
+     * @type {boolean}
+     * @readonly
+     */
+
+    this.behindTheCamera = false;
   }
   /**
    * Setting texture for object.
@@ -2514,6 +2521,20 @@ function () {
      */
 
     this._objectSelectHandler;
+    /**
+     * Count of drawCalls.
+     * @type {Number}
+     * @readonly
+     */
+
+    this.drawCalls = 0;
+    /**
+     * Count of drawCalls.
+     * @type {Number}
+     * @readonly
+     */
+
+    this.drawCallsPerFrame = 0;
   }
   /**
    * Creating shaders and attaching to webGL context.
@@ -2760,11 +2781,17 @@ function () {
                 right: biggest[0]
               },
               y: {
-                top: biggest[1],
-                bottom: smallest[1]
+                top: smallest[1],
+                bottom: biggest[1]
               },
               depth: smallest[2]
             };
+
+            if (element.relativeCameraPosition.x.left >= _this2.width || element.relativeCameraPosition.x.right <= 0 || element.relativeCameraPosition.y.top >= _this2.height || element.relativeCameraPosition.x.bottom <= 0) {
+              element.behindTheCamera = true;
+            } else {
+              element.behindTheCamera = false;
+            }
 
             if (_this2.controls.mouse.x > smallest[0] && _this2.controls.mouse.x < biggest[0] && _this2.controls.mouse.y > smallest[1] && _this2.controls.mouse.y < biggest[1]) {
               mouseOverHitBox = true;
@@ -2808,6 +2835,7 @@ function () {
       this.webGL.uniform3fv(this.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
       this.webGL.uniform3fv(this.lightWorldPositionLocation, [0, 100, 400]);
       this.webGL.uniformMatrix4fv(this.cameraLocation, false, this.camera.matrix);
+      this.drawCallsPerFrame = 0;
       this.polygons.forEach(function (element) {
         _this3.webGL.enableVertexAttribArray(_this3.positionLocation);
 
@@ -2834,38 +2862,44 @@ function () {
         _this3.webGL.uniformMatrix4fv(_this3.objectRotationLocation, false, element._world);
 
         _this3.webGL.drawArrays(_this3.webGL.TRIANGLES, 0, 3);
+
+        _this3.drawCallsPerFrame++;
+        _this3.drawCalls++;
       });
-      this.objects.forEach(function (o) {
-        o.faces.forEach(function (face) {
-          // console.log(face)
-          _this3.webGL.enableVertexAttribArray(_this3.positionLocation);
+      this.objects.forEach(function (object) {
+        if (!object.behindTheCamera) {
+          object.faces.forEach(function (face) {
+            // console.log(face)
+            _this3.webGL.enableVertexAttribArray(_this3.positionLocation);
 
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.vertexesBuffer);
+            _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.vertexesBuffer);
 
-          _this3.webGL.vertexAttribPointer(_this3.positionLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
+            _this3.webGL.vertexAttribPointer(_this3.positionLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
 
-          _this3.webGL.enableVertexAttribArray(_this3.textureCoordinatesLocation);
+            _this3.webGL.enableVertexAttribArray(_this3.textureCoordinatesLocation);
 
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.coordsBuffer);
+            _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.coordsBuffer);
 
-          _this3.webGL.vertexAttribPointer(_this3.textureCoordinatesLocation, 2, _this3.webGL.FLOAT, false, 0, 0);
+            _this3.webGL.vertexAttribPointer(_this3.textureCoordinatesLocation, 2, _this3.webGL.FLOAT, false, 0, 0);
 
-          _this3.webGL.enableVertexAttribArray(_this3.normalLocation);
+            _this3.webGL.enableVertexAttribArray(_this3.normalLocation);
 
-          _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.normalBuffer);
+            _this3.webGL.bindBuffer(_this3.webGL.ARRAY_BUFFER, face.normalBuffer);
 
-          _this3.webGL.vertexAttribPointer(_this3.normalLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
+            _this3.webGL.vertexAttribPointer(_this3.normalLocation, 3, _this3.webGL.FLOAT, false, 0, 0);
 
-          _this3.webGL.uniform1i(_this3.textureLocation, o.texture._textureBlockLocation);
+            _this3.webGL.uniform1i(_this3.textureLocation, object.texture._textureBlockLocation);
 
-          _this3.webGL.uniformMatrix4fv(_this3.matrixLocation, false, o._matrix);
+            _this3.webGL.uniformMatrix4fv(_this3.matrixLocation, false, object._matrix);
 
-          _this3.webGL.uniformMatrix4fv(_this3.objectRotationLocation, false, o._world);
+            _this3.webGL.uniformMatrix4fv(_this3.objectRotationLocation, false, object._world);
 
-          _this3.webGL.drawArrays(_this3.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount);
-        });
+            _this3.webGL.drawArrays(_this3.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount);
 
-        _this3.webGL.enable(_this3.webGL.DEPTH_TEST);
+            _this3.drawCallsPerFrame++;
+            _this3.drawCalls++;
+          });
+        }
       });
 
       if (this.debugger != null) {
@@ -2907,10 +2941,6 @@ function () {
                 return this._draw();
 
               case 4:
-                _context.next = 6;
-                return this._drawUI();
-
-              case 6:
               case "end":
                 return _context.stop();
             }
@@ -3967,6 +3997,18 @@ function () {
     value: function setTexture(texture) {
       this.polygons[0].setTexture(texture);
       this.polygons[1].setTexture(texture);
+    }
+    /**
+     * Repeats texture on rect.
+     * @param {Number} count 
+     * @default 1
+     */
+
+  }, {
+    key: "setTextureRepeating",
+    value: function setTextureRepeating(x, y) {
+      this.polygons[0].setTextureCoords([0, y, x, 0, 0, 0]);
+      this.polygons[1].setTextureCoords([x, 0, 0, y, x, y]);
     }
     /**
      * Changing size of rect.

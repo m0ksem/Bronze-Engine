@@ -76,6 +76,24 @@ export class Rect {
     }
 
     /**
+     * Repeats texture on rect.
+     * @param {Number} count 
+     * @default 1
+     */
+    setTextureRepeating (x, y) {
+        this.polygons[0].setTextureCoords([
+            0, y,
+            x, 0,
+            0, 0,
+        ])
+        this.polygons[1].setTextureCoords([
+            x, 0,
+            0, y,
+            x, y,
+        ])
+    }
+
+    /**
      * Changing size of rect.
      * @param {Number} width
      * @param {Number} height

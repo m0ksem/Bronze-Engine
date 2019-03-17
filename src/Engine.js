@@ -126,6 +126,20 @@ export class Engine {
          * @private
          */
         this._objectSelectHandler
+
+        /**
+         * Count of drawCalls.
+         * @type {Number}
+         * @readonly
+         */
+        this.drawCalls = 0
+
+        /**
+         * Count of drawCalls.
+         * @type {Number}
+         * @readonly
+         */
+        this.drawCallsPerFrame = 0
     }
 
     /**
@@ -353,10 +367,19 @@ export class Engine {
                             right: biggest[0]
                         },
                         y: {
-                            top: biggest[1],
-                            bottom: smallest[1]
+                            top: smallest[1], 
+                            bottom: biggest[1]
                         },
                         depth: smallest[2]
+                    }
+
+                    if (element.relativeCameraPosition.x.left >= this.width || element.relativeCameraPosition.x.right <= 0 ||
+                        element.relativeCameraPosition.y.top >= this.height || element.relativeCameraPosition.x.bottom <= 0) {
+
+                        element.behindTheCamera = true
+                    }
+                    else {
+                        element.behindTheCamera = false
                     }
                     
                     if (this.controls.mouse.x > smallest[0] && this.controls.mouse.x < biggest[0] &&
@@ -397,6 +420,8 @@ export class Engine {
         this.webGL.uniform3fv(this.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.cameraLocation, false, this.camera.matrix)
 
+        this.drawCallsPerFrame = 0
+
         this.polygons.forEach(element => {
             this.webGL.enableVertexAttribArray(this.positionLocation)
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element._vertexesBuffer)
@@ -420,36 +445,41 @@ export class Engine {
             this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, element._world)
 
             this.webGL.drawArrays(this.webGL.TRIANGLES, 0, 3)
+            this.drawCallsPerFrame++
+            this.drawCalls++
         });
 
-        this.objects.forEach(o => {
-            o.faces.forEach(face => {
-                // console.log(face)
-               
-                this.webGL.enableVertexAttribArray(this.positionLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.vertexesBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
-                this.webGL.vertexAttribPointer(
-                    this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
-                )
-
-                this.webGL.enableVertexAttribArray(this.normalLocation);
-                this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.normalBuffer);
-                this.webGL.vertexAttribPointer(
-                    this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
-
-                this.webGL.uniform1i(this.textureLocation, o.texture._textureBlockLocation)
-                this.webGL.uniformMatrix4fv(this.matrixLocation, false, o._matrix)
-                this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, o._world)
-
-                this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
-            })
-            this.webGL.enable(this.webGL.DEPTH_TEST)
+        this.objects.forEach(object => {
+            if (!object.behindTheCamera) {
+                object.faces.forEach(face => {
+                    // console.log(face)
+                   
+                    this.webGL.enableVertexAttribArray(this.positionLocation)
+                    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.vertexesBuffer)
+                    this.webGL.vertexAttribPointer(
+                        this.positionLocation, 3, this.webGL.FLOAT, false, 0, 0
+                    )
+    
+                    this.webGL.enableVertexAttribArray(this.textureCoordinatesLocation)
+                    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.coordsBuffer)
+                    this.webGL.vertexAttribPointer(
+                        this.textureCoordinatesLocation, 2, this.webGL.FLOAT, false, 0, 0
+                    )
+    
+                    this.webGL.enableVertexAttribArray(this.normalLocation);
+                    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, face.normalBuffer);
+                    this.webGL.vertexAttribPointer(
+                        this.normalLocation, 3, this.webGL.FLOAT, false, 0, 0)
+    
+                    this.webGL.uniform1i(this.textureLocation, object.texture._textureBlockLocation)
+                    this.webGL.uniformMatrix4fv(this.matrixLocation, false, object._matrix)
+                    this.webGL.uniformMatrix4fv(this.objectRotationLocation, false, object._world)
+    
+                    this.webGL.drawArrays(this.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
+                    this.drawCallsPerFrame++
+                    this.drawCalls++
+                })
+            }
         });
 
         if (this.debugger != null) {
@@ -474,7 +504,7 @@ export class Engine {
     async render () {
         await this._update()
         await this._draw()
-        await this._drawUI()
+        // await this._drawUI()
     }
 
     /**

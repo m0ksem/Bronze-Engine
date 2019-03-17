@@ -27,6 +27,9 @@ let debug = new Bronze.Debugger(engine)
         return 'Mouse x: ' + controls.mouse.x + ' y: ' + controls.mouse.y
     })
     debug.addLog(debug.createLogView(), () => {
+        return 'Draw calls: ' + engine.drawCalls + ' (per frame ' + engine.drawCallsPerFrame + ')'
+    })
+    debug.addLog(debug.createLogView(), () => {
         if (engine.selectedObject == null) {
             return 'No objects selected'
         } else {
@@ -35,7 +38,7 @@ let debug = new Bronze.Debugger(engine)
     })
 
 let ui = new Bronze.UI(engine)
-    ui.appendDOMElement(debug.element, {width: '500px'})
+    ui.appendDOMElement(debug.element, {width: 'auto%'})
 
 // Setting control function for camera
 controls.setSensitivity(1)
@@ -124,22 +127,19 @@ engine.bindTexture(woodTexture)
 engine.bindTexture(houseTexture)
 
 // Setting elements and objects 
-let rect
-    for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 8; x++) {
-            rect = new Bronze.Rect(engine)
-            rect.setTexture(grassTexture)
-            rect.setSize(1000, 1000)
-            rect.setPosition(-4000 + 1000 * x, 0, 4000 - 1000 * y)
-            rect.rotate(-90, 0, 0)
-            rect.setRotationPoint(0, 0, 0)
-            rect.setNormals([
-                0, 1, 0,
-                0, 1, 0,
-                0, 1, 0,
-            ])
-        }
-    }
+let rect = new Bronze.Rect(engine)
+    rect.setTexture(grassTexture)
+    rect.setTextureRepeating(100, 100)
+    let width = 100000, height = 100000
+    rect.setSize(width, height)
+    rect.setPosition(-width / 2, -1, height / 2)
+    rect.rotate(-90, 0, 0)
+    rect.setRotationPoint(0, 0, 0)
+    rect.setNormals([
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+    ])
     rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTexture)
     rect.setSize(1000, 1000)
@@ -163,6 +163,7 @@ let rect
         0, 0, 1,
         0, 0, 1,
     ])
+    rect.setTextureRepeating(2, 1)
 
     rect = new Bronze.Rect(engine)
     rect.setTexture(dirtTexture)
@@ -238,17 +239,6 @@ let cube3 = new Bronze.Cube(engine)
     })
     cube3.scale(0.5, 0.5, 0.5)
 
-    // let xpos = 0, ypos = 0, zpos = 0, xdir = -1
-    // object.animate(30, () => {
-    //     object.setPosition(250 + xpos, 0, zpos + 800)
-    //     xpos += xdir
-    //     if (xpos < -3) {
-    //         xdir = 1
-    //     } else if (xpos > 3) {
-    //         xdir = -1
-    //     }
-    // }) 
-
 let fridge = new Bronze.Object(engine)
     fridge.name = "Fridge"
     fridge.setTexture(fridgeTexture)
@@ -263,12 +253,12 @@ let deer = new Bronze.Object(engine)
     deer.scale(0.3, 0.3, 0.3)
 
 let house = new Bronze.Object(engine)
+    house.name = "House"
     house.setTexture(houseTexture)
-    house.setPosition(-2000, 2, 800)
+    house.setPosition(-2000, -10, 800)
     house.setRotation(0, 45, 0)
     house.loadFromObj("assets/objects/house.obj")
     house.scale(100, 100, 100)
-
 
 let object = new Bronze.Object(engine)
     object.UIElement = true
@@ -278,9 +268,6 @@ let object = new Bronze.Object(engine)
     object.loadFromObj("assets/objects/cola.obj")
     object.setRotationPoint(0, 0, 0)
     object.setRotation(90, -45, 30)
-    // // object.animate(60, () => {
-    //     object.rotate(90, 90, 90)
-    // // })
     object.scale(7, 7, 7)
 
 // Run engine
