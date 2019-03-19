@@ -25,3 +25,11 @@ export function degToRad(degrees) {
 export function isPowerOf2 (value) {
     return (value & (value - 1)) === 0;
 }
+
+/**
+ * Returns default abs.
+ * @param {Number} value 
+ */
+export function abs(value) {
+    return Math.abs(value)
+}

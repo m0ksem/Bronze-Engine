@@ -249,10 +249,19 @@ let fridge = new Bronze.Object(engine)
     fridge.scale(10, 10, 10)
 
 let deer = new Bronze.Object(engine)
-    deer.name = "Deer"
+    deer.name = "Deer scaled to 500px"
     deer.setPosition(1000, 0, 800)
     deer.loadFromObj("assets/objects/deer.obj")
-    deer.scale(0.3, 0.3, 0.3)
+    // deer.scale(0.3, 0.3, 0.3)
+    deer.onload = () => {  
+        deer.scaleToPixels(500, 500, 500)
+    }
+
+let deer2 = new Bronze.Object(engine)
+    deer2.name = "Deer normal scaled on 0.3"
+    deer2.setPosition(1800, 0, 800)
+    deer2.loadFromObj("assets/objects/deer.obj")
+    deer2.scale(0.3, 0.3, 0.3)
 
 let house = new Bronze.Object(engine)
     house.name = "House"

@@ -254,6 +254,7 @@ export class Engine {
                 
                 if (isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
                     this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
+                    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.NEAREST_MIPMAP_LINEAR);
                 } else {
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);

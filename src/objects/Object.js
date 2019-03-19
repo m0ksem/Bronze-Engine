@@ -134,6 +134,39 @@ export class Object {
          * @readonly
          */
         this.behindTheCamera = false
+
+        /**
+         * Max and smallest coords of object by default without scaling.
+         * @readonly
+         */
+        this.maxSizes = {
+            x: {
+                smallest: 0,
+                biggest: 0
+            },
+            y: {
+                smallest: 0,
+                biggest: 0
+            },
+            z: {
+                smallest: 0,
+                biggest: 0
+            }
+        }
+
+        /**
+         * Size of object without scaling.
+         * @readonly
+         */
+        this.size = [0, 0, 0]
+
+        /**
+         * Triggers when object load and compiled.
+         * @type {Function}
+         */
+        this.onload = function () {
+            return null
+        }
     }
 
     /**
@@ -250,6 +283,33 @@ export class Object {
      */
     scale (x, y, z) {
         this.scaling = [x, y, z]
+    }
+
+    /**
+     * @returns {Number[]} array of sizes object by default
+     * @public
+     */
+    getSize () {
+        let size = [0, 0, 0]
+        size[0] = Math.abs(this.maxSizes.x.smallest - this.maxSizes.x.biggest)
+        size[1] = Math.abs(this.maxSizes.y.smallest - this.maxSizes.y.biggest)
+        size[2] = Math.abs(this.maxSizes.z.smallest - this.maxSizes.z.biggest)
+        return size
+    }
+
+    /**
+     * Sets scaling for this object to scale object for pixel coords.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+    scaleToPixels (x, y, z) {
+        this.scaling = [
+            x / this.size[0],
+            y / this.size[1],
+            z / this.size[2]
+        ]
     }
 
     /**
@@ -398,7 +458,16 @@ export class Object {
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.normalBuffer);
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
         }
+
+        this.maxSizes.x.smallest = collisionBox.x[0]
+        this.maxSizes.x.biggest = collisionBox.x[1]
+        this.maxSizes.y.smallest = collisionBox.y[0]
+        this.maxSizes.y.biggest = collisionBox.y[1]
+        this.maxSizes.z.smallest = collisionBox.z[0]
+        this.maxSizes.z.biggest = collisionBox.z[1]
+    
         this.collisionBoxes.push(collisionBox)
+        this.size = this.getSize()
     }
 
     /**
@@ -413,6 +482,7 @@ export class Object {
         objectsLoader.onreadystatechange = function() {
             if (objectsLoader.readyState == 4) {
                 self.compile(objectsLoader.responseText)
+                self.onload()
             }
         }
         objectsLoader.send();
