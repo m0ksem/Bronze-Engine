@@ -147,6 +147,20 @@ module.exports = _setPrototypeOf;
 /* 3 */
 /***/ (function(module, exports) {
 
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+module.exports = _assertThisInitialized;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -157,13 +171,13 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(9);
+module.exports = __webpack_require__(10);
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -205,12 +219,12 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(11);
+var _typeof = __webpack_require__(12);
 
-var assertThisInitialized = __webpack_require__(12);
+var assertThisInitialized = __webpack_require__(3);
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -223,7 +237,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var setPrototypeOf = __webpack_require__(2);
@@ -246,10 +260,10 @@ function _inherits(subClass, superClass) {
 module.exports = _inherits;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(3);
+var getPrototypeOf = __webpack_require__(4);
 
 var setPrototypeOf = __webpack_require__(2);
 
@@ -294,7 +308,7 @@ function _wrapNativeSuper(Class) {
 module.exports = _wrapNativeSuper;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -316,7 +330,7 @@ var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("
 var oldRuntime = hadRuntime && g.regeneratorRuntime; // Force reevalutation of runtime.js.
 
 g.regeneratorRuntime = undefined;
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(11);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -331,7 +345,7 @@ if (hadRuntime) {
 }
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 /**
@@ -1039,7 +1053,7 @@ function () {
 }() || Function("return this")());
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) {
@@ -1071,20 +1085,6 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
 
 /***/ }),
 /* 13 */
@@ -1168,6 +1168,14 @@ function degToRad(degrees) {
 
 function isPowerOf2(value) {
   return (value & value - 1) === 0;
+}
+/**
+ * Returns default abs.
+ * @param {Number} value 
+ */
+
+function abs(value) {
+  return Math.abs(value);
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__(0);
@@ -1629,11 +1637,11 @@ function Vectors_normalize(vector) {
   }
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(4);
+var regenerator = __webpack_require__(5);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(5);
+var asyncToGenerator = __webpack_require__(6);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // CONCATENATED MODULE: ./src/Utils.js
@@ -1728,22 +1736,27 @@ function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) 
   return shaderProgram;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(6);
+var possibleConstructorReturn = __webpack_require__(7);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(3);
+var getPrototypeOf = __webpack_require__(4);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
+var assertThisInitialized = __webpack_require__(3);
+var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
+
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(7);
+var inherits = __webpack_require__(8);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
-var wrapNativeSuper = __webpack_require__(8);
+var wrapNativeSuper = __webpack_require__(9);
 var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper);
 
 // CONCATENATED MODULE: ./src/Texture.js
+
 
 
 
@@ -1800,17 +1813,65 @@ function (_Image) {
      */
 
     _this._textureBlockLocation = null;
+    _this.filter = 'LINEAR';
+    _this.mipMap = [assertThisInitialized_default()(_this)];
+    _this.mips = null;
     return _this;
   }
   /**
-   * Scale image width by x, height by y.
-   * @param {Number} x
-   * @param {Number} y
-   * @public
+   * Adds mip maps.
+   * @type {Array} mipMaps
    */
 
 
   createClass_default()(Texture, [{
+    key: "generateMipMap",
+    value: function generateMipMap(mips) {
+      this.mips = mips;
+    }
+  }, {
+    key: "_generateMipMaps",
+    value: function _generateMipMaps(mips) {
+      mips = mips || this.mips;
+      var currentSize = this.width;
+      var generatedMips = [];
+      var mipIndex = 0;
+
+      while (currentSize != 1) {
+        currentSize = currentSize / 2;
+
+        if (mipIndex > mips.length - 1) {
+          var mip = mips[mipIndex - 1].image;
+          generatedMips.push(mip);
+          continue;
+        }
+
+        if (mips[mipIndex].size == currentSize) {
+          var _mip = mips[mipIndex].image;
+          generatedMips.push(_mip);
+          mipIndex++;
+        } else {
+          this.setSize(currentSize, currentSize);
+          generatedMips.push(this);
+        }
+      }
+
+      this.mipMap = generatedMips;
+    }
+  }, {
+    key: "setSize",
+    value: function setSize(width, height) {
+      this.width = width;
+      this.height = height;
+    }
+    /**
+     * Scale image width by x, height by y.
+     * @param {Number} x
+     * @param {Number} y
+     * @public
+     */
+
+  }, {
     key: "scale",
     value: function scale(x, y) {
       this.width = width * x;
@@ -1990,6 +2051,39 @@ function () {
      */
 
     this.behindTheCamera = false;
+    /**
+     * Max and smallest coords of object by default without scaling.
+     * @readonly
+     */
+
+    this.maxSizes = {
+      x: {
+        smallest: 0,
+        biggest: 0
+      },
+      y: {
+        smallest: 0,
+        biggest: 0
+      },
+      z: {
+        smallest: 0,
+        biggest: 0
+      }
+      /**
+       * Size of object without scaling.
+       * @readonly
+       */
+
+    };
+    this.size = [0, 0, 0];
+    /**
+     * Triggers when object load and compiled.
+     * @type {Function}
+     */
+
+    this.onload = function () {
+      return null;
+    };
   }
   /**
    * Setting texture for object.
@@ -2125,6 +2219,33 @@ function () {
     key: "scale",
     value: function scale(x, y, z) {
       this.scaling = [x, y, z];
+    }
+    /**
+     * @returns {Number[]} array of sizes object by default
+     * @public
+     */
+
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      var size = [0, 0, 0];
+      size[0] = abs(this.maxSizes.x.smallest - this.maxSizes.x.biggest);
+      size[1] = abs(this.maxSizes.y.smallest - this.maxSizes.y.biggest);
+      size[2] = abs(this.maxSizes.z.smallest - this.maxSizes.z.biggest);
+      return size;
+    }
+    /**
+     * Sets scaling for this object to scale object for pixel coords.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     * @public
+     */
+
+  }, {
+    key: "scaleToPixels",
+    value: function scaleToPixels(x, y, z) {
+      this.scaling = [x / this.size[0], y / this.size[1], z / this.size[2]];
     }
     /**
      * Default animation function.
@@ -2302,7 +2423,14 @@ function () {
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
       }
 
+      this.maxSizes.x.smallest = collisionBox.x[0];
+      this.maxSizes.x.biggest = collisionBox.x[1];
+      this.maxSizes.y.smallest = collisionBox.y[0];
+      this.maxSizes.y.biggest = collisionBox.y[1];
+      this.maxSizes.z.smallest = collisionBox.z[0];
+      this.maxSizes.z.biggest = collisionBox.z[1];
       this.collisionBoxes.push(collisionBox);
+      this.size = this.getSize();
     }
     /**
      * Async load object using ajax and compile on load.
@@ -2320,6 +2448,7 @@ function () {
       objectsLoader.onreadystatechange = function () {
         if (objectsLoader.readyState == 4) {
           self.compile(objectsLoader.responseText);
+          self.onload();
         }
       };
 
@@ -2629,18 +2758,57 @@ function () {
       } else {
         this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture.color);
         texture.addEventListener('load', function () {
+          if (texture.mips != null) {
+            texture._generateMipMaps(texture.mips);
+          }
+
           _this.webGL.activeTexture(_this.webGL.TEXTURE0 + texture._textureBlockLocation);
 
-          _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+          texture.mipMap.forEach(function (mip, level) {
+            mip.setSize(texture.width / Math.pow(2, level), texture.width / Math.pow(2, level));
+
+            _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, level, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, mip);
+          });
+          var filter;
+
+          switch (texture.filter) {
+            case 'NEAREST':
+              filter = _this.webGL.NEAREST;
+              break;
+
+            case 'LINEAR':
+              filter = _this.webGL.LINEAR;
+              break;
+
+            case 'NEAREST_MIPMAP_NEAREST':
+              filter = _this.webGL.NEAREST_MIPMAP_NEAREST;
+              break;
+
+            case 'LINEAR_MIPMAP_NEAREST':
+              filter = _this.webGL.LINEAR_MIPMAP_NEAREST;
+              break;
+
+            case 'NEAREST_MIPMAP_LINEAR':
+              filter = _this.webGL.NEAREST_MIPMAP_LINEAR;
+              break;
+
+            case 'LINEAR_MIPMAP_LINEAR':
+              filter = _this.webGL.LINEAR_MIPMAP_LINEAR;
+              break;
+          }
 
           if (isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
             _this.webGL.generateMipmap(_this.webGL.TEXTURE_2D);
+
+            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.NEAREST_MIPMAP_LINEAR);
           } else {
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_S, _this.webGL.CLAMP_TO_EDGE);
 
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_T, _this.webGL.CLAMP_TO_EDGE);
 
-            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, _this.webGL.LINEAR);
+            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, filter);
+
+            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.LINEAR);
           }
         });
       }
@@ -2905,6 +3073,9 @@ function () {
       if (this.debugger != null) {
         this.debugger.updateInfo();
       }
+
+      this.webGL.blendFunc(this.webGL.SRC_ALPHA, this.webGL.ONE_MINUS_SRC_ALPHA);
+      this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
     /**
      * Drawing UI function.
@@ -4483,6 +4654,7 @@ function () {
 /* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
 /* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
 /* concated harmony reexport isPowerOf2 */__webpack_require__.d(__webpack_exports__, "isPowerOf2", function() { return isPowerOf2; });
+/* concated harmony reexport abs */__webpack_require__.d(__webpack_exports__, "abs", function() { return abs; });
 /* concated harmony reexport Matrix */__webpack_require__.d(__webpack_exports__, "Matrix", function() { return Matrixes_Matrix; });
 /* concated harmony reexport unit */__webpack_require__.d(__webpack_exports__, "unit", function() { return unit; });
 /* concated harmony reexport translation */__webpack_require__.d(__webpack_exports__, "translation", function() { return translation; });
