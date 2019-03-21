@@ -54,6 +54,13 @@ export class Camera {
          */
         this._collisions = false
         this._lookUpMatrix = null
+
+        /**
+         * Set range of camera for view.
+         * @default 20000
+         * @public
+         */
+        this.range = 20000
     }
 
     /**
