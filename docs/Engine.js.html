@@ -45,6 +45,8 @@ import {Map} from "./map/Map.js"
 export class Engine {
     constructor (div) {
 
+        this.infoConsoleLog()
+
         /**
          * @private
          */
@@ -171,6 +173,20 @@ export class Engine {
     }
 
     /**
+     * Showing info about engine.
+     * @private
+     */
+    infoConsoleLog () {
+        console.log()
+        console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running")
+        console.log()
+        console.info('     Version : 0.0.1')
+        console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
+        console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
+        console.log()
+    }
+
+    /**
      * Creating shaders and attaching to webGL context.
      * @private
      */
@@ -233,9 +249,9 @@ export class Engine {
     bindTexture (texture) {
         texture._textureBlockLocation = this.textures.length
         this.textures.push(texture)
-        texture._WebGLtexture = this.webGL.createTexture()
+        texture._WebGLTexture = this.webGL.createTexture()
         this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation)
-        this.webGL.bindTexture(this.webGL.TEXTURE_2D, texture._WebGLtexture)
+        this.webGL.bindTexture(this.webGL.TEXTURE_2D, texture._WebGLTexture)
         if (texture.loaded) {
             this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
             this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
@@ -251,44 +267,45 @@ export class Engine {
             texture.color);
             texture.addEventListener('load', () => {
                 if (texture.mips != null) {
-                    texture._generateMipMaps(texture.mips)
+                    texture._generateMipmaps(texture.mips)
                 }
                 this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation)
-                texture.mipMap.forEach((mip, level) => {
+                let mipmapFilter
+                switch (texture.mipmapFilter) {
+                    case 'NEAREST':
+                        mipmapFilter = this.webGL.NEAREST
+                        break;
+                    case 'LINEAR':
+                        mipmapFilter = this.webGL.LINEAR 
+                        break;
+                    case 'NEAREST_MIPMAP_NEAREST':
+                        mipmapFilter = this.webGL.NEAREST_MIPMAP_NEAREST 
+                        break;
+                    case 'LINEAR_MIPMAP_NEAREST':
+                        mipmapFilter = this.webGL.LINEAR_MIPMAP_NEAREST 
+                        break;
+                    case 'NEAREST_MIPMAP_LINEAR':
+                        mipmapFilter = this.webGL.NEAREST_MIPMAP_LINEAR
+                        break;
+                    case 'LINEAR_MIPMAP_LINEAR':
+                        mipmapFilter = this.webGL.LINEAR_MIPMAP_LINEAR
+                        break;                    
+                }
+                texture.WebGLMipmapFilter = mipmapFilter 
+                
+                texture.mipmap.forEach((mip, level) => {
                     mip.setSize(texture.width / Math.pow(2, level), texture.width / Math.pow(2, level))
                     this.webGL.texImage2D(this.webGL.TEXTURE_2D, level, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, mip)
                 })
-                let filter
-                switch (texture.filter) {
-                    case 'NEAREST':
-                        filter = this.webGL.NEAREST
-                        break;
-                    case 'LINEAR':
-                        filter = this.webGL.LINEAR 
-                        break;
-                    case 'NEAREST_MIPMAP_NEAREST':
-                        filter = this.webGL.NEAREST_MIPMAP_NEAREST 
-                        break;
-                    case 'LINEAR_MIPMAP_NEAREST':
-                        filter = this.webGL.LINEAR_MIPMAP_NEAREST 
-                        break;
-                    case 'NEAREST_MIPMAP_LINEAR':
-                        filter = this.webGL.NEAREST_MIPMAP_LINEAR
-                        break;
-                    case 'LINEAR_MIPMAP_LINEAR':
-                        filter = this.webGL.LINEAR_MIPMAP_LINEAR
-                        break;                    
-                }
-                
+
                 if (isPowerOf2(texture.width) &amp;&amp; isPowerOf2(texture.height)) {
                     this.webGL.generateMipmap(this.webGL.TEXTURE_2D)
-                    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.NEAREST_MIPMAP_LINEAR);
                 } else {
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
                     this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);
-                    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, filter);
-                    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.LINEAR);
                 }
+                this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
+                this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.LINEAR);
             })
         }
         
@@ -316,10 +333,10 @@ export class Engine {
             
             // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             if (!element.UIElement) {
-                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
                 temp.multiply(this.camera.inventedMatrix)
             } else {
-                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
             }
 
             world = new Matrixes.Matrix()
@@ -349,11 +366,12 @@ export class Engine {
             temp = new Matrixes.Matrix()
             //temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
             if (!element.UIElement) {
-                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
                 temp.multiply(this.camera.inventedMatrix)
             } else {
-                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
             }
+
             world = new Matrixes.Matrix()
             world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
             world.translate(element.position[0], element.position[1], element.position[2])
@@ -558,6 +576,18 @@ export class Engine {
     }
 
     /**
+     * Sets range where objects will no draws.
+     * @param {Number} range 
+     */
+    setDrawingRange (range) {
+        if (this.camera != null) {
+            this.camera.range = range 
+        } else {
+            console.warn('Failed to set drawing range. Camera wasn\'t set.')
+        }
+    }
+
+    /**
      * Rendering function.
      * @public
      */
@@ -573,13 +603,6 @@ export class Engine {
      */
     run () {
         _engine = this
-        console.log()
-        console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running")
-        console.log()
-        console.info('     Version : 0.0.1')
-        console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
-        console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
-        console.log()
         requestAnimationFrameEngine()
     }
 }
@@ -635,7 +658,7 @@ function requestAnimationFrameEngine () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 20 2019 21:01:11 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 21 2019 23:58:18 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

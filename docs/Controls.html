@@ -334,7 +334,84 @@
 
         
             
-<h4 class="name" id="mouse"><span class="type-signature"></span>mouse<span class="type-signature"></span></h4>
+<h4 class="name" id="longTouchTime"><span class="type-signature"></span>longTouchTime<span class="type-signature"> :Number</span></h4>
+
+
+
+
+<div class="description">
+    The time that the user must spend on a long press.A long press counts as a right mouse click.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>500</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="mouse"><span class="type-signature"></span>mouse<span class="type-signature"> :<a href="Object.html">Object</a></span></h4>
 
 
 
@@ -344,6 +421,16 @@
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -391,7 +478,7 @@
 
             
 
-            <td class="description last">mouse position x</td>
+            <td class="description last">mouse position x.</td>
         </tr>
 
     
@@ -414,7 +501,7 @@
 
             
 
-            <td class="description last">mouse position y</td>
+            <td class="description last">mouse position y.</td>
         </tr>
 
     
@@ -437,7 +524,7 @@
 
             
 
-            <td class="description last">mouse buttons clicks</td>
+            <td class="description last">mouse buttons clicks.</td>
         </tr>
 
     
@@ -460,7 +547,7 @@
 
             
 
-            <td class="description last">mouse movement x from last frame</td>
+            <td class="description last">mouse movement x from last frame.</td>
         </tr>
 
     
@@ -483,7 +570,7 @@
 
             
 
-            <td class="description last">mouse movement y from last frame</td>
+            <td class="description last">mouse movement y from last frame.</td>
         </tr>
 
     
@@ -506,7 +593,7 @@
 
             
 
-            <td class="description last">sensitivity for mouse movement</td>
+            <td class="description last">sensitivity for mouse movement.</td>
         </tr>
 
     
@@ -702,6 +789,287 @@
 
 
         
+            
+<h4 class="name" id="touch"><span class="type-signature"></span>touch<span class="type-signature"> :<a href="Object.html">Object</a></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">mouse position x.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">mouse position y.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>movement.x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">mouse movement x from last frame.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>movement.y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">mouse movement y from last frame.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>click</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">is current action is click.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>longClick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">is current action is longClick.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">how long does it take to press.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>actionBeforeMove</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">'click' or 'long click'</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line139">line 139</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -814,7 +1182,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line299">line 299</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line406">line 406</a>
     </li></ul></dd>
     
 
@@ -949,7 +1317,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line291">line 291</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line398">line 398</a>
     </li></ul></dd>
     
 
@@ -1031,7 +1399,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line252">line 252</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -1171,7 +1539,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line282">line 282</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line389">line 389</a>
     </li></ul></dd>
     
 
@@ -1323,7 +1691,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line346">line 346</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line453">line 453</a>
     </li></ul></dd>
     
 
@@ -1458,7 +1826,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line337">line 337</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -1616,7 +1984,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line309">line 309</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line416">line 416</a>
     </li></ul></dd>
     
 
@@ -1774,7 +2142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line319">line 319</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -1909,7 +2277,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line328">line 328</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line435">line 435</a>
     </li></ul></dd>
     
 
@@ -2061,7 +2429,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line272">line 272</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line379">line 379</a>
     </li></ul></dd>
     
 
@@ -2201,7 +2569,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line263">line 263</a>
+        <a href="Controls.js.html">Controls.js</a>, <a href="Controls.js.html#line370">line 370</a>
     </li></ul></dd>
     
 
@@ -2251,7 +2619,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 20 2019 21:01:11 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 21 2019 23:58:18 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

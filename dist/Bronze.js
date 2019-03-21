@@ -1813,25 +1813,25 @@ function (_Image) {
      */
 
     _this._textureBlockLocation = null;
-    _this.filter = 'LINEAR';
-    _this.mipMap = [assertThisInitialized_default()(_this)];
+    _this.mipmapFilter = 'LINEAR';
+    _this.mipmap = [assertThisInitialized_default()(_this)];
     _this.mips = null;
     return _this;
   }
   /**
    * Adds mip maps.
-   * @type {Array} mipMaps
+   * @type {Array} mipmaps
    */
 
 
   createClass_default()(Texture, [{
-    key: "generateMipMap",
-    value: function generateMipMap(mips) {
+    key: "generateMipmap",
+    value: function generateMipmap(mips) {
       this.mips = mips;
     }
   }, {
-    key: "_generateMipMaps",
-    value: function _generateMipMaps(mips) {
+    key: "_generateMipmaps",
+    value: function _generateMipmaps(mips) {
       mips = mips || this.mips;
       var currentSize = this.width;
       var generatedMips = [];
@@ -1856,7 +1856,7 @@ function (_Image) {
         }
       }
 
-      this.mipMap = generatedMips;
+      this.mipmap = generatedMips;
     }
   }, {
     key: "setSize",
@@ -2542,9 +2542,11 @@ function () {
   function Engine(div) {
     classCallCheck_default()(this, Engine);
 
+    this.infoConsoleLog();
     /**
      * @private
      */
+
     this.div = div;
     this.div.style = "position: relative;";
     /**
@@ -2666,12 +2668,28 @@ function () {
     this.drawCallsPerFrame = 0;
   }
   /**
-   * Creating shaders and attaching to webGL context.
+   * Showing info about engine.
    * @private
    */
 
 
   createClass_default()(Engine, [{
+    key: "infoConsoleLog",
+    value: function infoConsoleLog() {
+      console.log();
+      console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running");
+      console.log();
+      console.info('     Version : 0.0.1');
+      console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global');
+      console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine');
+      console.log();
+    }
+    /**
+     * Creating shaders and attaching to webGL context.
+     * @private
+     */
+
+  }, {
     key: "_initShaders",
     value: function _initShaders() {
       var vertex = compileShader(vertexShaderSource, "vertex", this.webGL);
@@ -2740,9 +2758,9 @@ function () {
 
       texture._textureBlockLocation = this.textures.length;
       this.textures.push(texture);
-      texture._WebGLtexture = this.webGL.createTexture();
+      texture._WebGLTexture = this.webGL.createTexture();
       this.webGL.activeTexture(this.webGL.TEXTURE0 + texture._textureBlockLocation);
-      this.webGL.bindTexture(this.webGL.TEXTURE_2D, texture._WebGLtexture);
+      this.webGL.bindTexture(this.webGL.TEXTURE_2D, texture._WebGLTexture);
 
       if (texture.loaded) {
         this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture);
@@ -2759,57 +2777,57 @@ function () {
         this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture.color);
         texture.addEventListener('load', function () {
           if (texture.mips != null) {
-            texture._generateMipMaps(texture.mips);
+            texture._generateMipmaps(texture.mips);
           }
 
           _this.webGL.activeTexture(_this.webGL.TEXTURE0 + texture._textureBlockLocation);
 
-          texture.mipMap.forEach(function (mip, level) {
+          var mipmapFilter;
+
+          switch (texture.mipmapFilter) {
+            case 'NEAREST':
+              mipmapFilter = _this.webGL.NEAREST;
+              break;
+
+            case 'LINEAR':
+              mipmapFilter = _this.webGL.LINEAR;
+              break;
+
+            case 'NEAREST_MIPMAP_NEAREST':
+              mipmapFilter = _this.webGL.NEAREST_MIPMAP_NEAREST;
+              break;
+
+            case 'LINEAR_MIPMAP_NEAREST':
+              mipmapFilter = _this.webGL.LINEAR_MIPMAP_NEAREST;
+              break;
+
+            case 'NEAREST_MIPMAP_LINEAR':
+              mipmapFilter = _this.webGL.NEAREST_MIPMAP_LINEAR;
+              break;
+
+            case 'LINEAR_MIPMAP_LINEAR':
+              mipmapFilter = _this.webGL.LINEAR_MIPMAP_LINEAR;
+              break;
+          }
+
+          texture.WebGLMipmapFilter = mipmapFilter;
+          texture.mipmap.forEach(function (mip, level) {
             mip.setSize(texture.width / Math.pow(2, level), texture.width / Math.pow(2, level));
 
             _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, level, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, mip);
           });
-          var filter;
-
-          switch (texture.filter) {
-            case 'NEAREST':
-              filter = _this.webGL.NEAREST;
-              break;
-
-            case 'LINEAR':
-              filter = _this.webGL.LINEAR;
-              break;
-
-            case 'NEAREST_MIPMAP_NEAREST':
-              filter = _this.webGL.NEAREST_MIPMAP_NEAREST;
-              break;
-
-            case 'LINEAR_MIPMAP_NEAREST':
-              filter = _this.webGL.LINEAR_MIPMAP_NEAREST;
-              break;
-
-            case 'NEAREST_MIPMAP_LINEAR':
-              filter = _this.webGL.NEAREST_MIPMAP_LINEAR;
-              break;
-
-            case 'LINEAR_MIPMAP_LINEAR':
-              filter = _this.webGL.LINEAR_MIPMAP_LINEAR;
-              break;
-          }
 
           if (isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
             _this.webGL.generateMipmap(_this.webGL.TEXTURE_2D);
-
-            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.NEAREST_MIPMAP_LINEAR);
           } else {
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_S, _this.webGL.CLAMP_TO_EDGE);
 
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_T, _this.webGL.CLAMP_TO_EDGE);
-
-            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, filter);
-
-            _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.LINEAR);
           }
+
+          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
+
+          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.LINEAR);
         });
       }
     }
@@ -2840,10 +2858,10 @@ function () {
         temp = new Matrixes_Matrix(); // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
 
         if (!element.UIElement) {
-          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, _this2.camera.range);
           temp.multiply(_this2.camera.inventedMatrix);
         } else {
-          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, _this2.camera.range);
         }
 
         world = new Matrixes_Matrix();
@@ -2870,10 +2888,10 @@ function () {
         temp = new Matrixes_Matrix(); //temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
 
         if (!element.UIElement) {
-          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+          temp.perspective(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, _this2.camera.range);
           temp.multiply(_this2.camera.inventedMatrix);
         } else {
-          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, 20000);
+          temp.projection(_this2.camera.fieldOfViewRad, _this2.width, _this2.height, 1, _this2.camera.range);
         }
 
         world = new Matrixes_Matrix();
@@ -3090,6 +3108,20 @@ function () {
       }
     }
     /**
+     * Sets range where objects will no draws.
+     * @param {Number} range 
+     */
+
+  }, {
+    key: "setDrawingRange",
+    value: function setDrawingRange(range) {
+      if (this.camera != null) {
+        this.camera.range = range;
+      } else {
+        console.warn('Failed to set drawing range. Camera wasn\'t set.');
+      }
+    }
+    /**
      * Rendering function.
      * @public
      */
@@ -3134,13 +3166,6 @@ function () {
     key: "run",
     value: function run() {
       _engine = this;
-      console.log();
-      console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running");
-      console.log();
-      console.info('     Version : 0.0.1');
-      console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global');
-      console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine');
-      console.log();
       requestAnimationFrameEngine();
     }
   }]);
@@ -3244,6 +3269,13 @@ function () {
 
     this._collisions = false;
     this._lookUpMatrix = null;
+    /**
+     * Set range of camera for view.
+     * @default 20000
+     * @public
+     */
+
+    this.range = 20000;
   }
   /**
    * Sets field of view for camera.
@@ -3511,13 +3543,13 @@ function () {
     this._mouseHandlers = [null, null, null, null, null, null];
     /**
      * Mouse object which contains position and pressed buttons.
-     * @type {Object.{x: Number, y: Number, buttons: Array.<{0: boolean, 1: boolean, 2: boolean}>}}
-     * @property {Number} x mouse position x
-     * @property {Number} y mouse position y
-     * @property {Array}  buttons mouse buttons clicks
-     * @property {Number} movement.x mouse movement x from last frame
-     * @property {Number} movement.y mouse movement y from last frame
-     * @property {Number} sensitivity sensitivity for mouse movement
+     * @type {Object}
+     * @property {Number} x mouse position x.
+     * @property {Number} y mouse position y.
+     * @property {Array}  buttons mouse buttons clicks.
+     * @property {Number} movement.x mouse movement x from last frame.
+     * @property {Number} movement.y mouse movement y from last frame.
+     * @property {Number} sensitivity sensitivity for mouse movement.
      * @public
      */
 
@@ -3530,7 +3562,41 @@ function () {
         y: 0
       },
       sensitivity: 1
+      /**
+       * @type {Object}
+       * @property {Number} x mouse position x.
+       * @property {Number} y mouse position y.
+       * @property {Number} movement.x mouse movement x from last frame.
+       * @property {Number} movement.y mouse movement y from last frame.
+       * @property {boolean} click is current action is click.
+       * @property {boolean} longClick is current action is longClick.
+       * @property {Number} duration how long does it take to press.
+       * @property {String} actionBeforeMove 'click' or 'long click'
+       * @public
+       */
+
     };
+    this.touch = {
+      x: 0,
+      y: 0,
+      movement: {
+        x: 0,
+        y: 0
+      },
+      click: false,
+      longClick: false,
+      duration: null,
+      actionBeforeMove: null
+      /**
+       * The time that the user must spend on a long press.
+       * A long press counts as a right mouse click.
+       * @type {Number} 
+       * @default 500
+       */
+
+    };
+    this.longTouchTime = 500;
+    this.touchDuration;
 
     for (var i = 0; i < 255; i++) {
       this.keys[i] = false;
@@ -3561,77 +3627,6 @@ function () {
     };
 
     engine.div.setAttribute('tabindex', '0');
-    var lastMousePosition = null;
-    engine.div.addEventListener('mousemove', function (event) {
-      if (!_this.pointerLocked) {
-        var mousePos = engine.div.getBoundingClientRect();
-        var x = event.clientX - mousePos.left;
-        var y = event.clientY - mousePos.top;
-        _this.mouse.x = x;
-        _this.mouse.y = y;
-
-        if (lastMousePosition == null) {
-          lastMousePosition = {
-            x: x,
-            y: y
-          };
-        }
-
-        _this.mouse.movement.x = (x - lastMousePosition.x) * _this.mouse.sensitivity;
-        _this.mouse.movement.y = (y - lastMousePosition.y) * _this.mouse.sensitivity;
-        lastMousePosition.x = x;
-        lastMousePosition.y = y;
-      } else {
-        _this.mouse.movement.x = -event.movementX * _this.mouse.sensitivity;
-        _this.mouse.movement.y = -event.movementY * _this.mouse.sensitivity;
-        _this.mouse.x = _this.engine.width / 2;
-        _this.mouse.y = _this.engine.height / 2;
-      }
-    }, false);
-    window.addEventListener('mousemove', function (event) {
-      var canvasPos = engine.div.getBoundingClientRect();
-      var x = event.clientX;
-      var y = event.clientY;
-
-      if (x < canvasPos.right && x > canvasPos.left && y < canvasPos.bottom && y > canvasPos.top) {
-        _this.mouseOverCanvas = true;
-
-        if (!_this._focusOnlyIfClick && !_this.isFocused) {
-          engine.div.focus();
-        }
-      } else {
-        _this.mouseOverCanvas = false;
-
-        if (!_this._focusOnlyIfClick) {
-          engine.div.blur();
-        }
-      }
-    });
-
-    engine.div.onclick = function () {
-      if (_this._focusOnlyIfClick && !_this.isFocused) {
-        engine.div.focus();
-      }
-
-      if (_this._lockPointer) {
-        engine.div.requestPointerLock();
-      }
-    };
-
-    engine.div.onmousedown = function (event) {
-      _this.mouse.buttons[event.button] = true;
-      if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button](event);
-      return false;
-    };
-
-    engine.div.onmouseup = function (event) {
-      _this.mouse.buttons[event.button] = false;
-      return false;
-    };
-
-    engine.div.oncontextmenu = function () {
-      return false;
-    };
 
     engine.div.onblur = function () {
       _this.isFocused = false;
@@ -3649,13 +3644,164 @@ function () {
       }
     };
 
-    document.addEventListener('pointerlockchange', function () {
-      if (document.pointerLockElement === engine.div) {
-        _this.pointerLocked = true;
-      } else {
-        _this.pointerLocked = false;
+    engine.div.onclick = function () {
+      if (_this._focusOnlyIfClick && !_this.isFocused) {
+        engine.div.focus();
       }
-    }, false);
+
+      if (_this._lockPointer) {
+        engine.div.requestPointerLock();
+      }
+    };
+
+    engine.div.oncontextmenu = function () {
+      return false;
+    };
+
+    if (isTouchDevice() || true) {
+      var toucheTime;
+
+      var touchDurationFunction = function touchDurationFunction() {
+        _this.touch.duration = new Date().getTime() - toucheTime;
+
+        if (_this.touch.duration > _this.longTouchTime) {
+          _this.touch.longClick = true;
+          _this.touch.click = false;
+          clearInterval();
+        }
+      };
+
+      var durationCalculation;
+      var touchMoved = false;
+      engine.div.addEventListener("touchstart", function (event) {
+        if (_this._mouseHandlers[2] != null) _this._mouseHandlers[2](event);
+        durationCalculation = setInterval(touchDurationFunction, 100);
+        toucheTime = new Date().getTime();
+        _this.touch.duration = 0;
+        touchMoved = false;
+        return false;
+      }, false);
+      engine.div.addEventListener("touchend", function (event) {
+        if (!touchMoved && _this.touch.duration < _this.longTouchTime) {
+          _this.touch.click = true;
+          setTimeout(function () {
+            _this.touch.click = false;
+          }, 100);
+        } else {
+          _this.touch.actionBeforeMove = false;
+        }
+
+        lastMousePosition = null;
+        _this.touch.longClick = false;
+        clearInterval(durationCalculation);
+        return false;
+      }, false);
+      var lastMousePosition = null;
+      engine.div.addEventListener("touchmove", function (event) {
+        var mousePos = engine.div.getBoundingClientRect();
+        var x = event.touches[0].clientX - mousePos.left;
+        var y = event.touches[0].clientY - mousePos.top;
+        _this.mouse.x = x;
+        _this.mouse.y = y;
+
+        if (lastMousePosition == null) {
+          lastMousePosition = {
+            x: x,
+            y: y
+          };
+        }
+
+        var moveX = (x - lastMousePosition.x) * _this.mouse.sensitivity;
+        var moveY = (y - lastMousePosition.y) * _this.mouse.sensitivity;
+        _this.mouse.movement.x = moveX;
+        _this.mouse.movement.y = moveY;
+        lastMousePosition.x = x;
+        lastMousePosition.y = y;
+        _this.touch.x = x;
+        _this.touch.y = y;
+        _this.touch.movement.x = moveX;
+        _this.touch.movement.y = moveY;
+
+        if (!touchMoved) {
+          if (_this.touch.duration > _this.longTouchTime) {
+            _this.touch.actionBeforeMove = 'long click';
+            _this.touch.longClick = false;
+          } else {
+            _this.touch.actionBeforeMove = 'click';
+            _this.touch.click = false;
+          }
+        }
+
+        touchMoved = true;
+        clearInterval(durationCalculation);
+      }, false);
+    } else {
+      var _lastMousePosition = null;
+      engine.div.addEventListener('mousemove', function (event) {
+        if (!_this.pointerLocked) {
+          var mousePos = engine.div.getBoundingClientRect();
+          var x = event.clientX - mousePos.left;
+          var y = event.clientY - mousePos.top;
+          _this.mouse.x = x;
+          _this.mouse.y = y;
+
+          if (_lastMousePosition == null) {
+            _lastMousePosition = {
+              x: x,
+              y: y
+            };
+          }
+
+          _this.mouse.movement.x = (x - _lastMousePosition.x) * _this.mouse.sensitivity;
+          _this.mouse.movement.y = (y - _lastMousePosition.y) * _this.mouse.sensitivity;
+          _lastMousePosition.x = x;
+          _lastMousePosition.y = y;
+        } else {
+          _this.mouse.movement.x = -event.movementX * _this.mouse.sensitivity;
+          _this.mouse.movement.y = -event.movementY * _this.mouse.sensitivity;
+          _this.mouse.x = _this.engine.width / 2;
+          _this.mouse.y = _this.engine.height / 2;
+        }
+      }, false);
+      window.addEventListener('mousemove', function (event) {
+        var canvasPos = engine.div.getBoundingClientRect();
+        var x = event.clientX;
+        var y = event.clientY;
+
+        if (x < canvasPos.right && x > canvasPos.left && y < canvasPos.bottom && y > canvasPos.top) {
+          _this.mouseOverCanvas = true;
+
+          if (!_this._focusOnlyIfClick && !_this.isFocused) {
+            engine.div.focus();
+          }
+        } else {
+          _this.mouseOverCanvas = false;
+
+          if (!_this._focusOnlyIfClick) {
+            engine.div.blur();
+          }
+        }
+      });
+
+      engine.div.onmousedown = function (event) {
+        _this.mouse.buttons[event.button] = true;
+        if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button](event);
+        return false;
+      };
+
+      engine.div.onmouseup = function (event) {
+        _this.mouse.buttons[event.button] = false;
+        return false;
+      };
+
+      document.addEventListener('pointerlockchange', function () {
+        if (document.pointerLockElement === engine.div) {
+          _this.pointerLocked = true;
+        } else {
+          _this.pointerLocked = false;
+        }
+      }, false);
+    }
   }
   /**
    * 
@@ -3786,6 +3932,21 @@ function () {
 
   return Controls;
 }();
+
+function isTouchDevice() {
+  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+
+  var mq = function mq(query) {
+    return window.matchMedia(query).matches;
+  };
+
+  if ('ontouchstart' in window || window.DocumentTouch && document instanceof DocumentTouch) {
+    return true;
+  }
+
+  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+  return mq(query);
+}
 // CONCATENATED MODULE: ./src/Debugger.js
 
 
