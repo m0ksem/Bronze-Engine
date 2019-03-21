@@ -40,22 +40,22 @@ class Texture extends Image {
         this._textureBlockLocation = null
 
 
-        this.filter = 'LINEAR'
+        this.mipmapFilter = 'LINEAR'
 
-        this.mipMap = [this]
+        this.mipmap = [this]
 
         this.mips = null
     }
 
     /**
      * Adds mip maps.
-     * @type {Array} mipMaps
+     * @type {Array} mipmaps
      */
-    generateMipMap (mips) {
+    generateMipmap (mips) {
         this.mips = mips
     }
 
-    _generateMipMaps (mips) {
+    _generateMipmaps (mips) {
         mips = mips || this.mips
         let currentSize = this.width
         let generatedMips = []
@@ -76,7 +76,7 @@ class Texture extends Image {
                 generatedMips.push(this)
             }
         }
-        this.mipMap = generatedMips
+        this.mipmap = generatedMips
     }
 
     setSize (width, height) {
