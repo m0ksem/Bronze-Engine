@@ -215,7 +215,7 @@ export class Controls {
             return false;
         }
 
-        if (isTouchDevice() || true) {
+        if (isTouchDevice()) {
             let toucheTime
             let touchDurationFunction = () => {
                 this.touch.duration = new Date().getTime() - toucheTime
