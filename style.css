@@ -37,3 +37,15 @@ canvas {
     font-weight: 500;
     font-family: 'Courier New', Courier, monospace
 }
+
+div {
+    color: white
+}
+
+div .key {
+    background: #e5e5e5;
+    border-radius: 5px;
+    padding: 0px 8px;
+    box-sizing: border-box;
+    color: #3d3d3d;
+}

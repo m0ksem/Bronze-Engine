@@ -18,6 +18,7 @@ let camera = new Bronze.Camera()
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
     engine.setCamera(camera)
+    engine.setDrawingRange(10000000)
 
 let controls = new Bronze.Controls(engine)
 
@@ -42,7 +43,7 @@ let ui = new Bronze.UI(engine)
 
 // Setting control function for camera
 controls.setSensitivity(1)
-controls.lockPointer(true)
+controls.lockPointer(false)
 
 camera.setControl(() => {
     // All coords
@@ -79,14 +80,14 @@ camera.setControl(() => {
     }
 
     
-    if (controls.mouse.buttons[2]) {
+    if (controls.mouse.buttons[2] || controls.touch.actionBeforeMove == 'long click') {
         if (engine.selectedObject != null) {
             const object = engine.selectedObject
             object.moveRelativeToTheCamera(controls.mouse.movement.x, -controls.mouse.movement.y, 0)
         }
     }
 
-    if (controls.mouse.buttons[0] || controls.pointerLocked) {
+    if (controls.mouse.buttons[0] || controls.pointerLocked || controls.touch.actionBeforeMove == 'click') {
         if (controls.keys[17]) {
             camera.rotate(0, 0, (controls.mouse.movement.y / 10)) //+ controls.mouse.movement.x / 10) / 2))
         } else {
@@ -102,8 +103,8 @@ let rjunTexture = new Bronze.Texture("./assets/texture/rjun.jpg")
     rjunTexture.setColorRGBA(255, 255, 255, 255)
 let grassTexture = new Bronze.Texture("./assets/texture/grass.png")
     grassTexture.setColorRGBA(255, 255, 255, 255)
-    grassTexture.filter = 'NEAREST_MIPMAP_LINEAR'
-    grassTexture.generateMipMap([{size: 32, image: rjunTexture}])
+    grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
+    grassTexture.generateMipmap([{size: 32, image: rjunTexture}])
 let transparentTexture = new Bronze.Texture("./assets/texture/road.png")
     transparentTexture.setColorRGBA(255, 255, 255, 255)
 let transparentTextureDoor = new Bronze.Texture("./assets/texture/door.png")
