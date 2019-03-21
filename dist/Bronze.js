@@ -3658,7 +3658,7 @@ function () {
       return false;
     };
 
-    if (isTouchDevice() || true) {
+    if (isTouchDevice()) {
       var toucheTime;
 
       var touchDurationFunction = function touchDurationFunction() {
