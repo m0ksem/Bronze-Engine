@@ -147,20 +147,6 @@ module.exports = _setPrototypeOf;
 /* 3 */
 /***/ (function(module, exports) {
 
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -171,13 +157,13 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(9);
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -219,12 +205,12 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(12);
+var _typeof = __webpack_require__(11);
 
-var assertThisInitialized = __webpack_require__(3);
+var assertThisInitialized = __webpack_require__(12);
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -237,7 +223,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var setPrototypeOf = __webpack_require__(2);
@@ -260,10 +246,10 @@ function _inherits(subClass, superClass) {
 module.exports = _inherits;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(3);
 
 var setPrototypeOf = __webpack_require__(2);
 
@@ -308,7 +294,7 @@ function _wrapNativeSuper(Class) {
 module.exports = _wrapNativeSuper;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -330,7 +316,7 @@ var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("
 var oldRuntime = hadRuntime && g.regeneratorRuntime; // Force reevalutation of runtime.js.
 
 g.regeneratorRuntime = undefined;
-module.exports = __webpack_require__(11);
+module.exports = __webpack_require__(10);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -345,7 +331,7 @@ if (hadRuntime) {
 }
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 /**
@@ -1053,7 +1039,7 @@ function () {
 }() || Function("return this")());
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) {
@@ -1085,6 +1071,20 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+module.exports = _assertThisInitialized;
 
 /***/ }),
 /* 13 */
@@ -1637,11 +1637,11 @@ function Vectors_normalize(vector) {
   }
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(5);
+var regenerator = __webpack_require__(4);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(6);
+var asyncToGenerator = __webpack_require__(5);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // CONCATENATED MODULE: ./src/Utils.js
@@ -1736,27 +1736,22 @@ function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) 
   return shaderProgram;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(7);
+var possibleConstructorReturn = __webpack_require__(6);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(3);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__(3);
-var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
-
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(8);
+var inherits = __webpack_require__(7);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
-var wrapNativeSuper = __webpack_require__(9);
+var wrapNativeSuper = __webpack_require__(8);
 var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper);
 
 // CONCATENATED MODULE: ./src/Texture.js
-
 
 
 
@@ -1814,8 +1809,14 @@ function (_Image) {
 
     _this._textureBlockLocation = null;
     _this.mipmapFilter = 'LINEAR';
-    _this.mipmap = [assertThisInitialized_default()(_this)];
+    _this.mipmap = [];
     _this.mips = null;
+    /**
+     * Execute every function in array when texture loaded.
+     * @type {Function[]}
+     */
+
+    _this.onTextureLoad = [];
     return _this;
   }
   /**
@@ -1830,6 +1831,49 @@ function (_Image) {
       this.mips = mips;
     }
   }, {
+    key: "logImage",
+    value: function logImage(image, height, width) {
+      var img = new Image();
+
+      img.onload = function () {
+        console.log("%c" + "+", "padding: " + Math.floor(height / 2) + "px " + Math.floor(width / 2) + "px; line-height: " + height + "px;" + "background: url(" + img + "); background-size: " + width + "px " + height + "px; color: transparent;");
+      };
+
+      img.src = image.toDataURL();
+    }
+  }, {
+    key: "autoGenerateMipmap",
+    value: function autoGenerateMipmap(texture) {
+      texture._autoGenerateMipmap = true;
+    }
+  }, {
+    key: "quickGenerateMipmap",
+    value: function quickGenerateMipmap(texture) {
+      if (texture.width / texture.height == 2) {
+        var i = texture.height;
+        var offsetX = 0;
+
+        while (true) {
+          console.log(offsetX + ' ' + i);
+          var tempCanvas = document.createElement("canvas");
+          tempCanvas.width = i;
+          tempCanvas.height = i;
+          var tempCanvasContext = tempCanvas.getContext("2d");
+          tempCanvasContext.drawImage(texture, offsetX, 0, i, i, 0, 0, i, i);
+          texture.mipmap.push(tempCanvas);
+
+          if (i == 1) {
+            break;
+          }
+
+          offsetX += i;
+          i = i / 2;
+        }
+      } else {
+        return console.warn('Wrong image sizes for quick generation mipmap.');
+      }
+    }
+  }, {
     key: "_generateMipmaps",
     value: function _generateMipmaps(mips) {
       mips = mips || this.mips;
@@ -1842,12 +1886,16 @@ function (_Image) {
 
         if (mipIndex > mips.length - 1) {
           var mip = mips[mipIndex - 1].image;
+          mip.width = currentSize;
+          mip.height = currentSize;
           generatedMips.push(mip);
           continue;
         }
 
         if (mips[mipIndex].size == currentSize) {
           var _mip = mips[mipIndex].image;
+          _mip.width = currentSize;
+          _mip.height = currentSize;
           generatedMips.push(_mip);
           mipIndex++;
         } else {
@@ -2524,7 +2572,7 @@ function () {
 
 
 /* babel-plugin-inline-import './shaders/fragment-shader.glsl' */
-var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    // float light = dot(normal, u_reverseLightDirection);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < 0.2)\r\n        discard;\r\n}";
+var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    // float light = dot(normal, u_reverseLightDirection);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < .9)\r\n        discard;\r\n}";
 
 /* babel-plugin-inline-import './shaders/vertex-shader.glsl' */
 var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition; // - surfaceWorldPosition;\r\n}";
@@ -2776,21 +2824,24 @@ function () {
       } else {
         this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, 1, 1, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture.color);
         texture.addEventListener('load', function () {
-          if (texture.mips != null) {
-            texture._generateMipmaps(texture.mips);
-          }
+          texture.onTextureLoad.forEach(function (func) {
+            func(texture);
+          });
 
           _this.webGL.activeTexture(_this.webGL.TEXTURE0 + texture._textureBlockLocation);
 
           var mipmapFilter;
+          var mipmapRequire = true;
 
           switch (texture.mipmapFilter) {
             case 'NEAREST':
               mipmapFilter = _this.webGL.NEAREST;
+              mipmapRequire = false;
               break;
 
             case 'LINEAR':
               mipmapFilter = _this.webGL.LINEAR;
+              mipmapRequire = false;
               break;
 
             case 'NEAREST_MIPMAP_NEAREST':
@@ -2802,32 +2853,46 @@ function () {
               break;
 
             case 'NEAREST_MIPMAP_LINEAR':
-              mipmapFilter = _this.webGL.NEAREST_MIPMAP_LINEAR;
+              mipmapFilter = _this.webGL.LINEAR_MIPMAP_NEAREST;
               break;
 
             case 'LINEAR_MIPMAP_LINEAR':
               mipmapFilter = _this.webGL.LINEAR_MIPMAP_LINEAR;
               break;
+
+            default:
+              mipmapRequire = false;
+              mipmapFilter = _this.webGL.LINEAR;
+              break;
           }
 
           texture.WebGLMipmapFilter = mipmapFilter;
-          texture.mipmap.forEach(function (mip, level) {
-            mip.setSize(texture.width / Math.pow(2, level), texture.width / Math.pow(2, level));
 
-            _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, level, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, mip);
-          });
+          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
 
-          if (isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
+          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.LINEAR);
+
+          if (mipmapRequire && !texture._autoGenerateMipmap) {
+            if (texture.mipmap.length > 0) {
+              texture.mipmap.forEach(function (mip, level) {
+                _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, level, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, mip);
+              });
+              console.log(texture.mipmap);
+            } else {
+              console.warn('Need to generate mipmaps for texture:');
+              console.warn(texture);
+            }
+          } else {
+            _this.webGL.texImage2D(_this.webGL.TEXTURE_2D, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+          }
+
+          if ((mipmapRequire || texture._autoGenerateMipmap) && isPowerOf2(texture.width) && isPowerOf2(texture.height)) {
             _this.webGL.generateMipmap(_this.webGL.TEXTURE_2D);
           } else {
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_S, _this.webGL.CLAMP_TO_EDGE);
 
             _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_WRAP_T, _this.webGL.CLAMP_TO_EDGE);
           }
-
-          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
-
-          _this.webGL.texParameteri(_this.webGL.TEXTURE_2D, _this.webGL.TEXTURE_MAG_FILTER, _this.webGL.LINEAR);
         });
       }
     }
