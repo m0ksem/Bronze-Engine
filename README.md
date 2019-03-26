@@ -47,4 +47,4 @@ yarn run build-docs
 ```
 
 ## Author
- ⚰️ <a href="https://github.com/m0ksem">m0ksem</a>
+ © Nedoshev Maksym (Github: <a href="https://github.com/m0ksem">m0ksem</a>)
