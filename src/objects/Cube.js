@@ -1,260 +1,491 @@
-import {Rect} from "./Rect"
 import * as Math from "../math/Math"
+import * as Matrixes from "../math/Matrixes"
+import {ShaderProgram} from "../utils/ShaderProgram"
+
+
+
 
 /**
- * Cube object created from polygons.
+ * Rect for using custom shaders
+ * @tutorial
  * @param {Engine} engine
  * @class
  * @constructor
  */
 export class Cube {
-    constructor (engine) {
+    /**
+     * Flat rectangle with square texture.
+     * @param {Engine} engine 
+     */
+    constructor(engine) {
+
+        if (engine) {
+            engine.objects.push(this)
+        }
 
         this.engine = engine
 
-        /**
-         * Faces of cube
-         * @private
-         * @type {Array.<{Rect}>}
-         */
-        this.faces = [
-            new Rect(engine), // front
-            new Rect(engine), // right
-            new Rect(engine), // back
-            new Rect(engine), // left
-            new Rect(engine), // top
-            new Rect(engine)  // bottom
-        ]
+        this.camera = engine.camera
+
+        this.webGL = engine.webGL
+
+        this.shaderProgram = engine.cubeTextureShaderProgram
 
         /**
-         * Cube position.
+         * Rect polygons.
+         * @private
+         * @type {Array.{0: Polygon, 1: Polygon}} vector 3
+         */
+        this.polygons = new Array(2)
+
+        /**
+         * Rect position.
          * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
          */
         this.position = [0, 0, 0]
 
         /**
-         * Cube rotation.
+         * Rect rotation point.
          * @readonly
-         * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
+         * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
+         */
+        this.rotationPoint = [0, 0, 0]
+
+        this.vertexes = [
+            -100, -100, -100,
+            -100, 100, -100,
+            100, -100, -100,
+            -100, 100, -100,
+            100, 100, -100,
+            100, -100, -100,
+
+            -100, -100, 100,
+            100, -100, 100,
+            -100, 100, 100,
+            -100, 100, 100,
+            100, -100, 100,
+            100, 100, 100,
+
+            -100, 100, -100,
+            -100, 100, 100,
+            100, 100, -100,
+            -100, 100, 100,
+            100, 100, 100,
+            100, 100, -100,
+
+            -100, -100, -100,
+            100, -100, -100,
+            -100, -100, 100,
+            -100, -100, 100,
+            100, -100, -100,
+            100, -100, 100,
+
+            -100, -100, -100,
+            -100, -100, 100,
+            -100, 100, -100,
+            -100, -100, 100,
+            -100, 100, 100,
+            -100, 100, -100,
+
+            100, -100, -100,
+            100, 100, -100,
+            100, -100, 100,
+            100, -100, 100,
+            100, 100, -100,
+            100, 100, 100,
+        ]
+
+
+        this.normals = [
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1,
+        ]
+
+        /**
+         * Object texture.
+         * @type {Texture} texture
+         * @public
+         */
+        this.texture = engine.noTexture
+
+        /**
+         * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x position on axis x
+         * @property {Number} y position on axis y
+         * @property {Number} z position on axis z
+         */
+        this.position = [0, 0, 0]
+
+        /**
+         * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation on axis x
+         * @property {Number} y rotation on axis y
+         * @property {Number} z rotation on axis z
          */
         this.rotation = [0, 0, 0]
 
         /**
-         * @type {boolean}
+         * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x scaling on axis x
+         * @property {Number} y scaling on axis x
+         * @property {Number} z scaling on axis x
+         */
+        this.scaling = [1, 1, 1]
+
+        /**
+         * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x rotation point coordinate on axis x
+         * @property {Number} y rotation point coordinate on axis y
+         * @property {Number} z rotation point coordinate on axis z
+         */
+        this.rotationPoint = [0, 0, 0]
+
+        /**
+         * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
+         * @public
+         * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
+         * @property {Number} x parent rotation on axis x
+         * @property {Number} y parent rotation on axis y
+         * @property {Number} z parent rotation on axis z
+         */
+        this.parentRotation = [0, 0, 0]
+
+        /**
+         * These are the edges of the object on the monitor.
          * @readonly
+         * @Type {Object}   
+         * @property {Number} relativeCameraPosition.x.left
+         * @property {Number} relativeCameraPosition.x.right
+         * @property {Number} relativeCameraPosition.y.top
+         * @property {Number} relativeCameraPosition.y.bottom
+         * @property {Number} relativeCameraPosition.depth
+         */
+        this.relativeCameraPosition = null
+
+        /**
+         * Collision boxes coordinates array.
+         * @type {
+         *      x: Number[2],
+         *      y: Number[2],
+         *      z: Number[2]
+         *  }
+         * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
+         * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
+         * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
+         * @public
+         */
+        this.collisionBoxes = []
+
+        /**
+         * Sets whether the object will be attached to the camera like UI this.
+         * @type {boolean}
+         * @public
          */
         this.UIElement = false
 
-        this.faces[0].rotate(0, 0, 0)
-        this.faces[0].setRotationPoint(-100, -100, 100)
-        this.faces[0].setPosition(0, 0, 0)
-        this.faces[0].setNormals([
-            0, 0, 1,
-            0, 0, 1,
-            0, 0, 1,
-        ])
-        
-        this.faces[1].rotate(0, 90, 0)
-        this.faces[1].setRotationPoint(-100, -100, 100)
-        this.faces[1].position = [0, 0, 0]
-        this.faces[1].setNormals([
-            1, 0, 0,
-            1, 0, 0,
-            1, 0, 0,
-        ])
+        /**
+         * True if the object is behind the camera.
+         * @type {boolean}
+         * @readonly
+         */
+        this.behindTheCamera = false
 
-        this.faces[2].rotate(0, -180, 0)
-        this.faces[2].setRotationPoint(-100, -100, 100)
-        this.faces[2].position = [0, 0, 0]
-        this.faces[2].setNormals([
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-        ])
+        /**
+         * Max and smallest coords of object by default without scaling.
+         * @readonly
+         */
+        this.maxSizes = {
+            x: {
+                smallest: 0,
+                biggest: 0
+            },
+            y: {
+                smallest: 0,
+                biggest: 0
+            },
+            z: {
+                smallest: 0,
+                biggest: 0
+            }
+        }
 
-        this.faces[3].rotate(0, 270, 0)
-        this.faces[3].setRotationPoint(-100, -100, 100)
-        this.faces[3].position = [0, 0, 0]
-        this.faces[3].setNormals([
-            -1, 0, 0,
-            -1, 0, 0,
-            -1, 0, 0,
-        ])
+        /**
+         * Size of object without scaling.
+         * @readonly
+         */
+        this.size = [0, 0, 0]
 
-        this.faces[4].rotate(-90, 0, 0)
-        this.faces[4].setRotationPoint(-100, -100, 100)
-        this.faces[4].position = [0, 0, 0]
-        this.faces[4].setNormals([
-            0, 1, 0,
-            0, 1, 0,
-            0, 1, 0,
-        ])
+        /**
+         * Triggers when object load and compiled.
+         * @type {Function}
+         */
+        this.onload = function () {
+            return null
+        }
 
-        this.faces[5].rotate(90, 0, 0)
-        this.faces[5].setRotationPoint(-100, -100, 100)
-        this.faces[5].position = [0, 0, 0]
-        this.faces[5].setNormals([
-            0, -1, 0,
-            0, -1, 0,
-            0, -1, 0,
-        ])
+        this.UIElement = false
+
+        this.vertexesBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+
+        // this.coordsBuffer = this.webGL.createBuffer()
+        // this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer)
+        // this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW)
+
+        this.normalBuffer = this.webGL.createBuffer();
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
     }
 
     /**
-     * Method updating faces.
-     * @private
-     */
-    _updateFaces () {
-        this.faces[0].setPosition(this.position[0], this.position[1], this.position[2])
-    }
-
-    /**
-     * Setting square texture for cube.
-     * @param {Texture} front texture.
-     * @param {Texture} right texture.
-     * @param {Texture} back texture.
-     * @param {Texture} left texture.
-     * @param {Texture} top texture.
-     * @param {Texture} bottom texture.
+     * Setting square texture for rect.
+     * @param {Texture} texture
      * @public
      */
-    setTexture (front, right, back, left, top, bottom) {
-        this.faces[0].setTexture(front)
-        this.faces[1].setTexture(right)
-        this.faces[2].setTexture(back)
-        this.faces[3].setTexture(left)
-        this.faces[4].setTexture(top)
-        this.faces[5].setTexture(bottom)
+    setTexture(texture) {
+        this.texture = texture
     }
 
     /**
-     * Changing size of rect
+     * Changing size of rect.
      * @param {Number} width
      * @param {Number} height
      * @public
      */
-    setSize (width, height, depth) {
+    setSize(width, height, depth) {
         this.width = width
         this.height = height
         this.depth = depth
-        this.faces.forEach(face => {
-            face.setSize(width, height)
-            face.setRotationPoint(-width / 2, -height / 2, depth / 2)
-        });
+        this.vertexes = [
+            -width, -height, -depth,
+            -width, height, -depth,
+            width, -height, -depth,
+            -width, height, -depth,
+            width, height, -depth,
+            width, -height, -depth,
+
+            -width, -height, depth,
+            width, -height, depth,
+            -width, height, depth,
+            -width, height, depth,
+            width, -height, depth,
+            width, height, depth,
+
+            -width, height, -depth,
+            -width, height, depth,
+            width, height, -depth,
+            -width, height, depth,
+            width, height, depth,
+            width, height, -depth,
+
+            -width, -height, -depth,
+            width, -height, -depth,
+            -width, -height, depth,
+            -width, -height, depth,
+            width, -height, -depth,
+            width, -height, depth,
+
+            -width, -height, -depth,
+            -width, -height, depth,
+            -width, height, -depth,
+            -width, -height, depth,
+            -width, height, depth,
+            -width, height, -depth,
+
+            width, -height, -depth,
+            width, height, -depth,
+            width, -height, depth,
+            width, -height, depth,
+            width, height, -depth,
+            width, height, depth,
+        ]
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
     }
 
     /**
      * Change position of all polygons in rect.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z 
+     * @param {Number} z
      * @public
      */
     setPosition(x, y, z) {
-        if (!this.UIElement) {
-            this.position = [x, y, z]
-            this.faces[0].setPosition(x, y, z)
-            this.faces[1].setPosition(x, y, z)
-            this.faces[2].setPosition(x, y, z)
-            this.faces[3].setPosition(x, y, z)
-            this.faces[4].setPosition(x, y, z)
-            this.faces[5].setPosition(x, y, z)
-        } else {
-            this.faces[0].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.faces[1].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.faces[2].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.faces[3].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.faces[4].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.faces[5].setPosition(this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z)
-            this.position = [this.engine.width / 2 * x / 100, this.engine.height / 2 * y / 100, z]
-        }
+        this.position = [x, y, z]
+    }
+
+    /**
+     * Change scaling of all polygons in rect.
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z
+     * @public
+     */
+    scale(x, y, z) {
+        this.scale = [x, y, z]
     }
 
     /**
      * Set rotation for x, y, z axis.
-     * @param {*} x in degrees.
-     * @param {*} y in degrees.
-     * @param {*} z in degrees.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
      * @public
      */
     rotate(x, y, z) {
-        this.rotation[0] += x
-        this.rotation[1] += y
-        this.rotation[2] += z
-        let xRad = Math.degToRad(this.rotation[0])
-        let yRad = Math.degToRad(this.rotation[1])
-        let zRad = Math.degToRad(this.rotation[2])
-        this.faces.forEach(face => {
-            face.setParentRotation(xRad, yRad, zRad)
-        })
-    }
-
-    /**
-     * Setting scaling for cube in percent 
-     * @param {Number} x scaling in percent 
-     * @param {Number} y scaling in percent 
-     * @param {Number} z scaling in percent 
-     */
-    scale (x, y, z) {
-        this.setSize(this.width * x, this.height * y, this.depth * z)
-    }
-
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {*} x in degrees.
-     * @param {*} y in degrees.
-     * @param {*} z in degrees.
-     * @public
-     */
-    setRotation(x, y, z) {
         let xRad = Math.degToRad(x)
         let yRad = Math.degToRad(y)
         let zRad = Math.degToRad(z)
-        this.faces.forEach(face => {
-            face.setParentRotation(xRad, yRad, zRad)
-        })
+        this.rotation = [xRad, yRad, zRad]
     }
 
     /**
-     * Default animation function
-     * @private
-     */
-    animation () {
-        this.rotate(1, 1, 1)
-    }
-
-    /**
-     * Setting the animation function which execute every engine update.
-     * @param {Number} [fps = 60] default - 60. Frame per second for this animation.
-     * @param {Function} [animateFunction] default - animation function.
+     * Setting rotation of parent object in radians.
+     * @param {Number} x parent rotation of x axis in radians.
+     * @param {Number} y parent rotation of y axis in radians.
+     * @param {Number} z parent rotation of z axis in radians.
      * @public
      */
-    animate (fps, animateFunction) {
+    setParentRotation(x, y, z) {
+        this.parentRotation = [x, y, z]
+    }
+
+    /**
+     * Sets rotation point coordinates.
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @public
+     */
+    setRotationPoint(x, y, z) {
+        this.rotationPoint = [x, y, z]
+    }
+
+    /**
+     * Set normals vector.
+     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
+     * @public
+     */
+    setNormals(normals) {
+        this.normals = [
+            normals[0], normals[1], normals[2],
+            normals[3], normals[4], normals[5],
+            normals[6], normals[7], normals[8],
+            normals[0], normals[1], normals[2],
+            normals[3], normals[4], normals[5],
+            normals[6], normals[7], normals[8],
+        ]
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+
+    /**
+     * Sets whether the all polygons will be attached to the camera like UI this.
+     * @param {bolean} bool 
+     */
+    setAsUIElement(bool) {
+        this.UIElement = bool
+    }
+
+    animate(animateFunction, fps) {
         animateFunction = animateFunction || this.animation
         this._animationInterval = setInterval(animateFunction, 1000 / fps)
     }
 
-    /**
-     * Removes animation.
-     * @public
-     */
-    removeAnimation () {
-        clearInterval(this._animationInterval)
+    draw() {
+        this.shaderProgram.use()
+
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+        )
+
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+
+        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world)
+
+        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
+        this.engine.drawCallsPerFrame++
+        this.engine.drawCalls++
+        this.engine.shaderProgram.use()
     }
 
-    /**
-     * Sets whether the all polygons will be attached to the camera like UI element.
-     * @deprecated
-     * @param {bolean} bool 
-     */
-    setAsUIElement (bool) {
-        this.UIElement = bool
-        this.faces[0].setAsUIElement(bool)
-        this.faces[1].setAsUIElement(bool)
-        this.faces[2].setAsUIElement(bool)
-        this.faces[3].setAsUIElement(bool)
-        this.faces[4].setAsUIElement(bool)
-        this.faces[5].setAsUIElement(bool)
+    update() {
+        let temp = new Matrixes.Matrix()
+        if (!this.UIElement) {
+            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+            temp.multiply(this.engine.camera.inventedMatrix)
+        } else {
+            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+        }
+
+        let world = new Matrixes.Matrix()
+        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
+        world.translate(this.position[0], this.position[1], this.position[2])
+        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
+        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
+        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
+        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
+        this._world = parentRot
+        rot = Matrixes.multiply(parentRot, rot)
+        world.multiply(rot)
+
+        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+
+        temp.multiply(world.matrix)
+
+        this._matrix = temp.matrix
+        this._rotationMatrix = rot
     }
 }

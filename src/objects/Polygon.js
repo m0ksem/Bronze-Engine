@@ -10,6 +10,7 @@ export class Polygon {
             engine.polygons.push(this)
         }
         this.webGL = engine.webGL
+        this.engine = engine
         
         /**
          * Texture of polygon
@@ -211,7 +212,34 @@ export class Polygon {
     setNormals (normals) {
         this.normals = normals
         this._normalBuffer = this.webGL.createBuffer();
-            this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._normalBuffer);
-            this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+
+    draw () {
+        this.engine.webGL.enableVertexAttribArray(this.engine.positionLocation)
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this._vertexesBuffer)
+        this.engine.webGL.vertexAttribPointer(
+            this.engine.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+        )
+
+        this.engine.webGL.enableVertexAttribArray(this.engine.textureCoordinatesLocation)
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this._coordsBuffer)
+        this.engine.webGL.vertexAttribPointer(
+            this.engine.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+        )
+
+        this.engine.webGL.enableVertexAttribArray(this.engine.normalLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this._normalBuffer);
+        this.engine.webGL.vertexAttribPointer(
+            this.engine.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+
+        this.engine.webGL.uniform1i(this.engine.textureLocation, this.texture._textureBlockLocation)
+        this.engine.webGL.uniformMatrix4fv(this.engine.matrixLocation, false, this._matrix)
+        this.engine.webGL.uniformMatrix4fv(this.engine.objectRotationLocation, false, this._world)
+
+        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, 3)
+        this.engine.drawCallsPerFrame++
+        this.engine.drawCalls++
     }
 }

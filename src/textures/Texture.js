@@ -1,3 +1,5 @@
+import {isPowerOf2} from "./../math/Math"
+
 /**
  * Texture for polygons or objects.
  * @class
@@ -7,9 +9,9 @@
  * @param {Number} [height] - custom height for image.
  */
 class Texture extends Image {
-    constructor (path, width, height) {
-        
+    constructor(path, width, height) {
         super()
+
         this.src = path
         if (width != null && height != null) {
             this.width = width
@@ -159,6 +161,81 @@ class Texture extends Image {
      */
     setColorRGBA (r, g, b, a) {
         this.color = new Uint8Array([r, g, b, a])
+    }
+
+        /**
+         * Binding texture to engine.
+         * @param {Texture} texture 
+         * @public
+         */
+    bind(engine) {
+        this.engine = engine
+        this._textureBlockLocation = this.engine.textures.length
+        this.engine.textures.push(this)
+        this._WebGLTexture = this.engine.webGL.createTexture()
+        this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation)
+        this.engine.webGL.bindTexture(this.engine.webGL.TEXTURE_2D, this._WebGLTexture)
+        this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, 0, this.engine.webGL.RGBA, 1, 1, 0, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, this.color);
+        this.addEventListener('load', () => {
+            let texture = this
+            this.onTextureLoad.forEach(func => {
+                func(texture)
+            })
+            this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation)
+            let mipmapFilter
+            let mipmapRequire = true
+            switch (this.mipmapFilter) {
+                case 'NEAREST':
+                    mipmapFilter = this.engine.webGL.NEAREST
+                    mipmapRequire = false
+                    break
+                case 'LINEAR':
+                    mipmapFilter = this.engine.webGL.LINEAR
+                    mipmapRequire = false
+                    break
+                case 'NEAREST_MIPMAP_NEAREST':
+                    mipmapFilter = this.engine.webGL.NEAREST_MIPMAP_NEAREST
+                    break
+                case 'LINEAR_MIPMAP_NEAREST':
+                    mipmapFilter = this.engine.webGL.LINEAR_MIPMAP_NEAREST
+                    break
+                case 'NEAREST_MIPMAP_LINEAR':
+                    mipmapFilter = this.engine.webGL.LINEAR_MIPMAP_NEAREST
+                    break
+                case 'LINEAR_MIPMAP_LINEAR':
+                    mipmapFilter = this.engine.webGL.LINEAR_MIPMAP_LINEAR
+                    break
+                default:
+                    mipmapRequire = false
+                    mipmapFilter = this.engine.webGL.LINEAR
+                    break
+            }
+            this.WebGLMipmapFilter = mipmapFilter
+
+            this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
+            this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_MAG_FILTER, this.engine.webGL.LINEAR);
+
+            if (mipmapRequire && !this._autoGenerateMipmap) {
+                if (this.mipmap.length > 0) {
+                    this.mipmap.forEach((mip, level) => {
+                        this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, level, this.engine.webGL.RGBA, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, mip)
+                    })
+                    console.log(this.mipmap)
+                } else {
+                    console.warn('Need to generate mipmaps for texture:')
+                    console.warn(this)
+                }
+            } else {
+                this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, 0, this.engine.webGL.RGBA, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, this);
+            }
+
+            if ((mipmapRequire || this._autoGenerateMipmap) && isPowerOf2(this.width) && isPowerOf2(this.height)) {
+                this.engine.webGL.generateMipmap(this.engine.webGL.TEXTURE_2D)
+            } else {
+                this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_WRAP_S, this.engine.webGL.CLAMP_TO_EDGE);
+                this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_WRAP_T, this.engine.webGL.CLAMP_TO_EDGE);
+            }
+        })
     }
 }
 

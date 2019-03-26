@@ -18,6 +18,8 @@ export class Object {
          */
         this.engine = engine
 
+        this.shaderProgram = engine.shaderProgram
+
         /**
          * WebGL context of engine
          * @private
@@ -486,5 +488,156 @@ export class Object {
             }
         }
         objectsLoader.send();
+    }
+
+    /**
+     * Function to draw object.
+     */
+    draw () {
+        this.shaderProgram.use()
+        if (!this.behindTheCamera) {
+            this.faces.forEach(face => {
+                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+                this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer)
+                this.engine.webGL.vertexAttribPointer(
+                    this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+                )
+
+                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation)
+                this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.coordsBuffer)
+                this.engine.webGL.vertexAttribPointer(
+                    this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+                )
+
+                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+                this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
+                this.engine.webGL.vertexAttribPointer(
+                    this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+
+                this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
+                this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
+                this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, object._world)
+
+                this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
+                this.engine.drawCallsPerFrame++
+                this.engine.drawCalls++
+            })
+        }
+    }
+
+    update () {
+        let temp = new Matrixes.Matrix()
+        //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
+        if (!this.UIElement) {
+            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+            temp.multiply(this.engine.camera.inventedMatrix)
+        } else {
+            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+        }
+
+        let world = new Matrixes.Matrix()
+        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
+        world.translate(this.position[0], this.position[1], this.position[2])
+        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
+        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
+        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
+        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
+        this._world = parentRot
+        rot = Matrixes.multiply(parentRot, rot)
+        world.multiply(rot)
+        
+        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])     
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+                    
+        temp.multiply(world.matrix)
+        
+        if (!this.UIElement) {
+            let mouseOverHitBox = false
+            this.collisionBoxes.forEach(collisionBox => {
+                let boxInPixels = []
+                for (let ix = 0; ix < collisionBox.x.length; ix++) {
+                    const x = collisionBox.x[ix];
+                    for (let iy = 0; iy < collisionBox.y.length; iy++) {
+                        const y = collisionBox.y[iy];
+                        for (let iz = 0; iz < collisionBox.z.length; iz++) {
+                            const z = collisionBox.z[iz];
+                            let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
+                                coordsInPixels[0] =  coordsInPixels[0] / coordsInPixels[3]
+                                coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
+                                coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.engine.width;
+                                coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.engine.height;
+                                
+                                coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0]
+                                coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1]
+
+                                coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0]
+                                coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1]
+
+                                if (coordsInPixels[2] >= 0) {
+                                    boxInPixels.push(coordsInPixels) 
+                                }
+                        }
+                    }
+                }
+
+                let smallest = [10000,  10000, -1000]
+                let biggest = [-10000, -10000]
+                for (let i = 0; i < boxInPixels.length; i++) {
+                    const box = boxInPixels[i];
+                    if (box[0] < smallest[0]) {
+                        smallest[0] = box[0]
+                    } else if (box[0] > biggest[0]) {
+                        biggest[0] = box[0]
+                    }
+                    if (box[1] < smallest[1]) {
+                        smallest[1] = box[1]
+                    } else if (box[1] > biggest[1]) {
+                        biggest[1] = box[1]
+                    }
+                    if (box[2] > smallest[2]) {
+                        smallest[2] = box[2]
+                    }
+                }
+
+                this.relativeCameraPosition = {
+                    x: {
+                        left: smallest[0],
+                        right: biggest[0]
+                    },
+                    y: {
+                        top: smallest[1], 
+                        bottom: biggest[1]
+                    },
+                    depth: smallest[2]
+                }
+
+                if (this.relativeCameraPosition.x.left >= this.engine.width || this.relativeCameraPosition.x.right <= 0 ||
+                    this.relativeCameraPosition.y.top >= this.engine.height || this.relativeCameraPosition.x.bottom <= 0) {
+
+                    this.behindTheCamera = true
+                }
+                else {
+                    this.behindTheCamera = false
+                }
+                
+                if (this.engine.controls.mouse.x > smallest[0] && this.engine.controls.mouse.x < biggest[0] &&
+                    this.engine.controls.mouse.y > smallest[1] && this.engine.controls.mouse.y < biggest[1]   ) {
+                    mouseOverHitBox = true
+                }
+
+                if (mouseOverHitBox) {
+                    if (this.engine.selectedObject == null) {
+                        this.engine.selectedObject = this
+                    }
+                    if (this.engine.selectedObject.relativeCameraPosition.depth >= smallest[2]) {
+                        this.engine.selectedObject = this
+                    }
+                }
+            })
+        }
+
+
+        this._matrix = temp.matrix
+        this._rotationMatrix = rot
     }
 }
