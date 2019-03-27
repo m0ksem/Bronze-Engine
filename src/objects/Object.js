@@ -516,7 +516,7 @@ export class Object {
 
                 this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-                this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, object._world)
+                this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world)
 
                 this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
                 this.engine.drawCallsPerFrame++
@@ -542,9 +542,9 @@ export class Object {
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
         let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        this._world = parentRot
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
+        this._world = rot
         
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])     
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])

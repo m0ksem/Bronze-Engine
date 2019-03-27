@@ -1,5 +1,6 @@
 import * as Math from "../math/Math"
 import * as Matrixes from "../math/Matrixes"
+import * as Vectors from "../math/Vectors"
 import {ShaderProgram} from "../utils/ShaderProgram"
 
 
@@ -98,42 +99,42 @@ export class Cube {
 
 
         this.normals = [
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
-            1, 1, 1,
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
         ]
 
         /**
@@ -376,11 +377,27 @@ export class Cube {
      * @param {Number} z in deg.
      * @public
      */
-    rotate(x, y, z) {
+    setRotate(x, y, z) {
         let xRad = Math.degToRad(x)
         let yRad = Math.degToRad(y)
         let zRad = Math.degToRad(z)
         this.rotation = [xRad, yRad, zRad]
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
+     * @public
+     */
+    rotate(x, y, z) {
+        let xRad = Math.degToRad(x)
+        let yRad = Math.degToRad(y)
+        let zRad = Math.degToRad(z)
+        this.rotation[0] += xRad
+        this.rotation[1] += yRad
+        this.rotation[2] += zRad
     }
 
     /**
@@ -425,19 +442,22 @@ export class Cube {
 
     /**
      * Sets whether the all polygons will be attached to the camera like UI this.
-     * @param {bolean} bool 
+     * @param {boolean} bool 
      */
     setAsUIElement(bool) {
         this.UIElement = bool
     }
 
-    animate(animateFunction, fps) {
+    animate(fps, animateFunction) {
         animateFunction = animateFunction || this.animation
         this._animationInterval = setInterval(animateFunction, 1000 / fps)
     }
 
     draw() {
         this.shaderProgram.use()
+        this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
+        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
 
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
@@ -476,13 +496,13 @@ export class Cube {
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
         let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        this._world = parentRot
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
 
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
+        this._world = rot
         temp.multiply(world.matrix)
 
         this._matrix = temp.matrix

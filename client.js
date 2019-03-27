@@ -140,20 +140,20 @@ let cubeTexture = new Bronze.CubeTexture()
     })
 
 // Setting elements and objects 
+// let rect = new Bronze.Rect(engine)
+//     rect.setTexture(gridTexture)
+//     rect.setTextureRepeating(100, 100)
+//     let width = 100000, height = 100000
+//     rect.setSize(width, height)
+//     rect.setPosition(-width / 2, -1, height / 2)
+//     rect.rotate(-90, 0, 0)
+//     rect.setRotationPoint(0, 0, 0)
+//     rect.setNormals([
+//         0, 1, 0,
+//         0, 1, 0,
+//         0, 1, 0,
+//     ])
 let rect = new Bronze.Rect(engine)
-    rect.setTexture(gridTexture)
-    rect.setTextureRepeating(100, 100)
-    let width = 100000, height = 100000
-    rect.setSize(width, height)
-    rect.setPosition(-width / 2, -1, height / 2)
-    rect.rotate(-90, 0, 0)
-    rect.setRotationPoint(0, 0, 0)
-    rect.setNormals([
-        0, 1, 0,
-        0, 1, 0,
-        0, 1, 0,
-    ])
-    rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTexture)
     rect.setSize(1000, 1000)
     rect.setPosition(-500, 10, 1500)
@@ -216,11 +216,11 @@ let rect = new Bronze.Rect(engine)
 let cube = new Bronze.Cube(engine)
     cube.setTexture(cubeTexture)
     cube.setSize(400, 400, 400)
-    cube.setPosition(1500, 0, 200)
+    cube.setPosition(1500, 400, 200)
     // cube.rotate(0, 45, 0)
-    // cube.animate(60, () => {
-    //     cube.rotate(0.1, 0.2, 0.3)
-    // })
+    cube.animate(60, () => {
+        cube.rotate(0.0, 0.1, 0.0)
+    })
 
 
 // let cube1 = new Bronze.Cube(engine)
@@ -290,6 +290,19 @@ let object = new Bronze.Object(engine)
     object.setRotationPoint(0, 0, 0)
     object.setRotation(90, -45, 30)
     object.scale(7, 7, 7)
+    object = new Bronze.Object(engine)
+    object.setTexture(colaTexture)
+    object.setPosition(0, 0, 600)
+    object.name = "box on ground"
+    object.loadFromObj("assets/objects/cola.obj")
+    object.setRotationPoint(0, 0, 0)
+    object.scale(7, 7, 7)
+    object.animate(60, () => {
+        object.rotate(0, 0.05, 0)
+    })
+
+let grid = new Bronze.Grid(engine)
+    grid.setSize(1000, 1000)
 
 // Run engine
 engine.run()

@@ -28,13 +28,6 @@ export class Rect {
         this.shaderProgram = engine.shaderProgram
 
         /**
-         * Rect polygons.
-         * @private
-         * @type {Array.{0: Polygon, 1: Polygon}} vector 3
-         */
-        this.polygons = new Array(2)
-
-        /**
          * Rect position.
          * @readonly
          * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
@@ -353,6 +346,7 @@ export class Rect {
     }
 
     draw () {
+        this.shaderProgram.use()
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
         this.engine.webGL.vertexAttribPointer(

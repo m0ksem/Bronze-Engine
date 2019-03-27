@@ -7,6 +7,8 @@ import vertexShaderSource from "./shaders/default/vertex-shader.glsl"
 import {ShaderProgram} from "./utils/ShaderProgram"
 import cubefragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl"
 import cubevertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl"
+import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl"
+import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl"
 
 
 /**
@@ -195,6 +197,15 @@ export class Engine {
         program.linkUniform('u_objectRotation', 'objectRotationLocation')
         program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
         this.cubeTextureShaderProgram = program
+
+        program = new ShaderProgram(this.webGL)
+        this.webGL.getExtension('OES_standard_derivatives')
+        program.addShader('vertex', gridVertexShaderSource)
+        program.addShader('fragment', gridFragmentShaderSource)
+        program.create()
+        program.linkAttribute('a_position', 'positionLocation')
+        program.linkUniform('u_matrix', 'matrixLocation')
+        this.gridTextureShaderProgram = program
         
         this.shaderProgram.use()
     }
@@ -294,7 +305,7 @@ export class Engine {
      */
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
-
+        this.shaderProgram.use()
         this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.camera.matrix)
