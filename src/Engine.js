@@ -2,11 +2,11 @@ import * as Utils from "./Utils"
 import {Texture} from "./textures/Texture"
 import * as Matrixes from "./math/Matrixes"
 import * as Vectors from "./math/Vectors"
+import {ShaderProgram} from "./utils/ShaderProgram"
 import fragmentShaderSource from "./shaders/default/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/default/vertex-shader.glsl"
-import {ShaderProgram} from "./utils/ShaderProgram"
-import cubefragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl"
-import cubevertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl"
+import cubeFragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl"
+import cubeVertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl"
 import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl"
 import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl"
 
@@ -187,8 +187,8 @@ export class Engine {
         this.shaderProgram = program
 
         program = new ShaderProgram(this.webGL)
-        program.addShader('vertex', cubevertexShaderSource)
-        program.addShader('fragment', cubefragmentShaderSource)
+        program.addShader('vertex', cubeVertexShaderSource)
+        program.addShader('fragment', cubeFragmentShaderSource)
         program.create()
         program.linkAttribute('a_position', 'positionLocation')
         program.linkAttribute('a_normal', 'normalLocation')
@@ -197,6 +197,7 @@ export class Engine {
         program.linkUniform('u_objectRotation', 'objectRotationLocation')
         program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
         this.cubeTextureShaderProgram = program
+        
 
         program = new ShaderProgram(this.webGL)
         this.webGL.getExtension('OES_standard_derivatives')
@@ -205,6 +206,7 @@ export class Engine {
         program.create()
         program.linkAttribute('a_position', 'positionLocation')
         program.linkUniform('u_matrix', 'matrixLocation')
+        program.linkUniform('u_camera', 'cameraLocation')
         this.gridTextureShaderProgram = program
         
         this.shaderProgram.use()

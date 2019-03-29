@@ -211,6 +211,10 @@ let rect = new Bronze.Rect(engine)
         1, 0, 1,
         1, 0, 1,
     ])
+let grid = new Bronze.Grid(engine)
+    grid.setSize(1000, 1000)
+    grid.setPosition(-500, -15, 1500)
+    grid.rotate(-90, 0, 45)
 
 
 let cube = new Bronze.Cube(engine)
@@ -300,9 +304,6 @@ let object = new Bronze.Object(engine)
     object.animate(60, () => {
         object.rotate(0, 0.05, 0)
     })
-
-let grid = new Bronze.Grid(engine)
-    grid.setSize(1000, 1000)
 
 // Run engine
 engine.run()
