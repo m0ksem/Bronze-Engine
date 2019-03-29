@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: UI</title>
+    <title>JSDoc: Class: CubeTexture</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: UI</h1>
+    <h1 class="page-title">Class: CubeTexture</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>UI<span class="signature">(e)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CubeTexture<span class="signature">(path, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="UI"><span class="type-signature"></span>new UI<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CubeTexture"><span class="type-signature"></span>new CubeTexture<span class="signature">(path, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -69,6 +69,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -81,23 +83,97 @@
 
         <tr>
             
-                <td class="name"><code>e</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Engine.html">Engine</a></span>
+<span class="param-type">String</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">path to image location.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">custom width for image.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">custom height for image.</td>
         </tr>
 
     
@@ -138,7 +214,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line6">line 6</a>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -186,26 +262,16 @@
 
         
             
-<h4 class="name" id="context"><span class="type-signature"></span>context<span class="type-signature"> :CanvasRenderingContext2D</span></h4>
+<h4 class="name" id="color"><span class="type-signature">(readonly) </span>color<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    2D context for UI drawing.
+    Color of texture. Texture drawing with color if image was not set.
 </div>
 
 
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">CanvasRenderingContext2D</span>
-
-
-        </li>
-    </ul>
 
 
 
@@ -240,7 +306,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line23">line 23</a>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -258,13 +324,13 @@
 
         
             
-<h4 class="name" id="elements"><span class="type-signature"></span>elements<span class="type-signature"> :Array.&lt;Objects></span></h4>
+<h4 class="name" id="onTextureLoad"><span class="type-signature"></span>onTextureLoad<span class="type-signature"> :Array.&lt;function()></span></h4>
 
 
 
 
 <div class="description">
-    There are objects which object needs to draw.
+    Execute every function in array when texture loaded.
 </div>
 
 
@@ -273,7 +339,7 @@
     <ul>
         <li>
             
-<span class="param-type">Array.&lt;Objects></span>
+<span class="param-type">Array.&lt;function()></span>
 
 
         </li>
@@ -312,7 +378,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line29">line 29</a>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -340,7 +406,7 @@
     
 
     
-    <h4 class="name" id="addElement"><span class="type-signature"></span>addElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="scale"><span class="type-signature"></span>scale<span class="signature">(x, y)</span><span class="type-signature"></span></h4>
     
 
     
@@ -348,7 +414,7 @@
 
 
 <div class="description">
-    Adds object to draw.
+    Scale image width by x, height by y.
 </div>
 
 
@@ -384,13 +450,13 @@
 
         <tr>
             
-                <td class="name"><code>element</code></td>
+                <td class="name"><code>x</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Object.html">Object</a></span>
+<span class="param-type">Number</span>
 
 
             
@@ -400,132 +466,20 @@
 
             
 
-            <td class="description last">some UI element.</td>
+            <td class="description last"></td>
         </tr>
 
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="appendDOMElement"><span class="type-signature"></span>appendDOMElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Adding DOM element upper game engine canvas.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>element</code></td>
+                <td class="name"><code>y</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">HTMLElement</span>
+<span class="param-type">Number</span>
 
 
             
@@ -576,7 +530,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line55">line 55</a>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -610,7 +564,7 @@
     
 
     
-    <h4 class="name" id="removeElement"><span class="type-signature"></span>removeElement<span class="signature">(element)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setColorRGBA"><span class="type-signature"></span>setColorRGBA<span class="signature">(r, g, b, a)</span><span class="type-signature"></span></h4>
     
 
     
@@ -618,7 +572,7 @@
 
 
 <div class="description">
-    Removes element from drawing function.
+    Setting color of polygon. The color will be shown until the texture is loaded.
 </div>
 
 
@@ -654,13 +608,217 @@
 
         <tr>
             
-                <td class="name"><code>element</code></td>
+                <td class="name"><code>r</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Object.html">Object</a></span>
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">red value from 0 to 255.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>g</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">green value from 0 to 255.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>b</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">blue value from 0 to 255.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>a</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">alpha value from 0 to 255.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line166">line 166</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setCoords"><span class="type-signature"></span>setCoords<span class="signature">(coords)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Setting texture coords.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coords</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Number></span>
 
 
             
@@ -711,7 +869,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_UI.js.html">ui/UI.js</a>, <a href="ui_UI.js.html#line46">line 46</a>
+        <a href="textures_CubeTexture.js.html">textures/CubeTexture.js</a>, <a href="textures_CubeTexture.js.html#line154">line 154</a>
     </li></ul></dd>
     
 
