@@ -17,6 +17,5 @@ void main() {
     
     gl_FragColor = texture2D(u_texture, v_texcoord);
     gl_FragColor.rgb *= (light);
-    if(gl_FragColor.a < .9)
-        discard;
+    gl_FragColor.rgb *= gl_FragColor.a;
 }

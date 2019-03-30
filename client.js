@@ -18,7 +18,7 @@ let camera = new Bronze.Camera()
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
     engine.setCamera(camera)
-    engine.setDrawingRange(10000000)
+    engine.setDrawingRange(100000000000000)
 
 let controls = new Bronze.Controls(engine)
 
@@ -107,19 +107,21 @@ let rjunTexture = new Bronze.Texture("./assets/texture/rjun.jpg")
 //     grassTexture.setColorRGBA(255, 255, 255, 255)
 //     grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
 //     grassTexture.generateMipmap([{size: 32, image: rjunTexture}])
-let gridTexture = new Bronze.Texture("./assets/texture/grass.png")
+let gridTexture = new Bronze.Texture("./assets/texture/grid/gridtrans.png")
     gridTexture.setColorRGBA(255, 255, 255, 255)
-    gridTexture.mipmapFilter = 'NEAREST_MIPMAP_LINEAR'
-    // gridTexture.onTextureLoad.push(gridTexture.quickGenerateMipmap)
-    gridTexture.onTextureLoad.push(gridTexture.autoGenerateMipmap)
+    gridTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
+    gridTexture.onTextureLoad.push(gridTexture.quickGenerateMipmap)
+    // gridTexture.onTextureLoad.push(gridTexture.autoGenerateMipmap)
     // gridTexture.generateMipmap([{size: 32, image: gridTexture}])
     gridTexture.bind(engine)
 let transparentTexture = new Bronze.Texture("./assets/texture/road.png")
     transparentTexture.setColorRGBA(255, 255, 255, 255)
     transparentTexture.bind(engine)
+    transparentTexture.alpha = true
 let transparentTextureDoor = new Bronze.Texture("./assets/texture/door.png")
     transparentTextureDoor.setColorRGBA(255, 255, 255, 255)
     transparentTextureDoor.bind(engine)
+    transparentTextureDoor.alpha = true
 let colaTexture = new Bronze.Texture("./assets/texture/cola.png")
     colaTexture.setColorRGBA(255, 255, 255, 255)
     colaTexture.bind(engine)
@@ -132,6 +134,7 @@ let woodTexture = new Bronze.Texture("./assets/texture/wood.jpg")
 let houseTexture = new Bronze.Texture("./assets/texture/house.png")
     houseTexture.setColorRGBA(255, 255, 255, 255)
     houseTexture.bind(engine)
+    houseTexture.alpha = true
 
 let cubeTexture = new Bronze.CubeTexture()
     dirtTexture.onTextureLoad.push(() => {
@@ -140,19 +143,19 @@ let cubeTexture = new Bronze.CubeTexture()
     })
 
 // Setting elements and objects 
-// let rect = new Bronze.Rect(engine)
-//     rect.setTexture(gridTexture)
-//     rect.setTextureRepeating(100, 100)
-//     let width = 100000, height = 100000
-//     rect.setSize(width, height)
-//     rect.setPosition(-width / 2, -1, height / 2)
-//     rect.rotate(-90, 0, 0)
-//     rect.setRotationPoint(0, 0, 0)
-//     rect.setNormals([
-//         0, 1, 0,
-//         0, 1, 0,
-//         0, 1, 0,
-//     ])
+let grid = new Bronze.Grid(engine)
+    grid.setTexture(gridTexture)
+    grid.setCellSize(1000, 1000)
+    let width = 100000, height = 100000
+    grid.setSize(width, height)
+    grid.setPosition(-width / 2, -1, height / 2)
+    grid.rotate(-90, 0, 0)
+    grid.setRotationPoint(0, 0, 0)
+    grid.setNormals([
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+    ])
 let rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTexture)
     rect.setSize(1000, 1000)
@@ -164,19 +167,6 @@ let rect = new Bronze.Rect(engine)
         0, 1, 0,
         0, 1, 0,
     ])
-
-    rect = new Bronze.Rect(engine)
-    rect.setTexture(transparentTextureDoor)
-    rect.setSize(1000, 1000)
-    rect.setPosition(-500, 0, 500)
-    rect.rotate(0, 0, 0)
-    rect.setRotationPoint(-100, 100, 100)
-    rect.setNormals([
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1,
-    ])
-    rect.setTextureRepeating(2, 1)
 
     rect = new Bronze.Rect(engine)
     rect.setTexture(dirtTexture)
@@ -211,11 +201,6 @@ let rect = new Bronze.Rect(engine)
         1, 0, 1,
         1, 0, 1,
     ])
-let grid = new Bronze.Grid(engine)
-    grid.setSize(1000, 1000)
-    grid.setPosition(-500, -15, 1500)
-    grid.rotate(-90, 0, 45)
-
 
 let cube = new Bronze.Cube(engine)
     cube.setTexture(cubeTexture)
@@ -227,30 +212,30 @@ let cube = new Bronze.Cube(engine)
     })
 
 
-// let cube1 = new Bronze.Cube(engine)
-//     cube1.setTexture(dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture)
-//     cube1.setSize(200, 200, 200)
-//     cube1.setPosition(-100, 0, 100)
-//     cube1.rotate(0, 45, 0)
-//     cube1.animate(60, () => {
-//         cube1.rotate(0.1, 1, 0)
-//     })
+let cube1 = new Bronze.Cube(engine)
+    cube1.setTexture(cubeTexture)
+    cube1.setSize(200, 200, 200)
+    cube1.setPosition(-100, 0, 100)
+    cube1.rotate(0, 45, 0)
+    cube1.animate(60, () => {
+        cube1.rotate(0.1, 1, 0)
+    })
 
 
-//  let cube2 = new Bronze.Cube(engine)
-//     cube2.setTexture(rjunTexture, dirtTexture, rjunTexture, dirtTexture, dirtTexture, dirtTexture)
-//     cube2.setSize(200, 200, 200)
-//     cube2.setPosition(-400, 0, 100)
-//     cube2.rotate(0, 0, 0)
-//     cube2.animate(60, () => {
-//         cube2.rotate(2, -0, 0)
-//     })
+ let cube2 = new Bronze.Cube(engine)
+    cube2.setTexture(cubeTexture)
+    cube2.setSize(200, 200, 200)
+    cube2.setPosition(-400, 0, 100)
+    cube2.rotate(0, 0, 0)
+    cube2.animate(60, () => {
+        cube2.rotate(2, -0, 0)
+    })
 
 // let cube3 = new Bronze.Cube(engine)
-//     cube3.setTexture(rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture, rjunTexture)
+//     cube3.setTexture(cubeTexture)
 //     cube3.setSize(200, 200, 200)
 //     cube3.setAsUIElement(true)
-//     cube3.setPosition(-95, -75, 0)
+//     cube3.setPosition(95, -75, 0)
 //     cube3.animate(60, () => {
 //         cube3.rotate(0, 1, 0)
 //     })
@@ -304,6 +289,44 @@ let object = new Bronze.Object(engine)
     object.animate(60, () => {
         object.rotate(0, 0.05, 0)
     })
+
+    rect = new Bronze.Rect(engine)
+    rect.setTexture(transparentTextureDoor)
+    rect.setSize(1000, 1000)
+    rect.setPosition(-500, 0, 500)
+    rect.rotate(0, 0, 0)
+    rect.setRotationPoint(-100, 100, 100)
+    rect.setNormals([
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+    ])
+    rect.setTextureRepeating(2, 1)
+
+    rect = new Bronze.Rect(engine)
+    rect.setTexture(transparentTextureDoor)
+    rect.setSize(1000, 1000)
+    rect.setPosition(-0, 0, 400)
+    rect.rotate(0, -45, 0)
+    rect.setRotationPoint(-100, 100, 100)
+    rect.setNormals([
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+    ])
+    rect.setTextureRepeating(2, 1)
+    rect = new Bronze.Rect(engine)
+    rect.setTexture(woodTexture)
+    rect.setSize(1000, 1000)
+    rect.setPosition(-0, 0, 300)
+    rect.rotate(0, -45, 0)
+    rect.setRotationPoint(-100, 100, 100)
+    rect.setNormals([
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+    ])
+    rect.setTextureRepeating(2, 1)
 
 // Run engine
 engine.run()

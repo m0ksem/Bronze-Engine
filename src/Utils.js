@@ -7,7 +7,9 @@
  */
 export function getWebGLById(id) {
     let canvas = document.getElementById(id);
-    let webGL = canvas.getContext("experimental-webgl");
+    let webGL = canvas.getContext("experimental-webgl", {
+        alpha: false
+    });
     window.addEventListener('resize', function () {
         canvas.width = canvas.offsetWidth
         canvas.height = canvas.offsetHeight

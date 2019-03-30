@@ -53,6 +53,8 @@ class Texture extends Image {
          * @type {Function[]}
          */
         this.onTextureLoad = []
+
+        this.alpha = false
     }
 
     /**
@@ -80,7 +82,6 @@ class Texture extends Image {
             let i = texture.height
             let offsetX = 0
             while (true) {
-                console.log(offsetX + ' ' + i)
                 let tempCanvas = document.createElement("canvas");
                     tempCanvas.width = i
                     tempCanvas.height = i
@@ -214,13 +215,13 @@ class Texture extends Image {
 
             this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
             this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.webGL.TEXTURE_MAG_FILTER, this.engine.webGL.LINEAR);
+            
 
             if (mipmapRequire && !this._autoGenerateMipmap) {
                 if (this.mipmap.length > 0) {
                     this.mipmap.forEach((mip, level) => {
                         this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, level, this.engine.webGL.RGBA, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, mip)
                     })
-                    console.log(this.mipmap)
                 } else {
                     console.warn('Need to generate mipmaps for texture:')
                     console.warn(this)

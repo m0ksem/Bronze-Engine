@@ -1,12 +1,13 @@
-#extension GL_OES_standard_derivatives : enable
-
 attribute vec4 a_position;
+attribute vec2 a_texcoord;
 
 uniform mat4 u_matrix;
+uniform mat4 u_position;
 
-varying vec3 vertex;
+varying vec2 v_texcoord;
+varying vec3 v_moving;
 
 void main() {
-    vertex = vec3(u_matrix * a_position);
     gl_Position = u_matrix * a_position;
+    v_texcoord = a_texcoord;
 }

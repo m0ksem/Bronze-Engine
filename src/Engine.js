@@ -69,6 +69,12 @@ export class Engine {
          */
         this.objects = []
 
+        
+        /**
+         * 
+         */
+        this.objectsWithAlphaTexture = []
+
         /**
          * @type {UI}
          * @private
@@ -109,15 +115,8 @@ export class Engine {
          */
         this.selectedObject = null
 
-        this._globalPositionBuffer = this.webGL.createBuffer()
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPositionBuffer)
-        this._globalTextureBuffer = this.webGL.createBuffer()
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer)
-
         this._initShaders()
         this.shaderProgram.use()
-        // this.shaderProgram.useIn(this.webGL)
-        // this.webGL.useProgram(this.shaderProgram)
         this.webGL.viewport(0, 0, this.width, this.height)
 
         this.webGL.enable(this.webGL.CULL_FACE)
@@ -197,19 +196,24 @@ export class Engine {
         program.linkUniform('u_objectRotation', 'objectRotationLocation')
         program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
         this.cubeTextureShaderProgram = program
-        
 
         program = new ShaderProgram(this.webGL)
+        program.anisotropyExtension = this.webGL.getExtension("EXT_texture_filter_anisotropic")
+        this.webGL.texParameteri(this.webGL.TEXTURE_2D, program.anisotropyExtension.TEXTURE_MAX_ANISOTROPY_EXT, 16);
         this.webGL.getExtension('OES_standard_derivatives')
         program.addShader('vertex', gridVertexShaderSource)
         program.addShader('fragment', gridFragmentShaderSource)
         program.create()
         program.linkAttribute('a_position', 'positionLocation')
+        program.linkAttribute('a_texcoord', 'textureCoordinatesLocation')
+        program.linkUniform('u_texture', 'textureLocation')
         program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_camera', 'cameraLocation')
+        program.linkUniform('u_position', 'positionMatrixLocation')
         this.gridTextureShaderProgram = program
         
         this.shaderProgram.use()
+        this.webGL.enable(this.webGL.BLEND);
+        this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
     
     /**
@@ -243,6 +247,11 @@ export class Engine {
     }
 
 
+    addObject (object) {
+        this.objects.push(object)
+    }
+
+
     /**
      * Function to update all positions, size etc.
      * @private
@@ -260,39 +269,19 @@ export class Engine {
 
         this.selectedObject = null
 
-        this.polygons.forEach(element => {           
-            temp = new Matrixes.Matrix()
-            
-            // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            if (!element.UIElement) {
-                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
-                temp.multiply(this.camera.inventedMatrix)
-            } else {
-                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
+        this.objects.forEach((element, index) => {         
+            element.update()
+            if (element.texture.alpha) {
+                this.objectsWithAlphaTexture.push(element)
+                this.objects.splice(index, 1)
             }
-
-            world = new Matrixes.Matrix()
-            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
-            world.translate(element.position[0], element.position[1], element.position[2])
-            rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
-            rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
-            if (element.parentRotation != null) {
-                parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
-                parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
-                element._world = parentRot
-                rot = Matrixes.multiply(parentRot, rot)
-            }
-            world.multiply(rot)
-            
-            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])
-                        
-            temp.multiply(world.matrix)
-
-            element._matrix = temp.matrix
-            element._rotationMatrix = rot
         })
 
-        this.objects.forEach(element => {           
+        this.objectsWithAlphaTexture.sort((a, b) => {
+            return a.position[2] - b.position[2]
+        })
+
+        this.objectsWithAlphaTexture.forEach((element) => {
             element.update()
         })
 
@@ -307,6 +296,9 @@ export class Engine {
      */
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+        // this.webGL.colorMask(false, false, false, true);
+        // this.webGL.clearColor(0, 0, 0, 1);
+        // this.webGL.clear(this.webGL.COLOR_BUFFER_BIT);
         this.shaderProgram.use()
         this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
@@ -322,12 +314,13 @@ export class Engine {
             object.draw()
         });
 
+        this.objectsWithAlphaTexture.forEach(object => {
+            object.draw()
+        });
+
         if (this.debugger != null) {
             this.debugger.updateInfo()
         }
-
-        this.webGL.blendFunc(this.webGL.SRC_ALPHA, this.webGL.ONE_MINUS_SRC_ALPHA);
-        this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
 
     /**

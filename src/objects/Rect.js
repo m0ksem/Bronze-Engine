@@ -16,7 +16,7 @@ export class Rect {
     constructor(engine) {
 
         if (engine) {
-            engine.objects.push(this)
+            engine.addObject(this)
         }
 
         this.engine = engine
@@ -401,5 +401,10 @@ export class Rect {
 
         this._matrix = temp.matrix
         this._rotationMatrix = rot
+    }
+
+    animate(fps, animateFunction) {
+        animateFunction = animateFunction || this.animation
+        this._animationInterval = setInterval(animateFunction, 1000 / fps)
     }
 }
