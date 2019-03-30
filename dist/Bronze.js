@@ -130,6 +130,19 @@ module.exports = _createClass;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+function _getPrototypeOf(o) {
+  module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+module.exports = _getPrototypeOf;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -308,7 +321,48 @@ var BronzeShaderException = function BronzeShaderException(message) {
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _typeof = __webpack_require__(12);
+
+var assertThisInitialized = __webpack_require__(13);
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return assertThisInitialized(self);
+}
+
+module.exports = _possibleConstructorReturn;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var setPrototypeOf = __webpack_require__(6);
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) setPrototypeOf(subClass, superClass);
+}
+
+module.exports = _inherits;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 function _setPrototypeOf(o, p) {
@@ -323,26 +377,13 @@ function _setPrototypeOf(o, p) {
 module.exports = _setPrototypeOf;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-function _getPrototypeOf(o) {
-  module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-module.exports = _getPrototypeOf;
-
-/***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(10);
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -384,53 +425,12 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator;
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _typeof = __webpack_require__(12);
-
-var assertThisInitialized = __webpack_require__(13);
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return assertThisInitialized(self);
-}
-
-module.exports = _possibleConstructorReturn;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(3);
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) setPrototypeOf(subClass, superClass);
-}
-
-module.exports = _inherits;
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(2);
 
-var setPrototypeOf = __webpack_require__(3);
+var setPrototypeOf = __webpack_require__(6);
 
 var isNativeFunction = __webpack_require__(14);
 
@@ -1279,7 +1279,7 @@ module.exports = _isNativeFunction;
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(3);
+var setPrototypeOf = __webpack_require__(6);
 
 function isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
@@ -1816,11 +1816,11 @@ function Vectors_normalize(vector) {
   }
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(5);
+var regenerator = __webpack_require__(7);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(6);
+var asyncToGenerator = __webpack_require__(8);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // CONCATENATED MODULE: ./src/Utils.js
@@ -1833,7 +1833,9 @@ var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerat
  */
 function getWebGLById(id) {
   var canvas = document.getElementById(id);
-  var webGL = canvas.getContext("experimental-webgl");
+  var webGL = canvas.getContext("experimental-webgl", {
+    alpha: false
+  });
   window.addEventListener('resize', function () {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -1915,15 +1917,15 @@ function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) 
   return shaderProgram;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(7);
+var possibleConstructorReturn = __webpack_require__(4);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(2);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(8);
+var inherits = __webpack_require__(5);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
@@ -1997,6 +1999,7 @@ function (_Image) {
      */
 
     _this.onTextureLoad = [];
+    _this.alpha = false;
     return _this;
   }
   /**
@@ -2034,7 +2037,6 @@ function (_Image) {
         var offsetX = 0;
 
         while (true) {
-          console.log(offsetX + ' ' + i);
           var tempCanvas = document.createElement("canvas");
           tempCanvas.width = i;
           tempCanvas.height = i;
@@ -2204,8 +2206,6 @@ function (_Image) {
             _this2.mipmap.forEach(function (mip, level) {
               _this2.engine.webGL.texImage2D(_this2.engine.webGL.TEXTURE_2D, level, _this2.engine.webGL.RGBA, _this2.engine.webGL.RGBA, _this2.engine.webGL.UNSIGNED_BYTE, mip);
             });
-
-            console.log(_this2.mipmap);
           } else {
             console.warn('Need to generate mipmaps for texture:');
             console.warn(_this2);
@@ -2230,7 +2230,7 @@ function (_Image) {
 
 
 // EXTERNAL MODULE: ./src/utils/ShaderProgram.js
-var ShaderProgram = __webpack_require__(2);
+var ShaderProgram = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/Engine.js
 
@@ -2244,7 +2244,7 @@ var ShaderProgram = __webpack_require__(2);
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    // float light = dot(normal, u_reverseLightDirection);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < .9)\r\n        discard;\r\n}";
+var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    // float light = dot(normal, u_reverseLightDirection);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
 var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition; // - surfaceWorldPosition;\r\n}";
@@ -2256,10 +2256,10 @@ var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_n
 var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition;\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
-var gridFragmentShaderSource = "#extension GL_OES_standard_derivatives : enable\r\n\r\nprecision mediump float;\r\n\r\nuniform mat4 u_camera;\r\n\r\nvarying vec3 vertex;\r\n\r\nvoid main() {\r\n    // Pick a coordinate to visualize in a grid\r\n    vec2 coord = vertex.xz;\r\n\r\n    // Compute anti-aliased world-space grid lines\r\n    vec2 grid = abs(fract(coord - 0.5) - 0.5)  / fwidth(coord);\r\n    float line = min(grid.x, grid.y);\r\n\r\n    // Just visualize the grid lines directly\r\n    gl_FragColor = vec4(vec3(1.0 - min(line, 1.0)), 1.0);\r\n}";
+var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/vertex-shader.glsl' */
-var gridVertexShaderSource = "#extension GL_OES_standard_derivatives : enable\r\n\r\nattribute vec4 a_position;\r\n\r\nuniform mat4 u_matrix;\r\n\r\nvarying vec3 vertex;\r\n\r\nvoid main() {\r\n    vertex = vec3(u_matrix * a_position);\r\n    gl_Position = u_matrix * a_position;\r\n}";
+var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_position;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_moving;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = a_texcoord;\r\n}";
 /**
  * GameEngine core class.
  * @class
@@ -2321,6 +2321,11 @@ function () {
 
     this.objects = [];
     /**
+     * 
+     */
+
+    this.objectsWithAlphaTexture = [];
+    /**
      * @type {UI}
      * @private
      */
@@ -2360,16 +2365,10 @@ function () {
      */
 
     this.selectedObject = null;
-    this._globalPositionBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPositionBuffer);
-    this._globalTextureBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer);
 
     this._initShaders();
 
-    this.shaderProgram.use(); // this.shaderProgram.useIn(this.webGL)
-    // this.webGL.useProgram(this.shaderProgram)
-
+    this.shaderProgram.use();
     this.webGL.viewport(0, 0, this.width, this.height);
     this.webGL.enable(this.webGL.CULL_FACE);
     this.webGL.enable(this.webGL.DEPTH_TEST);
@@ -2453,15 +2452,21 @@ function () {
       program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation');
       this.cubeTextureShaderProgram = program;
       program = new ShaderProgram["a" /* ShaderProgram */](this.webGL);
+      program.anisotropyExtension = this.webGL.getExtension("EXT_texture_filter_anisotropic");
+      this.webGL.texParameteri(this.webGL.TEXTURE_2D, program.anisotropyExtension.TEXTURE_MAX_ANISOTROPY_EXT, 16);
       this.webGL.getExtension('OES_standard_derivatives');
       program.addShader('vertex', gridVertexShaderSource);
       program.addShader('fragment', gridFragmentShaderSource);
       program.create();
       program.linkAttribute('a_position', 'positionLocation');
+      program.linkAttribute('a_texcoord', 'textureCoordinatesLocation');
+      program.linkUniform('u_texture', 'textureLocation');
       program.linkUniform('u_matrix', 'matrixLocation');
-      program.linkUniform('u_camera', 'cameraLocation');
+      program.linkUniform('u_position', 'positionMatrixLocation');
       this.gridTextureShaderProgram = program;
       this.shaderProgram.use();
+      this.webGL.enable(this.webGL.BLEND);
+      this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
     /**
      * Setting a camera to the engine. There are can be only one camera.
@@ -2499,6 +2504,11 @@ function () {
     value: function onObjectSelect(handler) {
       this._objectSelectHandler = handler;
     }
+  }, {
+    key: "addObject",
+    value: function addObject(object) {
+      this.objects.push(object);
+    }
     /**
      * Function to update all positions, size etc.
      * @private
@@ -2522,36 +2532,19 @@ function () {
       }
 
       this.selectedObject = null;
-      this.polygons.forEach(function (element) {
-        temp = new Matrixes_Matrix(); // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
+      this.objects.forEach(function (element, index) {
+        element.update();
 
-        if (!element.UIElement) {
-          temp.perspective(_this.camera.fieldOfViewRad, _this.width, _this.height, 1, _this.camera.range);
-          temp.multiply(_this.camera.inventedMatrix);
-        } else {
-          temp.projection(_this.camera.fieldOfViewRad, _this.width, _this.height, 1, _this.camera.range);
+        if (element.texture.alpha) {
+          _this.objectsWithAlphaTexture.push(element);
+
+          _this.objects.splice(index, 1);
         }
-
-        world = new Matrixes_Matrix();
-        world.multiply(inverse(translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])));
-        world.translate(element.position[0], element.position[1], element.position[2]);
-        rot = multiply(rotationX(element.rotation[0]), rotationY(element.rotation[1]));
-        rot = multiply(rot, rotationZ(element.rotation[2]));
-
-        if (element.parentRotation != null) {
-          parentRot = multiply(rotationX(element.parentRotation[0]), rotationY(element.parentRotation[1]));
-          parentRot = multiply(parentRot, rotationZ(element.parentRotation[2]));
-          element._world = parentRot;
-          rot = multiply(parentRot, rot);
-        }
-
-        world.multiply(rot);
-        world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2]);
-        temp.multiply(world.matrix);
-        element._matrix = temp.matrix;
-        element._rotationMatrix = rot;
       });
-      this.objects.forEach(function (element) {
+      this.objectsWithAlphaTexture.sort(function (a, b) {
+        return a.position[2] - b.position[2];
+      });
+      this.objectsWithAlphaTexture.forEach(function (element) {
         element.update();
       });
 
@@ -2567,7 +2560,10 @@ function () {
   }, {
     key: "_draw",
     value: function _draw() {
-      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT); // this.webGL.colorMask(false, false, false, true);
+      // this.webGL.clearColor(0, 0, 0, 1);
+      // this.webGL.clear(this.webGL.COLOR_BUFFER_BIT);
+
       this.shaderProgram.use();
       this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
       this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
@@ -2579,13 +2575,13 @@ function () {
       this.objects.forEach(function (object) {
         object.draw();
       });
+      this.objectsWithAlphaTexture.forEach(function (object) {
+        object.draw();
+      });
 
       if (this.debugger != null) {
         this.debugger.updateInfo();
       }
-
-      this.webGL.blendFunc(this.webGL.SRC_ALPHA, this.webGL.ONE_MINUS_SRC_ALPHA);
-      this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
     /**
      * Drawing UI function.
@@ -3767,7 +3763,7 @@ function () {
     classCallCheck_default()(this, Rect);
 
     if (engine) {
-      engine.objects.push(this);
+      engine.addObject(this);
     }
 
     this.engine = engine;
@@ -4112,6 +4108,12 @@ function () {
       temp.multiply(world.matrix);
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
+    }
+  }, {
+    key: "animate",
+    value: function animate(fps, animateFunction) {
+      animateFunction = animateFunction || this.animation;
+      this._animationInterval = setInterval(animateFunction, 1000 / fps);
     }
   }]);
 
@@ -5230,6 +5232,10 @@ function () {
 
 
 
+
+
+
+
 /**
  * Rect for using custom shaders
  * @tutorial
@@ -5240,260 +5246,36 @@ function () {
 
 var Grid_Grid =
 /*#__PURE__*/
-function () {
+function (_Rect) {
+  inherits_default()(Grid, _Rect);
+
   /**
    * Flat rectangle with square texture.
    * @param {Engine} engine 
    */
   function Grid(engine) {
+    var _this;
+
     classCallCheck_default()(this, Grid);
 
-    if (engine) {
-      engine.objects.push(this);
-    }
-
-    this.engine = engine;
-    this.camera = engine.camera;
-    this.webGL = engine.webGL;
-    this.shaderProgram = engine.gridTextureShaderProgram;
-    /**
-     * Rect position.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Rect rotation point.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    this.vertexes = [0, 0, 0, 100, 100, 0, 0, 100, 0, 100, 100, 0, 0, 0, 0, 100, 0, 0];
-    /**
-     * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x position on axis x
-     * @property {Number} y position on axis y
-     * @property {Number} z position on axis z
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation on axis x
-     * @property {Number} y rotation on axis y
-     * @property {Number} z rotation on axis z
-     */
-
-    this.rotation = [0, 0, 0];
-    /**
-     * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x scaling on axis x
-     * @property {Number} y scaling on axis x
-     * @property {Number} z scaling on axis x
-     */
-
-    this.scaling = [1, 1, 1];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation point coordinate on axis x
-     * @property {Number} y rotation point coordinate on axis y
-     * @property {Number} z rotation point coordinate on axis z
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x parent rotation on axis x
-     * @property {Number} y parent rotation on axis y
-     * @property {Number} z parent rotation on axis z
-     */
-
-    this.parentRotation = [0, 0, 0];
-    /**
-     * These are the edges of the object on the monitor.
-     * @readonly
-     * @Type {Object}   
-     * @property {Number} relativeCameraPosition.x.left
-     * @property {Number} relativeCameraPosition.x.right
-     * @property {Number} relativeCameraPosition.y.top
-     * @property {Number} relativeCameraPosition.y.bottom
-     * @property {Number} relativeCameraPosition.depth
-     */
-
-    this.relativeCameraPosition = null;
-    /**
-     * Collision boxes coordinates array.
-     * @type {
-     *      x: Number[2],
-     *      y: Number[2],
-     *      z: Number[2]
-     *  }
-     * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
-     * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
-     * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
-     * @public
-     */
-
-    this.collisionBoxes = [];
-    /**
-     * Sets whether the object will be attached to the camera like UI this.
-     * @type {boolean}
-     * @public
-     */
-
-    this.UIElement = false;
-    /**
-     * True if the object is behind the camera.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.behindTheCamera = false;
-    /**
-     * Max and smallest coords of object by default without scaling.
-     * @readonly
-     */
-
-    this.maxSizes = {
-      x: {
-        smallest: 0,
-        biggest: 0
-      },
-      y: {
-        smallest: 0,
-        biggest: 0
-      },
-      z: {
-        smallest: 0,
-        biggest: 0
-      }
-      /**
-       * Size of object without scaling.
-       * @readonly
-       */
-
-    };
-    this.size = [0, 0, 0];
-    /**
-     * Triggers when object load and compiled.
-     * @type {Function}
-     */
-
-    this.onload = function () {
-      return null;
-    };
-
-    this.UIElement = false;
-    this.vertexesBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Grid).call(this, engine));
+    _this.shaderProgram = _this.engine.gridTextureShaderProgram;
+    _this.cellSize = [1000, 1000];
+    return _this;
   }
-  /**
-   * Changing size of rect.
-   * @param {Number} width
-   * @param {Number} height
-   * @public
-   */
-
 
   createClass_default()(Grid, [{
-    key: "setSize",
-    value: function setSize(width, height) {
-      this.width = width;
-      this.height = height;
-      this.vertexes = [0, 0, 0, width, height, 0, 0, height, 0, width, height, 0, 0, 0, 0, width, 0, 0];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Change position of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
-    }
-    /**
-     * Change scaling of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.scale = [x, y, z];
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotation = [xRad, yRad, zRad];
-    }
-    /**
-     * Setting rotation of parent object in radians.
-     * @param {Number} x parent rotation of x axis in radians.
-     * @param {Number} y parent rotation of y axis in radians.
-     * @param {Number} z parent rotation of z axis in radians.
-     * @public
-     */
-
-  }, {
-    key: "setParentRotation",
-    value: function setParentRotation(x, y, z) {
-      this.parentRotation = [x, y, z];
-    }
-    /**
-     * Sets rotation point coordinates.
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setRotationPoint",
-    value: function setRotationPoint(x, y, z) {
-      this.rotationPoint = [x, y, z];
-    }
-  }, {
     key: "draw",
     value: function draw() {
       this.shaderProgram.use();
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation);
+      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.inventedMatrix);
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
       this.engine.drawCallsPerFrame++;
       this.engine.drawCalls++;
@@ -5503,8 +5285,13 @@ function () {
     value: function update() {
       var temp = new Matrixes_Matrix(); //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
 
-      temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      temp.multiply(this.engine.camera.inventedMatrix);
+      if (!this.UIElement) {
+        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+        temp.multiply(this.engine.camera.inventedMatrix);
+      } else {
+        temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+      }
+
       var world = new Matrixes_Matrix();
       world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
       world.translate(this.position[0], this.position[1], this.position[2]);
@@ -5521,10 +5308,33 @@ function () {
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
     }
+  }, {
+    key: "setCellSize",
+    value: function setCellSize(width, height) {
+      this.cellSize = [width, height];
+      this.setTextureRepeating(this.width / width, this.height / height);
+    }
+    /**
+     * Changing size of rect.
+     * @param {Number} width
+     * @param {Number} height
+     * @public
+     */
+
+  }, {
+    key: "setSize",
+    value: function setSize(width, height) {
+      this.width = width;
+      this.height = height;
+      this.vertexes = [0, 0, 0, width, height, 0, 0, height, 0, width, height, 0, 0, 0, 0, width, 0, 0];
+      this.setCellSize(this.cellSize[0], this.cellSize[1]);
+      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+    }
   }]);
 
   return Grid;
-}();
+}(Rect_Rect);
 // CONCATENATED MODULE: ./src/map/Map.js
 
 
