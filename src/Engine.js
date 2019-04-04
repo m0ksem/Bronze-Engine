@@ -1,14 +1,16 @@
 import * as Utils from "./Utils"
 import {Texture} from "./textures/Texture"
-import * as Matrixes from "./math/Matrixes"
 import * as Vectors from "./math/Vectors"
-import {ShaderProgram} from "./utils/ShaderProgram"
+import {ShaderProgram} from "./shaders/ShaderProgram"
+import { Shaders } from "./shaders/Shaders"
 import fragmentShaderSource from "./shaders/default/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/default/vertex-shader.glsl"
 import cubeFragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl"
 import cubeVertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl"
 import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl"
 import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl"
+import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragment-shader.glsl"
+import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
 
 
 /**
@@ -71,7 +73,7 @@ export class Engine {
 
         
         /**
-         * 
+         * Array of objects with alpha texture which draws after all another objects and sorting by z.
          */
         this.objectsWithAlphaTexture = []
 
@@ -115,13 +117,6 @@ export class Engine {
          */
         this.selectedObject = null
 
-        this._initShaders()
-        this.shaderProgram.use()
-        this.webGL.viewport(0, 0, this.width, this.height)
-
-        this.webGL.enable(this.webGL.CULL_FACE)
-        this.webGL.enable(this.webGL.DEPTH_TEST)
-
         /**
          * Default texture for all object.
          * @type {Texture}
@@ -151,6 +146,31 @@ export class Engine {
          * @readonly
          */
         this.drawCallsPerFrame = 0
+
+        /**
+         * Array of function which executes on engine run.
+         * @type {Function[]}
+         */
+        this.onrun = []
+
+        /**
+         * Rendering reflections size
+         * @type {Number}
+         * @default 1024
+         */
+        this.reflectionQuality = 2048
+
+        /**
+         * Shaders container
+         */
+        this.shaders = new Shaders(this.webGL)
+
+        this._initShaders()
+        this.shaders.default.use()
+        this.webGL.viewport(0, 0, this.width, this.height)
+
+        this.webGL.enable(this.webGL.CULL_FACE)
+        this.webGL.enable(this.webGL.DEPTH_TEST)
     }
 
     /**
@@ -172,46 +192,21 @@ export class Engine {
      * @private
      */
     _initShaders () {
-        let program = new ShaderProgram(this.webGL)
-        program.addShader('vertex', vertexShaderSource)
-        program.addShader('fragment', fragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkAttribute('a_texcoord', 'textureCoordinatesLocation')
-        program.linkAttribute('a_normal', 'normalLocation')
-        program.linkUniform('u_texture', 'textureLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_objectRotation', 'objectRotationLocation')
-        program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
-        this.shaderProgram = program
-
-        program = new ShaderProgram(this.webGL)
-        program.addShader('vertex', cubeVertexShaderSource)
-        program.addShader('fragment', cubeFragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkAttribute('a_normal', 'normalLocation')
-        program.linkUniform('u_texture', 'textureLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_objectRotation', 'objectRotationLocation')
-        program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
-        this.cubeTextureShaderProgram = program
-
-        program = new ShaderProgram(this.webGL)
-        program.anisotropyExtension = this.webGL.getExtension("EXT_texture_filter_anisotropic")
-        this.webGL.texParameteri(this.webGL.TEXTURE_2D, program.anisotropyExtension.TEXTURE_MAX_ANISOTROPY_EXT, 16);
-        this.webGL.getExtension('OES_standard_derivatives')
-        program.addShader('vertex', gridVertexShaderSource)
-        program.addShader('fragment', gridFragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkAttribute('a_texcoord', 'textureCoordinatesLocation')
-        program.linkUniform('u_texture', 'textureLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_position', 'positionMatrixLocation')
-        this.gridTextureShaderProgram = program
+        let options = {
+            removePrefixes: true, addLocationMarker: true
+        }
+        this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic')
+        this.shaders.addExtension('standard', 'OES_standard_derivatives')
         
-        this.shaderProgram.use()
+        this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options)
+
+        this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
+
+        this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
+
+        this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options)
+
+        this.shaders.default.use()
         this.webGL.enable(this.webGL.BLEND);
         this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
@@ -296,13 +291,10 @@ export class Engine {
      */
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
-        // this.webGL.colorMask(false, false, false, true);
-        // this.webGL.clearColor(0, 0, 0, 1);
-        // this.webGL.clear(this.webGL.COLOR_BUFFER_BIT);
-        this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
-        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.camera.matrix)
+        this.shaders.default.use()
+        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
 
         this.drawCallsPerFrame = 0
 
@@ -323,15 +315,69 @@ export class Engine {
         }
     }
 
-    /**
-     * Drawing UI function.
-     * @private
-     */
-    _drawUI () {
-        if (this.ui !== null) {
-            this.ui._draw()
+    captureFrame (camera, options) {
+        let currentCamera = this.camera
+        let currentCanvasSize = [this.canvas.width, this.canvas.height];
+        let drawUI = false
+        let imageHeight = 128
+        let imageWidth = 128
+        let backgroundColor = 'rgba(0, 0, 0, 0)'
+        let backgroundAlpha = 1
+        let imageAlpha = 1
+        if (options != null) {
+            drawUI = options.drawUI || drawUI
+            imageHeight = options.height || imageHeight
+            imageWidth = options.width || imageWidth
+            backgroundColor = options.backgroundColor || backgroundColor
+            backgroundAlpha = options.backgroundAlpha || backgroundAlpha
+            imageAlpha = options.imageAlpha || imageAlpha
         }
+
+        this.canvas.width = imageWidth
+        this.canvas.height = imageHeight
+        this.canvasResized()
+
+        this.camera = camera
+        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+        this.shaders.default.use()
+        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
+        this.drawCallsPerFrame = 0
+
+        this._update()
+
+        this.polygons.forEach(element => {
+            element.draw()
+        });
+        for (let i = 0; i < this.objects.length; i++) {
+            const object = this.objects[i];
+            if (drawUI || !object.UIElement) {
+                object.draw()
+            }
+        }
+        this.objectsWithAlphaTexture.forEach(object => {
+            object.draw()
+        })
+
+        let frame = document.createElement('canvas')
+        frame.height = this.canvas.height;
+        frame.width = this.canvas.width;
+        let context = frame.getContext('2d')
+        context.globalAlpha = backgroundAlpha
+        context.fillStyle = backgroundColor
+        context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        context.globalAlpha = imageAlpha
+        context.drawImage(this.canvas, 0, 0)
+
+
+        this.camera = currentCamera
+        this.canvas.width = currentCanvasSize[0];
+        this.canvas.height = currentCanvasSize[1];
+        this.canvasResized();
+        return frame;
     }
+
 
     /**
      * Sets range where objects will no draws.
@@ -362,6 +408,17 @@ export class Engine {
     run () {
         _engine = this
         requestAnimationFrameEngine()
+        this.onrun.forEach(func => {
+            func()
+        })
+    }
+
+    /**
+     * Adds functions which will execute on engine run.
+     * @param {Function} func 
+     */
+    addOnRunFunction (func) {
+        this.onrun.push(func)
     }
 }
 

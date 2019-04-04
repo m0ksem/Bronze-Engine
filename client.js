@@ -103,10 +103,13 @@ let dirtTexture = new Bronze.Texture("./assets/texture/dirt.jpg")
 let rjunTexture = new Bronze.Texture("./assets/texture/rjun.jpg")
     rjunTexture.setColorRGBA(255, 255, 255, 255)
     rjunTexture.bind(engine)
-// let grassTexture = new Bronze.Texture("./assets/texture/grass.png")
-//     grassTexture.setColorRGBA(255, 255, 255, 255)
-//     grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
-//     grassTexture.generateMipmap([{size: 32, image: rjunTexture}])
+let grassTexture = new Bronze.Texture("./assets/texture/grass.png")
+    grassTexture.setColorRGBA(255, 255, 255, 255)
+    grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
+    grassTexture.onTextureLoad.push(grassTexture.autoGenerateMipmap)
+    // gridTexture.onTextureLoad.push(gridTexture.autoGenerateMipmap)
+    // gridTexture.generateMipmap([{size: 32, image: gridTexture}])
+    grassTexture.bind(engine)
 let gridTexture = new Bronze.Texture("./assets/texture/grid/gridtrans.png")
     gridTexture.setColorRGBA(255, 255, 255, 255)
     gridTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
@@ -142,13 +145,15 @@ let cubeTexture = new Bronze.CubeTexture()
         cubeTexture.setLoadedImages(dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture)
     })
 
+let reflectionTexture = new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 2048, 0.2)
+
 // Setting elements and objects 
 let grid = new Bronze.Grid(engine)
     grid.setTexture(gridTexture)
     grid.setCellSize(1000, 1000)
     let width = 100000, height = 100000
     grid.setSize(width, height)
-    grid.setPosition(-width / 2, -1, height / 2)
+    grid.setPosition(-width / 2, -5, height / 2)
     grid.rotate(-90, 0, 0)
     grid.setRotationPoint(0, 0, 0)
     grid.setNormals([
@@ -156,6 +161,22 @@ let grid = new Bronze.Grid(engine)
         0, 1, 0,
         0, 1, 0,
     ])
+
+    grid = new Bronze.Rect(engine)
+    grid.setTexture(grassTexture)
+    // grid.setCellSize(1000, 1000)
+    grid.setTextureRepeating(10, 10)
+    width = 10000, height = 10000
+    grid.setSize(width, height)
+    grid.setPosition(-width / 2, 0, height / 2)
+    grid.rotate(-90, 0, 0)
+    grid.setRotationPoint(0, 0, 0)
+    grid.setNormals([
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+    ])
+
 let rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTexture)
     rect.setSize(1000, 1000)
@@ -203,13 +224,16 @@ let rect = new Bronze.Rect(engine)
     ])
 
 let cube = new Bronze.Cube(engine)
-    cube.setTexture(cubeTexture)
-    cube.setSize(400, 400, 400)
-    cube.setPosition(1500, 400, 200)
-    // cube.rotate(0, 45, 0)
+    cube.setTexture(reflectionTexture)
+    setTimeout(() => {
+        cube.createReflectCubeTexture('rgba(117, 171, 188, 0.5)', 2048, 0.2)
+    }, 500)
+    cube.setSize(100, 100, 100)
+    cube.setPosition(1700, 400, 800)
     cube.animate(60, () => {
-        cube.rotate(0.0, 0.1, 0.0)
+        cube.rotate(0.1, 0.1, 0.1)
     })
+    cube.useShader(engine.shaders.reflection)
 
 
 let cube1 = new Bronze.Cube(engine)
@@ -296,24 +320,26 @@ let object = new Bronze.Object(engine)
     rect.setPosition(-500, 0, 500)
     rect.rotate(0, 0, 0)
     rect.setRotationPoint(-100, 100, 100)
-    rect.setNormals([
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1,
-    ])
+    // rect.setNormals([
+    //     0, 0, 1,
+    //     0, 0, 1,
+    //     0, 0, 1,
+    // ])
+    rect.autoGenerateNormals()
     rect.setTextureRepeating(2, 1)
 
     rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTextureDoor)
     rect.setSize(1000, 1000)
-    rect.setPosition(-0, 0, 400)
+    rect.setPosition(-200, 0, 200)
     rect.rotate(0, -45, 0)
     rect.setRotationPoint(-100, 100, 100)
-    rect.setNormals([
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1,
-    ])
+    // rect.setNormals([
+    //     0, 0, 1,
+    //     0, 0, 1,
+    //     0, 0, 1,
+    // ])
+    rect.autoGenerateNormals()
     rect.setTextureRepeating(2, 1)
     rect = new Bronze.Rect(engine)
     rect.setTexture(woodTexture)
@@ -321,11 +347,12 @@ let object = new Bronze.Object(engine)
     rect.setPosition(-0, 0, 300)
     rect.rotate(0, -45, 0)
     rect.setRotationPoint(-100, 100, 100)
-    rect.setNormals([
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1,
-    ])
+    // rect.setNormals([
+    //     0, 0, 1,
+    //     0, 0, 1,
+    //     0, 0, 1,
+    // ])
+    rect.autoGenerateNormals()
     rect.setTextureRepeating(2, 1)
 
 // Run engine

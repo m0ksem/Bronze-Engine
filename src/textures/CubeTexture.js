@@ -46,20 +46,22 @@ export class CubeTexture {
 
     setImagesFromPath(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
         this.textures.positiveX = new Image()
+        this.textures.positiveX.crossOrigin = ''
+        this.textures.positiveX.onload = () => {
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        }
         this.textures.positiveX.src = positiveX
-        this.textures.positiveX.onload(() => {
-            this._loadedTextureCount++
-            if (this._loadedTextureCount == 6) {
-                this.loaded = true
-                this.onTextureLoad.forEach(func => {
-                    func(this)
-                })
-                this.bindCubeTexture()
-            }
-        })
         this.textures.negativeX = new Image()
+        this.textures.negativeX.crossOrigin = ''
         this.textures.negativeX.src = negativeX
-        this.textures.negativeX.onload(() => {
+        this.textures.negativeX.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -68,10 +70,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.positiveY = new Image()
+        this.textures.positiveY.crossOrigin = ''
         this.textures.positiveY.src = positiveY
-        this.textures.positiveY.onload(() => {
+        this.textures.positiveY.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -80,10 +83,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.negativeY = new Image()
+        this.textures.negativeY.crossOrigin = ''
         this.textures.negativeY.src = negativeY
-        this.textures.negativeY.onload(() => {
+        this.textures.negativeY.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -92,10 +96,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.positiveZ = new Image()
+        this.textures.positiveZ.crossOrigin = ''
         this.textures.positiveZ.src = positiveZ
-        this.textures.positiveZ.onload(() => {
+        this.textures.positiveZ.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -104,10 +109,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.negativeZ = new Image()
+        this.textures.negativeZ.crossOrigin = ''
         this.textures.negativeZ.src = negativeZ
-        this.textures.negativeZ.onload(() => {
+        this.textures.negativeZ.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -116,7 +122,7 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
     }
 
     setLoadedImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {

@@ -82,17 +82,22 @@ export class ShaderProgram {
      */
     linkVariable (type, name, customName) {
         customName = customName || name
+        if (this[customName] !== undefined) {
+            console.warn('Shader program: Custom name for uniform was switched from ' +
+            customName + ' to ' + customName + '1')
+            customName = customName + '1'
+        }
         switch (type) {
             case this.ATTRIBUTE:
-                eval('this.' + customName + ' = this.webGL.getAttribLocation(this.program, ' + name + ')')
+                this[customName] = this.webGL.getAttribLocation(this.program, name)
             break;
             case this.UNIFORM:
-                eval('this.' + customName + ' = this.webGL.getUniformLocation(this.program, ' + name + ')')
+                this[customName] = this.webGL.getUniformLocation(this.program, name)
             break;
             default: 
                 throw 'Wrong variable type'
         }
-        eval('return this.' + customName)
+        return this[customName]
     }
 
     /**
@@ -102,8 +107,13 @@ export class ShaderProgram {
      */
     linkAttribute(name, customName) {
         customName = customName || name
-        eval('this.' + customName + ' = this.webGL.getAttribLocation(this.program, \'' + name + '\')')
-        return eval('this.' + customName)
+        if (this[customName] != undefined) {
+            console.warn('Shader program: Custom name for uniform was switched from ' +
+                customName + ' to ' + customName + '1')
+            customName = customName + '1'
+        }
+        this[customName] = this.webGL.getAttribLocation(this.program, name)
+        return this[customName]
     }
 
     /**
@@ -113,8 +123,14 @@ export class ShaderProgram {
      */
     linkUniform(name, customName) {
         customName = customName || name
-        eval('this.' + customName + ' = this.webGL.getUniformLocation(this.program, \'' + name + '\')')
-        return eval('this.' + customName)
+        if (this[customName] != undefined) {
+            console.warn('Shader program: Custom name for attribute was switched from ' +
+                customName + ' to ' + customName + '1')
+            customName = customName + ''
+        }
+        this[customName] = this.webGL.getUniformLocation(this.program, name)
+
+        return this[customName]
     }
 
     use () {

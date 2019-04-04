@@ -18,7 +18,7 @@ export class Object {
          */
         this.engine = engine
 
-        this.shaderProgram = engine.shaderProgram
+        this.shaderProgram = engine.shaders.default
 
         /**
          * WebGL context of engine
@@ -169,6 +169,14 @@ export class Object {
         this.onload = function () {
             return null
         }
+    }
+
+    /**
+    * Sets custom shader program.
+    * @param {ShaderProgram} shader shader program which object will use.
+    */
+    useShader(shader) {
+        this.shaderProgram = shader
     }
 
     /**
@@ -503,10 +511,10 @@ export class Object {
                     this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
                 )
 
-                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation)
+                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
                 this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.coordsBuffer)
                 this.engine.webGL.vertexAttribPointer(
-                    this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+                    this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
                 )
 
                 this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);

@@ -16,23 +16,24 @@ export class Grid extends Rect {
      */
     constructor(engine) {
         super(engine)
-        this.shaderProgram = this.engine.gridTextureShaderProgram
+        this.shaderProgram = this.engine.shaders.grid
 
         this.cellSize = [1000, 1000]
     }
 
     draw () {
         this.shaderProgram.use()
+        this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.shaders.extensions.anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, 16);
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
         this.engine.webGL.vertexAttribPointer(
             this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
         )
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation)
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer)
         this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+            this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
         )
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)

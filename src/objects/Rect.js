@@ -1,5 +1,6 @@
 import * as Math from "../math/Math"
 import * as Matrixes from "../math/Matrixes"
+import * as Vectors from '../math/Vectors'
 
 /**
  * Rect for using custom shaders
@@ -25,7 +26,7 @@ export class Rect {
 
         this.webGL = engine.webGL
 
-        this.shaderProgram = engine.shaderProgram
+        this.shaderProgram = engine.shaders.default
 
         /**
          * Rect position.
@@ -211,6 +212,9 @@ export class Rect {
         this.normalBuffer = this.webGL.createBuffer();
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+
+        this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     /**
@@ -220,6 +224,14 @@ export class Rect {
      */
     setTexture(texture) {
         this.texture = texture
+    }
+
+    /**
+    * Sets custom shader program.
+    * @param {ShaderProgram} shader shader program which object will use.
+    */
+    useShader(shader) {
+        this.shaderProgram = shader
     }
 
     /**
@@ -294,6 +306,7 @@ export class Rect {
         let xRad = Math.degToRad(x)
         let yRad = Math.degToRad(y)
         let zRad = Math.degToRad(z)
+        this.rotationDeg = [x, y, z]
         this.rotation = [xRad, yRad, zRad]
     }
 
@@ -338,6 +351,47 @@ export class Rect {
     }
 
     /**
+     * Set normal normal to all vertexes.
+     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
+     * @public
+     */
+    setNormal(normals) {
+        this.normals = [
+            normals[0], normals[1], normals[2],
+            normals[0], normals[1], normals[2],
+            normals[0], normals[1], normals[2],
+            normals[0], normals[1], normals[2],
+            normals[0], normals[1], normals[2],
+            normals[0], normals[1], normals[2],
+        ]
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+
+    /**
+     * Auto generate normals respectively to the rotation.
+     */
+    autoGenerateNormals () {
+        let normal = [
+            0, 0, 1
+        ]
+        let rot = Vectors.rotationX(this.rotationDeg[0])
+        rot = Vectors.multiply(rot, Vectors.rotationY(this.rotationDeg[1]))
+        rot = Vectors.multiply(rot, Vectors.rotationZ(this.rotationDeg[2]))
+        normal = Vectors.vecMultiply(rot, normal)
+        this.normals = [
+            normal[0], normal[1], normal[2],
+            normal[0], normal[1], normal[2],
+            normal[0], normal[1], normal[2],
+            normal[0], normal[1], normal[2],
+            normal[0], normal[1], normal[2],
+            normal[0], normal[1], normal[2]
+        ]
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+
+    /**
      * Sets whether the all polygons will be attached to the camera like UI this.
      * @param {bolean} bool 
      */
@@ -353,16 +407,16 @@ export class Rect {
             this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
         )
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation)
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer)
         this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+            this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
         )
 
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
         this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+        this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)

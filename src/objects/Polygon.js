@@ -3,6 +3,7 @@
  * @param {Engine} core Engine object to which the polygon will be attached.
  * @class
  * @constructor
+ * @deprecated
  */
 export class Polygon {
     constructor (engine) {
