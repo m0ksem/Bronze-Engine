@@ -1,4 +1,4 @@
-import {isPowerOf2} from "./../math/Math"
+import {isPowerOf2} from "../math/Math"
 
 /**
  * Texture for polygons or objects.
@@ -8,7 +8,7 @@ import {isPowerOf2} from "./../math/Math"
  * @param {Number} [width] - custom width for image.
  * @param {Number} [height] - custom height for image.
  */
-class Texture extends Image {
+export class SimpleTexture extends Image {
     constructor(path, width, height) {
         super()
 
@@ -182,6 +182,7 @@ class Texture extends Image {
             this.onTextureLoad.forEach(func => {
                 func(texture)
             })
+            this.engine.textureLoaded(this)
             this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation)
             let mipmapFilter
             let mipmapRequire = true
@@ -239,5 +240,3 @@ class Texture extends Image {
         })
     }
 }
-
-export {Texture}

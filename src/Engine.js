@@ -1,5 +1,5 @@
 import * as Utils from "./Utils"
-import {Texture} from "./textures/Texture"
+import {SimpleTexture} from "./textures/SimpleTexture"
 import * as Vectors from "./math/Vectors"
 import {ShaderProgram} from "./shaders/ShaderProgram"
 import { Shaders } from "./shaders/Shaders"
@@ -84,10 +84,37 @@ export class Engine {
         this.ui = null
 
         /**
-         * @type {Array.<{Texture}>}
+         * @type {Texture[]}
          * @private
          */
         this.textures = []
+
+        /**
+         * Default texture for all object.
+         * @type {Texture}
+         * @public
+         */
+        this.noTexture = new SimpleTexture()
+        this.noTexture.setColorRGBA(219, 58, 52, 255)
+        this.noTexture.bind(this)
+
+        /**
+         * @type {Number}
+         * @readonly
+         */
+        this.loadedTexturesCount = 0
+
+        /**
+         * True if all attached textures loaded.
+         * @type {boolean}
+         * @readonly
+         */
+        this.texturesLoaded = false
+
+        /**
+         * On texture loaded functions array
+         */
+        this.onTexturesLoadedHandlers = []
 
         /**
          * The camera that is attached to the engine.
@@ -116,15 +143,6 @@ export class Engine {
          * @readonly
          */
         this.selectedObject = null
-
-        /**
-         * Default texture for all object.
-         * @type {Texture}
-         * @public
-         */
-        this.noTexture = new Texture()
-        this.noTexture.setColorRGBA(219, 58, 52, 255)
-        this.noTexture.bind(this)
 
         /**
          * Execute every time when object is selected
@@ -387,7 +405,7 @@ export class Engine {
         if (this.camera != null) {
             this.camera.range = range 
         } else {
-            console.warn('Failed to set drawing range. Camera wasn\'t set.')
+            throw 'Failed to set drawing range. Camera wasn\'t set.'
         }
     }
 
@@ -419,6 +437,25 @@ export class Engine {
      */
     addOnRunFunction (func) {
         this.onrun.push(func)
+    }
+
+    textureLoaded(texture) {
+        this.loadedTexturesCount += 1
+        console.log(this.loadedTexturesCount + ' ' + this.textures.length)
+        console.log(texture)
+        if (this.loadedTexturesCount == this.textures.length) {
+            this.texturesLoaded = true
+            this.onTexturesLoadedHandlers.forEach(func => {
+                func(this.textures.length)
+            })
+        }
+    }
+    
+    /**
+     * @param {Function} func function which will execute when all textures loaded.
+     */
+    addOnTexturesLoaded(func) {
+        this.onTexturesLoadedHandlers.push(func)
     }
 }
 

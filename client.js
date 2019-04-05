@@ -97,55 +97,54 @@ camera.setControl(() => {
 })
 
 // Loading textures
-let dirtTexture = new Bronze.Texture("./assets/texture/dirt.jpg")
+let dirtTexture = new Bronze.SimpleTexture("./assets/texture/dirt.jpg")
     dirtTexture.setColorRGBA(159, 136, 105, 255)
     dirtTexture.bind(engine)
-let rjunTexture = new Bronze.Texture("./assets/texture/rjun.jpg")
+    dirtTexture.setSize(64, 64)
+let rjunTexture = new Bronze.SimpleTexture("./assets/texture/rjun.jpg")
     rjunTexture.setColorRGBA(255, 255, 255, 255)
     rjunTexture.bind(engine)
-let grassTexture = new Bronze.Texture("./assets/texture/grass.png")
+    rjunTexture.setSize(64, 64)
+let grassTexture = new Bronze.SimpleTexture("./assets/texture/grass.png")
     grassTexture.setColorRGBA(255, 255, 255, 255)
     grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
     grassTexture.onTextureLoad.push(grassTexture.autoGenerateMipmap)
-    // gridTexture.onTextureLoad.push(gridTexture.autoGenerateMipmap)
-    // gridTexture.generateMipmap([{size: 32, image: gridTexture}])
     grassTexture.bind(engine)
-let gridTexture = new Bronze.Texture("./assets/texture/grid/gridtrans.png")
+    grassTexture.setSize(64, 64)
+let gridTexture = new Bronze.SimpleTexture("./assets/texture/grid/gridtrans.png")
     gridTexture.setColorRGBA(255, 255, 255, 255)
     gridTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
     gridTexture.onTextureLoad.push(gridTexture.quickGenerateMipmap)
-    // gridTexture.onTextureLoad.push(gridTexture.autoGenerateMipmap)
-    // gridTexture.generateMipmap([{size: 32, image: gridTexture}])
     gridTexture.bind(engine)
-let transparentTexture = new Bronze.Texture("./assets/texture/road.png")
+let transparentTexture = new Bronze.SimpleTexture("./assets/texture/road.png")
     transparentTexture.setColorRGBA(255, 255, 255, 255)
     transparentTexture.bind(engine)
     transparentTexture.alpha = true
-let transparentTextureDoor = new Bronze.Texture("./assets/texture/door.png")
+let transparentTextureDoor = new Bronze.SimpleTexture("./assets/texture/door.png")
     transparentTextureDoor.setColorRGBA(255, 255, 255, 255)
     transparentTextureDoor.bind(engine)
     transparentTextureDoor.alpha = true
-let colaTexture = new Bronze.Texture("./assets/texture/cola.png")
+let colaTexture = new Bronze.SimpleTexture("./assets/texture/cola.png")
     colaTexture.setColorRGBA(255, 255, 255, 255)
     colaTexture.bind(engine)
-let fridgeTexture = new Bronze.Texture("./assets/texture/fridge.png")
+let fridgeTexture = new Bronze.SimpleTexture("./assets/texture/fridge.png")
     fridgeTexture.setColorRGBA(255, 255, 255, 255)
     fridgeTexture.bind(engine)
-let woodTexture = new Bronze.Texture("./assets/texture/wood.jpg")
+let woodTexture = new Bronze.SimpleTexture("./assets/texture/wood.jpg")
     woodTexture.setColorRGBA(255, 255, 255, 255)
     woodTexture.bind(engine)
-let houseTexture = new Bronze.Texture("./assets/texture/house.png")
+let houseTexture = new Bronze.SimpleTexture("./assets/texture/house.png")
     houseTexture.setColorRGBA(255, 255, 255, 255)
     houseTexture.bind(engine)
     houseTexture.alpha = true
 
 let cubeTexture = new Bronze.CubeTexture()
-    dirtTexture.onTextureLoad.push(() => {
-        cubeTexture.bind(engine)
-        cubeTexture.setLoadedImages(dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture, dirtTexture)
-    })
+    cubeTexture.bind(engine)
+    cubeTexture.setLoadingImages(grassTexture, grassTexture, grassTexture, grassTexture, grassTexture, grassTexture)
 
-let reflectionTexture = new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 2048, 0.2)
+// let reflectionTexture = new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 2048, 0.2)
+
+let glass = new Bronze.Glass(engine)
 
 // Setting elements and objects 
 let grid = new Bronze.Grid(engine)
@@ -223,23 +222,21 @@ let rect = new Bronze.Rect(engine)
         1, 0, 1,
     ])
 
-let cube = new Bronze.Cube(engine)
-    cube.setTexture(reflectionTexture)
-    setTimeout(() => {
-        cube.createReflectCubeTexture('rgba(117, 171, 188, 0.5)', 2048, 0.2)
-    }, 500)
-    cube.setSize(100, 100, 100)
-    cube.setPosition(1700, 400, 800)
-    cube.animate(60, () => {
-        cube.rotate(0.1, 0.1, 0.1)
-    })
-    cube.useShader(engine.shaders.reflection)
+// let cube = new Bronze.Cube(engine)
+//     cube.setSize(100, 100, 100)
+//     cube.setPosition(1700, 400, 800)
+//     cube.setTexture(reflectionTexture)
+//     cube.animate(60, () => {
+//         cube.rotate(0.1, 0.1, 0.1)
+//     })
+//     // cube.useShader(engine.shaders.reflection)
+//     cube.useMaterial(glass)
 
 
 let cube1 = new Bronze.Cube(engine)
     cube1.setTexture(cubeTexture)
     cube1.setSize(200, 200, 200)
-    cube1.setPosition(-100, 0, 100)
+    cube1.setPosition(-100, 0, 1000)
     cube1.rotate(0, 45, 0)
     cube1.animate(60, () => {
         cube1.rotate(0.1, 1, 0)
@@ -251,9 +248,9 @@ let cube1 = new Bronze.Cube(engine)
     cube2.setSize(200, 200, 200)
     cube2.setPosition(-400, 0, 100)
     cube2.rotate(0, 0, 0)
-    cube2.animate(60, () => {
-        cube2.rotate(2, -0, 0)
-    })
+    // cube2.animate(60, () => {
+    //     cube2.rotate(2, -0, 0)
+    // })
 
 // let cube3 = new Bronze.Cube(engine)
 //     cube3.setTexture(cubeTexture)
@@ -274,11 +271,16 @@ let fridge = new Bronze.Object(engine)
 
 let deer = new Bronze.Object(engine)
     deer.name = "Deer scaled to 500px"
-    deer.setPosition(1000, 0, 800)
+    deer.setPosition(0, 0, 0)
     deer.loadFromObj("assets/objects/deer.obj")
-    deer.onload = () => {  
-        deer.scaleToPixels(500, 500, 500)
-    }
+    // deer.onload = () => {  
+    //     deer.scaleToPixels(500, 500, 500)
+    // }
+    deer.scale(0.3, 0.3, 0.3)
+    let deerText = new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 2048, 1.0)
+    deerText.bind(engine)
+    deer.setTexture(deerText)
+    deer.useMaterial(glass)
 
 let deer2 = new Bronze.Object(engine)
     deer2.name = "Deer normal scaled on 0.3"
@@ -294,25 +296,27 @@ let house = new Bronze.Object(engine)
     house.loadFromObj("assets/objects/house.obj")
     house.scale(100, 100, 100)
 
-let object = new Bronze.Object(engine)
-    object.UIElement = true
-    object.setTexture(colaTexture)
-    object.setPosition(90, 60, 0)
-    object.name = "box"
-    object.loadFromObj("assets/objects/cola.obj")
-    object.setRotationPoint(0, 0, 0)
-    object.setRotation(90, -45, 30)
-    object.scale(7, 7, 7)
-    object = new Bronze.Object(engine)
-    object.setTexture(colaTexture)
-    object.setPosition(0, 0, 600)
-    object.name = "box on ground"
-    object.loadFromObj("assets/objects/cola.obj")
-    object.setRotationPoint(0, 0, 0)
-    object.scale(7, 7, 7)
-    object.animate(60, () => {
-        object.rotate(0, 0.05, 0)
+let obj = new Bronze.Object(engine)
+    obj.UIElement = true
+    obj.setTexture(colaTexture)
+    obj.setPosition(90, 60, 0)
+    obj.name = "box"
+    obj.loadFromObj("assets/objects/cola.obj")
+    obj.setRotationPoint(0, 0, 0)
+    obj.setRotation(90, -45, 30)
+    obj.scale(7, 7, 7)
+    obj = new Bronze.Object(engine)
+    obj.setTexture(colaTexture)
+    obj.setPosition(0, 0, 600)
+    obj.name = "box on ground"
+    obj.loadFromObj("assets/objects/cola.obj")
+    obj.setRotationPoint(0, 0, 0)
+    obj.scale(7, 7, 7)
+    obj.animate(60, () => {
+        obj.rotate(0, 0.05, 0)
     })
+    // obj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 2048, 1.0))
+    // obj.useMaterial(glass)
 
     rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTextureDoor)

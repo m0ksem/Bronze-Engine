@@ -444,7 +444,7 @@ export class Rect {
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
         let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        this._world = parentRot
+        this._world = rot
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
 

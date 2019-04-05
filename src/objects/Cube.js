@@ -104,78 +104,42 @@ export class Cube {
 
 
         this.normals = [
-            // 0, 0, -1,
-            // 0, 0, -1,
-            // 0, 0, -1,
-            // 0, 0, -1,
-            // 0, 0, -1,
-            // 0, 0, -1,
-            // 0, 0, 1,
-            // 0, 0, 1,
-            // 0, 0, 1,
-            // 0, 0, 1,
-            // 0, 0, 1,
-            // 0, 0, 1,
-            // 0, -1, 0,
-            // 0, -1, 0,
-            // 0, -1, 0,
-            // 0, -1, 0,
-            // 0, -1, 0,
-            // 0, -1, 0,
-            // 0, 1, 0,
-            // 0, 1, 0,
-            // 0, 1, 0,
-            // 0, 1, 0,
-            // 0, 1, 0,
-            // 0, 1, 0,
-            // -1, 0, 0,
-            // -1, 0, 0,
-            // -1, 0, 0,
-            // -1, 0, 0,
-            // -1, 0, 0,
-            // -1, 0, 0,
-            // 1, 0, 0,
-            // 1, 0, 0,
-            // 1, 0, 0,
-            // 1, 0, 0,
-            // 1, 0, 0,
-            // 1, 0, 0,
             0, 0, -1,
             0, 0, -1,
             0, 0, -1,
             0, 0, -1,
             0, 0, -1,
             0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
-            0, 0, -1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            0, -1, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
+            1, 0, 0,
         ]
 
         /**
@@ -321,6 +285,12 @@ export class Cube {
         this.normalBuffer = this.webGL.createBuffer();
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+
+        /**
+         * @private
+         */
+        this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     /**
@@ -338,6 +308,7 @@ export class Cube {
      */
     setTexture(texture) {
         this.texture = texture
+        texture.object = this
     }
 
     /**
@@ -521,7 +492,7 @@ export class Cube {
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, this._rotationMatrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldLocation, false, this._rotationMatrix)
         this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
 
         this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
@@ -552,72 +523,18 @@ export class Cube {
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
-        this._world = world.matrix
+        this._world = world
         temp.multiply(world.matrix)
 
         this._matrix = temp.matrix
         this._rotationMatrix = rot
     }
 
-    createReflectCubeTexture (background, quality, alpha) {
-        background = background || 'rgba(0, 0, 0, 0)'
-        quality = quality || this.engine.reflectionQuality
-        if (!alpha) {
-            let alpha = background.replace('rgba(', '')
-            alpha = alpha.replace(')', '')
-            alpha = alpha.split(',')
-            alpha = alpha[3]
+    useMaterial(material) {
+        this._draw = this.draw
+        material.object = this
+        this.draw = () => {
+            material.drawCube(this)
         }
-        let camera = new Camera()
-        camera.position = this.position
-        camera.fieldOfViewRad = this.engine.camera.fieldOfViewRad
-        camera.range = this.engine.camera.range
-        camera.setRotation(0, 270, 0)
-        let posXP = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha})
-        camera.setRotation(0, 90, 0);
-        let posXN = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha });
-        camera.setRotation(-90, 0, 0);
-        let posYP = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha });
-        camera.setRotation(90, 0, 0);
-        let posYN = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha });
-        camera.setRotation(0, 0, 0);
-        let posZP = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha });
-        camera.setRotation(0, 180, 0);
-        let posZN = this.engine.captureFrame(camera, { backgroundColor: background, width: quality, height: quality, imageAlpha: alpha });            
-
-        let texture = new CubeTexture()
-        if (alpha < 1) {
-            texture.alpha = true
-        }
-        texture.bind(this.engine)
-        texture.setLoadedImages(
-            posXP, posXN, posYN, posYP, posZP, posZN
-        )
-
-        camera.setRotation(0, 90, 0)
-        posXP = this.engine.captureFrame(camera, { width: 128, height: 128 })
-        camera.setRotation(0, 270, 0);
-        posXN = this.engine.captureFrame(camera, { backgroundColor: 'rgba(25, 23, 22, 1)', width: 128, height: 128 });
-        camera.setRotation(90, 0, 0);
-        posYP = this.engine.captureFrame(camera, { backgroundColor: 'rgba(25, 23, 22, 1)', width: 128, height: 128 });
-        camera.setRotation(-90, 0, 0);
-        posYN = this.engine.captureFrame(camera, { backgroundColor: 'rgba(25, 23, 22, 1)', width: 128, height: 128 });
-        camera.setRotation(0, 0, 0);
-        posZP = this.engine.captureFrame(camera, { backgroundColor: 'rgba(25, 23, 22, 1)', width: 128, height: 128 });
-        camera.setRotation(0, 180, 0);
-        posZN = this.engine.captureFrame(camera, { backgroundColor: 'rgba(25, 23, 22, 1)', width: 128, height: 128 });  
-
-        this.engine.div.appendChild(posXP)
-        this.engine.div.appendChild(posZP)
-        this.engine.div.appendChild(posXN)  
-        this.engine.div.appendChild(posZN)
-        this.engine.div.appendChild(posXP)
-        this.engine.div.appendChild(posZP)
-        this.engine.div.appendChild(posXN)
-        this.engine.div.appendChild(posZN)
-        this.engine.div.appendChild(posYP)
-        this.engine.div.appendChild(posYN)
-
-        this.setTexture(texture)
     }
 }

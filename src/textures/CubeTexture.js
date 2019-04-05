@@ -125,6 +125,86 @@ export class CubeTexture {
         }
     }
 
+    setLoadingImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
+        for (let i = 0; i < arguments.length - 1; i++) {
+            if (arguments[i].width != arguments[i].height || arguments[i].height != arguments[i + 1].height || arguments[i + 1].width != arguments[i + 1].height) {
+                throw 'Sizes of textures not are the same or texture isnt square.'
+            }
+        }
+        this.textures.positiveX = this.engine.noTexture
+        positiveX.addEventListener('load', () => {
+            this.textures.positiveX = positiveX
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.negativeX = this.engine.noTexture
+        negativeX.addEventListener('load', () => {
+            this.textures.negativeX = negativeX
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.positiveY = this.engine.noTexture
+        positiveY.addEventListener('load', () => {
+            this.textures.positiveY = positiveY
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.negativeY = this.engine.noTexture
+        negativeY.addEventListener('load', () => {
+            this.textures.negativeY = negativeY
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.positiveZ = this.engine.noTexture
+        positiveZ.addEventListener('load', () => {
+            this.textures.positiveZ = positiveZ
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.negativeZ = this.engine.noTexture
+        negativeZ.addEventListener('load', () => {
+            this.textures.negativeZ = negativeZ
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+    }
+
     setLoadedImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
         this.textures.positiveX = positiveX
         this.textures.negativeX = negativeX
@@ -197,5 +277,6 @@ export class CubeTexture {
         this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ)
         this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP)
         this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
+        this.engine.textureLoaded(this)
     }
 }
