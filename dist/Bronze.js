@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -143,190 +143,11 @@ module.exports = _getPrototypeOf;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShaderProgram; });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-
-
-var ShaderProgram =
-/*#__PURE__*/
-function () {
-  function ShaderProgram(webGL) {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, ShaderProgram);
-
-    this.webGL = webGL;
-    /**
-     * Shader type
-     */
-
-    this.VERTEX_SHADER = 'vertex';
-    /**
-     * Shader type
-     */
-
-    this.FRAGMENT_SHADER = 'fragment';
-    /*
-     * Variable type
-    */
-
-    this.ATTRIBUTE = 'attribute';
-    /*
-     * Variable type
-     */
-
-    this.UNIFORM = 'uniform';
-    return this;
-  }
-  /**
-   * Compiling and attaching shader to this program.
-   * @param {String} type can be ['vertex', 'fragment'].
-   * @param {String} source 
-   */
-
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(ShaderProgram, [{
-    key: "addShader",
-    value: function addShader(type, source) {
-      var shader;
-
-      switch (type) {
-        case 'vertex' || false:
-          shader = this.webGL.createShader(this.webGL.VERTEX_SHADER);
-          this.vertexShader = shader;
-          break;
-
-        case 'fragment' || false:
-          shader = this.webGL.createShader(this.webGL.FRAGMENT_SHADER);
-          this.fragmentShader = shader;
-          break;
-
-        default:
-          throw new BronzeShaderException('Wrong shader type');
-          break;
-      }
-
-      this.webGL.shaderSource(shader, source);
-      this.webGL.compileShader(shader);
-
-      if (!this.webGL.getShaderParameter(shader, this.webGL.COMPILE_STATUS)) {
-        console.error(this.webGL.getShaderInfoLog(shader));
-        throw 'Could not compile shader:';
-      }
-    }
-    /**
-     * @param {bool} [deleteShaders] will delete shader after attaching.
-     */
-
-  }, {
-    key: "create",
-    value: function create() {
-      var deleteShaders = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var program = this.webGL.createProgram();
-      this.webGL.attachShader(program, this.vertexShader);
-      this.webGL.attachShader(program, this.fragmentShader);
-      this.webGL.linkProgram(program);
-      this.webGL.useProgram(program);
-
-      if (deleteShaders) {
-        this.webGL.deleteShader(this.vertexShader);
-        this.webGL.deleteShader(this.fragmentShader);
-      }
-
-      this.program = program;
-      return program;
-    }
-    /**
-     * Linking variable of program to this object.
-     * @param {String} type can be ['attribute', 'uniform']
-     * @param {String} name variable name in shader.
-     * @param {String} [customName] variable name in this object. By default its {name}.
-     */
-
-  }, {
-    key: "linkVariable",
-    value: function linkVariable(type, name, customName) {
-      customName = customName || name;
-
-      switch (type) {
-        case this.ATTRIBUTE:
-          eval('this.' + customName + ' = this.webGL.getAttribLocation(this.program, ' + name + ')');
-          break;
-
-        case this.UNIFORM:
-          eval('this.' + customName + ' = this.webGL.getUniformLocation(this.program, ' + name + ')');
-          break;
-
-        default:
-          throw 'Wrong variable type';
-      }
-
-      eval('return this.' + customName);
-    }
-    /**
-     * Linking attribute variable of program to this object.
-     * @param {String} name variable name in shader.
-     * @param {String} [customName] variable name in this object. By default its {name}.
-     */
-
-  }, {
-    key: "linkAttribute",
-    value: function linkAttribute(name, customName) {
-      customName = customName || name;
-      eval('this.' + customName + ' = this.webGL.getAttribLocation(this.program, \'' + name + '\')');
-      return eval('this.' + customName);
-    }
-    /**
-     * Linking uniform variable of program to this object.
-     * @param {String} name variable name in shader.
-     * @param {String} [customName] variable name in this object. By default its {name}.
-     */
-
-  }, {
-    key: "linkUniform",
-    value: function linkUniform(name, customName) {
-      customName = customName || name;
-      eval('this.' + customName + ' = this.webGL.getUniformLocation(this.program, \'' + name + '\')');
-      return eval('this.' + customName);
-    }
-  }, {
-    key: "use",
-    value: function use() {
-      this.webGL.useProgram(this.program);
-    }
-  }, {
-    key: "useIn",
-    value: function useIn(webGL) {
-      webGL.useProgram(this.program);
-    }
-  }]);
-
-  return ShaderProgram;
-}();
-/**
- * Shader error class.
- * @class
- * @private
- */
-
-var BronzeShaderException = function BronzeShaderException(message) {
-  _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, BronzeShaderException);
-
-  this.message = message;
-  this.name = 'Bronze shader error';
-};
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _typeof = __webpack_require__(12);
 
-var assertThisInitialized = __webpack_require__(13);
+var assertThisInitialized = __webpack_require__(6);
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -339,10 +160,10 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(6);
+var setPrototypeOf = __webpack_require__(5);
 
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -362,7 +183,7 @@ function _inherits(subClass, superClass) {
 module.exports = _inherits;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function _setPrototypeOf(o, p) {
@@ -375,6 +196,20 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+module.exports = _assertThisInitialized;
 
 /***/ }),
 /* 7 */
@@ -430,11 +265,11 @@ module.exports = _asyncToGenerator;
 
 var getPrototypeOf = __webpack_require__(2);
 
-var setPrototypeOf = __webpack_require__(6);
+var setPrototypeOf = __webpack_require__(5);
 
-var isNativeFunction = __webpack_require__(14);
+var isNativeFunction = __webpack_require__(13);
 
-var construct = __webpack_require__(15);
+var construct = __webpack_require__(14);
 
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
@@ -1255,20 +1090,6 @@ module.exports = _typeof;
 /* 13 */
 /***/ (function(module, exports) {
 
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
 function _isNativeFunction(fn) {
   return Function.toString.call(fn).indexOf("[native code]") !== -1;
 }
@@ -1276,10 +1097,10 @@ function _isNativeFunction(fn) {
 module.exports = _isNativeFunction;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(6);
+var setPrototypeOf = __webpack_require__(5);
 
 function isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
@@ -1314,7 +1135,7 @@ function _construct(Parent, args, Class) {
 module.exports = _construct;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1815,6 +1636,86 @@ function Vectors_normalize(vector) {
     return false;
   }
 }
+/**
+ * Returns rotation matrix for x axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function Vectors_rotationX(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [1, 0, 0, 0, c, s, 0, -s, c];
+}
+/**
+ * Returns rotation matrix for y axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function Vectors_rotationY(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [c, 0, -s, 0, 1, 0, s, 0, c];
+}
+/**
+ * Returns rotation matrix for z axis.
+ * @param {Number} angle angle in radians.
+ * @returns {Array}
+ * @public
+ */
+
+function Vectors_rotationZ(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [c, s, 0, -s, c, 0, 0, 0, 1];
+}
+/**
+ * 
+ * @param {Array} matrix
+ * @param {Array} vector4
+ * 
+ * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
+ * @public
+ */
+
+function vecMultiply(matrix, vector3) {
+  var c1 = matrix[0] * vector3[0] + matrix[1] * vector3[1] + matrix[2] * vector3[2];
+  var c2 = matrix[3] * vector3[0] + matrix[4] * vector3[1] + matrix[5] * vector3[2];
+  var c3 = matrix[6] * vector3[0] + matrix[7] * vector3[1] + matrix[8] * vector3[2];
+  return [c1, c2, c3];
+}
+/**
+ * Returns multiply of two matrixes.
+ * @param {Array} matrix1 
+ * @param {Array} matrix2 
+ * @returns {Array}
+ * @public
+ */
+
+function Vectors_multiply(matrix1, matrix2) {
+  var a00 = matrix1[0 * 3 + 0];
+  var a01 = matrix1[0 * 3 + 1];
+  var a02 = matrix1[0 * 3 + 2];
+  var a10 = matrix1[1 * 3 + 0];
+  var a11 = matrix1[1 * 3 + 1];
+  var a12 = matrix1[1 * 3 + 2];
+  var a20 = matrix1[2 * 3 + 0];
+  var a21 = matrix1[2 * 3 + 1];
+  var a22 = matrix1[2 * 3 + 2];
+  var b00 = matrix2[0 * 3 + 0];
+  var b01 = matrix2[0 * 3 + 1];
+  var b02 = matrix2[0 * 3 + 2];
+  var b10 = matrix2[1 * 3 + 0];
+  var b11 = matrix2[1 * 3 + 1];
+  var b12 = matrix2[1 * 3 + 2];
+  var b20 = matrix2[2 * 3 + 0];
+  var b21 = matrix2[2 * 3 + 1];
+  var b22 = matrix2[2 * 3 + 2];
+  return [b00 * a00 + b01 * a10 + b02 * a20, b00 * a01 + b01 * a11 + b02 * a21, b00 * a02 + b01 * a12 + b02 * a22, b10 * a00 + b11 * a10 + b12 * a20, b10 * a01 + b11 * a11 + b12 * a21, b10 * a02 + b11 * a12 + b12 * a22, b20 * a00 + b21 * a10 + b22 * a20, b20 * a01 + b21 * a11 + b22 * a21, b20 * a02 + b21 * a12 + b22 * a22];
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
 var regenerator = __webpack_require__(7);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
@@ -1917,7 +1818,7 @@ function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) 
   return shaderProgram;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(4);
+var possibleConstructorReturn = __webpack_require__(3);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
@@ -1925,14 +1826,14 @@ var getPrototypeOf = __webpack_require__(2);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(5);
+var inherits = __webpack_require__(4);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
 var wrapNativeSuper = __webpack_require__(9);
 var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper);
 
-// CONCATENATED MODULE: ./src/textures/Texture.js
+// CONCATENATED MODULE: ./src/textures/SimpleTexture.js
 
 
 
@@ -1949,17 +1850,17 @@ var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper
  * @param {Number} [height] - custom height for image.
  */
 
-var Texture_Texture =
+var SimpleTexture_SimpleTexture =
 /*#__PURE__*/
 function (_Image) {
-  inherits_default()(Texture, _Image);
+  inherits_default()(SimpleTexture, _Image);
 
-  function Texture(path, width, height) {
+  function SimpleTexture(path, width, height) {
     var _this;
 
-    classCallCheck_default()(this, Texture);
+    classCallCheck_default()(this, SimpleTexture);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Texture).call(this));
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(SimpleTexture).call(this));
     _this.src = path;
 
     if (width != null && height != null) {
@@ -2008,7 +1909,7 @@ function (_Image) {
    */
 
 
-  createClass_default()(Texture, [{
+  createClass_default()(SimpleTexture, [{
     key: "generateMipmap",
     value: function generateMipmap(mips) {
       this.mips = mips;
@@ -2157,6 +2058,8 @@ function (_Image) {
           func(texture);
         });
 
+        _this2.engine.textureLoaded(_this2);
+
         _this2.engine.webGL.activeTexture(_this2.engine.webGL.TEXTURE0 + _this2._textureBlockLocation);
 
         var mipmapFilter;
@@ -2225,13 +2128,293 @@ function (_Image) {
     }
   }]);
 
-  return Texture;
+  return SimpleTexture;
 }(wrapNativeSuper_default()(Image));
+// CONCATENATED MODULE: ./src/shaders/ShaderProgram.js
 
 
-// EXTERNAL MODULE: ./src/utils/ShaderProgram.js
-var ShaderProgram = __webpack_require__(3);
+var ShaderProgram_ShaderProgram =
+/*#__PURE__*/
+function () {
+  function ShaderProgram(webGL) {
+    classCallCheck_default()(this, ShaderProgram);
 
+    this.webGL = webGL;
+    /**
+     * Shader type
+     */
+
+    this.VERTEX_SHADER = 'vertex';
+    /**
+     * Shader type
+     */
+
+    this.FRAGMENT_SHADER = 'fragment';
+    /*
+     * Variable type
+    */
+
+    this.ATTRIBUTE = 'attribute';
+    /*
+     * Variable type
+     */
+
+    this.UNIFORM = 'uniform';
+    return this;
+  }
+  /**
+   * Compiling and attaching shader to this program.
+   * @param {String} type can be ['vertex', 'fragment'].
+   * @param {String} source 
+   */
+
+
+  createClass_default()(ShaderProgram, [{
+    key: "addShader",
+    value: function addShader(type, source) {
+      var shader;
+
+      switch (type) {
+        case 'vertex' || false:
+          shader = this.webGL.createShader(this.webGL.VERTEX_SHADER);
+          this.vertexShader = shader;
+          break;
+
+        case 'fragment' || false:
+          shader = this.webGL.createShader(this.webGL.FRAGMENT_SHADER);
+          this.fragmentShader = shader;
+          break;
+
+        default:
+          throw new ShaderProgram_BronzeShaderException('Wrong shader type');
+          break;
+      }
+
+      this.webGL.shaderSource(shader, source);
+      this.webGL.compileShader(shader);
+
+      if (!this.webGL.getShaderParameter(shader, this.webGL.COMPILE_STATUS)) {
+        console.error(this.webGL.getShaderInfoLog(shader));
+        throw 'Could not compile shader:';
+      }
+    }
+    /**
+     * @param {bool} [deleteShaders] will delete shader after attaching.
+     */
+
+  }, {
+    key: "create",
+    value: function create() {
+      var deleteShaders = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var program = this.webGL.createProgram();
+      this.webGL.attachShader(program, this.vertexShader);
+      this.webGL.attachShader(program, this.fragmentShader);
+      this.webGL.linkProgram(program);
+      this.webGL.useProgram(program);
+
+      if (deleteShaders) {
+        this.webGL.deleteShader(this.vertexShader);
+        this.webGL.deleteShader(this.fragmentShader);
+      }
+
+      this.program = program;
+      return program;
+    }
+    /**
+     * Linking variable of program to this object.
+     * @param {String} type can be ['attribute', 'uniform']
+     * @param {String} name variable name in shader.
+     * @param {String} [customName] variable name in this object. By default its {name}.
+     */
+
+  }, {
+    key: "linkVariable",
+    value: function linkVariable(type, name, customName) {
+      customName = customName || name;
+
+      if (this[customName] !== undefined) {
+        console.warn('Shader program: Custom name for uniform was switched from ' + customName + ' to ' + customName + '1');
+        customName = customName + '1';
+      }
+
+      switch (type) {
+        case this.ATTRIBUTE:
+          this[customName] = this.webGL.getAttribLocation(this.program, name);
+          break;
+
+        case this.UNIFORM:
+          this[customName] = this.webGL.getUniformLocation(this.program, name);
+          break;
+
+        default:
+          throw 'Wrong variable type';
+      }
+
+      return this[customName];
+    }
+    /**
+     * Linking attribute variable of program to this object.
+     * @param {String} name variable name in shader.
+     * @param {String} [customName] variable name in this object. By default its {name}.
+     */
+
+  }, {
+    key: "linkAttribute",
+    value: function linkAttribute(name, customName) {
+      customName = customName || name;
+
+      if (this[customName] != undefined) {
+        console.warn('Shader program: Custom name for uniform was switched from ' + customName + ' to ' + customName + '1');
+        customName = customName + '1';
+      }
+
+      this[customName] = this.webGL.getAttribLocation(this.program, name);
+      return this[customName];
+    }
+    /**
+     * Linking uniform variable of program to this object.
+     * @param {String} name variable name in shader.
+     * @param {String} [customName] variable name in this object. By default its {name}.
+     */
+
+  }, {
+    key: "linkUniform",
+    value: function linkUniform(name, customName) {
+      customName = customName || name;
+
+      if (this[customName] != undefined) {
+        console.warn('Shader program: Custom name for attribute was switched from ' + customName + ' to ' + customName + '1');
+        customName = customName + '';
+      }
+
+      this[customName] = this.webGL.getUniformLocation(this.program, name);
+      return this[customName];
+    }
+  }, {
+    key: "use",
+    value: function use() {
+      this.webGL.useProgram(this.program);
+    }
+  }, {
+    key: "useIn",
+    value: function useIn(webGL) {
+      webGL.useProgram(this.program);
+    }
+  }]);
+
+  return ShaderProgram;
+}();
+/**
+ * Shader error class.
+ * @class
+ * @private
+ */
+
+var ShaderProgram_BronzeShaderException = function BronzeShaderException(message) {
+  classCallCheck_default()(this, BronzeShaderException);
+
+  this.message = message;
+  this.name = 'Bronze shader error';
+};
+// CONCATENATED MODULE: ./src/shaders/Shaders.js
+
+
+
+var Shaders_Shaders =
+/*#__PURE__*/
+function () {
+  function Shaders(webGL) {
+    classCallCheck_default()(this, Shaders);
+
+    this.webGL = webGL;
+    /**
+     * Extensions objects that allow you to use extensions which was added by addExtension()
+     * @public
+     * @type {Object[]}
+     */
+
+    this.extensions = {};
+  }
+  /**
+   * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
+   * @public
+   * @param {String} name
+   * @param {String} vertexSource
+   * @param {String} fragmentSource
+   * @param {Object} [options]
+   */
+
+
+  createClass_default()(Shaders, [{
+    key: "addProgram",
+    value: function addProgram(name, vertexSource, fragmentSource, options) {
+      var program = new ShaderProgram_ShaderProgram(this.webGL);
+      program.addShader('vertex', vertexSource);
+      program.addShader('fragment', fragmentSource);
+      program.create();
+      program = this._linkAllAttributesFromSource(program, vertexSource, options);
+      program = this._linkAllAttributesFromSource(program, fragmentSource, options);
+      this[name] = program;
+    }
+  }, {
+    key: "_linkAllAttributesFromSource",
+    value: function _linkAllAttributesFromSource(program, source, options) {
+      var rows = source.split(';').join('\r').split('\r');
+      var outName;
+      rows.forEach(function (row) {
+        row = row.replace(new RegExp('\r', 'g'), '');
+        row = row.replace(new RegExp('\n', 'g'), '');
+        var words = row.split(' '); // console.log(words)
+
+        for (var i = words.length - 1; i--;) {
+          if (words[i] === '') {
+            words.splice(i, 1);
+          }
+        }
+
+        if (words[0].toLowerCase().includes('attribute')) {
+          outName = words[2];
+
+          if (options && options.removePrefixes) {
+            outName = outName.slice(2, outName.length);
+          }
+
+          if (options && options.addLocationMarker) {
+            outName = outName + 'Location';
+          }
+
+          program.linkAttribute(words[2], outName);
+        } else if (words[0].toLowerCase().includes('uniform')) {
+          outName = words[2];
+
+          if (options && options.removePrefixes) {
+            outName = outName.slice(2, outName.length);
+          }
+
+          if (options && options.addLocationMarker) {
+            outName = outName + 'Location';
+          }
+
+          program.linkUniform(words[2], outName);
+        }
+      });
+      return program;
+    }
+    /**
+     * Adds extension form webgl to this object with custom name
+     * @param {String} name custom name to use in shaders  
+     * @param {String} nameInWebGL extension name in webgl
+     */
+
+  }, {
+    key: "addExtension",
+    value: function addExtension(name, nameInWebGL) {
+      this.extensions[name] = this.webGL.getExtension(nameInWebGL);
+    }
+  }]);
+
+  return Shaders;
+}();
 // CONCATENATED MODULE: ./src/Engine.js
 
 
@@ -2244,7 +2427,7 @@ var ShaderProgram = __webpack_require__(3);
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    // float light = dot(normal, u_reverseLightDirection);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
 var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition; // - surfaceWorldPosition;\r\n}";
@@ -2253,13 +2436,19 @@ var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoor
 var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < .9)\r\n        discard;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
-var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition;\r\n}";
+var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_world;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_world * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition;\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/vertex-shader.glsl' */
-var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_position;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_moving;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = a_texcoord;\r\n}";
+var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_moving;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = a_texcoord;\r\n}";
+
+/* babel-plugin-inline-import './shaders/reflection-texture/fragment-shader.glsl' */
+var reflectionFragmentShaderSource = "precision highp float;\r\n    \r\n// Passed in from the vertex shader.\r\nvarying vec3 v_worldPosition;\r\nvarying vec3 v_worldNormal;\r\n    \r\n// The texture.\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_worldCameraPosition;\r\n        \r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_worldNormal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldPosition);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+
+/* babel-plugin-inline-import './shaders/reflection-texture/vertex-shader.glsl' */
+var reflectionVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\n    \r\nvarying vec3 v_worldPosition;\r\nvarying vec3 v_worldNormal;\r\n    \r\nvoid main() {\r\n    // Multiply the position by the matrix.\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    // send the view position to the fragment shader\r\n    v_worldPosition = (u_rotationMatrix * a_position).xyz;\r\n    \r\n    // orient the normals and pass to the fragment shader\r\n    v_worldNormal =  vec3(a_normal); // mat3(u_rotationMatrix) *\r\n}";
 /**
  * GameEngine core class.
  * @class
@@ -2321,7 +2510,7 @@ function () {
 
     this.objects = [];
     /**
-     * 
+     * Array of objects with alpha texture which draws after all another objects and sorting by z.
      */
 
     this.objectsWithAlphaTexture = [];
@@ -2332,11 +2521,38 @@ function () {
 
     this.ui = null;
     /**
-     * @type {Array.<{Texture}>}
+     * @type {Texture[]}
      * @private
      */
 
     this.textures = [];
+    /**
+     * Default texture for all object.
+     * @type {Texture}
+     * @public
+     */
+
+    this.noTexture = new SimpleTexture_SimpleTexture();
+    this.noTexture.setColorRGBA(219, 58, 52, 255);
+    this.noTexture.bind(this);
+    /**
+     * @type {Number}
+     * @readonly
+     */
+
+    this.loadedTexturesCount = 0;
+    /**
+     * True if all attached textures loaded.
+     * @type {boolean}
+     * @readonly
+     */
+
+    this.texturesLoaded = false;
+    /**
+     * On texture loaded functions array
+     */
+
+    this.onTexturesLoadedHandlers = [];
     /**
      * The camera that is attached to the engine.
      * @type {Camera}
@@ -2365,22 +2581,6 @@ function () {
      */
 
     this.selectedObject = null;
-
-    this._initShaders();
-
-    this.shaderProgram.use();
-    this.webGL.viewport(0, 0, this.width, this.height);
-    this.webGL.enable(this.webGL.CULL_FACE);
-    this.webGL.enable(this.webGL.DEPTH_TEST);
-    /**
-     * Default texture for all object.
-     * @type {Texture}
-     * @public
-     */
-
-    this.noTexture = new Texture_Texture();
-    this.noTexture.setColorRGBA(219, 58, 52, 255);
-    this.noTexture.bind(this);
     /**
      * Execute every time when object is selected
      * @type {Function}
@@ -2402,6 +2602,31 @@ function () {
      */
 
     this.drawCallsPerFrame = 0;
+    /**
+     * Array of function which executes on engine run.
+     * @type {Function[]}
+     */
+
+    this.onrun = [];
+    /**
+     * Rendering reflections size
+     * @type {Number}
+     * @default 1024
+     */
+
+    this.reflectionQuality = 2048;
+    /**
+     * Shaders container
+     */
+
+    this.shaders = new Shaders_Shaders(this.webGL);
+
+    this._initShaders();
+
+    this.shaders.default.use();
+    this.webGL.viewport(0, 0, this.width, this.height);
+    this.webGL.enable(this.webGL.CULL_FACE);
+    this.webGL.enable(this.webGL.DEPTH_TEST);
   }
   /**
    * Showing info about engine.
@@ -2428,43 +2653,17 @@ function () {
   }, {
     key: "_initShaders",
     value: function _initShaders() {
-      var program = new ShaderProgram["a" /* ShaderProgram */](this.webGL);
-      program.addShader('vertex', vertexShaderSource);
-      program.addShader('fragment', fragmentShaderSource);
-      program.create();
-      program.linkAttribute('a_position', 'positionLocation');
-      program.linkAttribute('a_texcoord', 'textureCoordinatesLocation');
-      program.linkAttribute('a_normal', 'normalLocation');
-      program.linkUniform('u_texture', 'textureLocation');
-      program.linkUniform('u_matrix', 'matrixLocation');
-      program.linkUniform('u_objectRotation', 'objectRotationLocation');
-      program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation');
-      this.shaderProgram = program;
-      program = new ShaderProgram["a" /* ShaderProgram */](this.webGL);
-      program.addShader('vertex', cubeVertexShaderSource);
-      program.addShader('fragment', cubeFragmentShaderSource);
-      program.create();
-      program.linkAttribute('a_position', 'positionLocation');
-      program.linkAttribute('a_normal', 'normalLocation');
-      program.linkUniform('u_texture', 'textureLocation');
-      program.linkUniform('u_matrix', 'matrixLocation');
-      program.linkUniform('u_objectRotation', 'objectRotationLocation');
-      program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation');
-      this.cubeTextureShaderProgram = program;
-      program = new ShaderProgram["a" /* ShaderProgram */](this.webGL);
-      program.anisotropyExtension = this.webGL.getExtension("EXT_texture_filter_anisotropic");
-      this.webGL.texParameteri(this.webGL.TEXTURE_2D, program.anisotropyExtension.TEXTURE_MAX_ANISOTROPY_EXT, 16);
-      this.webGL.getExtension('OES_standard_derivatives');
-      program.addShader('vertex', gridVertexShaderSource);
-      program.addShader('fragment', gridFragmentShaderSource);
-      program.create();
-      program.linkAttribute('a_position', 'positionLocation');
-      program.linkAttribute('a_texcoord', 'textureCoordinatesLocation');
-      program.linkUniform('u_texture', 'textureLocation');
-      program.linkUniform('u_matrix', 'matrixLocation');
-      program.linkUniform('u_position', 'positionMatrixLocation');
-      this.gridTextureShaderProgram = program;
-      this.shaderProgram.use();
+      var options = {
+        removePrefixes: true,
+        addLocationMarker: true
+      };
+      this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic');
+      this.shaders.addExtension('standard', 'OES_standard_derivatives');
+      this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options);
+      this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options);
+      this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options);
+      this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
+      this.shaders.default.use();
       this.webGL.enable(this.webGL.BLEND);
       this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
@@ -2560,14 +2759,11 @@ function () {
   }, {
     key: "_draw",
     value: function _draw() {
-      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT); // this.webGL.colorMask(false, false, false, true);
-      // this.webGL.clearColor(0, 0, 0, 1);
-      // this.webGL.clear(this.webGL.COLOR_BUFFER_BIT);
-
-      this.shaderProgram.use();
-      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
-      this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.camera.matrix);
+      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+      this.shaders.default.use();
+      this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
+      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+      this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix);
       this.drawCallsPerFrame = 0;
       this.polygons.forEach(function (element) {
         element.draw();
@@ -2583,17 +2779,75 @@ function () {
         this.debugger.updateInfo();
       }
     }
-    /**
-     * Drawing UI function.
-     * @private
-     */
-
   }, {
-    key: "_drawUI",
-    value: function _drawUI() {
-      if (this.ui !== null) {
-        this.ui._draw();
+    key: "captureFrame",
+    value: function captureFrame(camera, options) {
+      var currentCamera = this.camera;
+      var currentCanvasSize = [this.canvas.width, this.canvas.height];
+      var drawUI = false;
+      var imageHeight = 128;
+      var imageWidth = 128;
+      var backgroundColor = 'rgba(0, 0, 0, 0)';
+      var backgroundAlpha = 1;
+      var imageAlpha = 1;
+      var noDrawObjects = [];
+
+      if (options != null) {
+        drawUI = options.drawUI || drawUI;
+        imageHeight = options.height || imageHeight;
+        imageWidth = options.width || imageWidth;
+        backgroundColor = options.backgroundColor || backgroundColor;
+        backgroundAlpha = options.backgroundAlpha || backgroundAlpha;
+        imageAlpha = options.imageAlpha || imageAlpha;
+        noDrawObjects = options.noDrawObjects || [];
       }
+
+      this.canvas.width = imageWidth;
+      this.canvas.height = imageHeight;
+      this.canvasResized();
+      this.camera = camera;
+      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+      this.shaders.default.use();
+      this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
+      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+      this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix);
+      this.drawCallsPerFrame = 0;
+
+      this._update();
+
+      this.polygons.forEach(function (element) {
+        element.draw();
+      });
+
+      for (var i = 0; i < this.objects.length; i++) {
+        var object = this.objects[i];
+
+        if (noDrawObjects.indexOf(object) == -1) {
+          if (drawUI || !object.UIElement) {
+            object.draw();
+          }
+        }
+      }
+
+      this.objectsWithAlphaTexture.forEach(function (object) {
+        if (noDrawObjects.indexOf(object) == -1) {
+          object.draw();
+        }
+      });
+      var frame = document.createElement('canvas');
+      frame.height = this.canvas.height;
+      frame.width = this.canvas.width;
+      var context = frame.getContext('2d');
+      context.globalAlpha = backgroundAlpha;
+      context.fillStyle = backgroundColor;
+      context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      context.globalAlpha = imageAlpha;
+      context.drawImage(this.canvas, 0, 0);
+      this.camera = currentCamera;
+      this.canvas.width = currentCanvasSize[0];
+      this.canvas.height = currentCanvasSize[1];
+      this.canvasResized();
+      return frame;
     }
     /**
      * Sets range where objects will no draws.
@@ -2606,7 +2860,7 @@ function () {
       if (this.camera != null) {
         this.camera.range = range;
       } else {
-        console.warn('Failed to set drawing range. Camera wasn\'t set.');
+        throw 'Failed to set drawing range. Camera wasn\'t set.';
       }
     }
     /**
@@ -2655,6 +2909,43 @@ function () {
     value: function run() {
       _engine = this;
       requestAnimationFrameEngine();
+      this.onrun.forEach(function (func) {
+        func();
+      });
+    }
+    /**
+     * Adds functions which will execute on engine run.
+     * @param {Function} func 
+     */
+
+  }, {
+    key: "addOnRunFunction",
+    value: function addOnRunFunction(func) {
+      this.onrun.push(func);
+    }
+  }, {
+    key: "textureLoaded",
+    value: function textureLoaded(texture) {
+      var _this2 = this;
+
+      this.loadedTexturesCount += 1; // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
+      // console.log(texture)
+
+      if (this.loadedTexturesCount == this.textures.length) {
+        this.texturesLoaded = true;
+        this.onTexturesLoadedHandlers.forEach(function (func) {
+          func(_this2.textures.length);
+        });
+      }
+    }
+    /**
+     * @param {Function} func function which will execute when all textures loaded.
+     */
+
+  }, {
+    key: "addOnTexturesLoaded",
+    value: function addOnTexturesLoaded(func) {
+      this.onTexturesLoadedHandlers.push(func);
     }
   }]);
 
@@ -2718,7 +3009,7 @@ function () {
      * @readonly
      * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
      */
-    this.position = [0, 0, 100];
+    this._position = [0, 0, 100];
     this.up = [0, 1, 0];
     this.target = [0, 0, 0];
     /**
@@ -2801,8 +3092,10 @@ function () {
     key: "setPosition",
     value: function setPosition(x, y, z) {
       this.position = [x, y, z];
-      this.computeMatrix();
     }
+  }, {
+    key: "move",
+
     /**
      * Moving camera.
      * @param {Number} x 
@@ -2810,9 +3103,6 @@ function () {
      * @param {Number} z
      * @public
      */
-
-  }, {
-    key: "move",
     value: function move(x, y, z) {
       // let translationMatrix = Matrixes.translation(x, y, z)
       // let matrix = Matrixes.multiply(translationMatrix, this.rotationMatrix)
@@ -2915,6 +3205,15 @@ function () {
       } else {
         return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
       }
+    }
+  }, {
+    key: "position",
+    get: function get() {
+      return this._position;
+    },
+    set: function set(value) {
+      this._position = value;
+      this.computeMatrix();
     }
   }]);
 
@@ -3562,23 +3861,28 @@ function () {
       var _this = this;
 
       this.textures.positiveX = new Image();
+      this.textures.positiveX.crossOrigin = '';
+
+      this.textures.positiveX.onload = function () {
+        _this._loadedTextureCount++;
+
+        if (_this._loadedTextureCount == 6) {
+          _this.loaded = true;
+
+          _this.onTextureLoad.forEach(function (func) {
+            func(_this);
+          });
+
+          _this.bindCubeTexture();
+        }
+      };
+
       this.textures.positiveX.src = positiveX;
-      this.textures.positiveX.onload(function () {
-        _this._loadedTextureCount++;
-
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
-
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
-          });
-
-          _this.bindCubeTexture();
-        }
-      });
       this.textures.negativeX = new Image();
+      this.textures.negativeX.crossOrigin = '';
       this.textures.negativeX.src = negativeX;
-      this.textures.negativeX.onload(function () {
+
+      this.textures.negativeX.onload = function () {
         _this._loadedTextureCount++;
 
         if (_this._loadedTextureCount == 6) {
@@ -3590,10 +3894,13 @@ function () {
 
           _this.bindCubeTexture();
         }
-      });
+      };
+
       this.textures.positiveY = new Image();
+      this.textures.positiveY.crossOrigin = '';
       this.textures.positiveY.src = positiveY;
-      this.textures.positiveY.onload(function () {
+
+      this.textures.positiveY.onload = function () {
         _this._loadedTextureCount++;
 
         if (_this._loadedTextureCount == 6) {
@@ -3605,10 +3912,13 @@ function () {
 
           _this.bindCubeTexture();
         }
-      });
+      };
+
       this.textures.negativeY = new Image();
+      this.textures.negativeY.crossOrigin = '';
       this.textures.negativeY.src = negativeY;
-      this.textures.negativeY.onload(function () {
+
+      this.textures.negativeY.onload = function () {
         _this._loadedTextureCount++;
 
         if (_this._loadedTextureCount == 6) {
@@ -3620,10 +3930,13 @@ function () {
 
           _this.bindCubeTexture();
         }
-      });
+      };
+
       this.textures.positiveZ = new Image();
+      this.textures.positiveZ.crossOrigin = '';
       this.textures.positiveZ.src = positiveZ;
-      this.textures.positiveZ.onload(function () {
+
+      this.textures.positiveZ.onload = function () {
         _this._loadedTextureCount++;
 
         if (_this._loadedTextureCount == 6) {
@@ -3635,10 +3948,13 @@ function () {
 
           _this.bindCubeTexture();
         }
-      });
+      };
+
       this.textures.negativeZ = new Image();
+      this.textures.negativeZ.crossOrigin = '';
       this.textures.negativeZ.src = negativeZ;
-      this.textures.negativeZ.onload(function () {
+
+      this.textures.negativeZ.onload = function () {
         _this._loadedTextureCount++;
 
         if (_this._loadedTextureCount == 6) {
@@ -3649,6 +3965,108 @@ function () {
           });
 
           _this.bindCubeTexture();
+        }
+      };
+    }
+  }, {
+    key: "setLoadingImages",
+    value: function setLoadingImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
+      var _this2 = this;
+
+      for (var i = 0; i < arguments.length - 1; i++) {
+        if (arguments[i].width != arguments[i].height || arguments[i].height != arguments[i + 1].height || arguments[i + 1].width != arguments[i + 1].height) {
+          throw 'Sizes of textures not are the same or texture isnt square.';
+        }
+      }
+
+      this.textures.positiveX = this.engine.noTexture;
+      positiveX.addEventListener('load', function () {
+        _this2.textures.positiveX = positiveX;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
+        }
+      });
+      this.textures.negativeX = this.engine.noTexture;
+      negativeX.addEventListener('load', function () {
+        _this2.textures.negativeX = negativeX;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
+        }
+      });
+      this.textures.positiveY = this.engine.noTexture;
+      positiveY.addEventListener('load', function () {
+        _this2.textures.positiveY = positiveY;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
+        }
+      });
+      this.textures.negativeY = this.engine.noTexture;
+      negativeY.addEventListener('load', function () {
+        _this2.textures.negativeY = negativeY;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
+        }
+      });
+      this.textures.positiveZ = this.engine.noTexture;
+      positiveZ.addEventListener('load', function () {
+        _this2.textures.positiveZ = positiveZ;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
+        }
+      });
+      this.textures.negativeZ = this.engine.noTexture;
+      negativeZ.addEventListener('load', function () {
+        _this2.textures.negativeZ = negativeZ;
+        _this2._loadedTextureCount++;
+
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
+
+          _this2.onTextureLoad.forEach(function (func) {
+            func(_this2);
+          });
+
+          _this2.bindCubeTexture();
         }
       });
     }
@@ -3734,12 +4152,173 @@ function () {
       this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ);
       this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP);
       this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR);
+      this.engine.textureLoaded(this);
     }
   }]);
 
   return CubeTexture;
 }();
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
+var assertThisInitialized = __webpack_require__(6);
+var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
+
+// CONCATENATED MODULE: ./src/textures/ReflectionTexture.js
+
+
+
+
+
+
+
+
+/**
+ * Reflection texture.
+ * @param {Engine} engine 
+ * @param {String} background
+ * @param {Number} quality
+ * @param {Number} alpha
+ * @class
+ */
+
+var ReflectionTexture_ReflectionTexture =
+/*#__PURE__*/
+function (_CubeTexture) {
+  inherits_default()(ReflectionTexture, _CubeTexture);
+
+  function ReflectionTexture(engine, background, quality, alpha) {
+    var _this;
+
+    classCallCheck_default()(this, ReflectionTexture);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ReflectionTexture).call(this));
+    _this.engine = engine;
+    _this.background = background || 'rgba(0, 0, 0, 0)';
+    _this.quality = quality || _this.engine.reflectionQuality;
+
+    if (!alpha) {
+      var _alpha = background.replace('rgba(', '');
+
+      _alpha = _alpha.replace(')', '');
+      _alpha = _alpha.split(',');
+      _this.alpha = _alpha[3];
+    } else {
+      _this.alpha = alpha;
+    }
+
+    _this.engine.textureLoaded(assertThisInitialized_default()(_this));
+
+    _this.engine.addOnTexturesLoaded(function () {
+      if (_this.object != null) {
+        _this.generate();
+      }
+    });
+
+    _this._object = null;
+    return _this;
+  }
+
+  createClass_default()(ReflectionTexture, [{
+    key: "generate",
+    value: function generate() {
+      var camera = new Camera_Camera();
+      camera.position = this.object.position;
+      camera.fieldOfViewRad = this.engine.camera.fieldOfViewRad;
+      camera.range = this.engine.camera.range;
+      camera.setRotation(0, 270, 0);
+      var posXP = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+      camera.setRotation(0, 90, 0);
+      var posXN = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+      camera.setRotation(-90, 0, 0);
+      var posYP = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+      camera.setRotation(90, 0, 0);
+      var posYN = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+      camera.setRotation(0, 0, 0);
+      var posZP = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+      camera.setRotation(0, 180, 0);
+      var posZN = this.engine.captureFrame(camera, {
+        backgroundColor: this.background,
+        width: this.quality,
+        height: this.quality,
+        imageAlpha: this.alpha,
+        noDrawObjects: [this.object]
+      });
+
+      if (this.alpha < 1) {
+        this.alpha = true;
+      }
+
+      this.bind(this.engine);
+      this.setLoadedImages(posXP, posXN, posYN, posYP, posZP, posZN);
+      this.engine.div.append(posXP);
+      this.engine.div.append(posXN);
+      this.engine.div.append(posYP);
+      this.engine.div.append(posYN);
+      this.engine.div.append(posZP);
+      this.engine.div.append(posZN); // this.engine.camera.position = this.object.position
+    }
+  }, {
+    key: "bindCubeTexture",
+    value: function bindCubeTexture() {
+      this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
+      this._WebGLTexture = this.webGL.createTexture();
+      this.webGL.bindTexture(this.webGL.TEXTURE_CUBE_MAP, this._WebGLTexture);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveX);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeX);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveY);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeY);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveZ);
+      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ);
+      this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP);
+      this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR);
+    }
+  }, {
+    key: "object",
+    get: function get() {
+      return this._object;
+    },
+    set: function set(object) {
+      this._object = object;
+
+      if (this.engine.texturesLoaded) {
+        this.generate();
+      }
+    }
+  }]);
+
+  return ReflectionTexture;
+}(CubeTexture_CubeTexture);
 // CONCATENATED MODULE: ./src/objects/Rect.js
+
 
 
 
@@ -3769,7 +4348,7 @@ function () {
     this.engine = engine;
     this.camera = engine.camera;
     this.webGL = engine.webGL;
-    this.shaderProgram = engine.shaderProgram;
+    this.shaderProgram = engine.shaders.default;
     /**
      * Rect position.
      * @readonly
@@ -3928,6 +4507,8 @@ function () {
     this.normalBuffer = this.webGL.createBuffer();
     this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
     this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
   /**
    * Setting square texture for rect.
@@ -3940,6 +4521,16 @@ function () {
     key: "setTexture",
     value: function setTexture(texture) {
       this.texture = texture;
+    }
+    /**
+    * Sets custom shader program.
+    * @param {ShaderProgram} shader shader program which object will use.
+    */
+
+  }, {
+    key: "useShader",
+    value: function useShader(shader) {
+      this.shaderProgram = shader;
     }
     /**
      * Repeats texture on rect.
@@ -4010,6 +4601,7 @@ function () {
       var xRad = degToRad(x);
       var yRad = degToRad(y);
       var zRad = degToRad(z);
+      this.rotationDeg = [x, y, z];
       this.rotation = [xRad, yRad, zRad];
     }
     /**
@@ -4052,6 +4644,35 @@ function () {
       this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
     }
     /**
+     * Set normal normal to all vertexes.
+     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
+     * @public
+     */
+
+  }, {
+    key: "setNormal",
+    value: function setNormal(normals) {
+      this.normals = [normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2]];
+      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+    /**
+     * Auto generate normals respectively to the rotation.
+     */
+
+  }, {
+    key: "autoGenerateNormals",
+    value: function autoGenerateNormals() {
+      var normal = [0, 0, 1];
+      var rot = Vectors_rotationX(this.rotationDeg[0]);
+      rot = Vectors_multiply(rot, Vectors_rotationY(this.rotationDeg[1]));
+      rot = Vectors_multiply(rot, Vectors_rotationZ(this.rotationDeg[2]));
+      normal = vecMultiply(rot, normal);
+      this.normals = [normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2]];
+      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+    /**
      * Sets whether the all polygons will be attached to the camera like UI this.
      * @param {bolean} bool 
      */
@@ -4068,9 +4689,9 @@ function () {
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation);
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
@@ -4100,7 +4721,7 @@ function () {
       rot = multiply(rot, rotationZ(this.rotation[2]));
       var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
       parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      this._world = parentRot;
+      this._world = rot;
       rot = multiply(parentRot, rot);
       world.multiply(rot);
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
@@ -4120,6 +4741,7 @@ function () {
   return Rect;
 }();
 // CONCATENATED MODULE: ./src/objects/Cube.js
+
 
 
 
@@ -4151,7 +4773,12 @@ function () {
     this.engine = engine;
     this.camera = engine.camera;
     this.webGL = engine.webGL;
-    this.shaderProgram = engine.cubeTextureShaderProgram;
+    /**
+     * Shader program. Use setShader() for change.
+     * @readonly
+     */
+
+    this.shaderProgram = engine.shaders.cube;
     /**
      * Rect polygons.
      * @private
@@ -4316,18 +4943,35 @@ function () {
     this.normalBuffer = this.webGL.createBuffer();
     this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
     this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    /**
+     * @private
+     */
+
+    this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
   /**
-   * Setting square texture for rect.
-   * @param {Texture} texture
-   * @public
+   * Sets custom shader program.
+   * @param {ShaderProgram} shader shader program which object will use.
    */
 
 
   createClass_default()(Cube, [{
+    key: "useShader",
+    value: function useShader(shader) {
+      this.shaderProgram = shader;
+    }
+    /**
+     * Setting square texture for rect.
+     * @param {Texture} texture
+     * @public
+     */
+
+  }, {
     key: "setTexture",
     value: function setTexture(texture) {
       this.texture = texture;
+      texture.object = this;
     }
     /**
      * Changing size of rect.
@@ -4476,11 +5120,11 @@ function () {
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldLocation, false, this._rotationMatrix);
+      this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
       this.engine.drawCallsPerFrame++;
       this.engine.drawCalls++;
-      this.engine.shaderProgram.use();
     }
   }, {
     key: "update",
@@ -4503,12 +5147,25 @@ function () {
       parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
       rot = multiply(parentRot, rot);
       world.multiply(rot);
+      this._rotationMatrix = rot;
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
       world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = rot;
+      this._world = world;
       temp.multiply(world.matrix);
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
+    }
+  }, {
+    key: "useMaterial",
+    value: function useMaterial(material) {
+      var _this = this;
+
+      this._draw = this.draw;
+      material.object = this;
+
+      this.draw = function () {
+        material.drawCube(_this);
+      };
     }
   }]);
 
@@ -4540,7 +5197,7 @@ function () {
      */
 
     this.engine = engine;
-    this.shaderProgram = engine.shaderProgram;
+    this.shaderProgram = engine.shaders.default;
     /**
      * WebGL context of engine
      * @private
@@ -4693,16 +5350,27 @@ function () {
     };
   }
   /**
-   * Setting texture for object.
-   * @param {Texture} texture 
-   * @public
-   */
+  * Sets custom shader program.
+  * @param {ShaderProgram} shader shader program which object will use.
+  */
 
 
   createClass_default()(Object, [{
+    key: "useShader",
+    value: function useShader(shader) {
+      this.shaderProgram = shader;
+    }
+    /**
+     * Setting texture for object.
+     * @param {Texture} texture 
+     * @public
+     */
+
+  }, {
     key: "setTexture",
     value: function setTexture(texture) {
       this.texture = texture;
+      texture.object = this;
     }
     /**
      * Translate polygon for x,y,z pixels.
@@ -4907,6 +5575,7 @@ function () {
         y: [0, 0],
         z: [0, 0]
       };
+      this.faceCount = 0;
       splitted.forEach(function (element) {
         var values = element.split(' ');
         var name = 0;
@@ -4950,6 +5619,8 @@ function () {
         } else if (values[name] == 'vt') {
           textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
         } else if (values[name] == "f") {
+          _this.faceCount++;
+
           var _loop = function _loop(_i) {
             var face = values[_i].split('/');
 
@@ -5005,7 +5676,7 @@ function () {
                 faceNormals.push(normal);
               });
             } else {
-              faceNormals.push(0, 0, 0);
+              faceNormals.push(0, 0, 1);
             }
           };
 
@@ -5080,11 +5751,11 @@ function () {
 
           _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.positionLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
 
-          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.textureCoordinatesLocation);
+          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.texcoordLocation);
 
           _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.coordsBuffer);
 
-          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.textureCoordinatesLocation, 2, _this2.engine.webGL.FLOAT, false, 0, 0);
+          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.texcoordLocation, 2, _this2.engine.webGL.FLOAT, false, 0, 0);
 
           _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.normalLocation);
 
@@ -5096,9 +5767,9 @@ function () {
 
           _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.matrixLocation, false, _this2._matrix);
 
-          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.objectRotationLocation, false, _this2._world);
+          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.objectRotationLocation, false, _this2._rotationMatrix);
 
-          _this2.engine.webGL.drawArrays(_this2.engine.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount);
+          _this2.engine.webGL.drawArrays(_this2.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3);
 
           _this2.engine.drawCallsPerFrame++;
           _this2.engine.drawCalls++;
@@ -5128,9 +5799,10 @@ function () {
       parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
       rot = multiply(parentRot, rot);
       world.multiply(rot);
-      this._world = rot;
+      this._rotationMatrix = rot;
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
       world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+      this._world = world;
       temp.multiply(world.matrix);
 
       if (!this.UIElement) {
@@ -5223,6 +5895,18 @@ function () {
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
     }
+  }, {
+    key: "useMaterial",
+    value: function useMaterial(material) {
+      var _this4 = this;
+
+      this._draw = this.draw;
+      material.object = this;
+
+      this.draw = function () {
+        material.drawObject(_this4);
+      };
+    }
   }]);
 
   return Object;
@@ -5259,7 +5943,7 @@ function (_Rect) {
     classCallCheck_default()(this, Grid);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Grid).call(this, engine));
-    _this.shaderProgram = _this.engine.gridTextureShaderProgram;
+    _this.shaderProgram = _this.engine.shaders.grid;
     _this.cellSize = [1000, 1000];
     return _this;
   }
@@ -5268,12 +5952,13 @@ function (_Rect) {
     key: "draw",
     value: function draw() {
       this.shaderProgram.use();
+      this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.shaders.extensions.anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, 16);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.textureCoordinatesLocation);
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.textureCoordinatesLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
@@ -5481,6 +6166,157 @@ function () {
 
   return UI;
 }();
+// CONCATENATED MODULE: ./src/materials/Material.js
+
+
+
+/**
+ * Base class for materials which will attached to objects. 
+ * @param {Engine} engine
+ * @param {Object} [object]
+ */
+var Material_Material =
+/*#__PURE__*/
+function () {
+  function Material(engine, object) {
+    classCallCheck_default()(this, Material);
+
+    this.engine = engine;
+    this.object = object || null;
+    this.webGL = engine.webGL;
+  }
+  /**
+   * Adds shader for material.
+   * @param {ShaderProgram} shader 
+   */
+
+
+  createClass_default()(Material, [{
+    key: "setShaderProgram",
+    value: function setShaderProgram(shaderProgram) {
+      this.shaderProgram = shaderProgram;
+    }
+    /**
+     * Draws object using this material.
+     * @param {Object} object 
+     */
+
+  }, {
+    key: "drawObject",
+    value: function drawObject(object) {}
+  }]);
+
+  return Material;
+}();
+// CONCATENATED MODULE: ./src/materials/Glass.js
+
+
+
+
+
+
+
+/**
+ * Base class for materials which will attached to objects. 
+ * @param {Engine} engine
+ * @param {Object} [object]
+ */
+
+var Glass_Glass =
+/*#__PURE__*/
+function (_Material) {
+  inherits_default()(Glass, _Material);
+
+  function Glass(engine, object) {
+    var _this;
+
+    classCallCheck_default()(this, Glass);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Glass).call(this, engine, object));
+    _this.shaderProgram = engine.shaders.reflection;
+    return _this;
+  }
+  /**
+   * Adds shader for material.
+   * @param {ShaderProgram} shader 
+   */
+
+
+  createClass_default()(Glass, [{
+    key: "setShaderProgram",
+    value: function setShaderProgram(shaderProgram) {
+      this.shaderProgram = shaderProgram;
+    }
+    /**
+     * Draws cube using this material.
+     * @param {Object} object 
+     */
+
+  }, {
+    key: "drawCube",
+    value: function drawCube(object) {
+      this.shaderProgram.use();
+      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
+      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
+      this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.normalBuffer);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix);
+      this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
+      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, object.vertexes.length / 3);
+      this.engine.drawCallsPerFrame++;
+      this.engine.drawCalls++;
+    }
+    /**
+     * Draws object using this material.
+     * @param {Object} object 
+     */
+
+  }, {
+    key: "drawObject",
+    value: function drawObject(object) {
+      var _this2 = this;
+
+      this.shaderProgram.use();
+      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
+      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
+      this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix);
+      this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
+
+      if (!object.behindTheCamera) {
+        object.faces.forEach(function (face) {
+          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.positionLocation);
+
+          _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer);
+
+          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.positionLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
+
+          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.normalLocation);
+
+          _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
+
+          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.normalLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
+
+          _this2.engine.webGL.drawArrays(_this2.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3);
+
+          _this2.engine.drawCallsPerFrame++;
+          _this2.engine.drawCalls++;
+        });
+      }
+    }
+  }]);
+
+  return Glass;
+}(Material_Material);
 // CONCATENATED MODULE: ./src/Bronze.js
 /* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
 /* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
@@ -5498,18 +6334,27 @@ function () {
 /* concated harmony reexport transformVector */__webpack_require__.d(__webpack_exports__, "transformVector", function() { return transformVector; });
 /* concated harmony reexport inverse */__webpack_require__.d(__webpack_exports__, "inverse", function() { return inverse; });
 /* concated harmony reexport normalize */__webpack_require__.d(__webpack_exports__, "normalize", function() { return Vectors_normalize; });
+/* concated harmony reexport rotationX */__webpack_require__.d(__webpack_exports__, "rotationX", function() { return Vectors_rotationX; });
+/* concated harmony reexport rotationY */__webpack_require__.d(__webpack_exports__, "rotationY", function() { return Vectors_rotationY; });
+/* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return Vectors_rotationZ; });
+/* concated harmony reexport vecMultiply */__webpack_require__.d(__webpack_exports__, "vecMultiply", function() { return vecMultiply; });
+/* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return Vectors_multiply; });
 /* concated harmony reexport Engine */__webpack_require__.d(__webpack_exports__, "Engine", function() { return Engine_Engine; });
 /* concated harmony reexport Camera */__webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera_Camera; });
 /* concated harmony reexport Controls */__webpack_require__.d(__webpack_exports__, "Controls", function() { return Controls_Controls; });
 /* concated harmony reexport Debugger */__webpack_require__.d(__webpack_exports__, "Debugger", function() { return Debugger_Debugger; });
-/* concated harmony reexport Texture */__webpack_require__.d(__webpack_exports__, "Texture", function() { return Texture_Texture; });
+/* concated harmony reexport SimpleTexture */__webpack_require__.d(__webpack_exports__, "SimpleTexture", function() { return SimpleTexture_SimpleTexture; });
 /* concated harmony reexport CubeTexture */__webpack_require__.d(__webpack_exports__, "CubeTexture", function() { return CubeTexture_CubeTexture; });
+/* concated harmony reexport ReflectionTexture */__webpack_require__.d(__webpack_exports__, "ReflectionTexture", function() { return ReflectionTexture_ReflectionTexture; });
 /* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect_Rect; });
 /* concated harmony reexport Cube */__webpack_require__.d(__webpack_exports__, "Cube", function() { return Cube_Cube; });
 /* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
 /* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
 /* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
 /* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
+/* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
+
+
 
 
 

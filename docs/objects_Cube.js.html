@@ -29,7 +29,8 @@
             <pre class="prettyprint source linenums"><code>import * as Math from "../math/Math"
 import * as Matrixes from "../math/Matrixes"
 import * as Vectors from "../math/Vectors"
-import {ShaderProgram} from "../utils/ShaderProgram"
+import { CubeTexture } from "../textures/CubeTexture"
+import { Camera } from "../Camera"
 
 
 
@@ -58,7 +59,11 @@ export class Cube {
 
         this.webGL = engine.webGL
 
-        this.shaderProgram = engine.cubeTextureShaderProgram
+        /**
+         * Shader program. Use setShader() for change.
+         * @readonly
+         */
+        this.shaderProgram = engine.shaders.cube
 
         /**
          * Rect polygons.
@@ -308,6 +313,20 @@ export class Cube {
         this.normalBuffer = this.webGL.createBuffer();
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+
+        /**
+         * @private
+         */
+        this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
+
+    /**
+     * Sets custom shader program.
+     * @param {ShaderProgram} shader shader program which object will use.
+     */
+    useShader (shader) {
+        this.shaderProgram = shader 
     }
 
     /**
@@ -317,6 +336,7 @@ export class Cube {
      */
     setTexture(texture) {
         this.texture = texture
+        texture.object = this
     }
 
     /**
@@ -500,12 +520,12 @@ export class Cube {
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldLocation, false, this._rotationMatrix)
+        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
 
         this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
         this.engine.drawCallsPerFrame++
         this.engine.drawCalls++
-        this.engine.shaderProgram.use()
     }
 
     update() {
@@ -526,15 +546,24 @@ export class Cube {
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
+        this._rotationMatrix = rot
 
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
-        this._world = rot
+        this._world = world
         temp.multiply(world.matrix)
 
         this._matrix = temp.matrix
         this._rotationMatrix = rot
+    }
+
+    useMaterial(material) {
+        this._draw = this.draw
+        material.object = this
+        this.draw = () => {
+            material.drawCube(this)
+        }
     }
 }
 </code></pre>
@@ -547,13 +576,13 @@ export class Cube {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Grid.html">Grid</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 29 2019 10:29:28 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 07 2019 20:19:36 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

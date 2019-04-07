@@ -74,20 +74,22 @@ export class CubeTexture {
 
     setImagesFromPath(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
         this.textures.positiveX = new Image()
+        this.textures.positiveX.crossOrigin = ''
+        this.textures.positiveX.onload = () => {
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        }
         this.textures.positiveX.src = positiveX
-        this.textures.positiveX.onload(() => {
-            this._loadedTextureCount++
-            if (this._loadedTextureCount == 6) {
-                this.loaded = true
-                this.onTextureLoad.forEach(func => {
-                    func(this)
-                })
-                this.bindCubeTexture()
-            }
-        })
         this.textures.negativeX = new Image()
+        this.textures.negativeX.crossOrigin = ''
         this.textures.negativeX.src = negativeX
-        this.textures.negativeX.onload(() => {
+        this.textures.negativeX.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -96,10 +98,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.positiveY = new Image()
+        this.textures.positiveY.crossOrigin = ''
         this.textures.positiveY.src = positiveY
-        this.textures.positiveY.onload(() => {
+        this.textures.positiveY.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -108,10 +111,11 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.negativeY = new Image()
+        this.textures.negativeY.crossOrigin = ''
         this.textures.negativeY.src = negativeY
-        this.textures.negativeY.onload(() => {
+        this.textures.negativeY.onload = () => {
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -120,10 +124,44 @@ export class CubeTexture {
                 })
                 this.bindCubeTexture()
             }
-        })
+        }
         this.textures.positiveZ = new Image()
+        this.textures.positiveZ.crossOrigin = ''
         this.textures.positiveZ.src = positiveZ
-        this.textures.positiveZ.onload(() => {
+        this.textures.positiveZ.onload = () => {
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        }
+        this.textures.negativeZ = new Image()
+        this.textures.negativeZ.crossOrigin = ''
+        this.textures.negativeZ.src = negativeZ
+        this.textures.negativeZ.onload = () => {
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        }
+    }
+
+    setLoadingImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
+        for (let i = 0; i &lt; arguments.length - 1; i++) {
+            if (arguments[i].width != arguments[i].height || arguments[i].height != arguments[i + 1].height || arguments[i + 1].width != arguments[i + 1].height) {
+                throw 'Sizes of textures not are the same or texture isnt square.'
+            }
+        }
+        this.textures.positiveX = this.engine.noTexture
+        positiveX.addEventListener('load', () => {
+            this.textures.positiveX = positiveX
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -133,9 +171,57 @@ export class CubeTexture {
                 this.bindCubeTexture()
             }
         })
-        this.textures.negativeZ = new Image()
-        this.textures.negativeZ.src = negativeZ
-        this.textures.negativeZ.onload(() => {
+        this.textures.negativeX = this.engine.noTexture
+        negativeX.addEventListener('load', () => {
+            this.textures.negativeX = negativeX
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.positiveY = this.engine.noTexture
+        positiveY.addEventListener('load', () => {
+            this.textures.positiveY = positiveY
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.negativeY = this.engine.noTexture
+        negativeY.addEventListener('load', () => {
+            this.textures.negativeY = negativeY
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.positiveZ = this.engine.noTexture
+        positiveZ.addEventListener('load', () => {
+            this.textures.positiveZ = positiveZ
+            this._loadedTextureCount++
+            if (this._loadedTextureCount == 6) {
+                this.loaded = true
+                this.onTextureLoad.forEach(func => {
+                    func(this)
+                })
+                this.bindCubeTexture()
+            }
+        })
+        this.textures.negativeZ = this.engine.noTexture
+        negativeZ.addEventListener('load', () => {
+            this.textures.negativeZ = negativeZ
             this._loadedTextureCount++
             if (this._loadedTextureCount == 6) {
                 this.loaded = true
@@ -219,6 +305,7 @@ export class CubeTexture {
         this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ)
         this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP)
         this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
+        this.engine.textureLoaded(this)
     }
 }</code></pre>
         </article>
@@ -230,13 +317,13 @@ export class CubeTexture {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Grid.html">Grid</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 29 2019 10:29:28 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 07 2019 20:19:36 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

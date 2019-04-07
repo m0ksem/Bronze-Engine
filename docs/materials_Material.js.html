@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: ui/elements/Picture.js</title>
+    <title>JSDoc: Source: materials/Material.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: ui/elements/Picture.js</h1>
+    <h1 class="page-title">Source: materials/Material.js</h1>
 
     
 
@@ -27,65 +27,32 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class
- * @constructor
+ * Base class for materials which will attached to objects. 
+ * @param {Engine} engine
+ * @param {Object} [object]
  */
-export class Picture extends Image {
-    constructor () {
-        super()
-        /**
-         * @type {boolean}
-         * @readonly
-         */
-        this.loaded = false
-
-        /**
-         * @type {Object} 
-         * @property {Number} position.x
-         * @property {Number} position.y
-         */
-        this.position = {
-            x: 0,
-            y: 0
-        }
-
-        /**
-         * @type {Object}
-         * @property {Number} size.width
-         * @property {Number} size.height
-         */
-        this.size = {
-            width: 0,
-            height: 0
-        }
+export class Material {
+    constructor (engine, object) {
+        this.engine = engine
+        this.object = object || null
+        this.webGL = engine.webGL
     }
 
     /**
-     * Load image from path
-     * @param {String} path 
-     * @param {Number} width 
-     * @param {Number} height 
+     * Adds shader for material.
+     * @param {ShaderProgram} shader 
      */
-    load (path, width, height) {
-        this.src = path
-        if (width != null &amp;&amp; height != null) {
-            this.width = width
-            this.height = height
-        }
-        this.addEventListener('load', () => {
-            this.loaded = true
-        })
+    setShaderProgram (shaderProgram) {
+        this.shaderProgram = shaderProgram
     }
 
     /**
-     * Creates Picture from Image object.
-     * @param {Image} image
+     * Draws object using this material.
+     * @param {Object} object 
      */
-    fromImage (image) {
-        this.load(image.src, image.width, image.height)
+    drawObject (object) {
+
     }
-
-
 }</code></pre>
         </article>
     </section>

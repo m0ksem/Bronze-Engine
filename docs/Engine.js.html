@@ -27,16 +27,18 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import * as Utils from "./Utils"
-import {Texture} from "./textures/Texture"
-import * as Matrixes from "./math/Matrixes"
+import {SimpleTexture} from "./textures/SimpleTexture"
 import * as Vectors from "./math/Vectors"
-import {ShaderProgram} from "./utils/ShaderProgram"
+import {ShaderProgram} from "./shaders/ShaderProgram"
+import { Shaders } from "./shaders/Shaders"
 import fragmentShaderSource from "./shaders/default/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/default/vertex-shader.glsl"
 import cubeFragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl"
 import cubeVertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl"
 import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl"
 import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl"
+import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragment-shader.glsl"
+import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
 
 
 /**
@@ -97,6 +99,12 @@ export class Engine {
          */
         this.objects = []
 
+        
+        /**
+         * Array of objects with alpha texture which draws after all another objects and sorting by z.
+         */
+        this.objectsWithAlphaTexture = []
+
         /**
          * @type {UI}
          * @private
@@ -104,10 +112,37 @@ export class Engine {
         this.ui = null
 
         /**
-         * @type {Array.&lt;{Texture}>}
+         * @type {Texture[]}
          * @private
          */
         this.textures = []
+
+        /**
+         * Default texture for all object.
+         * @type {Texture}
+         * @public
+         */
+        this.noTexture = new SimpleTexture()
+        this.noTexture.setColorRGBA(219, 58, 52, 255)
+        this.noTexture.bind(this)
+
+        /**
+         * @type {Number}
+         * @readonly
+         */
+        this.loadedTexturesCount = 0
+
+        /**
+         * True if all attached textures loaded.
+         * @type {boolean}
+         * @readonly
+         */
+        this.texturesLoaded = false
+
+        /**
+         * On texture loaded functions array
+         */
+        this.onTexturesLoadedHandlers = []
 
         /**
          * The camera that is attached to the engine.
@@ -137,29 +172,6 @@ export class Engine {
          */
         this.selectedObject = null
 
-        this._globalPositionBuffer = this.webGL.createBuffer()
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalPositionBuffer)
-        this._globalTextureBuffer = this.webGL.createBuffer()
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this._globalTextureBuffer)
-
-        this._initShaders()
-        this.shaderProgram.use()
-        // this.shaderProgram.useIn(this.webGL)
-        // this.webGL.useProgram(this.shaderProgram)
-        this.webGL.viewport(0, 0, this.width, this.height)
-
-        this.webGL.enable(this.webGL.CULL_FACE)
-        this.webGL.enable(this.webGL.DEPTH_TEST)
-
-        /**
-         * Default texture for all object.
-         * @type {Texture}
-         * @public
-         */
-        this.noTexture = new Texture()
-        this.noTexture.setColorRGBA(219, 58, 52, 255)
-        this.noTexture.bind(this)
-
         /**
          * Execute every time when object is selected
          * @type {Function}
@@ -180,6 +192,31 @@ export class Engine {
          * @readonly
          */
         this.drawCallsPerFrame = 0
+
+        /**
+         * Array of function which executes on engine run.
+         * @type {Function[]}
+         */
+        this.onrun = []
+
+        /**
+         * Rendering reflections size
+         * @type {Number}
+         * @default 1024
+         */
+        this.reflectionQuality = 2048
+
+        /**
+         * Shaders container
+         */
+        this.shaders = new Shaders(this.webGL)
+
+        this._initShaders()
+        this.shaders.default.use()
+        this.webGL.viewport(0, 0, this.width, this.height)
+
+        this.webGL.enable(this.webGL.CULL_FACE)
+        this.webGL.enable(this.webGL.DEPTH_TEST)
     }
 
     /**
@@ -201,43 +238,23 @@ export class Engine {
      * @private
      */
     _initShaders () {
-        let program = new ShaderProgram(this.webGL)
-        program.addShader('vertex', vertexShaderSource)
-        program.addShader('fragment', fragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkAttribute('a_texcoord', 'textureCoordinatesLocation')
-        program.linkAttribute('a_normal', 'normalLocation')
-        program.linkUniform('u_texture', 'textureLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_objectRotation', 'objectRotationLocation')
-        program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
-        this.shaderProgram = program
-
-        program = new ShaderProgram(this.webGL)
-        program.addShader('vertex', cubeVertexShaderSource)
-        program.addShader('fragment', cubeFragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkAttribute('a_normal', 'normalLocation')
-        program.linkUniform('u_texture', 'textureLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_objectRotation', 'objectRotationLocation')
-        program.linkUniform('u_lightWorldPosition', 'lightWorldPositionLocation')
-        this.cubeTextureShaderProgram = program
+        let options = {
+            removePrefixes: true, addLocationMarker: true
+        }
+        this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic')
+        this.shaders.addExtension('standard', 'OES_standard_derivatives')
         
+        this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options)
 
-        program = new ShaderProgram(this.webGL)
-        this.webGL.getExtension('OES_standard_derivatives')
-        program.addShader('vertex', gridVertexShaderSource)
-        program.addShader('fragment', gridFragmentShaderSource)
-        program.create()
-        program.linkAttribute('a_position', 'positionLocation')
-        program.linkUniform('u_matrix', 'matrixLocation')
-        program.linkUniform('u_camera', 'cameraLocation')
-        this.gridTextureShaderProgram = program
-        
-        this.shaderProgram.use()
+        this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
+
+        this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
+
+        this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options)
+
+        this.shaders.default.use()
+        this.webGL.enable(this.webGL.BLEND);
+        this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
     
     /**
@@ -271,6 +288,11 @@ export class Engine {
     }
 
 
+    addObject (object) {
+        this.objects.push(object)
+    }
+
+
     /**
      * Function to update all positions, size etc.
      * @private
@@ -288,39 +310,19 @@ export class Engine {
 
         this.selectedObject = null
 
-        this.polygons.forEach(element => {           
-            temp = new Matrixes.Matrix()
-            
-            // temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, 20000)
-            if (!element.UIElement) {
-                temp.perspective(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
-                temp.multiply(this.camera.inventedMatrix)
-            } else {
-                temp.projection(this.camera.fieldOfViewRad, this.width, this.height, 1, this.camera.range)
+        this.objects.forEach((element, index) => {         
+            element.update()
+            if (element.texture.alpha) {
+                this.objectsWithAlphaTexture.push(element)
+                this.objects.splice(index, 1)
             }
-
-            world = new Matrixes.Matrix()
-            world.multiply(Matrixes.inverse(Matrixes.translation(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])))
-            world.translate(element.position[0], element.position[1], element.position[2])
-            rot = Matrixes.multiply(Matrixes.rotationX(element.rotation[0]), Matrixes.rotationY(element.rotation[1]))
-            rot = Matrixes.multiply(rot, Matrixes.rotationZ(element.rotation[2]))
-            if (element.parentRotation != null) {
-                parentRot = Matrixes.multiply(Matrixes.rotationX(element.parentRotation[0]), Matrixes.rotationY(element.parentRotation[1]))
-                parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(element.parentRotation[2]))
-                element._world = parentRot
-                rot = Matrixes.multiply(parentRot, rot)
-            }
-            world.multiply(rot)
-            
-            world.translate(element.rotationPoint[0], element.rotationPoint[1], element.rotationPoint[2])
-                        
-            temp.multiply(world.matrix)
-
-            element._matrix = temp.matrix
-            element._rotationMatrix = rot
         })
 
-        this.objects.forEach(element => {           
+        this.objectsWithAlphaTexture.sort((a, b) => {
+            return a.position[2] - b.position[2]
+        })
+
+        this.objectsWithAlphaTexture.forEach((element) => {
             element.update()
         })
 
@@ -335,10 +337,10 @@ export class Engine {
      */
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
-        this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
-        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.camera.matrix)
+        this.shaders.default.use()
+        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
 
         this.drawCallsPerFrame = 0
 
@@ -350,23 +352,84 @@ export class Engine {
             object.draw()
         });
 
+        this.objectsWithAlphaTexture.forEach(object => {
+            object.draw()
+        });
+
         if (this.debugger != null) {
             this.debugger.updateInfo()
         }
-
-        this.webGL.blendFunc(this.webGL.SRC_ALPHA, this.webGL.ONE_MINUS_SRC_ALPHA);
-        this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
     }
 
-    /**
-     * Drawing UI function.
-     * @private
-     */
-    _drawUI () {
-        if (this.ui !== null) {
-            this.ui._draw()
+    captureFrame (camera, options) {
+        let currentCamera = this.camera
+        let currentCanvasSize = [this.canvas.width, this.canvas.height];
+        let drawUI = false
+        let imageHeight = 128
+        let imageWidth = 128
+        let backgroundColor = 'rgba(0, 0, 0, 0)'
+        let backgroundAlpha = 1
+        let imageAlpha = 1
+        let noDrawObjects = []
+        if (options != null) {
+            drawUI = options.drawUI || drawUI
+            imageHeight = options.height || imageHeight
+            imageWidth = options.width || imageWidth
+            backgroundColor = options.backgroundColor || backgroundColor
+            backgroundAlpha = options.backgroundAlpha || backgroundAlpha
+            imageAlpha = options.imageAlpha || imageAlpha
+            noDrawObjects = options.noDrawObjects || []
         }
+
+        this.canvas.width = imageWidth
+        this.canvas.height = imageHeight
+        this.canvasResized()
+
+        this.camera = camera
+        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+        this.shaders.default.use()
+        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
+        this.drawCallsPerFrame = 0
+
+        this._update()
+        this.polygons.forEach(element => {
+            element.draw()
+        });
+
+        for (let i = 0; i &lt; this.objects.length; i++) {
+            const object = this.objects[i];
+            if (noDrawObjects.indexOf(object) == -1) {
+                if (drawUI || !object.UIElement) {
+                    object.draw()
+                }
+            }
+        }
+        this.objectsWithAlphaTexture.forEach(object => {
+            if (noDrawObjects.indexOf(object) == -1) {
+                object.draw()
+            }
+        })
+
+        let frame = document.createElement('canvas')
+        frame.height = this.canvas.height;
+        frame.width = this.canvas.width;
+        let context = frame.getContext('2d')
+        context.globalAlpha = backgroundAlpha
+        context.fillStyle = backgroundColor
+        context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        context.globalAlpha = imageAlpha
+        context.drawImage(this.canvas, 0, 0)
+
+
+        this.camera = currentCamera
+        this.canvas.width = currentCanvasSize[0];
+        this.canvas.height = currentCanvasSize[1];
+        this.canvasResized();
+        return frame;
     }
+
 
     /**
      * Sets range where objects will no draws.
@@ -376,7 +439,7 @@ export class Engine {
         if (this.camera != null) {
             this.camera.range = range 
         } else {
-            console.warn('Failed to set drawing range. Camera wasn\'t set.')
+            throw 'Failed to set drawing range. Camera wasn\'t set.'
         }
     }
 
@@ -397,6 +460,36 @@ export class Engine {
     run () {
         _engine = this
         requestAnimationFrameEngine()
+        this.onrun.forEach(func => {
+            func()
+        })
+    }
+
+    /**
+     * Adds functions which will execute on engine run.
+     * @param {Function} func 
+     */
+    addOnRunFunction (func) {
+        this.onrun.push(func)
+    }
+
+    textureLoaded(texture) {
+        this.loadedTexturesCount += 1
+        // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
+        // console.log(texture)
+        if (this.loadedTexturesCount == this.textures.length) {
+            this.texturesLoaded = true
+            this.onTexturesLoadedHandlers.forEach(func => {
+                func(this.textures.length)
+            })
+        }
+    }
+    
+    /**
+     * @param {Function} func function which will execute when all textures loaded.
+     */
+    addOnTexturesLoaded(func) {
+        this.onTexturesLoadedHandlers.push(func)
     }
 }
 
@@ -445,13 +538,13 @@ function requestAnimationFrameEngine () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Grid.html">Grid</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="Texture.html">Texture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 29 2019 10:29:28 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 07 2019 20:19:36 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>
