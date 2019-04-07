@@ -355,7 +355,7 @@ export class Object {
      * @param {String} fileText
      * @public
      */
-    compile(fileText) {
+    compile (fileText) {
         let vertexes = []
         let textureCoords = []
         let normals = []
@@ -365,10 +365,10 @@ export class Object {
             y: [0, 0],
             z: [0, 0]
         }
+        this.faceCount = 0
         splitted.forEach(element => {
             let values = element.split(' ')
             let name = 0
-            
             for(let i = values.length; i--;){
                 if (values[i] == "" || values[i] == "\r")
                     values.splice(i, 1);
@@ -405,6 +405,7 @@ export class Object {
                 textureCoords.push([parseFloat(values[1]), 
                                    parseFloat(values[2])])
             } else if (values[name] == "f") {
+                this.faceCount++
                 for (let i = 1; i < values.length; i++) {
                     const face = values[i].split('/');
                     if (face[length - 1] == "\r") {
@@ -436,9 +437,11 @@ export class Object {
                         if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1 
                     let normalPosition = parseFloat(face[2])
                         if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1
+                    
                     vertexes[vertexPosition - 1].forEach(vertex => {
                         faceVertexes.push(vertex)
                     })
+
                     if (textureCoords.length > 0) {
                         textureCoords[textureCoordPosition - 1].forEach(textureCoord => {
                             faceTextureCoords.push(textureCoord)
@@ -450,7 +453,7 @@ export class Object {
                             faceNormals.push(normal)
                         })
                     } else {
-                        faceNormals.push(0, 0, 0)
+                        faceNormals.push(0, 0, 1)
                     }
                 }
             }
@@ -460,7 +463,6 @@ export class Object {
             element.vertexesBuffer = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.vertexesBuffer)
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.vertexes), this.webGL.STATIC_DRAW);
-
             element.coordsBuffer = this.webGL.createBuffer()
             this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.coordsBuffer)
             this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.textureCoords), this.webGL.STATIC_DRAW)
@@ -527,7 +529,7 @@ export class Object {
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
 
-                this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / face.vertexesCount)
+                this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3)
                 this.engine.drawCallsPerFrame++
                 this.engine.drawCalls++
             })
@@ -553,6 +555,7 @@ export class Object {
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
+        this._rotationMatrix = rot
         
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])     
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
@@ -652,7 +655,7 @@ export class Object {
 
     useMaterial(material) {
         this._draw = this.draw
-        material.object = this
+        material.object = (this)
         this.draw = () => {
             material.drawObject(this)
         }

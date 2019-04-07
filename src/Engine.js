@@ -342,6 +342,7 @@ export class Engine {
         let backgroundColor = 'rgba(0, 0, 0, 0)'
         let backgroundAlpha = 1
         let imageAlpha = 1
+        let noDrawObjects = []
         if (options != null) {
             drawUI = options.drawUI || drawUI
             imageHeight = options.height || imageHeight
@@ -349,6 +350,7 @@ export class Engine {
             backgroundColor = options.backgroundColor || backgroundColor
             backgroundAlpha = options.backgroundAlpha || backgroundAlpha
             imageAlpha = options.imageAlpha || imageAlpha
+            noDrawObjects = options.noDrawObjects || []
         }
 
         this.canvas.width = imageWidth
@@ -364,18 +366,22 @@ export class Engine {
         this.drawCallsPerFrame = 0
 
         this._update()
-
         this.polygons.forEach(element => {
             element.draw()
         });
+
         for (let i = 0; i < this.objects.length; i++) {
             const object = this.objects[i];
-            if (drawUI || !object.UIElement) {
-                object.draw()
+            if (noDrawObjects.indexOf(object) == -1) {
+                if (drawUI || !object.UIElement) {
+                    object.draw()
+                }
             }
         }
         this.objectsWithAlphaTexture.forEach(object => {
-            object.draw()
+            if (noDrawObjects.indexOf(object) == -1) {
+                object.draw()
+            }
         })
 
         let frame = document.createElement('canvas')
@@ -441,8 +447,8 @@ export class Engine {
 
     textureLoaded(texture) {
         this.loadedTexturesCount += 1
-        console.log(this.loadedTexturesCount + ' ' + this.textures.length)
-        console.log(texture)
+        // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
+        // console.log(texture)
         if (this.loadedTexturesCount == this.textures.length) {
             this.texturesLoaded = true
             this.onTexturesLoadedHandlers.forEach(func => {

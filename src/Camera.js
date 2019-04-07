@@ -14,7 +14,7 @@ export class Camera {
          * @readonly
          * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
          */
-        this.position = [0, 0, 100]
+        this._position = [0, 0, 100]
 
         this.up = [0, 1, 0]
         this.target = [0, 0, 0]
@@ -91,6 +91,14 @@ export class Camera {
      */
     setPosition (x, y, z) {
         this.position = [x, y, z]
+    }
+
+    get position () {
+        return this._position
+    }
+
+    set position (value) {
+        this._position = value
         this.computeMatrix()
     }
 
