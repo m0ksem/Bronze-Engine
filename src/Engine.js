@@ -224,6 +224,9 @@ export class Engine {
 
         this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
 
+        
+        console.log(this.shaders.grid)
+
         this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options)
 
         this.shaders.default.use()

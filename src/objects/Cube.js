@@ -504,7 +504,7 @@ export class Cube {
         let temp = new Matrixes.Matrix()
         if (!this.UIElement) {
             temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-            temp.multiply(this.engine.camera.inventedMatrix)
+            temp.multiply(this.engine.camera.inverseMatrix)
         } else {
             temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
         }

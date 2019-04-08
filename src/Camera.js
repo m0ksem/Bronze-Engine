@@ -61,6 +61,24 @@ export class Camera {
          * @public
          */
         this.range = 20000
+
+        /**
+         * Rotation matrix of this camera.
+         * @readonly
+         */
+        this.rotationMatrix = null
+
+        /**
+         * Inverse matrix of this camera. Including positions and rotation.
+         * @readonly
+         */
+        this.inverseMatrix = null
+
+        /**
+         * Inverse matrix of this camera rotation.
+         * @readonly
+         */
+        this.inverseRotationMatrix
     }
 
     /**
@@ -167,8 +185,10 @@ export class Camera {
             )
             )
         }
-        this.rotationMatrix = Matrixes.inverse(rotation.matrix)
-        this.inventedMatrix = Matrixes.inverse(this.matrix)
+        
+        this.rotationMatrix = rotation.matrix
+        this.inverseRotationMatrix = Matrixes.inverse(rotation.matrix)
+        this.inverseMatrix = Matrixes.inverse(this.matrix)
     }
 
     /**

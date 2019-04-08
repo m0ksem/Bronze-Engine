@@ -57,7 +57,7 @@ camera.setControl(() => {
         } else {
             // camera.move(0, 0, -10)
             // camera.move(camera.rotationMatrix[2] * -10, camera.rotationMatrix[6] * -10, camera.rotationMatrix[10] * -10)
-            camera.move(camera.rotationMatrix[2] * -10, 0, camera.rotationMatrix[10] * -10)
+            camera.move(camera.inverseRotationMatrix[2] * -10, 0, camera.inverseRotationMatrix[10] * -10)
         }
     }
     if (controls.keys[83]) {
@@ -67,16 +67,16 @@ camera.setControl(() => {
         } else {
             // camera.move(0, 0, 10)
             // camera.move(camera.rotationMatrix[2] * 10, camera.rotationMatrix[6] * 10, camera.rotationMatrix[10] * 10)
-            camera.move(camera.rotationMatrix[2] * 10, 0, camera.rotationMatrix[10] * 10)
+            camera.move(camera.inverseRotationMatrix[2] * 10, 0, camera.inverseRotationMatrix[10] * 10)
         }
     }
     if (controls.keys[65]) {
         // camera.move(-10, 0, 0)
-        camera.move(camera.rotationMatrix[0] * -10, camera.rotationMatrix[4] * -10, camera.rotationMatrix[8] * -10)
+        camera.move(camera.inverseRotationMatrix[0] * -10, camera.inverseRotationMatrix[4] * -10, camera.inverseRotationMatrix[8] * -10)
     }
     if (controls.keys[68]) {
         // camera.move(10, 0, 0)
-        camera.move(camera.rotationMatrix[0] * 10, camera.rotationMatrix[4] * 10, camera.rotationMatrix[8] * 10)
+        camera.move(camera.inverseRotationMatrix[0] * 10, camera.inverseRotationMatrix[4] * 10, camera.inverseRotationMatrix[8] * 10)
     }
 
     
@@ -148,7 +148,7 @@ let glass = new Bronze.Glass(engine)
 let grid = new Bronze.Grid(engine)
     grid.setTexture(gridTexture)
     grid.setCellSize(1000, 1000)
-    let width = 100000, height = 100000
+    let width = 50000, height = 50000
     grid.setSize(width, height)
     grid.setPosition(-width / 2, -5, height / 2)
     grid.rotate(-90, 0, 0)

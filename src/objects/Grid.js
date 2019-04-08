@@ -38,6 +38,8 @@ export class Grid extends Rect {
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
+        this.engine.webGL.uniform2fv(this.shaderProgram.movingLocation, this._moving)
+        this.engine.webGL.uniform2fv(this.shaderProgram.cellSizeLocation, this.cellSize)
 
         this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
         this.engine.drawCallsPerFrame++
@@ -46,13 +48,13 @@ export class Grid extends Rect {
 
     update () {
         let temp = new Matrixes.Matrix()
-        //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
-        if (!this.UIElement) {
-            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-            temp.multiply(this.engine.camera.inventedMatrix)
-        } else {
-            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-        }
+        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+
+        let cameraMatrix = Matrixes.unit()
+        cameraMatrix = Matrixes.multiply(cameraMatrix, Matrixes.translation(0, this.engine.camera.position[1], 0))
+        cameraMatrix = Matrixes.multiply(cameraMatrix, this.engine.camera.rotationMatrix)
+
+        temp.multiply(Matrixes.inverse(cameraMatrix))
 
         let world = new Matrixes.Matrix()
         world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
@@ -61,15 +63,16 @@ export class Grid extends Rect {
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
         let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        this._world = parentRot
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
 
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+        this._world = world
 
         temp.multiply(world.matrix)
 
+        this._moving = [this.engine.camera.position[0], this.engine.camera.position[2]]
         this._matrix = temp.matrix
         this._rotationMatrix = rot
     }
