@@ -89,14 +89,6 @@ export class Engine {
          */
         this.textures = []
 
-        /**
-         * Default texture for all object.
-         * @type {Texture}
-         * @public
-         */
-        this.noTexture = new SimpleTexture()
-        this.noTexture.setColorRGBA(219, 58, 52, 255)
-        this.noTexture.bind(this)
 
         /**
          * @type {Number}
@@ -115,6 +107,16 @@ export class Engine {
          * On texture loaded functions array
          */
         this.onTexturesLoadedHandlers = []
+
+        /**
+         * Default texture for all object.
+         * @type {Texture}
+         * @public
+         */
+        this.noTexture = new SimpleTexture()
+        this.noTexture.setColorRGBA(219, 58, 52, 255)
+        this.noTexture.bind(this)
+        this.textureLoaded(this.noTexture)
 
         /**
          * The camera that is attached to the engine.
@@ -449,6 +451,7 @@ export class Engine {
         this.loadedTexturesCount += 1
         // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
         // console.log(texture)
+        // console.log(this.textures)
         if (this.loadedTexturesCount == this.textures.length) {
             this.texturesLoaded = true
             this.onTexturesLoadedHandlers.forEach(func => {

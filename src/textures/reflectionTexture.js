@@ -10,26 +10,57 @@ import {Camera} from '../Camera'
  * @class
  */
 export class ReflectionTexture extends CubeTexture {
-    constructor(engine, background, quality, alpha) {
+    constructor(engine, background, quality, reflectionAlpha) {
         super()
         this.engine = engine
+        this.webGL = engine.webGL
         this.background = background || 'rgba(0, 0, 0, 0)'
         this.quality = quality || this.engine.reflectionQuality
-        if (!alpha) {
-            let alpha = background.replace('rgba(', '')
-            alpha = alpha.replace(')', '')
-            alpha = alpha.split(',')
-            this.alpha = alpha[3]
+        if (!reflectionAlpha) {
+            let reflectionAlpha = background.replace('rgba(', '')
+            reflectionAlpha = alpha.replace(')', '')
+            reflectionAlpha = alpha.split(',')
+            this.reflectionAlpha = reflectionAlpha[3]
         } else {
-            this.alpha = alpha
+            this.reflectionAlpha = reflectionAlpha
         }
+
+        if (this.reflectionAlpha < 1) {
+            this.alpha = true
+        } else {
+            this.alpha = false
+        }
+
+        this._object = null
+
+        let texture = document.createElement('canvas')
+            texture.width = 16
+            texture.height = 16
+        let context = texture.getContext('2d')
+        context.fillStyle = background
+        context.fillRect(0, 0, 16, 16)
+
+        this._WebGLTexture = this.webGL.createTexture()
+        this.webGL.bindTexture(this.webGL.TEXTURE_CUBE_MAP, this._WebGLTexture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, texture)
+        this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP)
+        this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
+
         this.engine.textureLoaded(this)
         this.engine.addOnTexturesLoaded(() => {
             if (this.object != null) {
                 this.generate()
             }
         })
-        this._object = null
+
+        this.camera = new Camera()
+        this.camera.fieldOfViewRad = this.engine.camera.fieldOfViewRad
+        this.camera.range = this.engine.camera.range
     }
 
     get object() {
@@ -44,36 +75,29 @@ export class ReflectionTexture extends CubeTexture {
     }
 
     generate () {
-        let camera = new Camera()
-        camera.position = this.object.position
-        camera.fieldOfViewRad = this.engine.camera.fieldOfViewRad
-        camera.range = this.engine.camera.range
-        camera.setRotation(0, 270, 0)
-        let posXP = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]})
-        camera.setRotation(0, 90, 0);
-        let posXN = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]});
-        camera.setRotation(-90, 0, 0);
-        let posYP = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]});
-        camera.setRotation(90, 0, 0);
-        let posYN = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]});
-        camera.setRotation(0, 0, 0);
-        let posZP = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]});
-        camera.setRotation(0, 180, 0);
-        let posZN = this.engine.captureFrame(camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.alpha, noDrawObjects: [this.object]});
-        if (this.alpha < 1) {
-            this.alpha = true
-        }
+        this.camera.position = this.object.position
+        this.camera.setRotation(0, 270, 0)
+        let posXP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]})
+        this.camera.setRotation(0, 90, 0);
+        let posXN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        this.camera.setRotation(-90, 0, 0);
+        let posYP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        this.camera.setRotation(90, 0, 0);
+        let posYN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        this.camera.setRotation(0, 0, 0);
+        let posZP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        this.camera.setRotation(0, 180, 0);
+        let posZN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        
         this.bind(this.engine)
         this.setLoadedImages(
-            posXP, posXN, posYN, posYP, posZP, posZN
+            posXP,
+            posXN,
+            posYN,
+            posYP,
+            posZP,
+            posZN
         )
-        this.engine.div.append(posXP)
-        this.engine.div.append(posXN)
-        this.engine.div.append(posYP)
-        this.engine.div.append(posYN)
-        this.engine.div.append(posZP)
-        this.engine.div.append(posZN)
-        // this.engine.camera.position = this.object.position
     }
 
     bindCubeTexture() {

@@ -20,10 +20,6 @@ export class CubeTexture {
          */
         this._textureBlockLocation = null
 
-        this.mipmap = []
-
-        this.mips = null
-
         /**
          * Execute every function in array when texture loaded.
          * @type {Function[]}
