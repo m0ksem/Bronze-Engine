@@ -2430,7 +2430,7 @@ function () {
 var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
-var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition; // - surfaceWorldPosition;\r\n}";
+var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition - surfaceWorldPosition;\r\n}";
 
 /* babel-plugin-inline-import './shaders/cube-texture/fragment-shader.glsl' */
 var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < .9)\r\n        discard;\r\n}\r\n";
@@ -2442,7 +2442,7 @@ var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec4 a_nor
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/vertex-shader.glsl' */
-var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_moving;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = a_texcoord;\r\n}";
+var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform vec2 u_moving;\r\nuniform vec2 u_cellSize;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = vec2(a_texcoord.x + u_moving.x / u_cellSize.x, a_texcoord.y + (u_moving.y / u_cellSize.x));\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/fragment-shader.glsl' */
 var reflectionFragmentShaderSource = "precision highp float;\r\n    \r\n// Passed in from the vertex shader.\r\nvarying vec3 v_worldPosition;\r\nvarying vec3 v_worldNormal;\r\n    \r\n// The texture.\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_worldCameraPosition;\r\n        \r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_worldNormal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldPosition);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
@@ -2527,15 +2527,6 @@ function () {
 
     this.textures = [];
     /**
-     * Default texture for all object.
-     * @type {Texture}
-     * @public
-     */
-
-    this.noTexture = new SimpleTexture_SimpleTexture();
-    this.noTexture.setColorRGBA(219, 58, 52, 255);
-    this.noTexture.bind(this);
-    /**
      * @type {Number}
      * @readonly
      */
@@ -2553,6 +2544,16 @@ function () {
      */
 
     this.onTexturesLoadedHandlers = [];
+    /**
+     * Default texture for all object.
+     * @type {Texture}
+     * @public
+     */
+
+    this.noTexture = new SimpleTexture_SimpleTexture();
+    this.noTexture.setColorRGBA(219, 58, 52, 255);
+    this.noTexture.bind(this);
+    this.textureLoaded(this.noTexture);
     /**
      * The camera that is attached to the engine.
      * @type {Camera}
@@ -2761,9 +2762,8 @@ function () {
     value: function _draw() {
       this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
-      this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix);
+      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.camera.position);
+      this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.matrix);
       this.drawCallsPerFrame = 0;
       this.polygons.forEach(function (element) {
         element.draw();
@@ -2930,6 +2930,7 @@ function () {
 
       this.loadedTexturesCount += 1; // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
       // console.log(texture)
+      // console.log(this.textures)
 
       if (this.loadedTexturesCount == this.textures.length) {
         this.texturesLoaded = true;
@@ -3055,6 +3056,24 @@ function () {
      */
 
     this.range = 20000;
+    /**
+     * Rotation matrix of this camera.
+     * @readonly
+     */
+
+    this.rotationMatrix = null;
+    /**
+     * Inverse matrix of this camera. Including positions and rotation.
+     * @readonly
+     */
+
+    this.inverseMatrix = null;
+    /**
+     * Inverse matrix of this camera rotation.
+     * @readonly
+     */
+
+    this.inverseRotationMatrix;
   }
   /**
    * Sets field of view for camera.
@@ -3164,8 +3183,9 @@ function () {
         this.matrix = multiply(this.matrix, this.lookAt(camera._lookUpMatrix, [0, 1, 0]));
       }
 
-      this.rotationMatrix = inverse(rotation.matrix);
-      this.inventedMatrix = inverse(this.matrix);
+      this.rotationMatrix = rotation.matrix;
+      this.inverseRotationMatrix = inverse(rotation.matrix);
+      this.inverseMatrix = inverse(this.matrix);
     }
     /**
      * Sets function to control camera.
@@ -3835,8 +3855,6 @@ function () {
      */
 
     this._textureBlockLocation = null;
-    this.mipmap = [];
-    this.mips = null;
     /**
      * Execute every function in array when texture loaded.
      * @type {Function[]}
@@ -4130,9 +4148,9 @@ function () {
     key: "bind",
     value: function bind(engine) {
       this.engine = engine;
+      this.engine.textures.push(this);
       this.webGL = engine.webGL;
       this._textureBlockLocation = this.engine.textures.length;
-      this.engine.textures.push(this);
       this._WebGLTexture = this.engine.webGL.createTexture();
       this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
       this.engine.webGL.bindTexture(this.engine.webGL.TEXTURE_2D, this._WebGLTexture);
@@ -4185,25 +4203,59 @@ var ReflectionTexture_ReflectionTexture =
 function (_CubeTexture) {
   inherits_default()(ReflectionTexture, _CubeTexture);
 
-  function ReflectionTexture(engine, background, quality, alpha) {
+  function ReflectionTexture(engine, background, quality, reflectionAlpha) {
     var _this;
 
     classCallCheck_default()(this, ReflectionTexture);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ReflectionTexture).call(this));
     _this.engine = engine;
+    _this.webGL = engine.webGL;
     _this.background = background || 'rgba(0, 0, 0, 0)';
     _this.quality = quality || _this.engine.reflectionQuality;
 
-    if (!alpha) {
-      var _alpha = background.replace('rgba(', '');
+    if (!reflectionAlpha) {
+      var _reflectionAlpha = background.replace('rgba(', '');
 
-      _alpha = _alpha.replace(')', '');
-      _alpha = _alpha.split(',');
-      _this.alpha = _alpha[3];
+      _reflectionAlpha = alpha.replace(')', '');
+      _reflectionAlpha = alpha.split(',');
+      _this.reflectionAlpha = _reflectionAlpha[3];
     } else {
-      _this.alpha = alpha;
+      _this.reflectionAlpha = reflectionAlpha;
     }
+
+    if (_this.reflectionAlpha < 1) {
+      _this.alpha = true;
+    } else {
+      _this.alpha = false;
+    }
+
+    _this._object = null;
+    var texture = document.createElement('canvas');
+    texture.width = 16;
+    texture.height = 16;
+    var context = texture.getContext('2d');
+    context.fillStyle = background;
+    context.fillRect(0, 0, 16, 16);
+    _this._WebGLTexture = _this.webGL.createTexture();
+
+    _this.webGL.bindTexture(_this.webGL.TEXTURE_CUBE_MAP, _this._WebGLTexture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+
+    _this.webGL.generateMipmap(_this.webGL.TEXTURE_CUBE_MAP);
+
+    _this.webGL.texParameteri(_this.webGL.TEXTURE_CUBE_MAP, _this.webGL.TEXTURE_MIN_FILTER, _this.webGL.LINEAR_MIPMAP_LINEAR);
 
     _this.engine.textureLoaded(assertThisInitialized_default()(_this));
 
@@ -4213,78 +4265,66 @@ function (_CubeTexture) {
       }
     });
 
-    _this._object = null;
+    _this.camera = new Camera_Camera();
+    _this.camera.fieldOfViewRad = _this.engine.camera.fieldOfViewRad;
+    _this.camera.range = _this.engine.camera.range;
     return _this;
   }
 
   createClass_default()(ReflectionTexture, [{
     key: "generate",
     value: function generate() {
-      var camera = new Camera_Camera();
-      camera.position = this.object.position;
-      camera.fieldOfViewRad = this.engine.camera.fieldOfViewRad;
-      camera.range = this.engine.camera.range;
-      camera.setRotation(0, 270, 0);
-      var posXP = this.engine.captureFrame(camera, {
+      this.camera.position = this.object.position;
+      this.camera.setRotation(0, 270, 0);
+      var posXP = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      camera.setRotation(0, 90, 0);
-      var posXN = this.engine.captureFrame(camera, {
+      this.camera.setRotation(0, 90, 0);
+      var posXN = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      camera.setRotation(-90, 0, 0);
-      var posYP = this.engine.captureFrame(camera, {
+      this.camera.setRotation(-90, 0, 0);
+      var posYP = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      camera.setRotation(90, 0, 0);
-      var posYN = this.engine.captureFrame(camera, {
+      this.camera.setRotation(90, 0, 0);
+      var posYN = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      camera.setRotation(0, 0, 0);
-      var posZP = this.engine.captureFrame(camera, {
+      this.camera.setRotation(0, 0, 0);
+      var posZP = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      camera.setRotation(0, 180, 0);
-      var posZN = this.engine.captureFrame(camera, {
+      this.camera.setRotation(0, 180, 0);
+      var posZN = this.engine.captureFrame(this.camera, {
         backgroundColor: this.background,
         width: this.quality,
         height: this.quality,
-        imageAlpha: this.alpha,
+        imageAlpha: this.reflectionAlpha,
         noDrawObjects: [this.object]
       });
-
-      if (this.alpha < 1) {
-        this.alpha = true;
-      }
-
       this.bind(this.engine);
       this.setLoadedImages(posXP, posXN, posYN, posYP, posZP, posZN);
-      this.engine.div.append(posXP);
-      this.engine.div.append(posXN);
-      this.engine.div.append(posYP);
-      this.engine.div.append(posYN);
-      this.engine.div.append(posZP);
-      this.engine.div.append(posZN); // this.engine.camera.position = this.object.position
     }
   }, {
     key: "bindCubeTexture",
@@ -4709,7 +4749,7 @@ function () {
 
       if (!this.UIElement) {
         temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inventedMatrix);
+        temp.multiply(this.engine.camera.inverseMatrix);
       } else {
         temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
       }
@@ -5133,7 +5173,7 @@ function () {
 
       if (!this.UIElement) {
         temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inventedMatrix);
+        temp.multiply(this.engine.camera.inverseMatrix);
       } else {
         temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
       }
@@ -5371,6 +5411,7 @@ function () {
     value: function setTexture(texture) {
       this.texture = texture;
       texture.object = this;
+      this.alpha = texture.alpha || false;
     }
     /**
      * Translate polygon for x,y,z pixels.
@@ -5785,7 +5826,7 @@ function () {
 
       if (!this.UIElement) {
         temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inventedMatrix);
+        temp.multiply(this.engine.camera.inverseMatrix);
       } else {
         temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
       }
@@ -5961,6 +6002,8 @@ function (_Rect) {
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
+      this.engine.webGL.uniform2fv(this.shaderProgram.movingLocation, this._moving);
+      this.engine.webGL.uniform2fv(this.shaderProgram.cellSizeLocation, this.cellSize);
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
       this.engine.drawCallsPerFrame++;
       this.engine.drawCalls++;
@@ -5968,15 +6011,12 @@ function (_Rect) {
   }, {
     key: "update",
     value: function update() {
-      var temp = new Matrixes_Matrix(); //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
-
-      if (!this.UIElement) {
-        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inventedMatrix);
-      } else {
-        temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      }
-
+      var temp = new Matrixes_Matrix();
+      temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+      var cameraMatrix = unit();
+      cameraMatrix = multiply(cameraMatrix, translation(0, this.engine.camera.position[1], 0));
+      cameraMatrix = multiply(cameraMatrix, this.engine.camera.rotationMatrix);
+      temp.multiply(inverse(cameraMatrix));
       var world = new Matrixes_Matrix();
       world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
       world.translate(this.position[0], this.position[1], this.position[2]);
@@ -5984,12 +6024,13 @@ function (_Rect) {
       rot = multiply(rot, rotationZ(this.rotation[2]));
       var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
       parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      this._world = parentRot;
       rot = multiply(parentRot, rot);
       world.multiply(rot);
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
       world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+      this._world = world;
       temp.multiply(world.matrix);
+      this._moving = [this.engine.camera.position[0], this.engine.camera.position[2]];
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
     }
