@@ -251,9 +251,9 @@ export class CubeTexture {
 
     bind(engine) {
         this.engine = engine
+        this.engine.textures.push(this)
         this.webGL = engine.webGL
         this._textureBlockLocation = this.engine.textures.length
-        this.engine.textures.push(this)
         this._WebGLTexture = this.engine.webGL.createTexture()
         this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation)
         this.engine.webGL.bindTexture(this.engine.webGL.TEXTURE_2D, this._WebGLTexture)

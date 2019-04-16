@@ -291,6 +291,8 @@ export class Cube {
          */
         this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        this.engine.objectLoaded(this)
     }
 
     /**

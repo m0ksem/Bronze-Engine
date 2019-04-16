@@ -65,30 +65,48 @@ export class Engine {
         this.polygons = []
 
         /**
-         * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
-         * @type {Objects[]}
-         * @public
-         */
-        this.objects = []
-
-        
-        /**
-         * Array of objects with alpha texture which draws after all another objects and sorting by z.
-         */
-        this.objectsWithAlphaTexture = []
-
-        /**
          * @type {UI}
          * @private
          */
         this.ui = null
 
         /**
+         * True if all resources like textures and objects loaded.
+         * @type {boolean}
+         * @readonly
+         */
+        this.resourcesLoaded = false
+
+        /**
+         * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
+         * @type {Objects[]}
+         * @public
+         */
+        this.objects = []
+   
+        /**
+         * Array of objects with alpha texture which draws after all another objects and sorting by z.
+         */
+        this.objectsWithAlphaTexture = []
+
+        /**
+         * @type {Number}
+         * @readonly
+         */
+        this.loadedObjectsCount = 0
+
+        /**
+         * True if all attached objects loaded.
+         * @type {boolean}
+         * @readonly
+         */
+        this.objectsLoaded = false
+
+        /**
          * @type {Texture[]}
          * @private
          */
         this.textures = []
-
 
         /**
          * @type {Number}
@@ -104,9 +122,9 @@ export class Engine {
         this.texturesLoaded = false
 
         /**
-         * On texture loaded functions array
+         * On resources loaded functions array
          */
-        this.onTexturesLoadedHandlers = []
+        this.onResourcesLoadedHandlers = []
 
         /**
          * Default texture for all object.
@@ -191,6 +209,10 @@ export class Engine {
 
         this.webGL.enable(this.webGL.CULL_FACE)
         this.webGL.enable(this.webGL.DEPTH_TEST)
+
+        
+        this.globalLightPosition = [0, 100, 400]
+        this.globalLightRange = 20000;
     }
 
     /**
@@ -223,9 +245,6 @@ export class Engine {
         this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
 
         this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
-
-        
-        console.log(this.shaders.grid)
 
         this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options)
 
@@ -296,7 +315,7 @@ export class Engine {
         })
 
         this.objectsWithAlphaTexture.sort((a, b) => {
-            return a.position[2] - b.position[2]
+            return Vectors.distance(b.position, this.camera.position) - Vectors.distance(a.position, this.camera.position)
         })
 
         this.objectsWithAlphaTexture.forEach((element) => {
@@ -315,9 +334,8 @@ export class Engine {
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
         this.shaders.default.use()
-        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
-        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix)
 
         this.drawCallsPerFrame = 0
 
@@ -344,7 +362,7 @@ export class Engine {
         let drawUI = false
         let imageHeight = 128
         let imageWidth = 128
-        let backgroundColor = 'rgba(0, 0, 0, 0)'
+        let background = 'rgba(0, 0, 0, 0)'
         let backgroundAlpha = 1
         let imageAlpha = 1
         let noDrawObjects = []
@@ -352,7 +370,7 @@ export class Engine {
             drawUI = options.drawUI || drawUI
             imageHeight = options.height || imageHeight
             imageWidth = options.width || imageWidth
-            backgroundColor = options.backgroundColor || backgroundColor
+            background = options.background || background
             backgroundAlpha = options.backgroundAlpha || backgroundAlpha
             imageAlpha = options.imageAlpha || imageAlpha
             noDrawObjects = options.noDrawObjects || []
@@ -365,15 +383,15 @@ export class Engine {
         this.camera = camera
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
         this.shaders.default.use()
-        this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
-        this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix)
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
+        this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
+        this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix)
         this.drawCallsPerFrame = 0
 
         this._update()
         this.polygons.forEach(element => {
             element.draw()
-        });
+        })
 
         for (let i = 0; i < this.objects.length; i++) {
             const object = this.objects[i];
@@ -394,8 +412,12 @@ export class Engine {
         frame.width = this.canvas.width;
         let context = frame.getContext('2d')
         context.globalAlpha = backgroundAlpha
-        context.fillStyle = backgroundColor
-        context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        if (typeof(background) === 'string') {
+            context.fillStyle = background
+            context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        } else if (typeof(background) === 'image') {
+            context.drawImage(background, 0, 0, frame.width, frame.height)
+        }
         context.globalAlpha = imageAlpha
         context.drawImage(this.canvas, 0, 0)
 
@@ -450,24 +472,45 @@ export class Engine {
         this.onrun.push(func)
     }
 
+    /**
+     * Function should be executed when texture loaded and ready to use.
+     * @param {Texture} texture 
+     */
     textureLoaded(texture) {
         this.loadedTexturesCount += 1
-        // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
-        // console.log(texture)
-        // console.log(this.textures)
         if (this.loadedTexturesCount == this.textures.length) {
             this.texturesLoaded = true
-            this.onTexturesLoadedHandlers.forEach(func => {
-                func(this.textures.length)
-            })
+            if (this.objectsLoaded) {
+                this.resourcesLoaded = true
+                this.onResourcesLoadedHandlers.forEach(func => {
+                    func(this.textures.length)
+                })
+            }
+        }
+    }
+
+    /**
+     * Function should be executed when object loaded and ready to use.
+     * @param {Object} object
+     */
+    objectLoaded(object) {
+        this.loadedObjectsCount += 1
+        if (this.loadedObjectsCount == this.objects.length) {
+            this.objectsLoaded = true
+            if (this.textureLoaded) {
+                this.resourcesLoaded = true
+                this.onResourcesLoadedHandlers.forEach(func => {
+                    func(this.textures.length)
+                })
+            }
         }
     }
     
     /**
      * @param {Function} func function which will execute when all textures loaded.
      */
-    addOnTexturesLoaded(func) {
-        this.onTexturesLoadedHandlers.push(func)
+    addOnResourcesLoaded(func) {
+        this.onResourcesLoadedHandlers.push(func)
     }
 }
 

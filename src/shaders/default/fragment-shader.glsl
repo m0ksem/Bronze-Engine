@@ -4,14 +4,16 @@ varying vec2 v_texcoord;
 varying vec3 v_normal;
 
 uniform sampler2D u_texture;
-varying vec3 v_surfaceToLight;
+uniform float u_lightRange;
+varying vec3 v_surfaceToLightDirection;
 
 void main() {
     vec3 normal = normalize(v_normal);
-    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
+    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);
     float light = dot(v_normal, surfaceToLightDirection);
-    if (light < 0.5)
-        light = 0.5;
+    float distanceToSurface = length(v_surfaceToLightDirection);
+    float k = (u_lightRange - distanceToSurface) / u_lightRange;
+    light = light * k;
     
     gl_FragColor = texture2D(u_texture, v_texcoord);
     if (gl_FragColor.a == 0.0) {

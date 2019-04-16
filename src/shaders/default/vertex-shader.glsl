@@ -5,11 +5,11 @@ attribute vec4 a_normal;
 uniform mat4 u_matrix;
 uniform mat4 u_objectRotation;
 uniform vec3 u_lightWorldPosition;
-uniform mat4 u_cameraMatrix;
+uniform mat4 u_worldMatrix;
 
 varying vec2 v_texcoord;
 varying vec3 v_normal;
-varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToLightDirection;
 
 
 void main() {
@@ -18,7 +18,7 @@ void main() {
     v_texcoord = a_texcoord;
     v_normal = vec3(u_objectRotation * a_normal);
 
-    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;
+    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;
     
-    v_surfaceToLight = u_lightWorldPosition; // - surfaceWorldPosition;
+    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;
 }

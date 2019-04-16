@@ -169,6 +169,8 @@ export class Object {
         this.onload = function () {
             return null
         }
+
+        this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     /**
@@ -187,6 +189,7 @@ export class Object {
     setTexture (texture) {
         this.texture = texture
         texture.object = this
+        this.alpha = texture.alpha || false
     }
 
     /**
@@ -481,6 +484,7 @@ export class Object {
     
         this.collisionBoxes.push(collisionBox)
         this.size = this.getSize()
+        this.engine.objectLoaded(this)
     }
 
     /**
@@ -528,6 +532,7 @@ export class Object {
                 this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
+                this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
 
                 this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3)
                 this.engine.drawCallsPerFrame++
@@ -547,20 +552,14 @@ export class Object {
         }
 
         let world = new Matrixes.Matrix()
-        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
         world.translate(this.position[0], this.position[1], this.position[2])
         let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
-        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
-        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
         this._rotationMatrix = rot
-        
-        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])     
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
         
-        this._world = world
+        this._world = world.matrix
 
         temp.multiply(world.matrix)
         

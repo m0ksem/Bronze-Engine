@@ -123,3 +123,18 @@ export function multiply(matrix1, matrix2) {
         b20 * a02 + b21 * a12 + b22 * a22
     ]
 }
+
+/**
+ * Return distance between two vectors.
+ * @param {Number[]} vector1 Any vector
+ * @param {Number[]} vector2 Any vector that have length same as vector1
+ * @public
+ * @returns {Number}
+ */
+export function distance (vector1, vector2) {
+    let squareSum = 0
+    for (let i = 0; i < vector1.length; i++) {
+        squareSum += (vector1[i] - vector2[i]) * (vector1[i] - vector2[i])
+    }
+    return Math.sqrt(squareSum)
+}

@@ -95,6 +95,7 @@ export class Rect {
          * @property {Number} z rotation on axis z
          */
         this.rotation = [0, 0, 0]
+        this.rotationDeg = [0, 0, 0]
 
         /**
          * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
@@ -215,6 +216,15 @@ export class Rect {
 
         this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        this.setNormals([
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        ])
+
+        this.engine.objectLoaded(this)
     }
 
     /**
@@ -302,12 +312,31 @@ export class Rect {
      * @param {Number} z in deg.
      * @public
      */
-    rotate(x, y, z) {
+    setRotation(x, y, z) {
         let xRad = Math.degToRad(x)
         let yRad = Math.degToRad(y)
         let zRad = Math.degToRad(z)
         this.rotationDeg = [x, y, z]
         this.rotation = [xRad, yRad, zRad]
+    }
+
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
+     * @public
+     */
+    rotate(x, y, z) {
+        let xRad = Math.degToRad(x)
+        let yRad = Math.degToRad(y)
+        let zRad = Math.degToRad(z)
+        this.rotationDeg[0] += x
+        this.rotationDeg[1] += y
+        this.rotationDeg[2] += z
+        this.rotation[0] += xRad
+        this.rotation[1] += yRad
+        this.rotation[2] += zRad
     }
 
     /**
@@ -375,9 +404,9 @@ export class Rect {
         let normal = [
             0, 0, 1
         ]
-        let rot = Vectors.rotationX(this.rotationDeg[0])
-        rot = Vectors.multiply(rot, Vectors.rotationY(this.rotationDeg[1]))
-        rot = Vectors.multiply(rot, Vectors.rotationZ(this.rotationDeg[2]))
+        let rot = Vectors.rotationX(this.rotation[0])
+        rot = Vectors.multiply(rot, Vectors.rotationY(this.rotation[1]))
+        rot = Vectors.multiply(rot, Vectors.rotationZ(this.rotation[2]))
         normal = Vectors.vecMultiply(rot, normal)
         this.normals = [
             normal[0], normal[1], normal[2],
@@ -420,7 +449,8 @@ export class Rect {
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
 
         this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
         this.engine.drawCallsPerFrame++
@@ -444,13 +474,14 @@ export class Rect {
         rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
         let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
         parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        this._world = rot
         rot = Matrixes.multiply(parentRot, rot)
         world.multiply(rot)
 
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
+        this._world = world.matrix
+        
         temp.multiply(world.matrix)
 
         this._matrix = temp.matrix

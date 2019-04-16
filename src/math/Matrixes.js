@@ -521,3 +521,35 @@ export function inverse(matrix) {
 
     return result;
 }
+
+/**
+ * Computes the transpose of a matrix.
+ * @param {Array} matrix matrix to compute inverse of.
+ * @return {Array} new result matrix.
+ * @public
+ */
+export function transpose (matrix) {
+    let new_matrix = [0, 0, 0, 0,
+                      0, 0, 0, 0,
+                      0, 0, 0, 0,
+                      0, 0, 0, 0]
+                      
+    new_matrix[0] = matrix[0];
+    new_matrix[1] = matrix[4];
+    new_matrix[2] = matrix[8];
+    new_matrix[3] = matrix[12];
+    new_matrix[4] = matrix[1];
+    new_matrix[5] = matrix[5];
+    new_matrix[6] = matrix[9];
+    new_matrix[7] = matrix[13];
+    new_matrix[8] = matrix[2];
+    new_matrix[9] = matrix[6];
+    new_matrix[10] = matrix[10];
+    new_matrix[11] = matrix[14];
+    new_matrix[12] = matrix[3];
+    new_matrix[13] = matrix[7];
+    new_matrix[14] = matrix[11];
+    new_matrix[15] = matrix[15];
+
+    return new_matrix;
+}

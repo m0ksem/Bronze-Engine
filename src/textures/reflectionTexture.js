@@ -4,7 +4,7 @@ import {Camera} from '../Camera'
 /**
  * Reflection texture.
  * @param {Engine} engine 
- * @param {String} background
+ * @param {String|Image} background
  * @param {Number} quality
  * @param {Number} alpha
  * @class
@@ -34,11 +34,15 @@ export class ReflectionTexture extends CubeTexture {
         this._object = null
 
         let texture = document.createElement('canvas')
-            texture.width = 16
-            texture.height = 16
+            texture.width = background.width || 16
+            texture.height = background.height || 16
         let context = texture.getContext('2d')
-        context.fillStyle = background
-        context.fillRect(0, 0, 16, 16)
+        if (typeof(background) === 'string') {
+            context.fillStyle = background
+            context.fillRect(0, 0, 16, 16)
+        } else if (typeof(background) === 'image') {
+            context.drawImage(background, 0, 0, background.width, background.height)
+        }
 
         this._WebGLTexture = this.webGL.createTexture()
         this.webGL.bindTexture(this.webGL.TEXTURE_CUBE_MAP, this._WebGLTexture)
@@ -52,7 +56,7 @@ export class ReflectionTexture extends CubeTexture {
         this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
 
         this.engine.textureLoaded(this)
-        this.engine.addOnTexturesLoaded(() => {
+        this.engine.addOnResourcesLoaded(() => {
             if (this.object != null) {
                 this.generate()
             }
@@ -77,17 +81,17 @@ export class ReflectionTexture extends CubeTexture {
     generate () {
         this.camera.position = this.object.position
         this.camera.setRotation(0, 270, 0)
-        let posXP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]})
+        let posXP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]})
         this.camera.setRotation(0, 90, 0);
-        let posXN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posXN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
         this.camera.setRotation(-90, 0, 0);
-        let posYP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posYP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
         this.camera.setRotation(90, 0, 0);
-        let posYN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posYN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
         this.camera.setRotation(0, 0, 0);
-        let posZP = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posZP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
         this.camera.setRotation(0, 180, 0);
-        let posZN = this.engine.captureFrame(this.camera, { backgroundColor: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posZN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
         
         this.bind(this.engine)
         this.setLoadedImages(
