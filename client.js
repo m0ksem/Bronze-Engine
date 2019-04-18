@@ -95,11 +95,12 @@ camera.setControl(() => {
         }
     }
 
-    engine.globalLightPosition = [engine.camera.position[0], engine.camera.position[1] + 500, engine.camera.position[2] + 500]
+    // engine.globalLightPosition = [engine.camera.position[0], engine.camera.position[1] + 500, engine.camera.position[2] + 500]
 })
 
-engine.globalLightRange = 2500
-engine.globalLightMinValue = 0.001
+engine.globalLightPosition = [10000, 9000, 10000]
+engine.globalLightRange = 47000
+engine.globalLightMinValue = 0.35
 
 // Loading textures
 let dirtTexture = new Bronze.SimpleTexture("./assets/texture/dirt.jpg")
@@ -138,14 +139,17 @@ let fridgeTexture = new Bronze.SimpleTexture("./assets/texture/fridge.png")
 let woodTexture = new Bronze.SimpleTexture("./assets/texture/wood.jpg")
     woodTexture.setColorRGBA(255, 255, 255, 255)
     woodTexture.bind(engine)
-let houseTexture = new Bronze.SimpleTexture("./assets/texture/house.png")
-    houseTexture.setColorRGBA(255, 255, 255, 255)
-    houseTexture.bind(engine)
-    houseTexture.alpha = true
 
 let cubeTexture = new Bronze.CubeTexture()
     cubeTexture.bind(engine)
     cubeTexture.setLoadingImages(grassTexture, grassTexture, grassTexture, grassTexture, grassTexture, grassTexture)
+
+let skyboxTexture = new Bronze.CubeTexture()
+    skyboxTexture.bind(engine)
+    skyboxTexture.setSkybox('./assets/texture/skybox.png')
+
+let skybox = new Bronze.Skybox(engine)
+skybox.setTexture(skyboxTexture)
 
 let glass = new Bronze.Glass(engine)
 
@@ -200,23 +204,11 @@ let rect = new Bronze.Rect(engine)
     rect.setPosition(-500, 0, 500)
     rect.rotate(0, 90, 0)
     rect.setRotationPoint(0, 0, 0)
-
-let rectRot = new Bronze.Rect(engine)
-    rectRot.setTexture(rjunTexture)
-    rectRot.setSize(1000, 1000)
-    rectRot.setPosition(0, 0, 0 )
-    rectRot.rotate(0, 90, 0)
-    rectRot.setRotationPoint(0, 0, 0)
-    rectRot.animate(60, () => {
-        rectRot.rotate(0.5, 0.5, 1.1)
-    })
-
-    
-
+  
 let cube = new Bronze.Cube(engine)
     cube.setSize(100, 100, 100)
     cube.setPosition(1700, 400, 800)
-    cube.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.2))
+    cube.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.8))
     cube.animate(60, () => {
         cube.rotate(0.5, 0.8, 1.0)
     })
@@ -224,30 +216,30 @@ let cube = new Bronze.Cube(engine)
 let cube22 = new Bronze.Cube(engine)
     cube22.setSize(100, 100, 100)
     cube22.setPosition(1400, 400, 800)
-    cube22.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.2))
+    cube22.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.8))
     cube22.animate(60, () => {
         cube22.rotate(0.5, 0.8, 1.0)
     })
     cube22.useMaterial(glass)
-let deerRef = new Bronze.Object(engine)
-deerRef.name = "Deer transparent with reflection"
-deerRef.setPosition(0, 0, 0)
-deerRef.loadFromObj("assets/objects/deer.obj")
-deerRef.scale(0.3, 0.3, 0.3)
-deerRef.useMaterial(glass)
-deerRef.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.2))
+    let deerRef = new Bronze.Object(engine)
+    deerRef.name = "Deer transparent with reflection"
+    deerRef.setPosition(0, 0, 0)
+    deerRef.loadFromObj("assets/objects/deer.obj")
+    deerRef.scale(0.3, 0.3, 0.3)
+    deerRef.useMaterial(glass)
+    deerRef.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.7))
 
-let cola1 = new Bronze.Object(engine)
-cola1.setPosition(500, 0, 1200)
-cola1.name = "box on ground"
-cola1.loadFromObj("assets/objects/cola.obj")
-cola1.setRotationPoint(0, 0, 0)
-cola1.scale(7, 7, 7)
-cola1.animate(60, () => {
-    cola1.rotate(0, 0.05, 0)
-})
-cola1.useMaterial(glass)
-cola1.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.2))
+    let cola1 = new Bronze.Object(engine)
+    cola1.setPosition(500, 0, 1200)
+    cola1.name = "box on ground"
+    cola1.loadFromObj("assets/objects/cola.obj")
+    cola1.setRotationPoint(0, 0, 0)
+    cola1.scale(7, 7, 7)
+    cola1.animate(60, () => {
+        cola1.rotate(0, 0.05, 0)
+    })
+    cola1.useMaterial(glass)
+    cola1.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.9))
 
 let cube1 = new Bronze.Cube(engine)
 cube1.setTexture(cubeTexture)
@@ -268,28 +260,11 @@ cube1.setTexture(cubeTexture)
         cube2.rotate(2, -0, 0)
     })
 
-
-// let fridge = new Bronze.Object(engine)
-//     fridge.name = "Fridge"
-//     fridge.setTexture(fridgeTexture)
-//     fridge.setPosition(-500, 0, 800)
-//     fridge.loadFromObj("assets/objects/fridge.obj")
-//     fridge.scale(10, 10, 10)
-
-
 let deer2 = new Bronze.Object(engine)
     deer2.name = "Deer normal scaled on 0.3"
     deer2.setPosition(1800, 0, 800)
     deer2.loadFromObj("assets/objects/deer.obj")
     deer2.scale(0.3, 0.3, 0.3)
-
-// let house = new Bronze.Object(engine)
-//     house.name = "House"
-//     house.setTexture(houseTexture)
-//     house.setPosition(-2000, -10, 800)
-//     house.setRotation(0, 45, 0)
-//     house.loadFromObj("assets/objects/house.obj")
-//     house.scale(100, 100, 100)
 
 let cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
@@ -308,36 +283,28 @@ let cola2 = new Bronze.Object(engine)
     rect.setPosition(-500, 0, 500)
     rect.rotate(0, 0, 0)
     rect.setRotationPoint(-100, 100, 100)
-    rect.setTextureRepeating(2, 1)
 
     rect = new Bronze.Rect(engine)
     rect.setTexture(transparentTextureDoor)
     rect.setSize(1000, 1000)
-    rect.setPosition(-200, 0, 200)
-    rect.rotate(0, -45, 0)
-    rect.setRotationPoint(-100, 100, 100)
+    rect.setPosition(500, 0, 500)
+    rect.rotate(0, 180, 0)
 
-    
-    rect.setTextureRepeating(2, 1)
-    rect = new Bronze.Rect(engine)
-    rect.setTexture(woodTexture)
-    rect.setSize(1000, 1000)
-    rect.setPosition(-0, 0, 300)
-    rect.rotate(0, -45, 0)
-    rect.setRotationPoint(-100, 100, 100)
-    rect.setTextureRepeating(2, 1)
+    let roofRight = new Bronze.Rect(engine)
+    roofRight.setTexture(woodTexture)
+    roofRight.setSize(1000, 1000)
+    roofRight.setPosition(-500, 1000, -500)
+    roofRight.setRotation(90, 0, 0)
+
 
 let cubeObj = new Bronze.Object(engine)
 cubeObj.setTexture(colaTexture)
-cubeObj.setPosition(50, 500, 1500)
+cubeObj.setPosition(50, 500, 1000)
 cubeObj.name = "cube on ground"
 cubeObj.loadFromObj("assets/objects/cube.obj")
 cubeObj.setRotationPoint(0, 0, 0)
 cubeObj.scale(2, 2, 2)
-// obj.animate(60, () => {
-//     obj.rotate(0, 0.05, 0)
-// })
-cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 1024, 0.2))
+cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 1024, 0.7))
 cubeObj.useMaterial(glass)
 cubeObj.alpha = true
 

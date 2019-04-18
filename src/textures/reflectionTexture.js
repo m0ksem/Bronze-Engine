@@ -25,11 +25,7 @@ export class ReflectionTexture extends CubeTexture {
             this.reflectionAlpha = reflectionAlpha
         }
 
-        if (this.reflectionAlpha < 1) {
-            this.alpha = true
-        } else {
-            this.alpha = false
-        }
+        this.alpha = true
 
         this._object = null
 

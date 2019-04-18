@@ -1,14 +1,10 @@
 import * as Math from "../math/Math"
 import * as Matrixes from "../math/Matrixes"
 import * as Vectors from "../math/Vectors"
-import { CubeTexture } from "../textures/CubeTexture"
-import { Camera } from "../Camera"
-
-
 
 
 /**
- * Rect for using custom shaders
+ * Cube for using custom shaders
  * @tutorial
  * @param {Engine} engine
  * @class
@@ -36,13 +32,6 @@ export class Cube {
          * @readonly
          */
         this.shaderProgram = engine.shaders.cube
-
-        /**
-         * Rect polygons.
-         * @private
-         * @type {Array.{0: Polygon, 1: Polygon}} vector 3
-         */
-        this.polygons = new Array(2)
 
         /**
          * Rect position.
@@ -399,7 +388,7 @@ export class Cube {
      * @param {Number} z in deg.
      * @public
      */
-    setRotate(x, y, z) {
+    setRotation(x, y, z) {
         let xRad = Math.degToRad(x)
         let yRad = Math.degToRad(y)
         let zRad = Math.degToRad(z)

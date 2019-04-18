@@ -212,6 +212,72 @@ export class CubeTexture {
         this.bindCubeTexture()
     }
 
+    /**
+     * Set skybox from path
+     * @param {string} texture 
+     */
+    setSkybox (path) {
+        let texture = new Image()
+        texture.crossOrigin = ''
+        texture.src = path
+        texture.onload = () => {
+            let w = texture.width
+            let h = texture.height
+            let size
+            console.log(w + ' ' + h)
+            console.log(w / 4)
+            console.log(h / 3)
+            if (h / 3 == w / 4) {
+                size = h / 3
+            } else {
+                throw 'Wrong sizes for texture. Texture must be Skyblock 3x4 squares.'
+            }
+            
+            let canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            let context = canvas.getContext('2d')
+            context.drawImage(texture, 0, size, size, size, 0, 0, size, size)
+            this.textures.negativeX = canvas
+            canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            context = canvas.getContext('2d')
+            context.drawImage(texture, size * 2, size, size, size, 0, 0, size, size)
+            this.textures.positiveX = canvas
+            canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            context = canvas.getContext('2d')
+            context.drawImage(texture, size, size, size, size, 0, 0, size, size)
+            this.textures.positiveZ = canvas
+            canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            context = canvas.getContext('2d')
+            context.drawImage(texture, size * 3, size, size, size, 0, 0, size, size)
+            this.textures.negativeZ = canvas
+            canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            context = canvas.getContext('2d')
+            context.drawImage(texture, size, 0, size, size, 0, 0, size, size)
+            this.textures.positiveY = canvas
+            canvas = document.createElement('canvas')
+            canvas.height = size
+            canvas.width = size
+            context = canvas.getContext('2d')
+            context.drawImage(texture, size, size * 2, size, size, 0, 0, size, size)
+            this.textures.negativeY = canvas
+            this.loaded = true
+            this.onTextureLoad.forEach(func => {
+                func(this)
+            })
+            this.bindCubeTexture()
+        }
+    }
+
+
     setSize(width, height) {
         this.width = width
         this.height = height

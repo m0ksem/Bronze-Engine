@@ -9,7 +9,6 @@ uniform float u_lightMinValue;
 varying vec3 v_surfaceToLightDirection;
 
 void main() {
-    vec3 normal = normalize(v_normal);
     vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);
     float light = dot(v_normal, surfaceToLightDirection);
     float distanceToSurface = length(v_surfaceToLightDirection);

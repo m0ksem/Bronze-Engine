@@ -29,6 +29,11 @@ export class Glass extends Material {
         this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
+        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition)
+        this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange)
+        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
+
 
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer)
@@ -57,14 +62,15 @@ export class Glass extends Material {
      */
     drawObject(object) {
         this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
-        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
+        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition)
+        this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange)
+        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix)
         this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
 
         if (!object.behindTheCamera) {
             object.faces.forEach(face => {

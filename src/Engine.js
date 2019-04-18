@@ -11,6 +11,9 @@ import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl"
 import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl"
 import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragment-shader.glsl"
 import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
+import skyboxFragmentShaderSource from "./shaders/skybox/fragment-shader.glsl"
+import skyboxVertexShaderSource from "./shaders/skybox/vertex-shader.glsl"
+
 
 
 /**
@@ -21,7 +24,6 @@ import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-sh
  */
 export class Engine {
     constructor (div) {
-
         this.infoConsoleLog()
 
         /**
@@ -252,17 +254,20 @@ export class Engine {
         let options = {
             removePrefixes: true, addLocationMarker: true
         }
+
         this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic')
         this.shaders.addExtension('standard', 'OES_standard_derivatives')
         
-        console.time('Shader compiling')
         this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options)
-        console.timeEnd('Shader compiling')
+
         this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
 
         this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
 
         this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options)
+
+        this.shaders.addProgram('skybox', skyboxVertexShaderSource, skyboxFragmentShaderSource, options)
+
 
         this.shaders.default.use()
         this.webGL.enable(this.webGL.BLEND);
@@ -303,7 +308,6 @@ export class Engine {
     addObject (object) {
         this.objects.push(object)
     }
-
 
     /**
      * Function to update all positions, size etc.
