@@ -210,9 +210,23 @@ export class Engine {
         this.webGL.enable(this.webGL.CULL_FACE)
         this.webGL.enable(this.webGL.DEPTH_TEST)
 
-        
+        /**
+         * Array of x, y, z position of global light.
+         * @type {Number[]} 
+         */
         this.globalLightPosition = [0, 100, 400]
-        this.globalLightRange = 20000;
+
+        /**
+         * Global light max distance.
+         * @type {Number}
+         */
+        this.globalLightRange = 200000;
+
+        /**
+         * Minimum global light value.
+         * @type {Number} from 0 to 1 float
+         */
+        this.globalLightMinValue = 0.2
     }
 
     /**
@@ -226,6 +240,7 @@ export class Engine {
         console.info('     Version : 0.0.1')
         console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
         console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
+        console.info('     Author  : https://github.com/m0ksem')
         console.log()
     }
 
@@ -240,8 +255,9 @@ export class Engine {
         this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic')
         this.shaders.addExtension('standard', 'OES_standard_derivatives')
         
+        console.time('Shader compiling')
         this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options)
-
+        console.timeEnd('Shader compiling')
         this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
 
         this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
@@ -332,10 +348,11 @@ export class Engine {
      * @private
      */
     _draw () {
-        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
+        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
         this.shaders.default.use()
-        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
-        this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix)
+        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition)
+        this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange)
+        this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
 
         this.drawCallsPerFrame = 0
 

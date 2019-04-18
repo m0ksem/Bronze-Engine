@@ -83,7 +83,7 @@ camera.setControl(() => {
     if (controls.mouse.buttons[2] || controls.touch.actionBeforeMove == 'long click') {
         if (engine.selectedObject != null) {
             const object = engine.selectedObject
-            object.moveRelativeToTheCamera(controls.mouse.movement.x, -controls.mouse.movement.y, 0)
+            object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, -controls.mouse.movement.y)
         }
     }
 
@@ -95,8 +95,11 @@ camera.setControl(() => {
         }
     }
 
-    engine.globalLightPosition = engine.camera.position
+    engine.globalLightPosition = [engine.camera.position[0], engine.camera.position[1] + 500, engine.camera.position[2] + 500]
 })
+
+engine.globalLightRange = 2500
+engine.globalLightMinValue = 0.001
 
 // Loading textures
 let dirtTexture = new Bronze.SimpleTexture("./assets/texture/dirt.jpg")
@@ -217,7 +220,6 @@ let cube = new Bronze.Cube(engine)
     cube.animate(60, () => {
         cube.rotate(0.5, 0.8, 1.0)
     })
-    // cube.useShader(engine.shaders.reflection)
     cube.useMaterial(glass)
 let cube22 = new Bronze.Cube(engine)
     cube22.setSize(100, 100, 100)
@@ -226,7 +228,6 @@ let cube22 = new Bronze.Cube(engine)
     cube22.animate(60, () => {
         cube22.rotate(0.5, 0.8, 1.0)
     })
-    // cube.useShader(engine.shaders.reflection)
     cube22.useMaterial(glass)
 let deerRef = new Bronze.Object(engine)
 deerRef.name = "Deer transparent with reflection"
@@ -237,7 +238,7 @@ deerRef.useMaterial(glass)
 deerRef.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.2))
 
 let cola1 = new Bronze.Object(engine)
-cola1.setPosition(500, 0, 600)
+cola1.setPosition(500, 0, 1200)
 cola1.name = "box on ground"
 cola1.loadFromObj("assets/objects/cola.obj")
 cola1.setRotationPoint(0, 0, 0)

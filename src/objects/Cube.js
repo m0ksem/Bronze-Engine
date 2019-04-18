@@ -480,6 +480,9 @@ export class Cube {
         this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
         this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
+        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition)
+        this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange)
+        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
 
         this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
         this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
@@ -494,8 +497,8 @@ export class Cube {
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldLocation, false, this._rotationMatrix)
-        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
 
         this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
         this.engine.drawCallsPerFrame++
@@ -525,7 +528,7 @@ export class Cube {
         world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
-        this._world = world
+        this._world = world.matrix
         temp.multiply(world.matrix)
 
         this._matrix = temp.matrix

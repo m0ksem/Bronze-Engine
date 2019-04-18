@@ -180,6 +180,16 @@ export class Matrix {
     }
 
     /**
+     * Multiply matrix on scalar
+     * @param {Number} scalar
+     */
+    multiplyScalar (scalar) {
+        for (let i = 0; i < this.matrix.length; i++) {
+            this.matrix[i] *= scalar;
+        }
+    }
+
+    /**
      * Multiplying matrix by transition matrix (x, y, z).
      * @param {Number} x 
      * @param {Number} y 
@@ -401,6 +411,17 @@ export function multiply (matrix1, matrix2) {
         b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32,
         b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33
     ]
+}
+
+/**
+ * Multiply matrix on scalar
+ * @param {Number} scalar
+ */
+export function multiplyScalar(matrix, scalar) {
+    for (let i = 0; i < matrix.length; i++) {
+        matrix[i] *= scalar;
+    }
+    return matrix
 }
 
 /**

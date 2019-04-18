@@ -234,7 +234,7 @@ export class Object {
      */
     moveRelativeToTheCamera (x, y, z) {
         let pos = [x, y, z, 1]
-            pos = Matrixes.vec3Multiply(this.camera.inventedMatrix, pos)
+        pos = Matrixes.vec3Multiply(this.camera.rotationMatrix, pos)
         this.position[0] += pos[0]
         this.position[1] += pos[1]
         this.position[2] += pos[2]
@@ -542,26 +542,40 @@ export class Object {
     }
 
     update () {
-        let temp = new Matrixes.Matrix()
-        //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
+        let objectMatrix = new Matrixes.Matrix()
+        let world = new Matrixes.Matrix()
+        
+        let objectRotationMatrix = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
+        objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, Matrixes.rotationZ(this.rotation[2]))
+
         if (!this.UIElement) {
-            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-            temp.multiply(this.engine.camera.inverseMatrix)
+            objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+            objectMatrix.multiply(this.engine.camera.inverseMatrix)
+
+            world.translate(this.position[0], this.position[1], this.position[2])
+            world.multiply(objectRotationMatrix)
+            world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+
+            objectMatrix.multiply(world.matrix)
         } else {
-            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+            objectMatrix.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+
+            // world.multiply(this.engine.camera.inverseRotationMatrix)
+            world.translate(this.engine.camera.position[0], this.engine.camera.position[1], this.engine.camera.position[2])
+            world.translate(this.position[0], this.position[1], this.position[2])
+            world.multiply(objectRotationMatrix)
+            world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+            // world.multiplyScalar(-1)
+
+            objectMatrix.translate(this.position[0], this.position[1], this.position[2])
+            objectMatrix.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+            objectMatrix.multiply(objectRotationMatrix)
+
+            objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, this.engine.camera.rotationMatrix)
+            objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
         }
 
-        let world = new Matrixes.Matrix()
-        world.translate(this.position[0], this.position[1], this.position[2])
-        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
-        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
-        world.multiply(rot)
-        this._rotationMatrix = rot
-        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-        
         this._world = world.matrix
-
-        temp.multiply(world.matrix)
         
         if (!this.UIElement) {
             let mouseOverHitBox = false
@@ -573,7 +587,7 @@ export class Object {
                         const y = collisionBox.y[iy];
                         for (let iz = 0; iz < collisionBox.z.length; iz++) {
                             const z = collisionBox.z[iz];
-                            let coordsInPixels = Matrixes.transformVector(temp.matrix, [x, y, z, 1])
+                            let coordsInPixels = Matrixes.transformVector(objectMatrix.matrix, [x, y, z, 1])
                                 coordsInPixels[0] =  coordsInPixels[0] / coordsInPixels[3]
                                 coordsInPixels[1] =  coordsInPixels[1] / coordsInPixels[3]
                                 coordsInPixels[0] = (coordsInPixels[0] *  0.5 + 0.5) * this.engine.width;
@@ -648,8 +662,8 @@ export class Object {
             })
         }
 
-        this._matrix = temp.matrix
-        this._rotationMatrix = rot
+        this._matrix = objectMatrix.matrix
+        this._rotationMatrix = objectRotationMatrix
     }
 
     useMaterial(material) {
