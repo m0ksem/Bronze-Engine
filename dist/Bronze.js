@@ -1327,6 +1327,18 @@ function () {
       return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
     }
     /**
+     * Multiply matrix on scalar
+     * @param {Number} scalar
+     */
+
+  }, {
+    key: "multiplyScalar",
+    value: function multiplyScalar(scalar) {
+      for (var i = 0; i < this.matrix.length; i++) {
+        this.matrix[i] *= scalar;
+      }
+    }
+    /**
      * Multiplying matrix by transition matrix (x, y, z).
      * @param {Number} x 
      * @param {Number} y 
@@ -1515,6 +1527,18 @@ function multiply(matrix1, matrix2) {
   return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
 }
 /**
+ * Multiply matrix on scalar
+ * @param {Number} scalar
+ */
+
+function multiplyScalar(matrix, scalar) {
+  for (var i = 0; i < matrix.length; i++) {
+    matrix[i] *= scalar;
+  }
+
+  return matrix;
+}
+/**
  * 
  * @param {Array} matrix
  * @param {Array} vector4
@@ -1614,6 +1638,33 @@ function inverse(matrix) {
   result[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
   result[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
   return result;
+}
+/**
+ * Computes the transpose of a matrix.
+ * @param {Array} matrix matrix to compute inverse of.
+ * @return {Array} new result matrix.
+ * @public
+ */
+
+function transpose(matrix) {
+  var new_matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  new_matrix[0] = matrix[0];
+  new_matrix[1] = matrix[4];
+  new_matrix[2] = matrix[8];
+  new_matrix[3] = matrix[12];
+  new_matrix[4] = matrix[1];
+  new_matrix[5] = matrix[5];
+  new_matrix[6] = matrix[9];
+  new_matrix[7] = matrix[13];
+  new_matrix[8] = matrix[2];
+  new_matrix[9] = matrix[6];
+  new_matrix[10] = matrix[10];
+  new_matrix[11] = matrix[14];
+  new_matrix[12] = matrix[3];
+  new_matrix[13] = matrix[7];
+  new_matrix[14] = matrix[11];
+  new_matrix[15] = matrix[15];
+  return new_matrix;
 }
 // CONCATENATED MODULE: ./src/math/Vectors.js
 /** @module Vectors */
@@ -1715,6 +1766,23 @@ function Vectors_multiply(matrix1, matrix2) {
   var b21 = matrix2[2 * 3 + 1];
   var b22 = matrix2[2 * 3 + 2];
   return [b00 * a00 + b01 * a10 + b02 * a20, b00 * a01 + b01 * a11 + b02 * a21, b00 * a02 + b01 * a12 + b02 * a22, b10 * a00 + b11 * a10 + b12 * a20, b10 * a01 + b11 * a11 + b12 * a21, b10 * a02 + b11 * a12 + b12 * a22, b20 * a00 + b21 * a10 + b22 * a20, b20 * a01 + b21 * a11 + b22 * a21, b20 * a02 + b21 * a12 + b22 * a22];
+}
+/**
+ * Return distance between two vectors.
+ * @param {Number[]} vector1 Any vector
+ * @param {Number[]} vector2 Any vector that have length same as vector1
+ * @public
+ * @returns {Number}
+ */
+
+function distance(vector1, vector2) {
+  var squareSum = 0;
+
+  for (var i = 0; i < vector1.length; i++) {
+    squareSum += (vector1[i] - vector2[i]) * (vector1[i] - vector2[i]);
+  }
+
+  return Math.sqrt(squareSum);
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
 var regenerator = __webpack_require__(7);
@@ -2427,16 +2495,16 @@ function () {
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\nvoid main() {\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
-var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition;\r\n}";
+var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    \r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/fragment-shader.glsl' */
-var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_reverseLightDirection;\r\nvarying vec3 v_surfaceToLight;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLight);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    if (light < 0.5)\r\n        light = 0.5;\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    gl_FragColor.rgb *= (light);\r\n    if(gl_FragColor.a < .9)\r\n        discard;\r\n}\r\n";
+var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
-var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_world;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_cameraMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLight;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_world * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_cameraMatrix * a_position).xyz;\r\n    \r\n    v_surfaceToLight = u_lightWorldPosition;\r\n}";
+var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    \r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
@@ -2445,10 +2513,16 @@ var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_t
 var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform vec2 u_moving;\r\nuniform vec2 u_cellSize;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = vec2(a_texcoord.x + u_moving.x / u_cellSize.x, a_texcoord.y + (u_moving.y / u_cellSize.x));\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/fragment-shader.glsl' */
-var reflectionFragmentShaderSource = "precision highp float;\r\n    \r\n// Passed in from the vertex shader.\r\nvarying vec3 v_worldPosition;\r\nvarying vec3 v_worldNormal;\r\n    \r\n// The texture.\r\nuniform samplerCube u_texture;\r\nuniform vec3 u_worldCameraPosition;\r\n        \r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_worldNormal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldPosition);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var reflectionFragmentShaderSource = "precision highp float;\r\n    \r\nuniform samplerCube u_texture;\r\nuniform vec3 u_worldCameraPosition;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n        \r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_normal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldRotation);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(normalize(v_worldRotation), surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n\r\n    gl_FragColor.rgb *= (light);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/vertex-shader.glsl' */
-var reflectionVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\n    \r\nvarying vec3 v_worldPosition;\r\nvarying vec3 v_worldNormal;\r\n    \r\nvoid main() {\r\n    // Multiply the position by the matrix.\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    // send the view position to the fragment shader\r\n    v_worldPosition = (u_rotationMatrix * a_position).xyz;\r\n    \r\n    // orient the normals and pass to the fragment shader\r\n    v_worldNormal =  vec3(a_normal); // mat3(u_rotationMatrix) *\r\n}";
+var reflectionVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n    \r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix * a_position).xyz;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n\r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}";
+
+/* babel-plugin-inline-import './shaders/skybox/fragment-shader.glsl' */
+var skyboxFragmentShaderSource = "    precision mediump float;\r\n     \r\n    uniform samplerCube u_texture;\r\n    uniform mat4 u_matrix;\r\n     \r\n    varying vec4 v_position;\r\n    void main() {\r\n      vec4 t = u_matrix * v_position;\r\n      gl_FragColor = textureCube(u_texture, normalize(t.xyz / t.w));\r\n    }";
+
+/* babel-plugin-inline-import './shaders/skybox/vertex-shader.glsl' */
+var skyboxVertexShaderSource = "attribute vec4 a_position;\r\nvarying vec4 v_position;\r\nvoid main() {\r\n    v_position = a_position;\r\n    gl_Position = a_position;\r\n    gl_Position.z = .9999999;\r\n}";
 /**
  * GameEngine core class.
  * @class
@@ -2503,6 +2577,19 @@ function () {
 
     this.polygons = [];
     /**
+     * @type {UI}
+     * @private
+     */
+
+    this.ui = null;
+    /**
+     * True if all resources like textures and objects loaded.
+     * @type {boolean}
+     * @readonly
+     */
+
+    this.resourcesLoaded = false;
+    /**
      * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
      * @type {Objects[]}
      * @public
@@ -2515,11 +2602,18 @@ function () {
 
     this.objectsWithAlphaTexture = [];
     /**
-     * @type {UI}
-     * @private
+     * @type {Number}
+     * @readonly
      */
 
-    this.ui = null;
+    this.loadedObjectsCount = 0;
+    /**
+     * True if all attached objects loaded.
+     * @type {boolean}
+     * @readonly
+     */
+
+    this.objectsLoaded = false;
     /**
      * @type {Texture[]}
      * @private
@@ -2540,10 +2634,10 @@ function () {
 
     this.texturesLoaded = false;
     /**
-     * On texture loaded functions array
+     * On resources loaded functions array
      */
 
-    this.onTexturesLoadedHandlers = [];
+    this.onResourcesLoadedHandlers = [];
     /**
      * Default texture for all object.
      * @type {Texture}
@@ -2628,6 +2722,24 @@ function () {
     this.webGL.viewport(0, 0, this.width, this.height);
     this.webGL.enable(this.webGL.CULL_FACE);
     this.webGL.enable(this.webGL.DEPTH_TEST);
+    /**
+     * Array of x, y, z position of global light.
+     * @type {Number[]} 
+     */
+
+    this.globalLightPosition = [0, 100, 400];
+    /**
+     * Global light max distance.
+     * @type {Number}
+     */
+
+    this.globalLightRange = 200000;
+    /**
+     * Minimum global light value.
+     * @type {Number} from 0 to 1 float
+     */
+
+    this.globalLightMinValue = 0.2;
   }
   /**
    * Showing info about engine.
@@ -2644,6 +2756,7 @@ function () {
       console.info('     Version : 0.0.1');
       console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global');
       console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine');
+      console.info('     Author  : https://github.com/m0ksem');
       console.log();
     }
     /**
@@ -2664,6 +2777,7 @@ function () {
       this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options);
       this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options);
       this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
+      this.shaders.addProgram('skybox', skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
       this.shaders.default.use();
       this.webGL.enable(this.webGL.BLEND);
       this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
@@ -2742,7 +2856,7 @@ function () {
         }
       });
       this.objectsWithAlphaTexture.sort(function (a, b) {
-        return a.position[2] - b.position[2];
+        return distance(b.position, _this.camera.position) - distance(a.position, _this.camera.position);
       });
       this.objectsWithAlphaTexture.forEach(function (element) {
         element.update();
@@ -2762,8 +2876,9 @@ function () {
     value: function _draw() {
       this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.camera.position);
-      this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.matrix);
+      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
+      this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
+      this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
       this.drawCallsPerFrame = 0;
       this.polygons.forEach(function (element) {
         element.draw();
@@ -2787,7 +2902,7 @@ function () {
       var drawUI = false;
       var imageHeight = 128;
       var imageWidth = 128;
-      var backgroundColor = 'rgba(0, 0, 0, 0)';
+      var background = 'rgba(0, 0, 0, 0)';
       var backgroundAlpha = 1;
       var imageAlpha = 1;
       var noDrawObjects = [];
@@ -2796,7 +2911,7 @@ function () {
         drawUI = options.drawUI || drawUI;
         imageHeight = options.height || imageHeight;
         imageWidth = options.width || imageWidth;
-        backgroundColor = options.backgroundColor || backgroundColor;
+        background = options.background || background;
         backgroundAlpha = options.backgroundAlpha || backgroundAlpha;
         imageAlpha = options.imageAlpha || imageAlpha;
         noDrawObjects = options.noDrawObjects || [];
@@ -2808,9 +2923,9 @@ function () {
       this.camera = camera;
       this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, [0, 100, 400]);
-      this.webGL.uniformMatrix4fv(this.shaders.default.cameraLocation, false, this.camera.matrix);
+      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
+      this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
+      this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix);
       this.drawCallsPerFrame = 0;
 
       this._update();
@@ -2839,8 +2954,14 @@ function () {
       frame.width = this.canvas.width;
       var context = frame.getContext('2d');
       context.globalAlpha = backgroundAlpha;
-      context.fillStyle = backgroundColor;
-      context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+      if (typeof background === 'string') {
+        context.fillStyle = background;
+        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      } else if (typeof background === 'image') {
+        context.drawImage(background, 0, 0, frame.width, frame.height);
+      }
+
       context.globalAlpha = imageAlpha;
       context.drawImage(this.canvas, 0, 0);
       this.camera = currentCamera;
@@ -2923,20 +3044,50 @@ function () {
     value: function addOnRunFunction(func) {
       this.onrun.push(func);
     }
+    /**
+     * Function should be executed when texture loaded and ready to use.
+     * @param {Texture} texture 
+     */
+
   }, {
     key: "textureLoaded",
     value: function textureLoaded(texture) {
       var _this2 = this;
 
-      this.loadedTexturesCount += 1; // console.log(this.loadedTexturesCount + ' ' + this.textures.length)
-      // console.log(texture)
-      // console.log(this.textures)
+      this.loadedTexturesCount += 1;
 
       if (this.loadedTexturesCount == this.textures.length) {
         this.texturesLoaded = true;
-        this.onTexturesLoadedHandlers.forEach(function (func) {
-          func(_this2.textures.length);
-        });
+
+        if (this.objectsLoaded) {
+          this.resourcesLoaded = true;
+          this.onResourcesLoadedHandlers.forEach(function (func) {
+            func(_this2.textures.length);
+          });
+        }
+      }
+    }
+    /**
+     * Function should be executed when object loaded and ready to use.
+     * @param {Object} object
+     */
+
+  }, {
+    key: "objectLoaded",
+    value: function objectLoaded(object) {
+      var _this3 = this;
+
+      this.loadedObjectsCount += 1;
+
+      if (this.loadedObjectsCount == this.objects.length) {
+        this.objectsLoaded = true;
+
+        if (this.textureLoaded) {
+          this.resourcesLoaded = true;
+          this.onResourcesLoadedHandlers.forEach(function (func) {
+            func(_this3.textures.length);
+          });
+        }
       }
     }
     /**
@@ -2944,9 +3095,9 @@ function () {
      */
 
   }, {
-    key: "addOnTexturesLoaded",
-    value: function addOnTexturesLoaded(func) {
-      this.onTexturesLoadedHandlers.push(func);
+    key: "addOnResourcesLoaded",
+    value: function addOnResourcesLoaded(func) {
+      this.onResourcesLoadedHandlers.push(func);
     }
   }]);
 
@@ -4100,6 +4251,79 @@ function () {
       this.loaded = true;
       this.bindCubeTexture();
     }
+    /**
+     * Set skybox from path
+     * @param {string} texture 
+     */
+
+  }, {
+    key: "setSkybox",
+    value: function setSkybox(path) {
+      var _this3 = this;
+
+      var texture = new Image();
+      texture.crossOrigin = '';
+      texture.src = path;
+
+      texture.onload = function () {
+        var w = texture.width;
+        var h = texture.height;
+        var size;
+        console.log(w + ' ' + h);
+        console.log(w / 4);
+        console.log(h / 3);
+
+        if (h / 3 == w / 4) {
+          size = h / 3;
+        } else {
+          throw 'Wrong sizes for texture. Texture must be Skyblock 3x4 squares.';
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        var context = canvas.getContext('2d');
+        context.drawImage(texture, 0, size, size, size, 0, 0, size, size);
+        _this3.textures.negativeX = canvas;
+        canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        context = canvas.getContext('2d');
+        context.drawImage(texture, size * 2, size, size, size, 0, 0, size, size);
+        _this3.textures.positiveX = canvas;
+        canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        context = canvas.getContext('2d');
+        context.drawImage(texture, size, size, size, size, 0, 0, size, size);
+        _this3.textures.positiveZ = canvas;
+        canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        context = canvas.getContext('2d');
+        context.drawImage(texture, size * 3, size, size, size, 0, 0, size, size);
+        _this3.textures.negativeZ = canvas;
+        canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        context = canvas.getContext('2d');
+        context.drawImage(texture, size, 0, size, size, 0, 0, size, size);
+        _this3.textures.positiveY = canvas;
+        canvas = document.createElement('canvas');
+        canvas.height = size;
+        canvas.width = size;
+        context = canvas.getContext('2d');
+        context.drawImage(texture, size, size * 2, size, size, 0, 0, size, size);
+        _this3.textures.negativeY = canvas;
+        _this3.loaded = true;
+
+        _this3.onTextureLoad.forEach(function (func) {
+          func(_this3);
+        });
+
+        _this3.bindCubeTexture();
+      };
+    }
   }, {
     key: "setSize",
     value: function setSize(width, height) {
@@ -4192,7 +4416,7 @@ var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThi
 /**
  * Reflection texture.
  * @param {Engine} engine 
- * @param {String} background
+ * @param {String|Image} background
  * @param {Number} quality
  * @param {Number} alpha
  * @class
@@ -4224,19 +4448,20 @@ function (_CubeTexture) {
       _this.reflectionAlpha = reflectionAlpha;
     }
 
-    if (_this.reflectionAlpha < 1) {
-      _this.alpha = true;
-    } else {
-      _this.alpha = false;
-    }
-
+    _this.alpha = true;
     _this._object = null;
     var texture = document.createElement('canvas');
-    texture.width = 16;
-    texture.height = 16;
+    texture.width = background.width || 16;
+    texture.height = background.height || 16;
     var context = texture.getContext('2d');
-    context.fillStyle = background;
-    context.fillRect(0, 0, 16, 16);
+
+    if (typeof background === 'string') {
+      context.fillStyle = background;
+      context.fillRect(0, 0, 16, 16);
+    } else if (typeof background === 'image') {
+      context.drawImage(background, 0, 0, background.width, background.height);
+    }
+
     _this._WebGLTexture = _this.webGL.createTexture();
 
     _this.webGL.bindTexture(_this.webGL.TEXTURE_CUBE_MAP, _this._WebGLTexture);
@@ -4259,7 +4484,7 @@ function (_CubeTexture) {
 
     _this.engine.textureLoaded(assertThisInitialized_default()(_this));
 
-    _this.engine.addOnTexturesLoaded(function () {
+    _this.engine.addOnResourcesLoaded(function () {
       if (_this.object != null) {
         _this.generate();
       }
@@ -4277,7 +4502,7 @@ function (_CubeTexture) {
       this.camera.position = this.object.position;
       this.camera.setRotation(0, 270, 0);
       var posXP = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4285,7 +4510,7 @@ function (_CubeTexture) {
       });
       this.camera.setRotation(0, 90, 0);
       var posXN = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4293,7 +4518,7 @@ function (_CubeTexture) {
       });
       this.camera.setRotation(-90, 0, 0);
       var posYP = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4301,7 +4526,7 @@ function (_CubeTexture) {
       });
       this.camera.setRotation(90, 0, 0);
       var posYN = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4309,7 +4534,7 @@ function (_CubeTexture) {
       });
       this.camera.setRotation(0, 0, 0);
       var posZP = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4317,7 +4542,7 @@ function (_CubeTexture) {
       });
       this.camera.setRotation(0, 180, 0);
       var posZN = this.engine.captureFrame(this.camera, {
-        backgroundColor: this.background,
+        background: this.background,
         width: this.quality,
         height: this.quality,
         imageAlpha: this.reflectionAlpha,
@@ -4433,6 +4658,7 @@ function () {
      */
 
     this.rotation = [0, 0, 0];
+    this.rotationDeg = [0, 0, 0];
     /**
      * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
      * @public
@@ -4549,6 +4775,9 @@ function () {
     this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
     this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.setNormals([0, 0, 1, 0, 0, 1, 0, 0, 1]);
+    this.engine.objectLoaded(this);
   }
   /**
    * Setting square texture for rect.
@@ -4636,13 +4865,34 @@ function () {
      */
 
   }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
+    key: "setRotation",
+    value: function setRotation(x, y, z) {
       var xRad = degToRad(x);
       var yRad = degToRad(y);
       var zRad = degToRad(z);
       this.rotationDeg = [x, y, z];
       this.rotation = [xRad, yRad, zRad];
+    }
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
+     * @public
+     */
+
+  }, {
+    key: "rotate",
+    value: function rotate(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotationDeg[0] += x;
+      this.rotationDeg[1] += y;
+      this.rotationDeg[2] += z;
+      this.rotation[0] += xRad;
+      this.rotation[1] += yRad;
+      this.rotation[2] += zRad;
     }
     /**
      * Setting rotation of parent object in radians.
@@ -4704,9 +4954,9 @@ function () {
     key: "autoGenerateNormals",
     value: function autoGenerateNormals() {
       var normal = [0, 0, 1];
-      var rot = Vectors_rotationX(this.rotationDeg[0]);
-      rot = Vectors_multiply(rot, Vectors_rotationY(this.rotationDeg[1]));
-      rot = Vectors_multiply(rot, Vectors_rotationZ(this.rotationDeg[2]));
+      var rot = Vectors_rotationX(this.rotation[0]);
+      rot = Vectors_multiply(rot, Vectors_rotationY(this.rotation[1]));
+      rot = Vectors_multiply(rot, Vectors_rotationZ(this.rotation[2]));
       normal = vecMultiply(rot, normal);
       this.normals = [normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2]];
       this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
@@ -4737,7 +4987,8 @@ function () {
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._world);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
       this.engine.drawCallsPerFrame++;
       this.engine.drawCalls++;
@@ -4761,11 +5012,11 @@ function () {
       rot = multiply(rot, rotationZ(this.rotation[2]));
       var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
       parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      this._world = rot;
       rot = multiply(parentRot, rot);
       world.multiply(rot);
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
       world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+      this._world = world.matrix;
       temp.multiply(world.matrix);
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
@@ -4786,10 +5037,8 @@ function () {
 
 
 
-
-
 /**
- * Rect for using custom shaders
+ * Cube for using custom shaders
  * @tutorial
  * @param {Engine} engine
  * @class
@@ -4819,13 +5068,6 @@ function () {
      */
 
     this.shaderProgram = engine.shaders.cube;
-    /**
-     * Rect polygons.
-     * @private
-     * @type {Array.{0: Polygon, 1: Polygon}} vector 3
-     */
-
-    this.polygons = new Array(2);
     /**
      * Rect position.
      * @readonly
@@ -4989,6 +5231,7 @@ function () {
 
     this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.engine.objectLoaded(this);
   }
   /**
    * Sets custom shader program.
@@ -5065,8 +5308,8 @@ function () {
      */
 
   }, {
-    key: "setRotate",
-    value: function setRotate(x, y, z) {
+    key: "setRotation",
+    value: function setRotation(x, y, z) {
       var xRad = degToRad(x);
       var yRad = degToRad(y);
       var zRad = degToRad(z);
@@ -5152,6 +5395,9 @@ function () {
       this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
       this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
       this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
+      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
@@ -5160,8 +5406,8 @@ function () {
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldLocation, false, this._rotationMatrix);
-      this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
       this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
       this.engine.drawCallsPerFrame++;
       this.engine.drawCalls++;
@@ -5190,7 +5436,7 @@ function () {
       this._rotationMatrix = rot;
       world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
       world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = world;
+      this._world = world.matrix;
       temp.multiply(world.matrix);
       this._matrix = temp.matrix;
       this._rotationMatrix = rot;
@@ -5210,6 +5456,127 @@ function () {
   }]);
 
   return Cube;
+}();
+// CONCATENATED MODULE: ./src/objects/Skybox.js
+
+
+
+
+var Skybox_Skybox =
+/*#__PURE__*/
+function () {
+  function Skybox(engine) {
+    classCallCheck_default()(this, Skybox);
+
+    if (engine) {
+      engine.objects.push(this);
+      this.engine = engine;
+    }
+
+    this.webGL = engine.webGL;
+    this.vertexes = [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1];
+    this.shaderProgram = engine.shaders.skybox;
+    this.texture = engine.noTexture;
+    this.vertexesBuffer = this.webGL.createBuffer();
+    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
+    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+    this.engine.objectLoaded(this);
+    /**
+     * Skybox rotation. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+     * @type {Number[]}
+     */
+
+    this.rotation = [0, 0, 0];
+  }
+  /**
+   * Setting square texture for rect.
+   * @param {Texture} texture
+   * @public
+   */
+
+
+  createClass_default()(Skybox, [{
+    key: "setTexture",
+    value: function setTexture(texture) {
+      this.texture = texture;
+      texture.object = this;
+    }
+    /**
+     * Set rotation for x, y, z axis.
+     * @param {Number} x in deg.
+     * @param {Number} y in deg.
+     * @param {Number} z in deg.
+     * @public
+     */
+
+  }, {
+    key: "setRotation",
+    value: function setRotation(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotation = [xRad, yRad, zRad];
+    }
+    /**
+    * Set rotation for x, y, z axis.
+    * @param {Number} x in deg.
+    * @param {Number} y in deg.
+    * @param {Number} z in deg.
+    * @public
+    */
+
+  }, {
+    key: "rotate",
+    value: function rotate(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotation[0] += xRad;
+      this.rotation[1] += yRad;
+      this.rotation[2] += zRad;
+    }
+    /**
+     * Updating camera matrix for drawing Skybox
+     */
+
+  }, {
+    key: "update",
+    value: function update() {
+      var temp = new Matrixes_Matrix();
+      temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+      var cameraM = this.engine.camera.inverseRotationMatrix;
+      temp.multiply(cameraM);
+      temp.rotateX(this.rotation[0]);
+      temp.rotateY(this.rotation[1]);
+      temp.rotateZ(this.rotation[2]);
+      this._matrix = inverse(temp.matrix);
+    }
+    /**
+     * Function draws skybox
+     */
+
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.shaderProgram.use();
+      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
+      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
+      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
+      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 2);
+      this.engine.drawCallsPerFrame++;
+      this.engine.drawCalls++;
+      this.engine.shaders.default.use();
+    }
+  }, {
+    key: "animate",
+    value: function animate(fps, animateFunction) {
+      this._animationInterval = setInterval(animateFunction, 1000 / fps);
+    }
+  }]);
+
+  return Skybox;
 }();
 // CONCATENATED MODULE: ./src/objects/Object.js
 
@@ -5388,6 +5755,8 @@ function () {
     this.onload = function () {
       return null;
     };
+
+    this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
   /**
   * Sets custom shader program.
@@ -5462,7 +5831,7 @@ function () {
     key: "moveRelativeToTheCamera",
     value: function moveRelativeToTheCamera(x, y, z) {
       var pos = [x, y, z, 1];
-      pos = vec3Multiply(this.camera.inventedMatrix, pos);
+      pos = vec3Multiply(this.camera.rotationMatrix, pos);
       this.position[0] += pos[0];
       this.position[1] += pos[1];
       this.position[2] += pos[2];
@@ -5750,6 +6119,7 @@ function () {
       this.maxSizes.z.biggest = collisionBox.z[1];
       this.collisionBoxes.push(collisionBox);
       this.size = this.getSize();
+      this.engine.objectLoaded(this);
     }
     /**
      * Async load object using ajax and compile on load.
@@ -5810,6 +6180,8 @@ function () {
 
           _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.objectRotationLocation, false, _this2._rotationMatrix);
 
+          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.worldMatrixLocation, false, _this2._world);
+
           _this2.engine.webGL.drawArrays(_this2.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3);
 
           _this2.engine.drawCallsPerFrame++;
@@ -5822,29 +6194,34 @@ function () {
     value: function update() {
       var _this3 = this;
 
-      var temp = new Matrixes_Matrix(); //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
+      var objectMatrix = new Matrixes_Matrix();
+      var world = new Matrixes_Matrix();
+      var objectRotationMatrix = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
+      objectRotationMatrix = multiply(objectRotationMatrix, rotationZ(this.rotation[2]));
 
       if (!this.UIElement) {
-        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inverseMatrix);
+        objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+        objectMatrix.multiply(this.engine.camera.inverseMatrix);
+        world.translate(this.position[0], this.position[1], this.position[2]);
+        world.multiply(objectRotationMatrix);
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+        objectMatrix.multiply(world.matrix);
       } else {
-        temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+        objectMatrix.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range); // world.multiply(this.engine.camera.inverseRotationMatrix)
+
+        world.translate(this.engine.camera.position[0], this.engine.camera.position[1], this.engine.camera.position[2]);
+        world.translate(this.position[0], this.position[1], this.position[2]);
+        world.multiply(objectRotationMatrix);
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]); // world.multiplyScalar(-1)
+
+        objectMatrix.translate(this.position[0], this.position[1], this.position[2]);
+        objectMatrix.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+        objectMatrix.multiply(objectRotationMatrix);
+        objectRotationMatrix = multiply(objectRotationMatrix, this.engine.camera.rotationMatrix);
+        objectRotationMatrix = multiplyScalar(objectRotationMatrix, -1);
       }
 
-      var world = new Matrixes_Matrix();
-      world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
-      world.translate(this.position[0], this.position[1], this.position[2]);
-      var rot = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
-      rot = multiply(rot, rotationZ(this.rotation[2]));
-      var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
-      parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      rot = multiply(parentRot, rot);
-      world.multiply(rot);
-      this._rotationMatrix = rot;
-      world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
-      world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = world;
-      temp.multiply(world.matrix);
+      this._world = world.matrix;
 
       if (!this.UIElement) {
         var mouseOverHitBox = false;
@@ -5859,7 +6236,7 @@ function () {
 
               for (var iz = 0; iz < collisionBox.z.length; iz++) {
                 var z = collisionBox.z[iz];
-                var coordsInPixels = transformVector(temp.matrix, [x, y, z, 1]);
+                var coordsInPixels = transformVector(objectMatrix.matrix, [x, y, z, 1]);
                 coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
                 coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
                 coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * _this3.engine.width;
@@ -5933,8 +6310,8 @@ function () {
         });
       }
 
-      this._matrix = temp.matrix;
-      this._rotationMatrix = rot;
+      this._matrix = objectMatrix.matrix;
+      this._rotationMatrix = objectRotationMatrix;
     }
   }, {
     key: "useMaterial",
@@ -6300,6 +6677,10 @@ function (_Material) {
       this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
       this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
       this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
+      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer);
       this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
@@ -6325,13 +6706,14 @@ function (_Material) {
       var _this2 = this;
 
       this.shaderProgram.use();
-      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
-      this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
+      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix);
       this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
+      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world);
 
       if (!object.behindTheCamera) {
         object.faces.forEach(function (face) {
@@ -6371,15 +6753,18 @@ function (_Material) {
 /* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return rotationZ; });
 /* concated harmony reexport scaling */__webpack_require__.d(__webpack_exports__, "scaling", function() { return scaling; });
 /* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return multiply; });
+/* concated harmony reexport multiplyScalar */__webpack_require__.d(__webpack_exports__, "multiplyScalar", function() { return multiplyScalar; });
 /* concated harmony reexport vec3Multiply */__webpack_require__.d(__webpack_exports__, "vec3Multiply", function() { return vec3Multiply; });
 /* concated harmony reexport transformVector */__webpack_require__.d(__webpack_exports__, "transformVector", function() { return transformVector; });
 /* concated harmony reexport inverse */__webpack_require__.d(__webpack_exports__, "inverse", function() { return inverse; });
+/* concated harmony reexport transpose */__webpack_require__.d(__webpack_exports__, "transpose", function() { return transpose; });
 /* concated harmony reexport normalize */__webpack_require__.d(__webpack_exports__, "normalize", function() { return Vectors_normalize; });
 /* concated harmony reexport rotationX */__webpack_require__.d(__webpack_exports__, "rotationX", function() { return Vectors_rotationX; });
 /* concated harmony reexport rotationY */__webpack_require__.d(__webpack_exports__, "rotationY", function() { return Vectors_rotationY; });
 /* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return Vectors_rotationZ; });
 /* concated harmony reexport vecMultiply */__webpack_require__.d(__webpack_exports__, "vecMultiply", function() { return vecMultiply; });
 /* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return Vectors_multiply; });
+/* concated harmony reexport distance */__webpack_require__.d(__webpack_exports__, "distance", function() { return distance; });
 /* concated harmony reexport Engine */__webpack_require__.d(__webpack_exports__, "Engine", function() { return Engine_Engine; });
 /* concated harmony reexport Camera */__webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera_Camera; });
 /* concated harmony reexport Controls */__webpack_require__.d(__webpack_exports__, "Controls", function() { return Controls_Controls; });
@@ -6389,11 +6774,13 @@ function (_Material) {
 /* concated harmony reexport ReflectionTexture */__webpack_require__.d(__webpack_exports__, "ReflectionTexture", function() { return ReflectionTexture_ReflectionTexture; });
 /* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect_Rect; });
 /* concated harmony reexport Cube */__webpack_require__.d(__webpack_exports__, "Cube", function() { return Cube_Cube; });
+/* concated harmony reexport Skybox */__webpack_require__.d(__webpack_exports__, "Skybox", function() { return Skybox_Skybox; });
 /* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
 /* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
 /* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
 /* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
 /* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
+
 
 
 
