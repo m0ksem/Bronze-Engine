@@ -99,8 +99,11 @@ camera.setControl(() => {
 })
 
 engine.globalLightPosition = [10000, 9000, 10000]
-engine.globalLightRange = 47000
-engine.globalLightMinValue = 0.35
+engine.globalLightRange = 20000
+engine.globalLightMinValue = 0.1
+// engine.globalLightPosition = [0, 500, 0]
+// engine.globalLightRange = 1200
+// engine.globalLightMinValue = 0.01
 
 // Loading textures
 let dirtTexture = new Bronze.SimpleTexture("./assets/texture/dirt.jpg")

@@ -47,7 +47,13 @@ export class Shaders {
                 }
             }
             if (words[0].toLowerCase().includes('attribute')) {
-                outName = words[2]
+                let inName = words[2]
+                let arraySizeIndexStart = inName.indexOf('[')
+                if (arraySizeIndexStart != -1) {
+                    inName = inName.slice(0, arraySizeIndexStart)
+                }
+                outName = inName
+
                 if (options && options.removePrefixes) {
                     outName = outName.slice(2, outName.length)
                 }
@@ -56,14 +62,20 @@ export class Shaders {
                 }
                 program.linkAttribute(words[2], outName)
             } else if (words[0].toLowerCase().includes('uniform')) {
-                outName = words[2]
+                let inName = words[2]
+                let arraySizeIndexStart = inName.indexOf('[')
+                if (arraySizeIndexStart != -1) {
+                    inName = inName.slice(0, arraySizeIndexStart)
+                }
+                outName = inName
+
                 if (options && options.removePrefixes) {
                     outName = outName.slice(2, outName.length)
                 }
                 if (options && options.addLocationMarker) {
                     outName = outName + 'Location'
                 }
-                program.linkUniform(words[2], outName)
+                program.linkUniform(inName, outName)
             }
         })
         return program

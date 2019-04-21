@@ -164,11 +164,11 @@ export class SimpleTexture extends Image {
         this.color = new Uint8Array([r, g, b, a])
     }
 
-        /**
-         * Binding texture to engine.
-         * @param {Texture} texture 
-         * @public
-         */
+    /**
+     * Binding texture to engine.
+     * @param {Texture} texture 
+     * @public
+     */
     bind(engine) {
         this.engine = engine
         this._textureBlockLocation = this.engine.textures.length

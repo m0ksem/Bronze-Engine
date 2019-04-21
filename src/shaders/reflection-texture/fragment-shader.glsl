@@ -1,7 +1,6 @@
 precision highp float;
     
 uniform samplerCube u_texture;
-uniform vec3 u_worldCameraPosition;
 uniform float u_lightRange;
 uniform float u_lightMinValue;
 

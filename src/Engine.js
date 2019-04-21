@@ -211,6 +211,7 @@ export class Engine {
 
         this.webGL.enable(this.webGL.CULL_FACE)
         this.webGL.enable(this.webGL.DEPTH_TEST)
+        
 
         /**
          * Array of x, y, z position of global light.
@@ -229,6 +230,8 @@ export class Engine {
          * @type {Number} from 0 to 1 float
          */
         this.globalLightMinValue = 0.2
+
+        this.lights = []
     }
 
     /**
@@ -246,6 +249,7 @@ export class Engine {
         console.log()
     }
 
+
     /**
      * Creating shaders and attaching to webGL context.
      * @private
@@ -259,7 +263,7 @@ export class Engine {
         this.shaders.addExtension('standard', 'OES_standard_derivatives')
         
         this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options)
-
+        
         this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options)
 
         this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options)
@@ -314,10 +318,6 @@ export class Engine {
      * @private
      */
     _update () {
-        let temp
-        let rot
-        let parentRot
-        let world
         if (this.camera._controlFunction != null) {
             this.camera._controlFunction()
             this.controls.mouse.movement.x = 0
@@ -354,8 +354,11 @@ export class Engine {
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
         this.shaders.default.use()
-        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition)
-        this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange)
+        // this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition)
+        // this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange)
+        // this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
+        this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.globalLightPosition)
+        this.webGL.uniform1f(this.shaders.default.lightRangesLocation, this.globalLightRange)
         this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
 
         this.drawCallsPerFrame = 0
@@ -422,6 +425,7 @@ export class Engine {
                 }
             }
         }
+        
         this.objectsWithAlphaTexture.forEach(object => {
             if (noDrawObjects.indexOf(object) == -1) {
                 object.draw()

@@ -224,9 +224,6 @@ export class CubeTexture {
             let w = texture.width
             let h = texture.height
             let size
-            console.log(w + ' ' + h)
-            console.log(w / 4)
-            console.log(h / 3)
             if (h / 3 == w / 4) {
                 size = h / 3
             } else {

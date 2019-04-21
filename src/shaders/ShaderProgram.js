@@ -113,6 +113,9 @@ export class ShaderProgram {
             customName = customName + '1'
         }
         this[customName] = this.webGL.getAttribLocation(this.program, name)
+        if (this[customName] == null) {
+            throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.')
+        }
         return this[customName]
     }
 
@@ -129,7 +132,9 @@ export class ShaderProgram {
             customName = customName + ''
         }
         this[customName] = this.webGL.getUniformLocation(this.program, name)
-
+        if (this[customName] == null) {
+            throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.')
+        }
         return this[customName]
     }
 
@@ -139,17 +144,5 @@ export class ShaderProgram {
 
     useIn (webGL) {
         webGL.useProgram(this.program)
-    }
-}
-
-/**
- * Shader error class.
- * @class
- * @private
- */
-class BronzeShaderException {
-    constructor(message) {
-        this.message = message;
-        this.name = 'Bronze shader error';
     }
 }
