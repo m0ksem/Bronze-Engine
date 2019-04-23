@@ -2254,7 +2254,7 @@ function () {
           break;
 
         default:
-          throw new ShaderProgram_BronzeShaderException('Wrong shader type');
+          throw new BronzeShaderException('Wrong shader type');
           break;
       }
 
@@ -2337,6 +2337,11 @@ function () {
       }
 
       this[customName] = this.webGL.getAttribLocation(this.program, name);
+
+      if (this[customName] == null) {
+        throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.');
+      }
+
       return this[customName];
     }
     /**
@@ -2356,6 +2361,11 @@ function () {
       }
 
       this[customName] = this.webGL.getUniformLocation(this.program, name);
+
+      if (this[customName] == null) {
+        throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.');
+      }
+
       return this[customName];
     }
   }, {
@@ -2372,18 +2382,6 @@ function () {
 
   return ShaderProgram;
 }();
-/**
- * Shader error class.
- * @class
- * @private
- */
-
-var ShaderProgram_BronzeShaderException = function BronzeShaderException(message) {
-  classCallCheck_default()(this, BronzeShaderException);
-
-  this.message = message;
-  this.name = 'Bronze shader error';
-};
 // CONCATENATED MODULE: ./src/shaders/Shaders.js
 
 
@@ -2441,7 +2439,14 @@ function () {
         }
 
         if (words[0].toLowerCase().includes('attribute')) {
-          outName = words[2];
+          var inName = words[2];
+          var arraySizeIndexStart = inName.indexOf('[');
+
+          if (arraySizeIndexStart != -1) {
+            inName = inName.slice(0, arraySizeIndexStart);
+          }
+
+          outName = inName;
 
           if (options && options.removePrefixes) {
             outName = outName.slice(2, outName.length);
@@ -2453,7 +2458,15 @@ function () {
 
           program.linkAttribute(words[2], outName);
         } else if (words[0].toLowerCase().includes('uniform')) {
-          outName = words[2];
+          var _inName = words[2];
+
+          var _arraySizeIndexStart = _inName.indexOf('[');
+
+          if (_arraySizeIndexStart != -1) {
+            _inName = _inName.slice(0, _arraySizeIndexStart);
+          }
+
+          outName = _inName;
 
           if (options && options.removePrefixes) {
             outName = outName.slice(2, outName.length);
@@ -2463,7 +2476,7 @@ function () {
             outName = outName + 'Location';
           }
 
-          program.linkUniform(words[2], outName);
+          program.linkUniform(_inName, outName);
         }
       });
       return program;
@@ -2495,16 +2508,16 @@ function () {
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\nvoid main() {\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
+var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
-var vertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    \r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}\r\n";
+var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/fragment-shader.glsl' */
-var cubeFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\nvoid main() {\r\n    vec3 normal = normalize(v_normal);\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(v_normal, surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
+var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
-var cubeVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceToLightDirection;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    \r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}\r\n";
+var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
@@ -2513,10 +2526,10 @@ var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_t
 var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform vec2 u_moving;\r\nuniform vec2 u_cellSize;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = vec2(a_texcoord.x + u_moving.x / u_cellSize.x, a_texcoord.y + (u_moving.y / u_cellSize.x));\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/fragment-shader.glsl' */
-var reflectionFragmentShaderSource = "precision highp float;\r\n    \r\nuniform samplerCube u_texture;\r\nuniform vec3 u_worldCameraPosition;\r\nuniform float u_lightRange;\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n        \r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_normal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldRotation);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n\r\n    vec3 surfaceToLightDirection = normalize(v_surfaceToLightDirection);\r\n    float light = dot(normalize(v_worldRotation), surfaceToLightDirection);\r\n    float distanceToSurface = length(v_surfaceToLightDirection);\r\n    float k = (u_lightRange - distanceToSurface) / u_lightRange;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n\r\n    gl_FragColor.rgb *= (light);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var reflectionFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision highp float;\r\n    \r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n        \r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(normalize(v_worldRotation), normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_normal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldRotation);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n\r\n    gl_FragColor.rgb *= (light);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/vertex-shader.glsl' */
-var reflectionVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform vec3 u_lightWorldPosition;\r\nuniform mat4 u_worldMatrix;\r\n    \r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix * a_position).xyz;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n\r\n    v_surfaceToLightDirection = u_lightWorldPosition - surfaceWorldPosition;\r\n}";
+var reflectionVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform mat4 u_worldMatrix;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}";
 
 /* babel-plugin-inline-import './shaders/skybox/fragment-shader.glsl' */
 var skyboxFragmentShaderSource = "    precision mediump float;\r\n     \r\n    uniform samplerCube u_texture;\r\n    uniform mat4 u_matrix;\r\n     \r\n    varying vec4 v_position;\r\n    void main() {\r\n      vec4 t = u_matrix * v_position;\r\n      gl_FragColor = textureCube(u_texture, normalize(t.xyz / t.w));\r\n    }";
@@ -2740,6 +2753,14 @@ function () {
      */
 
     this.globalLightMinValue = 0.2;
+    /**
+     * Array with all lights
+     * @tpye {Light[]}
+     */
+
+    this.lights = [];
+    this.lightsPositions = [];
+    this.lightsRanges = [];
   }
   /**
    * Showing info about engine.
@@ -2833,11 +2854,6 @@ function () {
     value: function _update() {
       var _this = this;
 
-      var temp;
-      var rot;
-      var parentRot;
-      var world;
-
       if (this.camera._controlFunction != null) {
         this.camera._controlFunction();
 
@@ -2876,8 +2892,9 @@ function () {
     value: function _draw() {
       this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
-      this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
+      this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
+      this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
+      this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
       this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
       this.drawCallsPerFrame = 0;
       this.polygons.forEach(function (element) {
@@ -4269,9 +4286,6 @@ function () {
         var w = texture.width;
         var h = texture.height;
         var size;
-        console.log(w + ' ' + h);
-        console.log(w / 4);
-        console.log(h / 3);
 
         if (h / 3 == w / 4) {
           size = h / 3;
@@ -5392,11 +5406,10 @@ function () {
     key: "draw",
     value: function draw() {
       this.shaderProgram.use();
-      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
       this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
-      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
+      this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
+      this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
       this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
@@ -6674,11 +6687,10 @@ function (_Material) {
     key: "drawCube",
     value: function drawCube(object) {
       this.shaderProgram.use();
-      this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors_normalize([-0.1, 0.5, 1]));
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
       this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
-      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
+      this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
+      this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
       this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world);
       this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
@@ -6706,8 +6718,9 @@ function (_Material) {
       var _this2 = this;
 
       this.shaderProgram.use();
-      this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition);
-      this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange);
+      this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
+      this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
+      this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
       this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
       this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
       this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
@@ -6740,6 +6753,128 @@ function (_Material) {
 
   return Glass;
 }(Material_Material);
+// CONCATENATED MODULE: ./src/light/Light.js
+
+
+var lightsCount = 0;
+var Light_Light =
+/*#__PURE__*/
+function () {
+  function Light(engine) {
+    classCallCheck_default()(this, Light);
+
+    lightsCount++;
+
+    if (lightsCount > 28) {
+      throw new Error('There are can be only 28 lights. Sorry :(');
+    }
+
+    this.engine = engine;
+    this._position = [0, 0, 0];
+    this._range = 2000;
+    this.color = new Uint8Array([255, 255, 255, 255]);
+    this._index = null;
+    this._on = false;
+  }
+  /**
+   * @param {Number} value
+   */
+
+
+  createClass_default()(Light, [{
+    key: "setPosition",
+
+    /**
+     * 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} z 
+     */
+    value: function setPosition(x, y, z) {
+      this.position = [x, y, z];
+    }
+    /**
+     * Set range for light
+     * @param {Number} value 
+     */
+
+  }, {
+    key: "setRange",
+    value: function setRange(value) {
+      this.range = value;
+    }
+    /**
+     * Setting color of light
+     * @param {Number} r red value from 0 to 255.
+     * @param {Number} g green value from 0 to 255.
+     * @param {Number} b blue value from 0 to 255.
+     * @param {Number} a alpha value from 0 to 255.
+     * @public
+     */
+
+  }, {
+    key: "setColorRGBA",
+    value: function setColorRGBA(r, g, b, a) {
+      this.color = new Uint8Array([r, g, b, a]);
+    }
+    /**
+     * Adds this light to drawing.
+     */
+
+  }, {
+    key: "on",
+    value: function on() {
+      this._index = this.engine.lights.length;
+      this._on = true;
+      this.engine.lights.push(this);
+      this.position = this._position;
+      this.range = this._range;
+    }
+    /**
+     * Remove this light from drawing.
+     */
+
+  }, {
+    key: "off",
+    value: function off() {
+      var index = this.engine.lights.indexOf(this);
+      this.engine.lights.removeAt(index);
+      this.engine.lightsPositions.removeAt(index * 3 + 0);
+      this.engine.lightsPositions.removeAt(index * 3 + 1);
+      this.engine.lightsPositions.removeAt(index * 3 + 2);
+      this.engine.lightsRanges.removeAt(index);
+    }
+  }, {
+    key: "range",
+    set: function set(value) {
+      this._range = value;
+
+      if (this._on) {
+        // this.engine.lightsRanges[this._index] = value
+        this.engine.lightsRanges.push(value);
+      }
+    },
+    get: function get() {
+      return this._range;
+    }
+  }, {
+    key: "position",
+    set: function set(value) {
+      this._position = value;
+
+      if (this._on) {
+        this.engine.lightsPositions.push(value[0]);
+        this.engine.lightsPositions.push(value[1]);
+        this.engine.lightsPositions.push(value[2]);
+      }
+    },
+    get: function get() {
+      return this._position;
+    }
+  }]);
+
+  return Light;
+}();
 // CONCATENATED MODULE: ./src/Bronze.js
 /* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
 /* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
@@ -6780,6 +6915,8 @@ function (_Material) {
 /* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
 /* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
 /* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
+/* concated harmony reexport Light */__webpack_require__.d(__webpack_exports__, "Light", function() { return Light_Light; });
+
 
 
 
