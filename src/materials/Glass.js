@@ -26,11 +26,10 @@ export class Glass extends Material {
      */
     drawCube (object) {
         this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.reverseLightDirectionLocation, Vectors.normalize([-0.1, 0.5, 1]))
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, [0, 100, 400]);
         this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition)
-        this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange)
+        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
+        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
+        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
         this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
         this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
 
@@ -62,8 +61,9 @@ export class Glass extends Material {
      */
     drawObject(object) {
         this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.lightWorldPositionLocation, this.engine.globalLightPosition)
-        this.webGL.uniform1f(this.shaderProgram.lightRangeLocation, this.engine.globalLightRange)
+        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
+        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
+        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
         this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
 
         this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)

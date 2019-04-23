@@ -1,6 +1,4 @@
 // Getting canvas
-
-
 let div = document.getElementById('bronze')
     div.width = window.innerWidth
     div.height = window.innerHeight
@@ -98,9 +96,26 @@ camera.setControl(() => {
     // engine.globalLightPosition = [engine.camera.position[0], engine.camera.position[1] + 500, engine.camera.position[2] + 500]
 })
 
-engine.globalLightPosition = [10000, 9000, 10000]
-engine.globalLightRange = 20000
-engine.globalLightMinValue = 0.1
+// engine.globalLightPosition = [10000, 9000, 10000]
+// engine.globalLightRange = 20000
+engine.globalLightMinValue = 0.01
+let moonLight = new Bronze.Light(engine)
+    moonLight.position = [10000, 9000, 10000]
+    moonLight.range = 13370
+    moonLight.on()
+let light = new Bronze.Light(engine)
+    light.position = [0, 500, -250]
+    light.range = 1200
+    light.on()
+    light = new Bronze.Light(engine)
+    light.position = [0, 500, 800]
+    light.range = 3200
+    light.on()
+    light = new Bronze.Light(engine)
+    light.position = [2000, 500, 800]
+    light.range = 2000
+    light.on()
+    
 // engine.globalLightPosition = [0, 500, 0]
 // engine.globalLightRange = 1200
 // engine.globalLightMinValue = 0.01

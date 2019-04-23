@@ -231,7 +231,15 @@ export class Engine {
          */
         this.globalLightMinValue = 0.2
 
+        /**
+         * Array with all lights
+         * @tpye {Light[]}
+         */
         this.lights = []
+
+        this.lightsPositions = []
+
+        this.lightsRanges = []
     }
 
     /**
@@ -346,7 +354,7 @@ export class Engine {
             this._objectSelectHandler(this.selectedObject)
         }
     }
-
+    
     /**
      * Main drawing function. All polygons are drawn here.
      * @private
@@ -354,11 +362,9 @@ export class Engine {
     _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
         this.shaders.default.use()
-        // this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition)
-        // this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange)
-        // this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
-        this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.globalLightPosition)
-        this.webGL.uniform1f(this.shaders.default.lightRangesLocation, this.globalLightRange)
+        this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions)
+        this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges)
+        this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length)
         this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
 
         this.drawCallsPerFrame = 0
