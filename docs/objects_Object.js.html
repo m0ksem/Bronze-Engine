@@ -156,7 +156,7 @@ export class Object {
          * @type {boolean}
          * @public
          */
-        this.UIElement = false
+        this._UIElement = false
 
         /**
          * True if the object is behind the camera.
@@ -202,6 +202,22 @@ export class Object {
     }
 
     /**
+     * @type {bool}
+     */
+    set UIElement (value) {
+        this._UIElement = value
+        if (value) {
+            this.engine.ui.addObject(this)
+        } else {
+            this.engine.ui.removeObject(this)
+        }
+    }
+
+    get UIElement () {
+        return this._UIElement
+    }
+
+    /**
     * Sets custom shader program.
     * @param {ShaderProgram} shader shader program which object will use.
     */
@@ -229,7 +245,7 @@ export class Object {
      * @public
      */
     setPosition (x, y, z) {
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             this.position[0] = x
             this.position[1] = y
             this.position[2] = z
@@ -378,7 +394,7 @@ export class Object {
      * @public
      */
     destroy() {
-        this.engine.splice(this.engine.objects.indexOf(this), 1)
+        this.engine.objects.splice(this.engine.objects.indexOf(this), 1)
     }
 
     /**
@@ -576,36 +592,29 @@ export class Object {
         let objectRotationMatrix = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
         objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, Matrixes.rotationZ(this.rotation[2]))
 
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             objectMatrix.multiply(this.engine.camera.inverseMatrix)
-
             world.translate(this.position[0], this.position[1], this.position[2])
             world.multiply(objectRotationMatrix)
             world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
             objectMatrix.multiply(world.matrix)
         } else {
-            objectMatrix.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-
-            // world.multiply(this.engine.camera.inverseRotationMatrix)
-            world.translate(this.engine.camera.position[0], this.engine.camera.position[1], this.engine.camera.position[2])
+            objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             world.translate(this.position[0], this.position[1], this.position[2])
             world.multiply(objectRotationMatrix)
             world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-            // world.multiplyScalar(-1)
 
-            objectMatrix.translate(this.position[0], this.position[1], this.position[2])
-            objectMatrix.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-            objectMatrix.multiply(objectRotationMatrix)
+            objectMatrix.multiply(world.matrix)
 
             objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, this.engine.camera.rotationMatrix)
-            objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
+            // objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
         }
 
         this._world = world.matrix
         
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             let mouseOverHitBox = false
             this.collisionBoxes.forEach(collisionBox => {
                 let boxInPixels = []
@@ -665,10 +674,11 @@ export class Object {
                     depth: smallest[2]
                 }
 
-                if (this.relativeCameraPosition.x.left >= this.engine.width || this.relativeCameraPosition.x.right &lt;= 0 ||
-                    this.relativeCameraPosition.y.top >= this.engine.height || this.relativeCameraPosition.x.bottom &lt;= 0) {
+                // NEED TO FIND OBJECT BEHIND CAMERA
 
-                    this.behindTheCamera = true
+                if (this.relativeCameraPosition.x.left >= this.engine.width || this.relativeCameraPosition.x.right &lt;= 0 ||
+                    this.relativeCameraPosition.y.top >= this.engine.height * 1.5 || this.relativeCameraPosition.x.bottom &lt;= -this.engine.height * 0.5) {
+                    this.behindTheCamera = false
                 }
                 else {
                     this.behindTheCamera = false
@@ -712,13 +722,13 @@ export class Object {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="Sound_Sound.html">Sound</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 23 2019 14:30:19 GMT+0300 (FLE Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 01 2019 01:35:10 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

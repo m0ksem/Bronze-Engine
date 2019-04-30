@@ -124,7 +124,18 @@ export class Controls {
          * @type {Array.&lt;{Function}>}
          * @private
          */
-        this._mouseHandlers = [
+        this._mouseDownHandlers = [
+            null, null,
+            null, null, null,
+            null
+        ]
+
+        /**
+         * Functions which triggers if mouse button pressed.
+         * @type {Array.&lt;{Function}>}
+         * @private
+         */
+        this._mouseUpHandlers = [
             null, null,
             null, null, null,
             null
@@ -193,6 +204,9 @@ export class Controls {
         }
         window.onkeydown = (event) => {
             if (this.isFocused) {
+                if (event.keyCode == 27) {
+                    engine.div.blur()
+                }
                 this.keys[event.keyCode] = true;
                 if (this._handlers[event.keyCode] != null) {
                     this._handlers[event.keyCode](event)
@@ -218,8 +232,8 @@ export class Controls {
 
         engine.div.onblur = () => {
             this.isFocused = false
-            for (let i = 0; i &lt; this._focusHandlers.length; i++) {
-                this._blurHandlers[i]()
+            for (let i = 0; i &lt; this._blurHandlers.length; i++) {
+                this._blurHandlers [i]()
             }
         }
 
@@ -256,7 +270,7 @@ export class Controls {
             let durationCalculation
             let touchMoved = false
             engine.div.addEventListener("touchstart", (event) => {
-                if (this._mouseHandlers[2] != null) this._mouseHandlers[2](event)
+                if (this._mouseDownHandlers[2] != null) this._mouseDownHandlers[2](event)
                 durationCalculation = setInterval(touchDurationFunction, 100)
                 toucheTime = new Date().getTime()
                 this.touch.duration = 0
@@ -316,27 +330,29 @@ export class Controls {
         } else {
             let lastMousePosition = null
             engine.div.addEventListener('mousemove', (event) => {
-                if (!this.pointerLocked) {
-                    let mousePos = engine.div.getBoundingClientRect()
-                    let x = event.clientX - mousePos.left
-                    let y = event.clientY - mousePos.top
-                    this.mouse.x = x
-                    this.mouse.y = y
-                    if (lastMousePosition == null) {
-                        lastMousePosition = {
-                            x: x, 
-                            y: y
+                if (this.isFocused) {
+                    if (!this.pointerLocked) {
+                        let mousePos = engine.div.getBoundingClientRect()
+                        let x = event.clientX - mousePos.left
+                        let y = event.clientY - mousePos.top
+                        this.mouse.x = x
+                        this.mouse.y = y
+                        if (lastMousePosition == null) {
+                            lastMousePosition = {
+                                x: x, 
+                                y: y
+                            }
                         }
+                        this.mouse.movement.x = (x - lastMousePosition.x) * this.mouse.sensitivity
+                        this.mouse.movement.y = (y - lastMousePosition.y) * this.mouse.sensitivity
+                        lastMousePosition.x   = x
+                        lastMousePosition.y   = y
+                    } else {
+                        this.mouse.movement.x = -event.movementX * this.mouse.sensitivity
+                        this.mouse.movement.y = -event.movementY * this.mouse.sensitivity
+                        this.mouse.x = this.engine.width / 2
+                        this.mouse.y = this.engine.height / 2
                     }
-                    this.mouse.movement.x = (x - lastMousePosition.x) * this.mouse.sensitivity
-                    this.mouse.movement.y = (y - lastMousePosition.y) * this.mouse.sensitivity
-                    lastMousePosition.x   = x
-                    lastMousePosition.y   = y
-                } else {
-                    this.mouse.movement.x = -event.movementX * this.mouse.sensitivity
-                    this.mouse.movement.y = -event.movementY * this.mouse.sensitivity
-                    this.mouse.x = this.engine.width / 2
-                    this.mouse.y = this.engine.height / 2
                 }
             }, false);
 
@@ -360,21 +376,26 @@ export class Controls {
             })
 
             engine.div.onmousedown = (event) => {
-                this.mouse.buttons[event.button] = true
-                if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button](event)
-                return false
+                if (this.isFocused) {
+                    this.mouse.buttons[event.button] = true
+                    if (this._mouseDownHandlers[2 + event.button] != null) this._mouseDownHandlers[2 + event.button](event)
+                    return false
+                }
             }
 
             engine.div.onmouseup = (event) => {
                 this.mouse.buttons[event.button] = false
+                if (this._mouseUpHandlers[2 + event.button] != null) this._mouseUpHandlers[2 + event.button](event)
                 return false
             }
 
             document.addEventListener('pointerlockchange', () => {
                 if(document.pointerLockElement === engine.div){
+                    engine.div.focus()
                     this.pointerLocked = true
                 }
                 else {
+                    engine.div.blur()
                     this.pointerLocked = false
                 }
             }, false);
@@ -452,7 +473,17 @@ export class Controls {
      * @public
      */
     onMouseDown(keyCode, handler) {
-        this._mouseHandlers[2 + keyCode] = handler
+        this._mouseDownHandlers[2 + keyCode] = handler
+    }
+
+    /**
+     * Sets handler for mouse key down.
+     * @param {Number} keyCode 
+     * @param {Function} handler 
+     * @public
+     */
+    onMouseUp(keyCode, handler) {
+        this._mouseUpHandlers[2 + keyCode] = handler
     }
     
     /**
@@ -507,13 +538,13 @@ function isTouchDevice() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Math.html">Math</a></li><li><a href="module-Matrixes.html">Matrixes</a></li><li><a href="module-Vectors.html">Vectors</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Cube.html">Cube</a></li><li><a href="CubeD.html">CubeD</a></li><li><a href="CubeTexture.html">CubeTexture</a></li><li><a href="Debugger.html">Debugger</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Glass.html">Glass</a></li><li><a href="Grid.html">Grid</a></li><li><a href="Material.html">Material</a></li><li><a href="module-Matrixes.Matrix.html">Matrix</a></li><li><a href="Object.html">Object</a></li><li><a href="Picture.html">Picture</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ReflectionTexture.html">ReflectionTexture</a></li><li><a href="SimpleTexture.html">SimpleTexture</a></li><li><a href="Sound_Sound.html">Sound</a></li><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#compileShader">compileShader</a></li><li><a href="global.html#createWebGLProgram">createWebGLProgram</a></li><li><a href="global.html#getWebGL">getWebGL</a></li><li><a href="global.html#getWebGLById">getWebGLById</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 23 2019 14:30:19 GMT+0300 (FLE Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 01 2019 01:35:10 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>
