@@ -1235,9 +1235,8 @@ function () {
   }, {
     key: "projection",
     value: function projection(fieldOfViewInRadians, width, height, near, far) {
-      this.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1];
+      var rangeInv = 1.0 / (near - far);
       this.matrix = [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 2 / far, 0, 0, 0, 0, 1];
-      return this;
     }
     /**
      * Multiplying this matrix by another.
@@ -2506,7 +2505,6 @@ function () {
 
 
 
-
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
 var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
@@ -2862,6 +2860,9 @@ function () {
       }
 
       this.selectedObject = null;
+      this.ui.objects.forEach(function (object) {
+        object.update();
+      });
       this.objects.forEach(function (element, index) {
         element.update();
 
@@ -2897,9 +2898,13 @@ function () {
       this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
       this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
       this.drawCallsPerFrame = 0;
-      this.polygons.forEach(function (element) {
-        element.draw();
+      this.ui.objects.forEach(function (object) {
+        object.draw();
       });
+      this.ui.clearCanvas();
+      this.ui.drawImage(this.canvas, this.width, this.height);
+      this.ui.draw();
+      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.objects.forEach(function (object) {
         object.draw();
       });
@@ -2940,16 +2945,13 @@ function () {
       this.camera = camera;
       this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
       this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
-      this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
-      this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix);
+      this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
+      this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
+      this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
+      this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
       this.drawCallsPerFrame = 0;
 
       this._update();
-
-      this.polygons.forEach(function (element) {
-        element.draw();
-      });
 
       for (var i = 0; i < this.objects.length; i++) {
         var object = this.objects[i];
@@ -3051,6 +3053,11 @@ function () {
         func();
       });
     }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.stopped = true;
+    }
     /**
      * Adds functions which will execute on engine run.
      * @param {Function} func 
@@ -3116,6 +3123,22 @@ function () {
     value: function addOnResourcesLoaded(func) {
       this.onResourcesLoadedHandlers.push(func);
     }
+    /**
+     * Removes objects if its exist
+     * @param {Object} object 
+     */
+
+  }, {
+    key: "removeObject",
+    value: function removeObject(object) {
+      var index = this.objects.indexOf(object);
+
+      if (index == -1) {
+        throw new Error('Object not found');
+      }
+
+      this.objects.splice(index, 1);
+    }
   }]);
 
   return Engine;
@@ -3129,6 +3152,10 @@ var _engine;
 
 
 function requestAnimationFrameEngine() {
+  if (_engine.stopped) {
+    return;
+  }
+
   requestAnimationFrame(requestAnimationFrameEngine);
 
   _engine.render();
@@ -3515,7 +3542,14 @@ function () {
      * @private
      */
 
-    this._mouseHandlers = [null, null, null, null, null, null];
+    this._mouseDownHandlers = [null, null, null, null, null, null];
+    /**
+     * Functions which triggers if mouse button pressed.
+     * @type {Array.<{Function}>}
+     * @private
+     */
+
+    this._mouseUpHandlers = [null, null, null, null, null, null];
     /**
      * Mouse object which contains position and pressed buttons.
      * @type {Object}
@@ -3580,6 +3614,10 @@ function () {
 
     window.onkeydown = function (event) {
       if (_this.isFocused) {
+        if (event.keyCode == 27) {
+          engine.div.blur();
+        }
+
         _this.keys[event.keyCode] = true;
 
         if (_this._handlers[event.keyCode] != null) {
@@ -3606,7 +3644,7 @@ function () {
     engine.div.onblur = function () {
       _this.isFocused = false;
 
-      for (var _i = 0; _i < _this._focusHandlers.length; _i++) {
+      for (var _i = 0; _i < _this._blurHandlers.length; _i++) {
         _this._blurHandlers[_i]();
       }
     };
@@ -3649,7 +3687,7 @@ function () {
       var durationCalculation;
       var touchMoved = false;
       engine.div.addEventListener("touchstart", function (event) {
-        if (_this._mouseHandlers[2] != null) _this._mouseHandlers[2](event);
+        if (_this._mouseDownHandlers[2] != null) _this._mouseDownHandlers[2](event);
         durationCalculation = setInterval(touchDurationFunction, 100);
         toucheTime = new Date().getTime();
         _this.touch.duration = 0;
@@ -3713,29 +3751,31 @@ function () {
     } else {
       var _lastMousePosition = null;
       engine.div.addEventListener('mousemove', function (event) {
-        if (!_this.pointerLocked) {
-          var mousePos = engine.div.getBoundingClientRect();
-          var x = event.clientX - mousePos.left;
-          var y = event.clientY - mousePos.top;
-          _this.mouse.x = x;
-          _this.mouse.y = y;
+        if (_this.isFocused) {
+          if (!_this.pointerLocked) {
+            var mousePos = engine.div.getBoundingClientRect();
+            var x = event.clientX - mousePos.left;
+            var y = event.clientY - mousePos.top;
+            _this.mouse.x = x;
+            _this.mouse.y = y;
 
-          if (_lastMousePosition == null) {
-            _lastMousePosition = {
-              x: x,
-              y: y
-            };
+            if (_lastMousePosition == null) {
+              _lastMousePosition = {
+                x: x,
+                y: y
+              };
+            }
+
+            _this.mouse.movement.x = (x - _lastMousePosition.x) * _this.mouse.sensitivity;
+            _this.mouse.movement.y = (y - _lastMousePosition.y) * _this.mouse.sensitivity;
+            _lastMousePosition.x = x;
+            _lastMousePosition.y = y;
+          } else {
+            _this.mouse.movement.x = -event.movementX * _this.mouse.sensitivity;
+            _this.mouse.movement.y = -event.movementY * _this.mouse.sensitivity;
+            _this.mouse.x = _this.engine.width / 2;
+            _this.mouse.y = _this.engine.height / 2;
           }
-
-          _this.mouse.movement.x = (x - _lastMousePosition.x) * _this.mouse.sensitivity;
-          _this.mouse.movement.y = (y - _lastMousePosition.y) * _this.mouse.sensitivity;
-          _lastMousePosition.x = x;
-          _lastMousePosition.y = y;
-        } else {
-          _this.mouse.movement.x = -event.movementX * _this.mouse.sensitivity;
-          _this.mouse.movement.y = -event.movementY * _this.mouse.sensitivity;
-          _this.mouse.x = _this.engine.width / 2;
-          _this.mouse.y = _this.engine.height / 2;
         }
       }, false);
       window.addEventListener('mousemove', function (event) {
@@ -3759,20 +3799,25 @@ function () {
       });
 
       engine.div.onmousedown = function (event) {
-        _this.mouse.buttons[event.button] = true;
-        if (_this._mouseHandlers[2 + event.button] != null) _this._mouseHandlers[2 + event.button](event);
-        return false;
+        if (_this.isFocused) {
+          _this.mouse.buttons[event.button] = true;
+          if (_this._mouseDownHandlers[2 + event.button] != null) _this._mouseDownHandlers[2 + event.button](event);
+          return false;
+        }
       };
 
       engine.div.onmouseup = function (event) {
         _this.mouse.buttons[event.button] = false;
+        if (_this._mouseUpHandlers[2 + event.button] != null) _this._mouseUpHandlers[2 + event.button](event);
         return false;
       };
 
       document.addEventListener('pointerlockchange', function () {
         if (document.pointerLockElement === engine.div) {
+          engine.div.focus();
           _this.pointerLocked = true;
         } else {
+          engine.div.blur();
           _this.pointerLocked = false;
         }
       }, false);
@@ -3867,7 +3912,19 @@ function () {
   }, {
     key: "onMouseDown",
     value: function onMouseDown(keyCode, handler) {
-      this._mouseHandlers[2 + keyCode] = handler;
+      this._mouseDownHandlers[2 + keyCode] = handler;
+    }
+    /**
+     * Sets handler for mouse key down.
+     * @param {Number} keyCode 
+     * @param {Function} handler 
+     * @public
+     */
+
+  }, {
+    key: "onMouseUp",
+    value: function onMouseUp(keyCode, handler) {
+      this._mouseUpHandlers[2 + keyCode] = handler;
     }
     /**
      * Sets handler for mouse moving.
@@ -4776,8 +4833,17 @@ function () {
     this.onload = function () {
       return null;
     };
+    /**
+     * @type {bool} is it UIElement
+     */
+
 
     this.UIElement = false;
+    /**
+     * @type {bool}
+     */
+
+    this.hidden = false;
     this.vertexesBuffer = this.webGL.createBuffer();
     this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
     this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
@@ -4986,26 +5052,46 @@ function () {
     value: function setAsUIElement(bool) {
       this.UIElement = bool;
     }
+    /**
+     * Object will no drawn
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.hidden = true;
+    }
+    /**
+     * Object will drawn
+     */
+
+  }, {
+    key: "show",
+    value: function show() {
+      this.hidden = false;
+    }
   }, {
     key: "draw",
     value: function draw() {
-      this.shaderProgram.use();
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
-      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
-      this.engine.drawCallsPerFrame++;
-      this.engine.drawCalls++;
+      if (!this.hidden) {
+        this.shaderProgram.use();
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
+        this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
+        this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
+        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
+        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
+        this.engine.drawCallsPerFrame++;
+        this.engine.drawCalls++;
+      }
     }
   }, {
     key: "update",
@@ -5727,7 +5813,7 @@ function () {
      * @public
      */
 
-    this.UIElement = false;
+    this._UIElement = false;
     /**
      * True if the object is behind the camera.
      * @type {boolean}
@@ -5772,13 +5858,17 @@ function () {
     this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
   /**
-  * Sets custom shader program.
-  * @param {ShaderProgram} shader shader program which object will use.
-  */
+   * @type {bool}
+   */
 
 
   createClass_default()(Object, [{
     key: "useShader",
+
+    /**
+    * Sets custom shader program.
+    * @param {ShaderProgram} shader shader program which object will use.
+    */
     value: function useShader(shader) {
       this.shaderProgram = shader;
     }
@@ -5807,7 +5897,7 @@ function () {
   }, {
     key: "setPosition",
     value: function setPosition(x, y, z) {
-      if (!this.UIElement) {
+      if (!this._UIElement) {
         this.position[0] = x;
         this.position[1] = y;
         this.position[2] = z;
@@ -5976,7 +6066,7 @@ function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.engine.splice(this.engine.objects.indexOf(this), 1);
+      this.engine.objects.splice(this.engine.objects.indexOf(this), 1);
     }
     /**
      * Function to compile object from text of .obj file.
@@ -6212,7 +6302,7 @@ function () {
       var objectRotationMatrix = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
       objectRotationMatrix = multiply(objectRotationMatrix, rotationZ(this.rotation[2]));
 
-      if (!this.UIElement) {
+      if (!this._UIElement) {
         objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
         objectMatrix.multiply(this.engine.camera.inverseMatrix);
         world.translate(this.position[0], this.position[1], this.position[2]);
@@ -6220,23 +6310,17 @@ function () {
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
         objectMatrix.multiply(world.matrix);
       } else {
-        objectMatrix.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range); // world.multiply(this.engine.camera.inverseRotationMatrix)
-
-        world.translate(this.engine.camera.position[0], this.engine.camera.position[1], this.engine.camera.position[2]);
+        objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
         world.translate(this.position[0], this.position[1], this.position[2]);
         world.multiply(objectRotationMatrix);
-        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]); // world.multiplyScalar(-1)
-
-        objectMatrix.translate(this.position[0], this.position[1], this.position[2]);
-        objectMatrix.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-        objectMatrix.multiply(objectRotationMatrix);
-        objectRotationMatrix = multiply(objectRotationMatrix, this.engine.camera.rotationMatrix);
-        objectRotationMatrix = multiplyScalar(objectRotationMatrix, -1);
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
+        objectMatrix.multiply(world.matrix);
+        objectRotationMatrix = multiply(objectRotationMatrix, this.engine.camera.rotationMatrix); // objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
       }
 
       this._world = world.matrix;
 
-      if (!this.UIElement) {
+      if (!this._UIElement) {
         var mouseOverHitBox = false;
         this.collisionBoxes.forEach(function (collisionBox) {
           var boxInPixels = [];
@@ -6298,11 +6382,12 @@ function () {
               top: smallest[1],
               bottom: biggest[1]
             },
-            depth: smallest[2]
+            depth: smallest[2] // NEED TO FIND OBJECT BEHIND CAMERA
+
           };
 
-          if (_this3.relativeCameraPosition.x.left >= _this3.engine.width || _this3.relativeCameraPosition.x.right <= 0 || _this3.relativeCameraPosition.y.top >= _this3.engine.height || _this3.relativeCameraPosition.x.bottom <= 0) {
-            _this3.behindTheCamera = true;
+          if (_this3.relativeCameraPosition.x.left >= _this3.engine.width || _this3.relativeCameraPosition.x.right <= 0 || _this3.relativeCameraPosition.y.top >= _this3.engine.height * 1.5 || _this3.relativeCameraPosition.x.bottom <= -_this3.engine.height * 0.5) {
+            _this3.behindTheCamera = false;
           } else {
             _this3.behindTheCamera = false;
           }
@@ -6337,6 +6422,20 @@ function () {
       this.draw = function () {
         material.drawObject(_this4);
       };
+    }
+  }, {
+    key: "UIElement",
+    set: function set(value) {
+      this._UIElement = value;
+
+      if (value) {
+        this.engine.ui.addObject(this);
+      } else {
+        this.engine.ui.removeObject(this);
+      }
+    },
+    get: function get() {
+      return this._UIElement;
     }
   }]);
 
@@ -6514,6 +6613,7 @@ function () {
  * @constructor
  * @param {Engine} e
  */
+
 var UI_UI =
 /*#__PURE__*/
 function () {
@@ -6525,9 +6625,13 @@ function () {
     this.canvas.height = engine.div.height;
     this.canvas.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;';
     this.div = document.createElement('div');
-    this.div.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;';
+    this.div.style = 'position: absolute; height: 100%; width: 100%; z-index: 9999999; left: 0; right: 0; top: 0;';
     engine.div.appendChild(this.canvas);
     engine.div.appendChild(this.div);
+    this.width = engine.div.width;
+    this.height = engine.div.height;
+    this.centerX = this.width / 2;
+    this.centerY = this.height / 2;
     /**
      * 2D context for UI drawing. 
      * @type {CanvasRenderingContext2D}
@@ -6539,8 +6643,20 @@ function () {
      * @type {Objects[]}
      */
 
-    this.elements = [];
+    this.objects = [];
+    /**
+     * Images to draw
+     * @type {Image[]}
+     */
+
+    this.images = [];
+    /**
+     * @type {HTMLElement[]}
+     */
+
+    this.htmlElements = [];
     engine.ui = this;
+    this.engine = engine;
   }
   /**
    * Adds object to draw.
@@ -6549,9 +6665,10 @@ function () {
 
 
   createClass_default()(UI, [{
-    key: "addElement",
-    value: function addElement(element) {
-      this.elements.push(element);
+    key: "addObject",
+    value: function addObject(element) {
+      this.objects.push(element);
+      this.engine.removeObject(element);
     }
     /**
      * Removes element from drawing function.
@@ -6559,10 +6676,42 @@ function () {
      */
 
   }, {
-    key: "removeElement",
-    value: function removeElement(element) {
-      var index = this.elements.indexOf(element);
-      this.elements.removeAt(index);
+    key: "removeObject",
+    value: function removeObject(element) {
+      var index = this.objects.indexOf(element);
+      this.objects.removeAt(index);
+      this.engine.addObject(element);
+    }
+    /**
+     * Adding DOM element upper game engine canvas.
+     * @param {HTMLElement} element
+     * @param {Number} position.vertical from 0 to 100
+     */
+
+  }, {
+    key: "appendDOMElement",
+    value: function appendDOMElement(element, name, position) {
+      var style = '';
+      style += 'top' + ':  ' + (this.height / 100 * position.vertical - element.width / 2) + 'px;';
+      style += 'left' + ':  ' + (this.width / 100 * position.horizontal - element.height / 2) + 'px;';
+      style += 'position: absolute;';
+      element.style = style;
+      this.div.appendChild(element);
+      this.htmlElements.push({
+        name: name,
+        el: element
+      });
+      element.hidden = false;
+
+      element.hide = function () {
+        element.style.display = 'none';
+      };
+
+      element.show = function () {
+        element.style.display = 'block';
+      };
+
+      return element;
     }
     /**
      * Adding DOM element upper game engine canvas.
@@ -6570,8 +6719,8 @@ function () {
      */
 
   }, {
-    key: "appendDOMElement",
-    value: function appendDOMElement(element, properties) {
+    key: "appendDOMElementWithCustomProperties",
+    value: function appendDOMElementWithCustomProperties(element, properties) {
       var style = '';
 
       for (var property in properties) {
@@ -6580,17 +6729,71 @@ function () {
 
       element.style = style;
       this.div.appendChild(element);
+      this.htmlElements.push({
+        name: name,
+        el: element
+      });
+      element.hidden = false;
+
+      element.hide = function () {
+        element.style.display = 'none';
+      };
+
+      element.show = function () {
+        element.style.display = 'block';
+      };
+
+      return element;
     }
     /**
-     * This function draws all elements.
-     * @private
+     * Draws image on canvas. Read about addImage
+     * @param {Image} image 
+     * @param {Number} width 
+     * @param {Number} height 
      */
 
   }, {
-    key: "_draw",
-    value: function _draw() {
-      this.elements.forEach(function (element) {
-        element.draw();
+    key: "drawImage",
+    value: function drawImage(image, width, height) {
+      this.context.drawImage(image, 0, 0);
+    }
+  }, {
+    key: "addImage",
+    value: function addImage(image, width, height, x, y) {
+      image.width = width;
+      image.height = height;
+      image.xPos = x;
+      image.yPos = y;
+      this.images.push(image);
+
+      image.hide = function () {
+        image.hidden = true;
+      };
+
+      image.show = function () {
+        image.hidden = false;
+      };
+
+      return image;
+    }
+    /**
+     * Clear canvas
+     */
+
+  }, {
+    key: "clearCanvas",
+    value: function clearCanvas() {
+      this.context.clearRect(0, 0, this.width, this.height);
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      var _this = this;
+
+      this.images.forEach(function (img) {
+        if (!img.hidden) {
+          _this.context.drawImage(img, img.xPos, img.yPos, img.width, img.height);
+        }
       });
     }
   }]);
@@ -6875,6 +7078,110 @@ function () {
 
   return Light;
 }();
+// CONCATENATED MODULE: ./src/sound/Sound.js
+
+
+var Sound_Sound =
+/*#__PURE__*/
+function () {
+  /**
+   * 
+   * @param {String} src 
+   */
+  function Sound(src) {
+    var _this = this;
+
+    classCallCheck_default()(this, Sound);
+
+    this.audios = [];
+    this._audioCount = 60;
+    var argIndex = 0;
+
+    for (var i = 0; i < this._audioCount; i++) {
+      this.audios.push(new Audio(arguments[argIndex]));
+      this.audios[i].volume = 0.1;
+      argIndex++;
+
+      if (argIndex === arguments.length) {
+        argIndex = 0;
+      }
+    }
+
+    this.src = src;
+    this._playableAudioIndex = 0;
+    this._delay = 100;
+    this._canBePlayed = true;
+    this._canBePlayedInterval = setInterval(function () {
+      _this._canBePlayed = true;
+    }, this._delay);
+  }
+
+  createClass_default()(Sound, [{
+    key: "play",
+    value: function play() {
+      if (this._canBePlayed) {
+        this.audios[this._playableAudioIndex].play();
+
+        this._playableAudioIndex++;
+
+        if (this._playableAudioIndex == this._audioCount) {
+          this._playableAudioIndex = 0;
+        }
+
+        this._canBePlayed = false;
+      }
+    }
+  }, {
+    key: "playLoop",
+    value: function playLoop() {
+      var _this2 = this;
+
+      this._loopInterval = setInterval(function () {
+        _this2.play();
+      }, this._delay);
+    }
+  }, {
+    key: "playLoopRandom",
+    value: function playLoopRandom() {
+      var _this3 = this;
+
+      this._loopInterval = setInterval(function () {
+        if (_this3._canBePlayed) {
+          _this3.audios[_this3._playableAudioIndex].play();
+
+          _this3._playableAudioIndex = Math.floor(Math.random() * _this3._audioCount);
+
+          if (_this3._playableAudioIndex == _this3._audioCount) {
+            _this3._playableAudioIndex = 0;
+          }
+
+          _this3._canBePlayed = false;
+        }
+      }, this._delay);
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      clearInterval(this._loopInterval);
+    }
+  }, {
+    key: "delay",
+    set: function set(value) {
+      var _this4 = this;
+
+      this._delay = value;
+      clearInterval(this._canBePlayedInterval);
+      this._canBePlayedInterval = setInterval(function () {
+        _this4._canBePlayed = true;
+      }, this._delay);
+    },
+    get: function get() {
+      return this._delay;
+    }
+  }]);
+
+  return Sound;
+}();
 // CONCATENATED MODULE: ./src/Bronze.js
 /* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
 /* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
@@ -6916,6 +7223,8 @@ function () {
 /* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
 /* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
 /* concated harmony reexport Light */__webpack_require__.d(__webpack_exports__, "Light", function() { return Light_Light; });
+/* concated harmony reexport Sound */__webpack_require__.d(__webpack_exports__, "Sound", function() { return Sound_Sound; });
+
 
 
 

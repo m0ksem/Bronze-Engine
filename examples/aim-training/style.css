@@ -39,3 +39,31 @@ canvas {
     font-weight: 500;
     font-family: 'Courier New', Courier, monospace
 }
+
+.killed {
+    font-size: 64px;
+    color: white;
+    font-weight: 700;
+    padding: 20px;
+}
+
+.lose {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    font-size: 64px;
+    color: white;
+}
+
+.win {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    font-size: 64px;
+    color: yellow;
+}

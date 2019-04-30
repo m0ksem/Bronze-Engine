@@ -15,143 +15,228 @@ window.addEventListener('resize', () => {
 
 let camera = new Bronze.Camera()
     camera.setPosition(0, 800, 1500)
-    camera.setRotation(-45, 0, 0)
+    camera.setRotation(0, 0, 0)
     camera.setFieldOfView(90)
     engine.setCamera(camera)
 
 let controls = new Bronze.Controls(engine)
-// // Setting Debugger @OnlyForDevelopment
-// let debug = new Bronze.Debugger(engine)
-//     debug.setElement(document.getElementById('debug'))
-//     debug.addLog("Mouse x", controls.mouse, "x", debug.createLogView())
-//     debug.addLog("Mouse y", controls.mouse, "y", debug.createLogView())
-//     debug.addLog("Hitbox x:", engine, "width", debug.createLogView(), (log) => {
-//         return log.name + " : " + "Unselected."
-//     })
-//     debug.addLog("Hitbox y:", camera.position, "", debug.createLogView(), (log) => {
-//         return log.name + " : " + "Unselected."
-//     })
-//     debug.addLog("Object", camera.position, "", debug.createLogView())
-//     debug.addLog("Z", camera.position, "", debug.createLogView())
+    controls.clickForFocus(true)
 
 // Setting control function for camera
 controls.setSensitivity(1)
 controls.lockPointer(true)
 
-let ui = new Bronze.UI(engine)
-
-camera.setControl(() => {
-    // All coords
-    // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
-    // let yt = this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
-    // let zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
-    // if (controls.keys[87]) {
-    //     if (controls.keys[16]) {
-    //         // camera.move(0, 10, 0)
-    //         camera.move(0, 10, 0)
-    //     } else {
-    //         // camera.move(0, 0, -10)
-    //         // camera.move(camera.rotationMatrix[2] * -10, camera.rotationMatrix[6] * -10, camera.rotationMatrix[10] * -10)
-    //         camera.move(camera.rotationMatrix[2] * -10, 0, camera.rotationMatrix[10] * -10)
-    //     }
-    // }
-    // if (controls.keys[83]) {
-    //     if (controls.keys[16]) {
-    //         // camera.move(0, -10, 0)
-    //         camera.move(0, -10, 0)
-    //     } else {
-    //         // camera.move(0, 0, 10)
-    //         // camera.move(camera.rotationMatrix[2] * 10, camera.rotationMatrix[6] * 10, camera.rotationMatrix[10] * 10)
-    //         camera.move(camera.rotationMatrix[2] * 10, 0, camera.rotationMatrix[10] * 10)
-    //     }
-    // }
-    // if (controls.keys[65]) {
-    //     // camera.move(-10, 0, 0)
-    //     camera.move(camera.rotationMatrix[0] * -10, camera.rotationMatrix[4] * -10, camera.rotationMatrix[8] * -10)
-    // }
-    // if (controls.keys[68]) {
-    //     // camera.move(10, 0, 0)
-    //     camera.move(camera.rotationMatrix[0] * 10, camera.rotationMatrix[4] * 10, camera.rotationMatrix[8] * 10)
-    // }
-
-    
-    if (controls.mouse.buttons[2]) {
-        if (engine.selectedObject != null) {
-            const object = engine.selectedObject
-            object.moveRelativeToTheCamera(controls.mouse.movement.x, -controls.mouse.movement.y, 0)
-        }
-    }
-
-    if (controls.mouse.buttons[0] || controls.pointerLocked) {
-        if (controls.keys[17]) {
-            camera.rotate(0, 0, (controls.mouse.movement.y / 10)) //+ controls.mouse.movement.x / 10) / 2))
-        } else {
-            camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
-        }
-    }
-})
-
 // Loading textures
-let gunTexture = new Bronze.Texture("./assets/texture/m4a1.png")
+let gunTexture = new Bronze.SimpleTexture("")
     gunTexture.setColorRGBA(41, 46, 48, 255)
-let landTexture = new Bronze.Texture("./assets/texture/land.jpg")
+    gunTexture.bind(engine)
+let landTexture = new Bronze.SimpleTexture("./assets/texture/land.jpg")
     landTexture.setColorRGBA(51, 130, 0, 255)
-let targetTexture = new Bronze.Texture("./assets/texture/target.png")
-    targetTexture.setColorRGBA(0, 0, 0, 255)
+    landTexture.setSize(1, 1)
+    landTexture.bind(engine)
+let targetTexture = new Bronze.SimpleTexture("")
+    targetTexture.setColorRGBA(225, 0, 0, 255)
+    targetTexture.bind(engine)
+let friendlyTexture = new Bronze.SimpleTexture("")
+    friendlyTexture.setColorRGBA(0, 225, 0, 255)
+    friendlyTexture.bind(engine)
+let crossHairTexture = new Bronze.SimpleTexture("./assets/texture/crosshair.png")
+    crossHairTexture.setColorRGBA(0, 255, 0, 255)
+    crossHairTexture.bind(engine)
+let skyboxTexture = new Bronze.CubeTexture()
+    skyboxTexture.bind(engine)
+    skyboxTexture.setImagesFromPath('./assets/texture/skybox/posx.jpg', './assets/texture/skybox/negx.jpg', 
+    './assets/texture/skybox/posy.jpg', './assets/texture/skybox/negy.jpg',
+    './assets/texture/skybox/posz.jpg', './assets/texture/skybox/negz.jpg')
+let shotSound = new Bronze.Sound('./assets/sounds/shot.wav')
+let screamSound = new Bronze.Sound('./assets/sounds/scream1.mp3',
+    './assets/sounds/scream2.mp3', './assets/sounds/scream4.mp3',
+    './assets/sounds/scream4.mp3')
+screamSound.delay = 500
 
-// Binding textures
-engine.bindTexture(gunTexture)
-engine.bindTexture(landTexture)
-engine.bindTexture(targetTexture)
 
+let glass = new Bronze.Glass(engine)
 
-let rect
-    for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 16; x++) {
-            rect = new Bronze.Rect(engine)
-            rect.setTexture(landTexture)
-            rect.setSize(1000, 1000)
-            rect.setPosition(-8000 + 1000 * x, 0, 4000 - 1000 * y)
-            rect.rotate(-90, 0, 0)
-            rect.setRotationPoint(0, 0, 0)
-            rect.setNormals([
-                0, 1, 0,
-                0, 1, 0,
-                0, 1, 0,
-            ])
-        }
-    }
+engine.globalLightMinValue = 0.01
+let sunLight = new Bronze.Light(engine)
+sunLight.position = [-10000, 9000, 10000]
+sunLight.range = 133700
+sunLight.on()
 
+let field = {
+    width: 4000,
+    height: 4000
+}
+
+let ui = new Bronze.UI(engine)
+let counter = 0
+let counterDOMElement = document.getElementById('counter')
+let loseScreen = document.getElementById('lose')
+let winScreen = document.getElementById('win')
+ui.appendDOMElement(counterDOMElement, 'counter', { vertical: 0, horizontal: 0 })
+loseScreen = ui.appendDOMElement(loseScreen, 'lose', { vertical: 50, horizontal: 50 })
+loseScreen.hide()
+winScreen = ui.appendDOMElement(winScreen, 'win', { vertical: 50, horizontal: 50 })
+winScreen.hide()
+counterDOMElement.innerHTML = 'You killed ' + counter + ' enemies'
+let crossHair = ui.addImage(crossHairTexture, 64, 64, ui.centerX - 32, ui.centerY - 32)
+
+let skybox = new Bronze.Skybox(engine)
+skybox.setTexture(skyboxTexture)
+
+let cube = new Bronze.Cube(engine)
+cube.setSize(100, 100, 100)
+cube.setPosition(1700, 400, 800)
+cube.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 2048, 0.8))
+cube.animate(60, () => {
+    cube.rotate(0.5, 0.8, 1.0)
+})
+cube.useMaterial(glass)
 
 let gun = new Bronze.Object(engine)
     gun.UIElement = true
     gun.setTexture(gunTexture)
-    gun.setPosition(30, -40, -80)
+    gun.setPosition(100, -230, 350)
     gun.name = "gun"
     gun.loadFromObj("assets/objects/m4a1.obj")
-    gun.setRotationPoint(0, 0, -50)
-    gun.setRotation(Bronze.degToRad(5), 160, 0)
-    gun.scale(2, 2, 2)
+    gun.setRotation(10, -180, 0)
+    gun.scale(50, 50, 50)
 
-for (let i = 0; i < 15; i++) {
+function scope() {
+    gun.setPosition(0, -157, 500)
+    gun.setRotation(0, -180, 0)
+    crossHair.hide()
+    camera.setFieldOfView(60)
+}
+
+function unscope() {
+    gun.setPosition(100, -230, 350)
+    gun.setRotation(10, -180, 0)
+    crossHair.show()
+    camera.setFieldOfView(90)
+}
+
+let enemiesCount = 5
+
+let speedMultiply = 1 
+
+for (let i = 0; i < enemiesCount; i++) {
     let position = {
-        x: Math.floor(Math.random() * (5000 + 5000) - 5000),
-        z: Math.floor(Math.random() * (-800 + 2000) - 2000)
+        x: Math.floor(Math.random() * (field.width / 2 + field.width / 2) - field.width / 2),
+        z: Math.floor(Math.random() * (field.height * 2 - (-field.height)) + (-field.height))
     }
     let object = new Bronze.Object(engine)
-        object.setTexture(gunTexture)
-        object.setPosition(position.x, 0, position.z)
-        object.name = "gun"
-        object.loadFromObj("assets/objects/targhet.obj")
-        object.setRotationPoint(0, 0, -50)
-        object.setRotation(0, 0, 0)
-        object.scale(30, 30, 30)
+    object.setTexture(targetTexture)
+    object.setPosition(position.x, 0, position.z)
+    object.name = "gun"
+    object.loadFromObj("assets/objects/targhet.obj")
+    object.setRotationPoint(0, 0, -50)
+    object.setRotation(0, 0, 0)
+    object.scale(30, -Math.floor(Math.random() * (56 - 45) - 45), 30)
+    object.hits = 0
+    object.friendly = false
 
-        let move = Math.floor(Math.random() * (3 + 3) - 3)
-        object.animate(60, () => {
-            object.move(move, 0, 0)
-        })
+    object.speed = {
+        x: Math.floor(Math.random() * (10 + 15) - 10),
+        z: Math.floor(Math.random() * (10 + 15) - 10)
+    }
+    object.animate(60, () => {
+        if (object.position[0] > field.width) {
+            object.speed.x = - object.speed.x
+        }
+        else if (object.position[0] < -field.width) {
+            object.speed.x = - object.speed.x
+        }
+        if (object.position[2] > field.height * 2) {
+            object.speed.z = - object.speed.z
+        }
+        else if (object.position[2] < -field.height) {
+            object.speed.z = - object.speed.z
+        }
+        object.move(object.speed.x * speedMultiply, 0, object.speed.z * speedMultiply)
+    })
 }
+
+
+for (let i = 0; i < 30; i++) {
+    let position = {
+        x: Math.floor(Math.random() * (field.width / 2 + field.width / 2) - field.width / 2),
+        z: Math.floor(Math.random() * (field.height * 2 - (-field.height)) + (-field.height))
+    }
+    let object = new Bronze.Object(engine)
+    object.setTexture(friendlyTexture)
+    object.setPosition(position.x, 0, position.z)
+    object.name = "gun"
+    object.loadFromObj("assets/objects/targhet.obj")
+    object.setRotationPoint(0, 0, -50)
+    object.setRotation(0, 0, 0)
+    object.scale(30, -Math.floor(Math.random() * (56 - 45) - 45), 30)
+    object.hits = 0
+    object.friendly = true
+
+    object.speed = {
+        x: Math.floor(Math.random() * (10 + 15) - 10),
+        z: Math.floor(Math.random() * (10 + 15) - 10)
+    }
+    object.animate(60, () => {
+        if (object.position[0] > field.width) {
+            object.speed.x = - object.speed.x
+        }
+        else if (object.position[0] < -field.width) {
+            object.speed.x = - object.speed.x
+        }
+        if (object.position[2] > field.height * 2) {
+            object.speed.z = - object.speed.z
+        }
+        else if (object.position[2] < -field.height) {
+            object.speed.z = - object.speed.z
+        }
+        object.move(object.speed.x * speedMultiply, 0, object.speed.z * speedMultiply)
+    })
+}
+
+camera.setControl(() => {
+    if (controls.mouse.buttons[0]) {
+        shotSound.play()
+        screamSound.playLoopRandom()
+        if (engine.selectedObject != null ) {
+            speedMultiply += 0.5
+            if (speedMultiply > 4) {
+                speedMultiply = 4
+            }
+            if (engine.selectedObject.hits === 3) {
+                engine.selectedObject.destroy()
+                if (!engine.selectedObject.friendly) {
+                    counter++
+                    counterDOMElement.innerHTML = 'You killed ' + counter + ' enemies. \n ' +
+                        + (enemiesCount - counter) + ' left.'
+                    if (counter == enemiesCount) {
+                        winScreen.show()
+                        screamSound.stop()
+                        engine.stop()
+                    }
+                } else {
+                    loseScreen.show()
+                    screamSound.stop()
+                    engine.stop()
+                }
+            } else {
+                engine.selectedObject.hits++
+            }
+            controls.mouse.buttons[0] = false
+        }
+    }
+
+    if (controls.isFocused) {
+        camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
+    }
+})
+
+controls.onMouseDown(2, scope)
+controls.onMouseUp(2, unscope)
+controls.addOnBlurHandler(() => {
+    screamSound.stop()
+})
 
 // Run engine
 engine.run()

@@ -1,7 +1,6 @@
 import * as Utils from "./Utils"
 import {SimpleTexture} from "./textures/SimpleTexture"
 import * as Vectors from "./math/Vectors"
-import {ShaderProgram} from "./shaders/ShaderProgram"
 import { Shaders } from "./shaders/Shaders"
 import fragmentShaderSource from "./shaders/default/fragment-shader.glsl"
 import vertexShaderSource from "./shaders/default/vertex-shader.glsl"
@@ -13,6 +12,7 @@ import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragmen
 import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
 import skyboxFragmentShaderSource from "./shaders/skybox/fragment-shader.glsl"
 import skyboxVertexShaderSource from "./shaders/skybox/vertex-shader.glsl"
+import { resolve } from "upath";
 
 
 
@@ -334,6 +334,10 @@ export class Engine {
 
         this.selectedObject = null
 
+        this.ui.objects.forEach(object => {
+            object.update()
+        })
+
         this.objects.forEach((element, index) => {         
             element.update()
             if (element.texture.alpha) {
@@ -359,7 +363,7 @@ export class Engine {
      * Main drawing function. All polygons are drawn here.
      * @private
      */
-    _draw () {
+    async _draw () {
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
         this.shaders.default.use()
         this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions)
@@ -369,9 +373,16 @@ export class Engine {
 
         this.drawCallsPerFrame = 0
 
-        this.polygons.forEach(element => {
-            element.draw()
-        });
+        this.ui.objects.forEach(object => {
+            object.draw()
+        })
+        
+        new Promise(() => {
+            this.ui.clearCanvas()
+            this.ui.drawImage(this.canvas, this.width, this.height)
+        })
+        this.ui.draw()
+        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
 
         this.objects.forEach(object => {
             object.draw()
@@ -413,15 +424,13 @@ export class Engine {
         this.camera = camera
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
         this.shaders.default.use()
-        this.webGL.uniform3fv(this.shaders.default.lightWorldPositionLocation, this.globalLightPosition);
-        this.webGL.uniform1f(this.shaders.default.lightRangeLocation, this.globalLightRange);
-        this.webGL.uniformMatrix4fv(this.shaders.default.cameraMatrixLocation, false, this.camera.rotationMatrix)
+        this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions)
+        this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges)
+        this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length)
+        this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
         this.drawCallsPerFrame = 0
 
         this._update()
-        this.polygons.forEach(element => {
-            element.draw()
-        })
 
         for (let i = 0; i < this.objects.length; i++) {
             const object = this.objects[i];
@@ -495,6 +504,10 @@ export class Engine {
         })
     }
 
+    stop () {
+        this.stopped = true
+    }
+
     /**
      * Adds functions which will execute on engine run.
      * @param {Function} func 
@@ -543,6 +556,20 @@ export class Engine {
     addOnResourcesLoaded(func) {
         this.onResourcesLoadedHandlers.push(func)
     }
+
+    /**
+     * Removes objects if its exist
+     * @param {Object} object 
+     */
+    removeObject(object) {
+        let index = this.objects.indexOf(object)
+        if (index == -1) {
+            throw new Error('Object not found')
+        }
+        this.objects.splice(index, 1)
+    }
+
+
 }
 
 let _engine
@@ -552,6 +579,9 @@ let _engine
  * @private
  */
 function requestAnimationFrameEngine () { 
+    if (_engine.stopped) {
+        return
+    }
     requestAnimationFrame(requestAnimationFrameEngine)
     _engine.render()
 }

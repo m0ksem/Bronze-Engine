@@ -96,7 +96,18 @@ export class Controls {
          * @type {Array.<{Function}>}
          * @private
          */
-        this._mouseHandlers = [
+        this._mouseDownHandlers = [
+            null, null,
+            null, null, null,
+            null
+        ]
+
+        /**
+         * Functions which triggers if mouse button pressed.
+         * @type {Array.<{Function}>}
+         * @private
+         */
+        this._mouseUpHandlers = [
             null, null,
             null, null, null,
             null
@@ -165,6 +176,9 @@ export class Controls {
         }
         window.onkeydown = (event) => {
             if (this.isFocused) {
+                if (event.keyCode == 27) {
+                    engine.div.blur()
+                }
                 this.keys[event.keyCode] = true;
                 if (this._handlers[event.keyCode] != null) {
                     this._handlers[event.keyCode](event)
@@ -190,8 +204,8 @@ export class Controls {
 
         engine.div.onblur = () => {
             this.isFocused = false
-            for (let i = 0; i < this._focusHandlers.length; i++) {
-                this._blurHandlers[i]()
+            for (let i = 0; i < this._blurHandlers.length; i++) {
+                this._blurHandlers [i]()
             }
         }
 
@@ -228,7 +242,7 @@ export class Controls {
             let durationCalculation
             let touchMoved = false
             engine.div.addEventListener("touchstart", (event) => {
-                if (this._mouseHandlers[2] != null) this._mouseHandlers[2](event)
+                if (this._mouseDownHandlers[2] != null) this._mouseDownHandlers[2](event)
                 durationCalculation = setInterval(touchDurationFunction, 100)
                 toucheTime = new Date().getTime()
                 this.touch.duration = 0
@@ -288,27 +302,29 @@ export class Controls {
         } else {
             let lastMousePosition = null
             engine.div.addEventListener('mousemove', (event) => {
-                if (!this.pointerLocked) {
-                    let mousePos = engine.div.getBoundingClientRect()
-                    let x = event.clientX - mousePos.left
-                    let y = event.clientY - mousePos.top
-                    this.mouse.x = x
-                    this.mouse.y = y
-                    if (lastMousePosition == null) {
-                        lastMousePosition = {
-                            x: x, 
-                            y: y
+                if (this.isFocused) {
+                    if (!this.pointerLocked) {
+                        let mousePos = engine.div.getBoundingClientRect()
+                        let x = event.clientX - mousePos.left
+                        let y = event.clientY - mousePos.top
+                        this.mouse.x = x
+                        this.mouse.y = y
+                        if (lastMousePosition == null) {
+                            lastMousePosition = {
+                                x: x, 
+                                y: y
+                            }
                         }
+                        this.mouse.movement.x = (x - lastMousePosition.x) * this.mouse.sensitivity
+                        this.mouse.movement.y = (y - lastMousePosition.y) * this.mouse.sensitivity
+                        lastMousePosition.x   = x
+                        lastMousePosition.y   = y
+                    } else {
+                        this.mouse.movement.x = -event.movementX * this.mouse.sensitivity
+                        this.mouse.movement.y = -event.movementY * this.mouse.sensitivity
+                        this.mouse.x = this.engine.width / 2
+                        this.mouse.y = this.engine.height / 2
                     }
-                    this.mouse.movement.x = (x - lastMousePosition.x) * this.mouse.sensitivity
-                    this.mouse.movement.y = (y - lastMousePosition.y) * this.mouse.sensitivity
-                    lastMousePosition.x   = x
-                    lastMousePosition.y   = y
-                } else {
-                    this.mouse.movement.x = -event.movementX * this.mouse.sensitivity
-                    this.mouse.movement.y = -event.movementY * this.mouse.sensitivity
-                    this.mouse.x = this.engine.width / 2
-                    this.mouse.y = this.engine.height / 2
                 }
             }, false);
 
@@ -332,21 +348,26 @@ export class Controls {
             })
 
             engine.div.onmousedown = (event) => {
-                this.mouse.buttons[event.button] = true
-                if (this._mouseHandlers[2 + event.button] != null) this._mouseHandlers[2 + event.button](event)
-                return false
+                if (this.isFocused) {
+                    this.mouse.buttons[event.button] = true
+                    if (this._mouseDownHandlers[2 + event.button] != null) this._mouseDownHandlers[2 + event.button](event)
+                    return false
+                }
             }
 
             engine.div.onmouseup = (event) => {
                 this.mouse.buttons[event.button] = false
+                if (this._mouseUpHandlers[2 + event.button] != null) this._mouseUpHandlers[2 + event.button](event)
                 return false
             }
 
             document.addEventListener('pointerlockchange', () => {
                 if(document.pointerLockElement === engine.div){
+                    engine.div.focus()
                     this.pointerLocked = true
                 }
                 else {
+                    engine.div.blur()
                     this.pointerLocked = false
                 }
             }, false);
@@ -424,7 +445,17 @@ export class Controls {
      * @public
      */
     onMouseDown(keyCode, handler) {
-        this._mouseHandlers[2 + keyCode] = handler
+        this._mouseDownHandlers[2 + keyCode] = handler
+    }
+
+    /**
+     * Sets handler for mouse key down.
+     * @param {Number} keyCode 
+     * @param {Function} handler 
+     * @public
+     */
+    onMouseUp(keyCode, handler) {
+        this._mouseUpHandlers[2 + keyCode] = handler
     }
     
     /**

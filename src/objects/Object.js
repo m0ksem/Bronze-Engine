@@ -128,7 +128,7 @@ export class Object {
          * @type {boolean}
          * @public
          */
-        this.UIElement = false
+        this._UIElement = false
 
         /**
          * True if the object is behind the camera.
@@ -174,6 +174,22 @@ export class Object {
     }
 
     /**
+     * @type {bool}
+     */
+    set UIElement (value) {
+        this._UIElement = value
+        if (value) {
+            this.engine.ui.addObject(this)
+        } else {
+            this.engine.ui.removeObject(this)
+        }
+    }
+
+    get UIElement () {
+        return this._UIElement
+    }
+
+    /**
     * Sets custom shader program.
     * @param {ShaderProgram} shader shader program which object will use.
     */
@@ -201,7 +217,7 @@ export class Object {
      * @public
      */
     setPosition (x, y, z) {
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             this.position[0] = x
             this.position[1] = y
             this.position[2] = z
@@ -350,7 +366,7 @@ export class Object {
      * @public
      */
     destroy() {
-        this.engine.splice(this.engine.objects.indexOf(this), 1)
+        this.engine.objects.splice(this.engine.objects.indexOf(this), 1)
     }
 
     /**
@@ -548,36 +564,29 @@ export class Object {
         let objectRotationMatrix = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
         objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, Matrixes.rotationZ(this.rotation[2]))
 
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             objectMatrix.multiply(this.engine.camera.inverseMatrix)
-
             world.translate(this.position[0], this.position[1], this.position[2])
             world.multiply(objectRotationMatrix)
             world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
             objectMatrix.multiply(world.matrix)
         } else {
-            objectMatrix.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-
-            // world.multiply(this.engine.camera.inverseRotationMatrix)
-            world.translate(this.engine.camera.position[0], this.engine.camera.position[1], this.engine.camera.position[2])
+            objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             world.translate(this.position[0], this.position[1], this.position[2])
             world.multiply(objectRotationMatrix)
             world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-            // world.multiplyScalar(-1)
 
-            objectMatrix.translate(this.position[0], this.position[1], this.position[2])
-            objectMatrix.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-            objectMatrix.multiply(objectRotationMatrix)
+            objectMatrix.multiply(world.matrix)
 
             objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, this.engine.camera.rotationMatrix)
-            objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
+            // objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
         }
 
         this._world = world.matrix
         
-        if (!this.UIElement) {
+        if (!this._UIElement) {
             let mouseOverHitBox = false
             this.collisionBoxes.forEach(collisionBox => {
                 let boxInPixels = []
@@ -637,10 +646,11 @@ export class Object {
                     depth: smallest[2]
                 }
 
-                if (this.relativeCameraPosition.x.left >= this.engine.width || this.relativeCameraPosition.x.right <= 0 ||
-                    this.relativeCameraPosition.y.top >= this.engine.height || this.relativeCameraPosition.x.bottom <= 0) {
+                // NEED TO FIND OBJECT BEHIND CAMERA
 
-                    this.behindTheCamera = true
+                if (this.relativeCameraPosition.x.left >= this.engine.width || this.relativeCameraPosition.x.right <= 0 ||
+                    this.relativeCameraPosition.y.top >= this.engine.height * 1.5 || this.relativeCameraPosition.x.bottom <= -this.engine.height * 0.5) {
+                    this.behindTheCamera = false
                 }
                 else {
                     this.behindTheCamera = false

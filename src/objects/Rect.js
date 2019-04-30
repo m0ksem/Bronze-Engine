@@ -200,7 +200,17 @@ export class Rect {
             return null
         }
 
+        /**
+         * @type {bool} is it UIElement
+         */
         this.UIElement = false
+
+        /**
+         * @type {bool}
+         */
+        this.hidden = false
+
+
 
         this.vertexesBuffer = this.webGL.createBuffer()
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
@@ -428,33 +438,49 @@ export class Rect {
         this.UIElement = bool
     }
 
+    /**
+     * Object will no drawn
+     */
+    hide () {
+        this.hidden = true
+    }
+
+    /**
+     * Object will drawn
+     */
+    show () {
+        this.hidden = false
+    }
+
     draw () {
-        this.shaderProgram.use()
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
-        this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
-        )
+        if (!this.hidden) {
+            this.shaderProgram.use()
+            this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+            this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+            this.engine.webGL.vertexAttribPointer(
+                this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+            )
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer)
-        this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
-        )
+            this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
+            this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer)
+            this.engine.webGL.vertexAttribPointer(
+                this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+            )
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
-        this.engine.webGL.vertexAttribPointer(
-        this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+            this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+            this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
+            this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
 
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
+            this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
 
-        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
-        this.engine.drawCallsPerFrame++
-        this.engine.drawCalls++
+            this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
+            this.engine.drawCallsPerFrame++
+            this.engine.drawCalls++
+        }
     }
 
     update () {

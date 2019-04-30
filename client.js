@@ -37,7 +37,7 @@ let debug = new Bronze.Debugger(engine)
     })
 
 let ui = new Bronze.UI(engine)
-    ui.appendDOMElement(debug.element, {width: 'auto%'})
+ui.appendDOMElementWithCustomProperties(debug.element, {width: 'auto%'})
 
 // Setting control function for camera
 controls.setSensitivity(1)
@@ -287,12 +287,12 @@ let deer2 = new Bronze.Object(engine)
 let cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
     cola2.setTexture(colaTexture)
-    cola2.setPosition(90, 60, 0)
+    cola2.setPosition(200, -200, -1400)
     cola2.name = "box"
     cola2.loadFromObj("assets/objects/cola.obj")
     cola2.setRotationPoint(0, 0, 0)
-    cola2.setRotation(90, -45, 30)
-    cola2.scale(7, 7, 7)
+    cola2.setRotation(90, 25, 0)
+    cola2.scale(20, 20, 20)
 
 
     rect = new Bronze.Rect(engine)
