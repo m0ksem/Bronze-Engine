@@ -222,8 +222,8 @@ export class Object {
             this.position[1] = y
             this.position[2] = z
         } else {
-            this.position[0] = this.engine.width / 2 * x / 100
-            this.position[1] = this.engine.height / 2 * y / 100
+            this.position[0] = this.engine.width / 100 * x
+            this.position[1] = -this.engine.height / 100 * y 
             this.position[2] = z
         }
     }

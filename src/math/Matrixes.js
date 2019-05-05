@@ -45,13 +45,11 @@ export class Matrix {
      * @param {Number} height
      * @public 
      */
-    projection (fieldOfViewInRadians, width, height, near, far) {
-        let rangeInv = 1.0 / (near - far)
-
+    projection (width, height) {
         this.matrix = ([
             2 / width, 0, 0, 0,
             0, -2 / height, 0, 0,
-            0, 0, 2 / far, 0,
+            0, 0, 1, 0,
             0, 0, 0, 1,
         ])
     }

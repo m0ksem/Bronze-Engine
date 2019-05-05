@@ -25,9 +25,6 @@ export class SimpleTexture extends Image {
         this.coords = [
             
         ]
-        this.addEventListener('load', () => {
-            this.loaded = true
-        })
 
         /**
          * Color of texture. Texture drawing with color if image was not set.

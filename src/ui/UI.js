@@ -1,4 +1,5 @@
 import * as Utils from './../Utils'
+import { Matrix } from '../math/Matrixes';
 
 /**
  * @class
@@ -49,6 +50,30 @@ export class UI {
         
         engine.ui = this
         this.engine = engine
+        this.webGL = engine.webGL
+
+        this._screen = new Screen(this.engine)
+
+        this._texture = { _textureBlockLocation: this.engine.textures.length }
+        this.engine.textures.push(this._texture)
+        this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._texture._textureBlockLocation)
+
+        this._webGLTexture = this.webGL.createTexture();
+        this.webGL.bindTexture(this.webGL.TEXTURE_2D, this._webGLTexture)
+        
+        this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA,
+            this.width, this.height, 0,
+            this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, null);
+
+        this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.NEAREST);
+        this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, this.webGL.NEAREST);
+        this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
+        this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);
+
+        this.frameBuffer = this.webGL.createFramebuffer();
+        this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, this.frameBuffer);
+        this.webGL.framebufferTexture2D(this.webGL.FRAMEBUFFER, this.webGL.COLOR_ATTACHMENT0, this.webGL.TEXTURE_2D, this._webGLTexture, 0);
+        this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, null);
     }
 
     /**
@@ -123,7 +148,7 @@ export class UI {
      * @param {Number} width 
      * @param {Number} height 
      */
-    drawImage (image, width, height) {
+    async drawImage (image, width, height) {
         this.context.drawImage(image, 0, 0)
     }
 
@@ -149,11 +174,143 @@ export class UI {
         this.context.clearRect(0, 0, this.width, this.height)
     }
 
-    draw () {
+    async draw () {
         this.images.forEach(img => {
             if (!img.hidden) {
                 this.context.drawImage(img, img.xPos, img.yPos, img.width, img.height)
             }
         })
     }
+
+    async drawUIFromEngine () {
+        this.clearCanvas()
+        this.objects.forEach(object => {
+            object.draw()
+        })
+        this.context.drawImage(this.engine.webGL.canvas, 0, 0, this.width, this.height, 0, 0, this.width, this.height)
+        return true
+    }
+    
+    drawUIOnMainCanvas () {
+        const webGL = this.engine.webGL
+
+        webGL.bindFramebuffer(webGL.FRAMEBUFFER, this.frameBuffer);
+        webGL.clearColor(0, 0, 0, 0)
+        webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT)
+
+        webGL.viewport(0, 0, this.engine.width, this.engine.height)
+
+        this.objects.forEach(object => {
+            object.draw()
+        })
+
+        this._screen.setTexture(this._texture)
+        webGL.bindFramebuffer(webGL.FRAMEBUFFER, null);
+
+        webGL.clearColor(0, 0, 0, 0)
+        webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT)
+    }
+
+    drawUI () {
+        this._screen.draw()
+    }
+}
+
+class Screen {
+    constructor (engine) {
+        this.webGL = engine.webGL
+        this.engine = engine
+        this.shaderProgram = engine.shaders.default
+
+        this.vertexes = [
+            -1, -1, -1,
+            1, 1, -1,
+            -1, 1, -1,
+            1, 1, -1,
+            -1, -1, -1,
+            1, -1, -1
+            // -100, -100, -100,
+            // 100, 100, -100,
+            // -100, 100, -100,
+            // 100, 100, -100,
+            // -100, -100, -100,
+            // 100, -100, -100
+            // 0, 0, 0,
+            // 1000, 1000, 0,
+            // 0, 1000, 0,
+            // 1000, 1000, 0,
+            // 0, 0, 0,
+            // 1000, 0, 0,
+        ]
+
+        this.textureCoords = [
+            0, 0,
+            1, 1,
+            0, 1,
+            1, 1,
+            0, 0,
+            1, 0, 
+        ]
+
+        this.normals = [
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        ]
+
+        this.vertexesBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+
+        this.coordsBuffer = this.webGL.createBuffer()
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer)
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW)
+
+        this.normalBuffer = this.webGL.createBuffer();
+        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
+    }
+
+    setTexture (texture) {
+        this.texture = texture
+    }
+
+    draw () {
+        this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, null);
+
+        this.shaderProgram.use()
+
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+        )
+
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation)
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer)
+        this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0
+        )
+
+        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
+        this.engine.webGL.vertexAttribPointer(
+            this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+
+        let unitMatrix = new Matrix().matrix
+        let projectionMatrix = new Matrix()
+            // projectionMatrix.projection(this.engine.width, this.engine.height)
+        let rotatedMatrix = projectionMatrix.matrix
+        // rotatedMatrix[13] = -1
+        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, rotatedMatrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, unitMatrix)
+        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, unitMatrix)
+
+        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3)
+    }
+
 }

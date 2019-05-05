@@ -25,34 +25,36 @@ export class Glass extends Material {
      * @param {Object} object 
      */
     drawCube (object) {
-        this.shaderProgram.use()
-        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
-        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
-        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
-        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
-        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
+        if (object.texture.loaded) {
+            this.shaderProgram.use()
+            this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix)
+            this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
+            this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
+            this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
+            this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
 
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer)
-        this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
-        )
+            this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+            this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer)
+            this.engine.webGL.vertexAttribPointer(
+                this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+            )
 
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.normalBuffer);
-        this.engine.webGL.vertexAttribPointer(
-            this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+            this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+            this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.normalBuffer);
+            this.engine.webGL.vertexAttribPointer(
+                this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
 
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix)
-        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
+            this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix)
+            this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
 
-        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, object.vertexes.length / 3)
-        this.engine.drawCallsPerFrame++
-        this.engine.drawCalls++
+            this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, object.vertexes.length / 3)
+            this.engine.drawCallsPerFrame++
+            this.engine.drawCalls++
+            }
     }
 
     /**
@@ -60,35 +62,37 @@ export class Glass extends Material {
      * @param {Object} object 
      */
     drawObject(object) {
-        this.shaderProgram.use()
-        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
-        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
-        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
-        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
+        if (object.texture.loaded) {
+            this.shaderProgram.use()
+            this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions)
+            this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges)
+            this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length)
+            this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue)
 
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix)
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix)
-        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
+            this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix)
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix)
+            this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position))
+            this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world)
 
-        if (!object.behindTheCamera) {
-            object.faces.forEach(face => {
-                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
-                this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer)
-                this.engine.webGL.vertexAttribPointer(
-                    this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
-                )
+            if (!object.behindTheCamera) {
+                object.faces.forEach(face => {
+                    this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation)
+                    this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer)
+                    this.engine.webGL.vertexAttribPointer(
+                        this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0
+                    )
 
-                this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-                this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
-                this.engine.webGL.vertexAttribPointer(
-                    this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
+                    this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
+                    this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
+                    this.engine.webGL.vertexAttribPointer(
+                        this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0)
 
-                this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3)
-                this.engine.drawCallsPerFrame++
-                this.engine.drawCalls++
-            })
+                    this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3)
+                    this.engine.drawCallsPerFrame++
+                    this.engine.drawCalls++
+                })
+            }
         }
     }
 }

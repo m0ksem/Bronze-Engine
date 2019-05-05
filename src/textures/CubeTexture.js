@@ -337,5 +337,6 @@ export class CubeTexture {
         this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP)
         this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
         this.engine.textureLoaded(this)
+        this.loaded = true
     }
 }

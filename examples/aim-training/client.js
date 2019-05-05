@@ -96,22 +96,22 @@ cube.useMaterial(glass)
 let gun = new Bronze.Object(engine)
     gun.UIElement = true
     gun.setTexture(gunTexture)
-    gun.setPosition(100, -230, 350)
+    gun.setPosition(30, 100, 400)
     gun.name = "gun"
     gun.loadFromObj("assets/objects/m4a1.obj")
-    gun.setRotation(10, -180, 0)
+    gun.setRotation(5, -180, 0)
     gun.scale(50, 50, 50)
 
 function scope() {
-    gun.setPosition(0, -157, 500)
+    gun.setPosition(0, 78, 400)
     gun.setRotation(0, -180, 0)
     crossHair.hide()
     camera.setFieldOfView(60)
 }
 
 function unscope() {
-    gun.setPosition(100, -230, 350)
-    gun.setRotation(10, -180, 0)
+    gun.setPosition(30, 100, 400)
+    gun.setRotation(5, -180, 0)
     crossHair.show()
     camera.setFieldOfView(90)
 }
@@ -198,13 +198,15 @@ for (let i = 0; i < 30; i++) {
 camera.setControl(() => {
     if (controls.mouse.buttons[0]) {
         shotSound.play()
-        screamSound.playLoopRandom()
+        if (!screamSound.playing) {
+            screamSound.playLoopRandom()
+        }
         if (engine.selectedObject != null ) {
             speedMultiply += 0.5
             if (speedMultiply > 4) {
                 speedMultiply = 4
             }
-            if (engine.selectedObject.hits === 3) {
+            if ((engine.selectedObject.hits === 3) || (engine.selectedObject.hits === 1 && engine.selectedObject.friendly)) {
                 engine.selectedObject.destroy()
                 if (!engine.selectedObject.friendly) {
                     counter++

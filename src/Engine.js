@@ -12,7 +12,7 @@ import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragmen
 import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
 import skyboxFragmentShaderSource from "./shaders/skybox/fragment-shader.glsl"
 import skyboxVertexShaderSource from "./shaders/skybox/vertex-shader.glsl"
-import { resolve } from "upath";
+import {Camera} from "./Camera"
 
 
 
@@ -114,7 +114,7 @@ export class Engine {
          * @type {Number}
          * @readonly
          */
-        this.loadedTexturesCount = 0
+        this.loadedTexturesCount = 1
 
         /**
          * True if all attached textures loaded.
@@ -372,17 +372,8 @@ export class Engine {
         this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
 
         this.drawCallsPerFrame = 0
-
-        this.ui.objects.forEach(object => {
-            object.draw()
-        })
         
-        new Promise(() => {
-            this.ui.clearCanvas()
-            this.ui.drawImage(this.canvas, this.width, this.height)
-        })
-        this.ui.draw()
-        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
+        this.ui.drawUIOnMainCanvas()
 
         this.objects.forEach(object => {
             object.draw()
@@ -391,6 +382,8 @@ export class Engine {
         this.objectsWithAlphaTexture.forEach(object => {
             object.draw()
         });
+
+        this.ui.drawUI()
 
         if (this.debugger != null) {
             this.debugger.updateInfo()
@@ -416,7 +409,6 @@ export class Engine {
             imageAlpha = options.imageAlpha || imageAlpha
             noDrawObjects = options.noDrawObjects || []
         }
-
         this.canvas.width = imageWidth
         this.canvas.height = imageHeight
         this.canvasResized()
@@ -461,14 +453,13 @@ export class Engine {
         context.globalAlpha = imageAlpha
         context.drawImage(this.canvas, 0, 0)
 
-
         this.camera = currentCamera
         this.canvas.width = currentCanvasSize[0];
         this.canvas.height = currentCanvasSize[1];
         this.canvasResized();
+        // debugger
         return frame;
     }
-
 
     /**
      * Sets range where objects will no draws.
@@ -498,6 +489,24 @@ export class Engine {
      */
     run () {
         _engine = this
+        this.running = true
+
+        if (this.loadedTexturesCount == this.textures.length) {
+            console.log('a')
+            this.texturesLoaded = true
+        }
+
+        let objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length
+        if (this.loadedObjectsCount == objectsCount) {
+            this.objectsLoaded = true
+            if (this.textureLoaded) {
+                this.resourcesLoaded = true
+                this.onResourcesLoadedHandlers.forEach(func => {
+                    func(this.textures.length)
+                })
+            }
+        }
+
         requestAnimationFrameEngine()
         this.onrun.forEach(func => {
             func()
@@ -522,7 +531,7 @@ export class Engine {
      */
     textureLoaded(texture) {
         this.loadedTexturesCount += 1
-        if (this.loadedTexturesCount == this.textures.length) {
+        if (this.running && this.loadedTexturesCount == this.textures.length) {
             this.texturesLoaded = true
             if (this.objectsLoaded) {
                 this.resourcesLoaded = true
@@ -538,8 +547,9 @@ export class Engine {
      * @param {Object} object
      */
     objectLoaded(object) {
+        let objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length
         this.loadedObjectsCount += 1
-        if (this.loadedObjectsCount == this.objects.length) {
+        if (this.running && this.loadedObjectsCount == objectsCount) {
             this.objectsLoaded = true
             if (this.textureLoaded) {
                 this.resourcesLoaded = true

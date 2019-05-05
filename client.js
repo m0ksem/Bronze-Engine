@@ -287,7 +287,7 @@ let deer2 = new Bronze.Object(engine)
 let cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
     cola2.setTexture(colaTexture)
-    cola2.setPosition(200, -200, -1400)
+    cola2.setPosition(100, 100, -1400)
     cola2.name = "box"
     cola2.loadFromObj("assets/objects/cola.obj")
     cola2.setRotationPoint(0, 0, 0)
@@ -316,15 +316,24 @@ let cola2 = new Bronze.Object(engine)
 
 
 let cubeObj = new Bronze.Object(engine)
-cubeObj.setTexture(colaTexture)
 cubeObj.setPosition(50, 500, 1000)
 cubeObj.name = "cube on ground"
 cubeObj.loadFromObj("assets/objects/cube.obj")
 cubeObj.setRotationPoint(0, 0, 0)
 cubeObj.scale(2, 2, 2)
+cubeObj.setTexture(colaTexture)
 cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 1024, 0.7))
 cubeObj.useMaterial(glass)
 cubeObj.alpha = true
 
+// let house = new Bronze.Object(engine)
+// house.setTexture(engine.noTexture)
+// house.setPosition(1500, 0, 0)
+// house.name = "box"
+// house.loadFromObj("assets/objects/house2.obj")
+// house.setRotationPoint(0, 0, 0)
+// house.scale(20, 20, 20)
+
 // Run engine
 engine.run()
+// engine.stop()

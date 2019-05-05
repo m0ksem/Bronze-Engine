@@ -33,6 +33,8 @@ export class Sound {
         this._canBePlayedInterval = setInterval(() => {
             this._canBePlayed = true
         }, this._delay)
+
+        this.playing = false
     }
 
     set delay (value) {
@@ -59,12 +61,15 @@ export class Sound {
     }
 
     playLoop () {
+        clearInterval(this._loopInterval)
         this._loopInterval = setInterval(() => {
             this.play()
         }, this._delay)
+        this.playing = true
     }
 
     playLoopRandom () {
+        clearInterval(this._loopInterval)
         this._loopInterval = setInterval(() => {
             if (this._canBePlayed) {
                 this.audios[this._playableAudioIndex].play()
@@ -75,9 +80,15 @@ export class Sound {
                 this._canBePlayed = false
             }
         }, this._delay)
+        this.playing = true
     }
 
     stop () {
         clearInterval(this._loopInterval)
+        this._canBePlayed = false
+        this.playing = false
+        for (let i = 0; i < this.audios.length; i++) {
+            this.audios[i].stop()
+        }
     }
 }

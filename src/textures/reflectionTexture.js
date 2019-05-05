@@ -1,5 +1,5 @@
-import {CubeTexture} from './CubeTexture'
-import {Camera} from '../Camera'
+import { CubeTexture } from './CubeTexture'
+import { Camera } from '../Camera'
 
 /**
  * Reflection texture.
@@ -26,17 +26,17 @@ export class ReflectionTexture extends CubeTexture {
         }
 
         this.alpha = true
-
+        this.loaded = false
         this._object = null
 
         let texture = document.createElement('canvas')
-            texture.width = background.width || 16
-            texture.height = background.height || 16
+        texture.width = background.width || 16
+        texture.height = background.height || 16
         let context = texture.getContext('2d')
-        if (typeof(background) === 'string') {
+        if (typeof (background) === 'string') {
             context.fillStyle = background
             context.fillRect(0, 0, 16, 16)
-        } else if (typeof(background) === 'image') {
+        } else if (typeof (background) === 'image') {
             context.drawImage(background, 0, 0, background.width, background.height)
         }
 
@@ -69,26 +69,27 @@ export class ReflectionTexture extends CubeTexture {
 
     set object(object) {
         this._object = object
-        if (this.engine.texturesLoaded) {
+        if (this.engine.resourcesLoaded) {
+            console.log('resourcesLoaded set object')
             this.generate()
         }
     }
 
-    generate () {
+    generate() {
         this.camera.position = this.object.position
         this.camera.setRotation(0, 270, 0)
-        let posXP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]})
+        let posXP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] })
         this.camera.setRotation(0, 90, 0);
-        let posXN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posXN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] });
         this.camera.setRotation(-90, 0, 0);
-        let posYP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posYP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] });
         this.camera.setRotation(90, 0, 0);
-        let posYN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posYN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] });
         this.camera.setRotation(0, 0, 0);
-        let posZP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
+        let posZP = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] });
         this.camera.setRotation(0, 180, 0);
-        let posZN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object]});
-        
+        let posZN = this.engine.captureFrame(this.camera, { background: this.background, width: this.quality, height: this.quality, imageAlpha: this.reflectionAlpha, noDrawObjects: [this.object] });
+
         this.bind(this.engine)
         this.setLoadedImages(
             posXP,
@@ -112,5 +113,7 @@ export class ReflectionTexture extends CubeTexture {
         this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ)
         this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP)
         this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR)
+        // this.engine.textureLoaded(this)
+        this.loaded = true
     }
 }
