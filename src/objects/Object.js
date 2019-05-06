@@ -171,6 +171,8 @@ export class Object {
         }
 
         this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        this._drawingMode = this.webGL.TRIANGLES
     }
 
     /**
@@ -384,7 +386,7 @@ export class Object {
             y: [0, 0],
             z: [0, 0]
         }
-        this.faceCount = 0
+
         splitted.forEach(element => {
             let values = element.split(' ')
             let name = 0
@@ -424,16 +426,27 @@ export class Object {
                 textureCoords.push([parseFloat(values[1]), 
                                    parseFloat(values[2])])
             } else if (values[name] == "f") {
-                this.faceCount++
-                for (let i = 1; i < values.length; i++) {
-                    const face = values[i].split('/');
-                    if (face[length - 1] == "\r") {
-                        break;
+                // Transform 4 > faces to triangles 
+                const faces = [values[1], values[2], values[3]]
+                if ((values.length - 1) > 3) {
+                    for (let i = 4; i < values.length; i++) {
+                        faces.push(values[i - 3])
+                        faces.push(values[i - 1])
+                        faces.push(values[i])
                     }
-                    let faceVertexes = null, faceTextureCoords = null, faceNormals
-                    for (let k = 0; k < this.faces.length; k++) {
+                }
+
+                let faceVertexes = null, faceTextureCoords, faceNormals
+                for (let i = 0; i < faces.length; i++) {
+                    const point = faces[i];
+ 
+                    let indexes = point.split('/').map((el) => Number(el) )
+                    
+                    let allFacesCount = this.faces.length
+
+                    for (let k = 0; k < allFacesCount; k++) {
                         const element = this.faces[k];
-                        if (element.vertexesCount == values.length - 1) {
+                        if (element.vertexesCount == 3) {
                             faceVertexes = element.vertexes
                             faceTextureCoords = element.textureCoords
                             faceNormals = element.normals
@@ -441,38 +454,43 @@ export class Object {
                     }
                     if (faceVertexes == null) {
                         this.faces.push({
-                            vertexesCount: values.length - 1,
+                            vertexesCount: 3,
                             vertexes: [],
                             textureCoords: [],
                             normals: []
                         })
-                        faceVertexes = this.faces[this.faces.length - 1].vertexes
-                        faceTextureCoords = this.faces[this.faces.length - 1].textureCoords
-                        faceNormals = this.faces[this.faces.length - 1].normals
-                    } 
-                    let vertexPosition = parseFloat(face[0])
-                        if (vertexPosition < 0) vertexPosition = vertexes.length + vertexPosition + 1
-                    let textureCoordPosition = parseFloat(face[1])
-                        if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1 
-                    let normalPosition = parseFloat(face[2])
+                        faceVertexes = this.faces[allFacesCount].vertexes
+                        faceTextureCoords = this.faces[allFacesCount].textureCoords
+                        faceNormals = this.faces[allFacesCount].normals
+                    }
+
+                    let vertexPosition = indexes[0]
+                        if (vertexPosition <= 0) vertexPosition = vertexes.length + vertexPosition + 1
+                    let textureCoordPosition = indexes[1]
+                        if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1
+                    let normalPosition = indexes[2]
                         if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1
-                    
-                    vertexes[vertexPosition - 1].forEach(vertex => {
-                        faceVertexes.push(vertex)
+
+                    vertexes[vertexPosition - 1].forEach((coord) => {
+                        faceVertexes.push(coord)
                     })
 
-                    if (textureCoords.length > 0) {
+                    if (textureCoordPosition != 0) {
                         textureCoords[textureCoordPosition - 1].forEach(textureCoord => {
                             faceTextureCoords.push(textureCoord)
                         })
+                    } else {
+                        faceTextureCoords.push(0)
+                        faceTextureCoords.push(0)
                     }
-                    
-                    if (face[2] != undefined) {
+
+
+                    if (indexes[2] != undefined) {
                         normals[normalPosition - 1].forEach(normal => {
                             faceNormals.push(normal)
                         })
                     } else {
-                        faceNormals.push(0, 0, 1)
+                        faceNormals.push(1, 1, 1)
                     }
                 }
             }
@@ -522,6 +540,43 @@ export class Object {
     }
 
     /**
+     * Sets how WebGL will draw object
+     * @param {String} mode 
+     */
+    setDrawingMode (mode) {
+        switch (mode) {
+            case 'TRIANGLES':
+                this._drawingMode = this.webGL.TRIANGLES
+                break
+            case 'DEFAULT':
+                this._drawingMode = this.webGL.TRIANGLES
+                break
+            case 'TRIANGLE_FAN':
+                this._drawingMode = this.webGL.TRIANGLE_FAN
+                break
+            case 'FAN':
+                this._drawingMode = this.webGL.TRIANGLE_FAN
+                break
+            case 'STRIP':
+                this.webGL.TRIANGLE_STRIP
+                break
+            case 'TRIANGLE_STRIP':
+                this.webGL.TRIANGLE_STRIP
+                break
+            default:
+             throw Error("Wrong drawing mode. See WebGL drawing mods.")
+        }
+    }
+
+    set drawingMode (value) {
+        this._drawingMode = value
+    }
+
+    get drawingMode () {
+        return this._drawingMode
+    }
+
+    /**
      * Function to draw object.
      */
     draw () {
@@ -550,11 +605,45 @@ export class Object {
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix)
                 this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world)
 
-                this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3)
+                this.engine.webGL.drawArrays(this._drawingMode, 0, face.vertexes.length / 3)
+      
                 this.engine.drawCallsPerFrame++
                 this.engine.drawCalls++
             })
         }
+    }
+
+    checkCollision () {
+        this.collisionBoxes.forEach(collisionBox => {
+            if (this.engine.camera.moved) {
+                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + this.camera.distanceBeforeCollision
+                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - this.camera.distanceBeforeCollision
+                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + this.camera.distanceBeforeCollision
+                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - this.camera.distanceBeforeCollision
+                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + this.camera.distanceBeforeCollision
+                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - this.camera.distanceBeforeCollision
+
+                let newPosX = this.camera.position[0] + this.camera.moving[0]
+                let newPosY = this.camera.position[1] + this.camera.moving[1]
+                let newPosZ = this.camera.position[2] + this.camera.moving[2]
+
+                if ((newPosX > minX && newPosX < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
+                    this.camera.moving[0] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (newPosY > minY && newPosY < maxY) &&
+                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
+                    this.camera.moving[1] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    (newPosZ > minZ && newPosZ < maxZ)) {
+                    this.camera.moving[2] = 0
+                }
+            }
+        })
     }
 
     update () {
@@ -581,7 +670,6 @@ export class Object {
             objectMatrix.multiply(world.matrix)
 
             objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, this.engine.camera.rotationMatrix)
-            // objectRotationMatrix = Matrixes.multiplyScalar(objectRotationMatrix, -1)
         }
 
         this._world = world.matrix
@@ -590,6 +678,7 @@ export class Object {
             let mouseOverHitBox = false
             this.collisionBoxes.forEach(collisionBox => {
                 let boxInPixels = []
+                
                 for (let ix = 0; ix < collisionBox.x.length; ix++) {
                     const x = collisionBox.x[ix];
                     for (let iy = 0; iy < collisionBox.y.length; iy++) {

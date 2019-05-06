@@ -18,6 +18,9 @@ export class Light {
         this._index = null
 
         this._on = false
+
+        this._positionsWritten = false
+        this._rangeWritten = false
     }
 
     /**
@@ -25,10 +28,10 @@ export class Light {
      */
     set range(value) {
         this._range = value
-        if (this._on) {
-            // this.engine.lightsRanges[this._index] = value
+        if (this._on && !this._rangeWritten) {
             this.engine.lightsRanges.push(value)
-
+        } else if (this._on) {
+            this.engine.lightsRanges[this._index] = value
         }
     }
 
@@ -38,10 +41,16 @@ export class Light {
 
     set position (value) {
         this._position = value
-        if (this._on) {
+        if (this._on && !this._positionsWritten) {
             this.engine.lightsPositions.push(value[0])
             this.engine.lightsPositions.push(value[1])
             this.engine.lightsPositions.push(value[2])
+            this._positionsWritten = true
+        }
+        else if (this._on) {
+            this.engine.lightsPositions[this._index * 3 + 0] = value[0]
+            this.engine.lightsPositions[this._index * 3 + 1] = value[1]
+            this.engine.lightsPositions[this._index * 3 + 2] = value[2]
         }
     }
 
@@ -57,6 +66,14 @@ export class Light {
      */
     setPosition(x, y, z) {
         this.position = [x, y, z]
+    }
+
+    move(x, y, z) {
+        this.position = [
+            this.position[0] + x,
+            this.position[1] + y,
+            this.position[2] + z
+        ]
     }
 
     /**
@@ -94,11 +111,13 @@ export class Light {
      * Remove this light from drawing.
      */
     off () {
-        let index = this.engine.lights.indexOf(this)
+        let index = this._index
         this.engine.lights.removeAt(index)
         this.engine.lightsPositions.removeAt(index * 3 + 0)
         this.engine.lightsPositions.removeAt(index * 3 + 1)
         this.engine.lightsPositions.removeAt(index * 3 + 2)
         this.engine.lightsRanges.removeAt(index)
+        this._positionsWritten = false
+        this._rangeWritten = false
     }
 }

@@ -69,6 +69,14 @@ export class Rect {
             0, 0, 1,
         ]
 
+        this.collisionBoxes = [
+            {
+                x: [0, 100],
+                y: [0, 100],
+                z: [0, 0]
+            }
+        ]
+
         /**
          * Object texture.
          * @type {Texture} texture
@@ -483,9 +491,41 @@ export class Rect {
         }
     }
 
+    checkCollision() {
+        this.collisionBoxes.forEach(collisionBox => {
+            if (this.engine.camera.moved) {
+                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + this.camera.distanceBeforeCollision
+                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - this.camera.distanceBeforeCollision
+                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + this.camera.distanceBeforeCollision
+                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - this.camera.distanceBeforeCollision
+                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + this.camera.distanceBeforeCollision
+                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - this.camera.distanceBeforeCollision
+
+                let newPosX = this.camera.position[0] + this.camera.moving[0]
+                let newPosY = this.camera.position[1] + this.camera.moving[1]
+                let newPosZ = this.camera.position[2] + this.camera.moving[2]
+
+                if ((newPosX > minX && newPosX < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ) { // this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
+                    this.camera.moving[0] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (newPosY > minY && newPosY < maxY) &&
+                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ))  {  // (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
+                    this.camera.moving[1] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    (newPosZ > minZ && newPosZ < maxZ)) {
+                    this.camera.moving[2] = 0
+                }
+            }
+        })
+    }
+
     update () {
         let temp = new Matrixes.Matrix()
-        //temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, 20000)
         if (!this.UIElement) {
             temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             temp.multiply(this.engine.camera.inverseMatrix)

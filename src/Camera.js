@@ -79,6 +79,12 @@ export class Camera {
          * @readonly
          */
         this.inverseRotationMatrix
+
+        this.moved = false
+
+        this.distanceBeforeCollision = 100
+
+        this.moving = [0, 0, 0]
     }
 
     /**
@@ -98,6 +104,16 @@ export class Camera {
      */
     setCollisions (bool) {
         this._collisions = bool
+    }
+
+    /**
+     * Execute when camera have collision with object
+     * @param {Object} object 
+     */
+    onCollision (object) {
+        this.position[0] = this.positionBeforeMovement[0]
+        this.position[1] = this.positionBeforeMovement[1]
+        this.position[2] = this.positionBeforeMovement[2]
     }
 
     /**
@@ -128,15 +144,10 @@ export class Camera {
      * @public
      */
     move (x, y, z) {
-        // let translationMatrix = Matrixes.translation(x, y, z)
-        // let matrix = Matrixes.multiply(translationMatrix, this.rotationMatrix)
-        // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
-        // let yt = y//this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
-        // let zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
-        this.position[0] += x
-        this.position[1] += y
-        this.position[2] += z
-        this.computeMatrix()
+        this.moving[0] += x
+        this.moving[1] += y
+        this.moving[2] += z
+        this.moved = true
     }
 
     /**

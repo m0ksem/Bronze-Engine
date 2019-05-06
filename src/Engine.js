@@ -250,7 +250,7 @@ export class Engine {
         console.log()
         console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running")
         console.log()
-        console.info('     Version : 0.0.1')
+        console.info('     Version : 0.2.96')
         console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
         console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
         console.info('     Author  : https://github.com/m0ksem')
@@ -327,12 +327,33 @@ export class Engine {
      */
     _update () {
         if (this.camera._controlFunction != null) {
+            this.camera.moving = [0, 0, 0]
             this.camera._controlFunction()
             this.controls.mouse.movement.x = 0
             this.controls.mouse.movement.y = 0
         }
 
         this.selectedObject = null
+
+        for (let i = 0; i < this.objects.length; i++) {
+            const object = this.objects[i]
+            if (object.checkCollision) {
+                (object.checkCollision())
+            }
+        }
+
+        for (let i = 0; i < this.objectsWithAlphaTexture.length; i++) {
+            const object = this.objectsWithAlphaTexture[i]
+            if (object.checkCollision) {
+                (object.checkCollision())
+            }
+        }
+
+        this.camera.position[0] += this.camera.moving[0]
+        this.camera.position[1] += this.camera.moving[1]
+        this.camera.position[2] += this.camera.moving[2]
+
+        this.camera.computeMatrix()
 
         this.ui.objects.forEach(object => {
             object.update()
@@ -354,7 +375,7 @@ export class Engine {
             element.update()
         })
 
-        if (!this.selectedObject && this._objectSelectHandler != null) {
+        if (this.selectedObject && this._objectSelectHandler != null) {
             this._objectSelectHandler(this.selectedObject)
         }
     }
@@ -457,7 +478,6 @@ export class Engine {
         this.canvas.width = currentCanvasSize[0];
         this.canvas.height = currentCanvasSize[1];
         this.canvasResized();
-        // debugger
         return frame;
     }
 

@@ -35,6 +35,12 @@ let debug = new Bronze.Debugger(engine)
             return 'Selected object ' + engine.selectedObject.name
         }
     })
+    debug.addLog(debug.createLogView(), () => {
+        return 'Position ' + camera.position[0] + ', ' + camera.position[1] + ', ' + camera.position[2]
+    })
+    debug.addLog(debug.createLogView(), () => {
+        return 'Position before move ' + camera.positionBeforeMovement[0] + ', ' + camera.positionBeforeMovement[1] + ', ' + camera.positionBeforeMovement[2]
+    })
 
 let ui = new Bronze.UI(engine)
 ui.appendDOMElementWithCustomProperties(debug.element, {width: 'auto%'})
@@ -326,13 +332,13 @@ cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5
 cubeObj.useMaterial(glass)
 cubeObj.alpha = true
 
-// let house = new Bronze.Object(engine)
-// house.setTexture(engine.noTexture)
-// house.setPosition(1500, 0, 0)
-// house.name = "box"
-// house.loadFromObj("assets/objects/house2.obj")
-// house.setRotationPoint(0, 0, 0)
-// house.scale(20, 20, 20)
+let kitten = new Bronze.Object(engine)
+kitten.setTexture(engine.noTexture)
+kitten.setPosition(1500, 100, 0)
+kitten.name = "box"
+kitten.loadFromObj("assets/objects/kitten.obj")
+kitten.setRotation(0, 180, 0)
+kitten.scale(100, 100, 100)
 
 // Run engine
 engine.run()

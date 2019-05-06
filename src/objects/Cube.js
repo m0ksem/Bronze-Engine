@@ -267,10 +267,6 @@ export class Cube {
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
 
-        // this.coordsBuffer = this.webGL.createBuffer()
-        // this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer)
-        // this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW)
-
         this.normalBuffer = this.webGL.createBuffer();
         this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
         this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
@@ -282,6 +278,14 @@ export class Cube {
         this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         this.engine.objectLoaded(this)
+
+        this.collisionBoxes = [
+            {
+                x: [-100, 100],
+                y: [-100, 100],
+                z: [-100, 100]
+            }
+        ]
     }
 
     /**
@@ -493,6 +497,39 @@ export class Cube {
         this.engine.drawCalls++
     }
 
+    checkCollision() {
+        this.collisionBoxes.forEach(collisionBox => {
+            if (this.engine.camera.moved) {
+                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + this.camera.distanceBeforeCollision
+                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - this.camera.distanceBeforeCollision
+                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + this.camera.distanceBeforeCollision
+                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - this.camera.distanceBeforeCollision
+                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + this.camera.distanceBeforeCollision
+                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - this.camera.distanceBeforeCollision
+
+                let newPosX = this.camera.position[0] + this.camera.moving[0]
+                let newPosY = this.camera.position[1] + this.camera.moving[1]
+                let newPosZ = this.camera.position[2] + this.camera.moving[2]
+
+                if ((newPosX > minX && newPosX < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
+                    this.camera.moving[0] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (newPosY > minY && newPosY < maxY) &&
+                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
+                    this.camera.moving[1] = 0
+                }
+                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
+                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
+                    (newPosZ > minZ && newPosZ < maxZ)) {
+                    this.camera.moving[2] = 0
+                }
+            }
+        })
+    }
+    
     update() {
         let temp = new Matrixes.Matrix()
         if (!this.UIElement) {

@@ -40,7 +40,7 @@ import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragmen
 import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl"
 import skyboxFragmentShaderSource from "./shaders/skybox/fragment-shader.glsl"
 import skyboxVertexShaderSource from "./shaders/skybox/vertex-shader.glsl"
-import { resolve } from "upath";
+import {Camera} from "./Camera"
 
 
 
@@ -142,7 +142,7 @@ export class Engine {
          * @type {Number}
          * @readonly
          */
-        this.loadedTexturesCount = 0
+        this.loadedTexturesCount = 1
 
         /**
          * True if all attached textures loaded.
@@ -278,7 +278,7 @@ export class Engine {
         console.log()
         console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running")
         console.log()
-        console.info('     Version : 0.0.1')
+        console.info('     Version : 0.2.96')
         console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global')
         console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine')
         console.info('     Author  : https://github.com/m0ksem')
@@ -355,12 +355,33 @@ export class Engine {
      */
     _update () {
         if (this.camera._controlFunction != null) {
+            this.camera.moving = [0, 0, 0]
             this.camera._controlFunction()
             this.controls.mouse.movement.x = 0
             this.controls.mouse.movement.y = 0
         }
 
         this.selectedObject = null
+
+        for (let i = 0; i &lt; this.objects.length; i++) {
+            const object = this.objects[i]
+            if (object.checkCollision) {
+                (object.checkCollision())
+            }
+        }
+
+        for (let i = 0; i &lt; this.objectsWithAlphaTexture.length; i++) {
+            const object = this.objectsWithAlphaTexture[i]
+            if (object.checkCollision) {
+                (object.checkCollision())
+            }
+        }
+
+        this.camera.position[0] += this.camera.moving[0]
+        this.camera.position[1] += this.camera.moving[1]
+        this.camera.position[2] += this.camera.moving[2]
+
+        this.camera.computeMatrix()
 
         this.ui.objects.forEach(object => {
             object.update()
@@ -382,7 +403,7 @@ export class Engine {
             element.update()
         })
 
-        if (!this.selectedObject &amp;&amp; this._objectSelectHandler != null) {
+        if (this.selectedObject &amp;&amp; this._objectSelectHandler != null) {
             this._objectSelectHandler(this.selectedObject)
         }
     }
@@ -400,17 +421,8 @@ export class Engine {
         this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue)
 
         this.drawCallsPerFrame = 0
-
-        this.ui.objects.forEach(object => {
-            object.draw()
-        })
         
-        new Promise(() => {
-            this.ui.clearCanvas()
-            this.ui.drawImage(this.canvas, this.width, this.height)
-        })
-        this.ui.draw()
-        this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT)
+        this.ui.drawUIOnMainCanvas()
 
         this.objects.forEach(object => {
             object.draw()
@@ -419,6 +431,8 @@ export class Engine {
         this.objectsWithAlphaTexture.forEach(object => {
             object.draw()
         });
+
+        this.ui.drawUI()
 
         if (this.debugger != null) {
             this.debugger.updateInfo()
@@ -444,7 +458,6 @@ export class Engine {
             imageAlpha = options.imageAlpha || imageAlpha
             noDrawObjects = options.noDrawObjects || []
         }
-
         this.canvas.width = imageWidth
         this.canvas.height = imageHeight
         this.canvasResized()
@@ -489,14 +502,12 @@ export class Engine {
         context.globalAlpha = imageAlpha
         context.drawImage(this.canvas, 0, 0)
 
-
         this.camera = currentCamera
         this.canvas.width = currentCanvasSize[0];
         this.canvas.height = currentCanvasSize[1];
         this.canvasResized();
         return frame;
     }
-
 
     /**
      * Sets range where objects will no draws.
@@ -526,6 +537,24 @@ export class Engine {
      */
     run () {
         _engine = this
+        this.running = true
+
+        if (this.loadedTexturesCount == this.textures.length) {
+            console.log('a')
+            this.texturesLoaded = true
+        }
+
+        let objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length
+        if (this.loadedObjectsCount == objectsCount) {
+            this.objectsLoaded = true
+            if (this.textureLoaded) {
+                this.resourcesLoaded = true
+                this.onResourcesLoadedHandlers.forEach(func => {
+                    func(this.textures.length)
+                })
+            }
+        }
+
         requestAnimationFrameEngine()
         this.onrun.forEach(func => {
             func()
@@ -550,7 +579,7 @@ export class Engine {
      */
     textureLoaded(texture) {
         this.loadedTexturesCount += 1
-        if (this.loadedTexturesCount == this.textures.length) {
+        if (this.running &amp;&amp; this.loadedTexturesCount == this.textures.length) {
             this.texturesLoaded = true
             if (this.objectsLoaded) {
                 this.resourcesLoaded = true
@@ -566,8 +595,9 @@ export class Engine {
      * @param {Object} object
      */
     objectLoaded(object) {
+        let objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length
         this.loadedObjectsCount += 1
-        if (this.loadedObjectsCount == this.objects.length) {
+        if (this.running &amp;&amp; this.loadedObjectsCount == objectsCount) {
             this.objectsLoaded = true
             if (this.textureLoaded) {
                 this.resourcesLoaded = true
@@ -654,7 +684,7 @@ function requestAnimationFrameEngine () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 01 2019 01:35:10 GMT+0300 (Eastern European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 07 2019 02:37:28 GMT+0300 (Eastern European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>
