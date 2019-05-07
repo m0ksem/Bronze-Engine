@@ -20,12 +20,28 @@ export class Rect {
             engine.addObject(this)
         }
 
+        /**
+         * Reference to attached engine
+         * @type {Engine}
+         */
         this.engine = engine
 
+        /**
+         * Reference to attached camera
+         * @type {Camera}
+         */
         this.camera = engine.camera
 
+        /**
+         * Reference to attached webgl context
+         * @type {WebGLContext}
+         */
         this.webGL = engine.webGL
 
+        /**
+         * Reference to attached shader
+         * @type {ShaderProgram}
+         */
         this.shaderProgram = engine.shaders.default
 
         /**
@@ -42,6 +58,11 @@ export class Rect {
          */
         this.rotationPoint = [0, 0, 0]
 
+        /**
+         * Array of rect vertexes.
+         * @type {Number[]}
+         * @public
+         */
         this.vertexes = [
             0, 0, 0,
             100, 100, 0,
@@ -51,6 +72,11 @@ export class Rect {
             100, 0, 0
         ]
 
+        /**
+         * Array of rect texture coords. See setTextureRepeating()
+         * @type {Number[]}
+         * @public
+         */
         this.textureCoords = [
             0, 1,
             1, 0,
@@ -60,6 +86,11 @@ export class Rect {
             1, 1,
         ]
 
+        /**
+         * Array of rect normals. See setNormals() and AutoGenerateNormals() methods.
+         * @type {Number[]} 
+         * @public
+         */
         this.normals = [
             0, 0, 1,
             0, 0, 1,
@@ -69,6 +100,18 @@ export class Rect {
             0, 0, 1,
         ]
 
+        /**
+         * Collision boxes coordinates array.
+         * @type {
+         *      x: Number[2],
+         *      y: Number[2],
+         *      z: Number[2]
+         *  }
+         * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
+         * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
+         * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
+         * @public
+         */
         this.collisionBoxes = [
             {
                 x: [0, 100],
@@ -146,20 +189,6 @@ export class Rect {
          * @property {Number} relativeCameraPosition.depth
          */
         this.relativeCameraPosition = null
-
-         /**
-          * Collision boxes coordinates array.
-          * @type {
-          *      x: Number[2],
-          *      y: Number[2],
-          *      z: Number[2]
-          *  }
-          * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
-          * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
-          * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
-          * @public
-          */
-        this.collisionBoxes = []
 
         /**
          * Sets whether the object will be attached to the camera like UI this.
@@ -289,16 +318,17 @@ export class Rect {
     setSize(width, height) {
         this.width = width
         this.height = height
-        this.vertexes = [
-            0, 0, 0,
-            width, height, 0,
-            0, height, 0,
-            width, height, 0,
-            0, 0, 0,
-            width, 0, 0
-        ]
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+        // this.vertexes = [
+        //     0, 0, 0,
+        //     width, height, 0,
+        //     0, height, 0,
+        //     width, height, 0,
+        //     0, 0, 0,
+        //     width, 0, 0
+        // ]
+        // this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer)
+        // this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+        this.scale(this.width / 100, this.height / 100)
     }
 
     /**
@@ -316,11 +346,10 @@ export class Rect {
      * Change scaling of all polygons in rect.
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} z
      * @public
      */
-    scale(x, y, z) {
-        this.scale = [x, y, z]
+    scale(x, y) {
+        this.scaling = [x, y, 1]
     }
 
     /**
@@ -491,48 +520,66 @@ export class Rect {
         }
     }
 
-    checkCollision() {
+    checkCollision (position, moving, movingObjectCollisionBox, callback) {
+        this._updateWorldMatrix()
+
         this.collisionBoxes.forEach(collisionBox => {
             if (this.engine.camera.moved) {
-                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + this.camera.distanceBeforeCollision
-                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - this.camera.distanceBeforeCollision
-                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + this.camera.distanceBeforeCollision
-                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - this.camera.distanceBeforeCollision
-                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + this.camera.distanceBeforeCollision
-                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - this.camera.distanceBeforeCollision
+                let maxPoint = [collisionBox.x[1], collisionBox.y[1], collisionBox.z[1], 1]
+                let minPoint = [collisionBox.x[0], collisionBox.y[0], collisionBox.z[0], 1]
 
-                let newPosX = this.camera.position[0] + this.camera.moving[0]
-                let newPosY = this.camera.position[1] + this.camera.moving[1]
-                let newPosZ = this.camera.position[2] + this.camera.moving[2]
+                maxPoint = Matrixes.transformVector(this._world, maxPoint)
+                minPoint = Matrixes.transformVector(this._world, minPoint)
 
-                if ((newPosX > minX && newPosX < maxX) &&
-                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
-                    this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ) { // this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
-                    this.camera.moving[0] = 0
+                this.engine.debugger.maxPoint = maxPoint
+                this.engine.debugger.minPoint = minPoint
+
+                let maxX = maxPoint[0] + movingObjectCollisionBox.x[1]
+                let minX = minPoint[0] - movingObjectCollisionBox.x[0]
+                if (maxPoint[1] < minPoint[1]) {
+                    let temp = maxPoint[1]
+                    maxPoint[1] = minPoint[1]
+                    minPoint[1] = temp
                 }
-                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
-                    (newPosY > minY && newPosY < maxY) &&
-                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ))  {  // (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
-                    this.camera.moving[1] = 0
+                let maxY = maxPoint[1] + movingObjectCollisionBox.y[1]
+                let minY = minPoint[1] - movingObjectCollisionBox.y[0]
+                if (maxPoint[2] < minPoint[2]) {
+                    let temp = maxPoint[2]
+                    maxPoint[2] = minPoint[2]
+                    minPoint[2] = temp
                 }
-                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
-                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
-                    (newPosZ > minZ && newPosZ < maxZ)) {
-                    this.camera.moving[2] = 0
+                let maxZ = maxPoint[2] + movingObjectCollisionBox.z[1]
+                let minZ = minPoint[2] - movingObjectCollisionBox.z[0]
+
+                let newPosX = position[0] + moving[0]
+                let newPosY = position[1] + moving[1]
+                let newPosZ = position[2] + moving[2]
+
+                if (position[1] > minY && position[1] < maxY &&
+                    position[2] > minZ && position[2] < maxZ) {
+                    if ((position[0] < minX && newPosX >= minX) || (position[0] > maxX && newPosX <= maxX)) {
+                        callback(0)
+                    }
+                }
+
+                if (position[0] > minX && position[0] < maxX &&
+                    position[2] > minZ && position[2] < maxZ) {
+                    if ((position[1] < minY && newPosY >= minY) || (position[1] > maxY && newPosY <= maxY)) {
+                        callback(1)
+                    }
+                }
+
+                if (position[1] > minY && position[1] < maxY &&
+                    position[0] > minX && position[0] < maxX) {
+                    if ((position[2] < minZ && newPosZ >= minZ) || (position[2] > maxZ && newPosZ <= maxZ)) {
+                        callback(2)
+                    }
                 }
             }
         })
     }
 
-    update () {
-        let temp = new Matrixes.Matrix()
-        if (!this.UIElement) {
-            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-            temp.multiply(this.engine.camera.inverseMatrix)
-        } else {
-            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-        }
-
+    _updateWorldMatrix () {
         let world = new Matrixes.Matrix()
         world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
         world.translate(this.position[0], this.position[1], this.position[2])
@@ -547,11 +594,21 @@ export class Rect {
         world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
 
         this._world = world.matrix
-        
-        temp.multiply(world.matrix)
+        this._rotationMatrix = rot
+    }
+
+    update () {
+        let temp = new Matrixes.Matrix()
+        if (!this.UIElement) {
+            temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+            temp.multiply(this.engine.camera.inverseMatrix)
+        } else {
+            temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
+        }
+
+        temp.multiply(this._world)
 
         this._matrix = temp.matrix
-        this._rotationMatrix = rot
     }
 
     animate(fps, animateFunction) {

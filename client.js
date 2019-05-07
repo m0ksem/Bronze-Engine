@@ -38,9 +38,13 @@ let debug = new Bronze.Debugger(engine)
     debug.addLog(debug.createLogView(), () => {
         return 'Position ' + camera.position[0] + ', ' + camera.position[1] + ', ' + camera.position[2]
     })
-    debug.addLog(debug.createLogView(), () => {
-        return 'Position before move ' + camera.positionBeforeMovement[0] + ', ' + camera.positionBeforeMovement[1] + ', ' + camera.positionBeforeMovement[2]
-    })
+debug.addLog(debug.createLogView(), () => {
+    return 'Position max' + debug.maxPoint
+})
+debug.addLog(debug.createLogView(), () => {
+    return 'Position min' + debug.minPoint
+})
+
 
 let ui = new Bronze.UI(engine)
 ui.appendDOMElementWithCustomProperties(debug.element, {width: 'auto%'})
@@ -157,9 +161,6 @@ let transparentTextureDoor = new Bronze.SimpleTexture("./assets/texture/door.png
 let colaTexture = new Bronze.SimpleTexture("./assets/texture/cola.png")
     colaTexture.setColorRGBA(255, 255, 255, 255)
     colaTexture.bind(engine)
-let fridgeTexture = new Bronze.SimpleTexture("./assets/texture/fridge.png")
-    fridgeTexture.setColorRGBA(255, 255, 255, 255)
-    fridgeTexture.bind(engine)
 let woodTexture = new Bronze.SimpleTexture("./assets/texture/wood.jpg")
     woodTexture.setColorRGBA(255, 255, 255, 255)
     woodTexture.bind(engine)
@@ -326,7 +327,7 @@ cubeObj.setPosition(50, 500, 1000)
 cubeObj.name = "cube on ground"
 cubeObj.loadFromObj("assets/objects/cube.obj")
 cubeObj.setRotationPoint(0, 0, 0)
-cubeObj.scale(2, 2, 2)
+cubeObj.scale(100, 100, 100)
 cubeObj.setTexture(colaTexture)
 cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.5)', 1024, 0.7))
 cubeObj.useMaterial(glass)

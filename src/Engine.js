@@ -338,14 +338,16 @@ export class Engine {
         for (let i = 0; i < this.objects.length; i++) {
             const object = this.objects[i]
             if (object.checkCollision) {
-                (object.checkCollision())
+                object.checkCollision(this.camera.position, this.camera.moving,
+                    this.camera.collisionBox, (coordinate) => { this.camera.moving[coordinate] = 0 })
             }
         }
 
         for (let i = 0; i < this.objectsWithAlphaTexture.length; i++) {
             const object = this.objectsWithAlphaTexture[i]
             if (object.checkCollision) {
-                (object.checkCollision())
+                object.checkCollision(this.camera.position, this.camera.moving, 
+                    this.camera.collisionBox, (coordinate) => { this.camera.moving[coordinate] = 0})
             }
         }
 

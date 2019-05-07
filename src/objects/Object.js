@@ -475,7 +475,7 @@ export class Object {
                         faceVertexes.push(coord)
                     })
 
-                    if (textureCoordPosition != 0) {
+                    if (textureCoordPosition != 0 && textureCoords[textureCoordPosition - 1] != undefined) {
                         textureCoords[textureCoordPosition - 1].forEach(textureCoord => {
                             faceTextureCoords.push(textureCoord)
                         })
@@ -613,15 +613,15 @@ export class Object {
         }
     }
 
-    checkCollision () {
+    checkCollision(position, moving, movingObjectCollisionBox, callback) {
         this.collisionBoxes.forEach(collisionBox => {
             if (this.engine.camera.moved) {
-                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + this.camera.distanceBeforeCollision
-                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - this.camera.distanceBeforeCollision
-                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + this.camera.distanceBeforeCollision
-                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - this.camera.distanceBeforeCollision
-                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + this.camera.distanceBeforeCollision
-                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - this.camera.distanceBeforeCollision
+                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + movingObjectCollisionBox.x[1]
+                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - movingObjectCollisionBox.x[0]
+                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + movingObjectCollisionBox.y[1]
+                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - movingObjectCollisionBox.y[0]
+                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + movingObjectCollisionBox.z[1]
+                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - movingObjectCollisionBox.z[0]
 
                 let newPosX = this.camera.position[0] + this.camera.moving[0]
                 let newPosY = this.camera.position[1] + this.camera.moving[1]

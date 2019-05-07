@@ -11,7 +11,7 @@ export class Camera {
 
         /**
          * Camera position.
-         * @readonly
+         * @private
          * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
          */
         this._position = [0, 0, 100]
@@ -80,11 +80,26 @@ export class Camera {
          */
         this.inverseRotationMatrix
 
+        /**
+         * True if camera move
+         * @type {boolean}
+         * @readonly
+         */
         this.moved = false
 
-        this.distanceBeforeCollision = 100
-
+        /**
+         * Array of moving values for camera for frame
+         * @type {Number[3]}
+         * @public
+         */
         this.moving = [0, 0, 0]
+
+        this.collisionBox = 
+        {
+            x: [0, 0],
+            y: [0, 0],
+            z: [0, 0]
+        }
     }
 
     /**
@@ -127,10 +142,19 @@ export class Camera {
         this.position = [x, y, z]
     }
 
+    /**
+    * Camera position.
+    * @public
+    * @type {Number[3]}
+    */
     get position () {
         return this._position
     }
-
+    /**
+    * Camera position.
+    * @public
+    * @type {Number[3]}
+    */
     set position (value) {
         this._position = value
         this.computeMatrix()

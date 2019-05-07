@@ -15,6 +15,7 @@ let camera = new Bronze.Camera()
     camera.setPosition(0, 400, 0)
     camera.setRotation(0, 0, 0)
     camera.setFieldOfView(90)
+    camera.distanceBeforeCollision = 10
     engine.setCamera(camera)
 
 let controls = new Bronze.Controls(engine)
