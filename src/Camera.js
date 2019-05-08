@@ -102,6 +102,16 @@ export class Camera {
         }
     }
 
+    setCubeCollisionBox (size) {
+        let halfSize = size / 2
+        this.collisionBox =
+            {
+                x: [-halfSize, halfSize],
+                y: [-halfSize, halfSize],
+                z: [-halfSize, halfSize]
+            }
+    }
+
     /**
      * Sets field of view for camera.
      * @param {Number} angle

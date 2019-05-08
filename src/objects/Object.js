@@ -1,6 +1,6 @@
 import * as Matrixes from "../math/Matrixes"
 import * as Math from '../math/Math'
-
+import * as Vectors from '../math/Vectors'
  /**
  * Creates and bind to engine object. The object must be loaded from .obj file.
  * @class
@@ -616,63 +616,141 @@ export class Object {
     checkCollision(position, moving, movingObjectCollisionBox, callback) {
         this.collisionBoxes.forEach(collisionBox => {
             if (this.engine.camera.moved) {
-                let maxX = collisionBox.x[1] * this.scaling[0] + this.position[0] + movingObjectCollisionBox.x[1]
-                let minX = collisionBox.x[0] * this.scaling[0] + this.position[0] - movingObjectCollisionBox.x[0]
-                let maxY = collisionBox.y[1] * this.scaling[1] + this.position[1] + movingObjectCollisionBox.y[1]
-                let minY = collisionBox.y[0] * this.scaling[1] + this.position[1] - movingObjectCollisionBox.y[0]
-                let maxZ = collisionBox.z[1] * this.scaling[2] + this.position[2] + movingObjectCollisionBox.z[1]
-                let minZ = collisionBox.z[0] * this.scaling[2] + this.position[2] - movingObjectCollisionBox.z[0]
+                let maxPoint = [collisionBox.x[1], collisionBox.y[1], collisionBox.z[1], 1]
+                let minPoint = [collisionBox.x[0], collisionBox.y[0], collisionBox.z[0], 1]
 
-                let newPosX = this.camera.position[0] + this.camera.moving[0]
-                let newPosY = this.camera.position[1] + this.camera.moving[1]
-                let newPosZ = this.camera.position[2] + this.camera.moving[2]
+                maxPoint = Matrixes.transformVector(this._world, maxPoint)
+                minPoint = Matrixes.transformVector(this._world, minPoint)
 
-                if ((newPosX > minX && newPosX < maxX) &&
-                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
-                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
-                    this.camera.moving[0] = 0
+                this.engine.debugger.maxPoint = maxPoint
+                this.engine.debugger.minPoint = minPoint
+
+                if (maxPoint[0] < minPoint[0]) {
+                    let temp = maxPoint[0]
+                    maxPoint[0] = minPoint[0]
+                    minPoint[0] = temp
                 }
-                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
-                    (newPosY > minY && newPosY < maxY) &&
-                    (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)) {
-                    this.camera.moving[1] = 0
+                let maxX = maxPoint[0] + movingObjectCollisionBox.x[1]
+                let minX = minPoint[0] - movingObjectCollisionBox.x[0]
+                if (maxPoint[1] < minPoint[1]) {
+                    let temp = maxPoint[1]
+                    maxPoint[1] = minPoint[1]
+                    minPoint[1] = temp
                 }
-                if ((this.engine.camera.position[0] > minX && this.engine.camera.position[0] < maxX) &&
-                    (this.engine.camera.position[1] > minY && this.engine.camera.position[1] < maxY) &&
-                    (newPosZ > minZ && newPosZ < maxZ)) {
-                    this.camera.moving[2] = 0
+                let maxY = maxPoint[1] + movingObjectCollisionBox.y[1]
+                let minY = minPoint[1] - movingObjectCollisionBox.y[0]
+                if (maxPoint[2] < minPoint[2]) {
+                    let temp = maxPoint[2]
+                    maxPoint[2] = minPoint[2]
+                    minPoint[2] = temp
                 }
+                let maxZ = maxPoint[2] + movingObjectCollisionBox.z[1]
+                let minZ = minPoint[2] - movingObjectCollisionBox.z[0]
+
+                let newPosX = position[0] + moving[0]
+                let newPosY = position[1] + moving[1]
+                let newPosZ = position[2] + moving[2]
+
+                if (position[0] > minX && position[0] < maxX &&
+                    position[1] > minY && position[1] < maxY &&
+                    position[2] > minZ && position[2] < maxZ) {
+                        // let centerX = (minX + maxX) / 2
+                        // let centerY = (minY + maxY) / 2
+                        // let centerZ = (minZ + maxZ) / 2
+                        
+                        // let direction = [
+                        //     centerX - position[0],
+                        //     centerY - position[1],
+                        //     centerZ - position[2]
+                        // ]
+
+                        // direction = Vectors.normalize(direction)
+                    let moveByObject = [
+                        maxX - this.lastMaxSizes[0],
+                        maxY - this.lastMaxSizes[1],
+                        maxZ - this.lastMaxSizes[2]
+                    ]
+      
+                    // if (moveByObject[0] < 0) {
+                    //     moveByObject[0] -= movingObjectCollisionBox.x[0]
+                    // } else {
+                    //     moveByObject[0] += movingObjectCollisionBox.x[1]
+                    // }
+                    // if (moveByObject[1] < 0) {
+                    //     moveByObject[1] -= movingObjectCollisionBox.y[0]
+                    // } else {
+                    //     moveByObject[1] += movingObjectCollisionBox.y[1]
+                    // }
+                    // if (moveByObject[2] < 0) {
+                    //     moveByObject[2] -= movingObjectCollisionBox.z[0]
+                    // } else {
+                    //     moveByObject[2] += movingObjectCollisionBox.z[1]
+                    // }
+
+                    this.camera.position[0] += moveByObject[0]
+                    this.camera.position[1] += moveByObject[1]
+                    this.camera.position[2] += moveByObject[2]
+                    callback(0)
+                    callback(1)
+                    callback(2)
+                    console.log(moveByObject)
+                }
+
+                if (position[1] > minY && position[1] < maxY &&
+                    position[2] > minZ && position[2] < maxZ) {
+                    if ((position[0] < minX && newPosX >= minX) || (position[0] > maxX && newPosX <= maxX)) {
+                        callback(0)
+                    }
+                }
+
+                if (position[0] > minX && position[0] < maxX &&
+                    position[2] > minZ && position[2] < maxZ) {
+                    if ((position[1] < minY && newPosY >= minY) || (position[1] > maxY && newPosY <= maxY)) {
+                        callback(1)
+                    }
+                }
+
+                if (position[1] > minY && position[1] < maxY &&
+                    position[0] > minX && position[0] < maxX) {
+                    if ((position[2] < minZ && newPosZ >= minZ) || (position[2] > maxZ && newPosZ <= maxZ)) {
+                        callback(2)
+                    }
+                }
+
+                this.lastMaxSizes = [maxX, maxY, maxZ]
             }
         })
     }
 
+    updateMatrixes() {
+        let world = new Matrixes.Matrix()
+        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
+        world.translate(this.position[0], this.position[1], this.position[2])
+        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
+        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
+        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
+        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
+        rot = Matrixes.multiply(parentRot, rot)
+        world.multiply(rot)
+        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+        this._rotationMatrix = rot
+        this._world = world.matrix
+    }
+
     update () {
         let objectMatrix = new Matrixes.Matrix()
-        let world = new Matrixes.Matrix()
         
-        let objectRotationMatrix = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
-        objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, Matrixes.rotationZ(this.rotation[2]))
-
         if (!this._UIElement) {
             objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
             objectMatrix.multiply(this.engine.camera.inverseMatrix)
-            world.translate(this.position[0], this.position[1], this.position[2])
-            world.multiply(objectRotationMatrix)
-            world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-
-            objectMatrix.multiply(world.matrix)
+            objectMatrix.multiply(this._world)
         } else {
             objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
-            world.translate(this.position[0], this.position[1], this.position[2])
-            world.multiply(objectRotationMatrix)
-            world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+            objectMatrix.multiply(this._world)
 
-            objectMatrix.multiply(world.matrix)
-
-            objectRotationMatrix = Matrixes.multiply(objectRotationMatrix, this.engine.camera.rotationMatrix)
+           this._rotationMatrix = Matrixes.multiply(this._rotationMatrix, this.engine.camera.rotationMatrix)
         }
-
-        this._world = world.matrix
         
         if (!this._UIElement) {
             let mouseOverHitBox = false
@@ -762,7 +840,6 @@ export class Object {
         }
 
         this._matrix = objectMatrix.matrix
-        this._rotationMatrix = objectRotationMatrix
     }
 
     useMaterial(material) {

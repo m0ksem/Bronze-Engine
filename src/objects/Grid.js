@@ -46,6 +46,10 @@ export class Grid extends Rect {
         this.engine.drawCalls++
     }
 
+    updateMatrixes () {
+        
+    }
+
     update () {
         let temp = new Matrixes.Matrix()
         temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)

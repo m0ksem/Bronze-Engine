@@ -521,8 +521,6 @@ export class Rect {
     }
 
     checkCollision (position, moving, movingObjectCollisionBox, callback) {
-        this._updateWorldMatrix()
-
         this.collisionBoxes.forEach(collisionBox => {
             if (this.engine.camera.moved) {
                 let maxPoint = [collisionBox.x[1], collisionBox.y[1], collisionBox.z[1], 1]
@@ -530,10 +528,12 @@ export class Rect {
 
                 maxPoint = Matrixes.transformVector(this._world, maxPoint)
                 minPoint = Matrixes.transformVector(this._world, minPoint)
-
-                this.engine.debugger.maxPoint = maxPoint
-                this.engine.debugger.minPoint = minPoint
-
+                
+                if (maxPoint[0] < minPoint[0]) {
+                    let temp = maxPoint[0]
+                    maxPoint[0] = minPoint[0]
+                    minPoint[0] = temp
+                }
                 let maxX = maxPoint[0] + movingObjectCollisionBox.x[1]
                 let minX = minPoint[0] - movingObjectCollisionBox.x[0]
                 if (maxPoint[1] < minPoint[1]) {
@@ -579,7 +579,7 @@ export class Rect {
         })
     }
 
-    _updateWorldMatrix () {
+    updateMatrixes () {
         let world = new Matrixes.Matrix()
         world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
         world.translate(this.position[0], this.position[1], this.position[2])

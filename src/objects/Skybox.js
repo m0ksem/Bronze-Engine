@@ -76,6 +76,10 @@ export class Skybox {
         this.rotation[2] += zRad
     }
 
+    updateMatrixes () {
+        
+    }
+
     /**
      * Updating camera matrix for drawing Skybox
      */

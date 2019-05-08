@@ -337,6 +337,7 @@ export class Engine {
 
         for (let i = 0; i < this.objects.length; i++) {
             const object = this.objects[i]
+            object.updateMatrixes()
             if (object.checkCollision) {
                 object.checkCollision(this.camera.position, this.camera.moving,
                     this.camera.collisionBox, (coordinate) => { this.camera.moving[coordinate] = 0 })
@@ -345,6 +346,7 @@ export class Engine {
 
         for (let i = 0; i < this.objectsWithAlphaTexture.length; i++) {
             const object = this.objectsWithAlphaTexture[i]
+            object.updateMatrixes()
             if (object.checkCollision) {
                 object.checkCollision(this.camera.position, this.camera.moving, 
                     this.camera.collisionBox, (coordinate) => { this.camera.moving[coordinate] = 0})
@@ -358,6 +360,7 @@ export class Engine {
         this.camera.computeMatrix()
 
         this.ui.objects.forEach(object => {
+            object.updateMatrixes()
             object.update()
         })
 

@@ -529,6 +529,22 @@ export class Cube {
             }
         })
     }
+
+    updateMatrixes () {
+        let world = new Matrixes.Matrix()
+        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
+        world.translate(this.position[0], this.position[1], this.position[2])
+        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
+        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
+        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
+        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
+        rot = Matrixes.multiply(parentRot, rot)
+        world.multiply(rot)
+        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
+        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
+        this._rotationMatrix = rot
+        this._world = world.matrix
+    }
     
     update() {
         let temp = new Matrixes.Matrix()
@@ -539,25 +555,9 @@ export class Cube {
             temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range)
         }
 
-        let world = new Matrixes.Matrix()
-        world.multiply(Matrixes.inverse(Matrixes.translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])))
-        world.translate(this.position[0], this.position[1], this.position[2])
-        let rot = Matrixes.multiply(Matrixes.rotationX(this.rotation[0]), Matrixes.rotationY(this.rotation[1]))
-        rot = Matrixes.multiply(rot, Matrixes.rotationZ(this.rotation[2]))
-        let parentRot = Matrixes.multiply(Matrixes.rotationX(this.parentRotation[0]), Matrixes.rotationY(this.parentRotation[1]))
-        parentRot = Matrixes.multiply(parentRot, Matrixes.rotationZ(this.parentRotation[2]))
-        rot = Matrixes.multiply(parentRot, rot)
-        world.multiply(rot)
-        this._rotationMatrix = rot
-
-        world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])
-        world.scale(this.scaling[0], this.scaling[1], this.scaling[2])
-
-        this._world = world.matrix
-        temp.multiply(world.matrix)
+        temp.multiply(this._world)
 
         this._matrix = temp.matrix
-        this._rotationMatrix = rot
     }
 
     useMaterial(material) {
