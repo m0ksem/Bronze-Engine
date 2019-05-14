@@ -1,10 +1,12 @@
-const path = require('path')
+var path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = {
+    // Change to your "entry-point".
     entry: {
-        'Bronze': './src/Bronze.js',
-        'Bronze.min': './src/Bronze.js'
+        'Bronze': './src/Bronze.ts',
+        'Bronze.min': './src/Bronze.ts'
     },
     output: {
         filename: '[name].js',
@@ -17,19 +19,24 @@ module.exports = {
     devServer: {
         overlay: true
     },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json']
+    },
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: '/node_modules/'
-            }
-        ]
+        rules: [{
+            // Include ts, tsx, js, and jsx files.
+            test: /\.(ts|js)x?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+        }],
     },
     optimization: {
         minimize: true,
         minimizer: [new UglifyJsPlugin({
-          include: /\.min\.js$/
+            include: /\.min\.js$/
         })]
-    }
-}
+    },
+    plugins: [
+        new TypedocWebpackPlugin({})
+    ]
+};

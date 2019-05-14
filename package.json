@@ -8,29 +8,31 @@
     "type": "git",
     "url": "https://github.com/m0ksem/Bronze-Engine.git"
   },
-  "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/plugin-transform-runtime": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/runtime": "^7.3.4",
-    "@pixi/jsdoc-template": "^2.4.2",
-    "babel-loader": "^8.0.5",
+  "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-typescript": "^7.3.3",
     "babel-plugin-inline-import": "^3.0.0",
-    "babel-polyfill": "^6.26.0",
-    "jsdoc": "^3.5.5",
-    "path": "^0.12.7",
+    "typedoc": "^0.14.2",
+    "typedoc-webpack-plugin": "^1.1.4",
+    "typescript": "^3.4.5",
     "uglifyjs-webpack-plugin": "^2.1.2",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1",
-    "copyfiles": "^2.1.0"
+    "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
-    "build-docs": "jsdoc -c conf.json",
-    "build-production": "yarn run build && yarn run build-docs",
-    "build-package": "copyfiles --flat ./src/*.* package/src && copyfiles --flat ./*.* package"
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
+    "build:docs": "typedoc --out docs ./src"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.5",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
   },
   "keywords": [
     "game",
@@ -38,8 +40,5 @@
     "bronze",
     "game engine",
     "WebGL"
-  ],
-  "dependencies": {
-    
-  }
+  ]
 }

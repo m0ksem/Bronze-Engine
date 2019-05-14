@@ -91,1071 +91,29 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-module.exports = _classCallCheck;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-module.exports = _createClass;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(10);
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-function _getPrototypeOf(o) {
-  module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-module.exports = _getPrototypeOf;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _typeof = __webpack_require__(12);
-
-var assertThisInitialized = __webpack_require__(8);
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return assertThisInitialized(self);
-}
-
-module.exports = _possibleConstructorReturn;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(7);
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) setPrototypeOf(subClass, superClass);
-}
-
-module.exports = _inherits;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-module.exports = _setPrototypeOf;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var getPrototypeOf = __webpack_require__(3);
-
-var setPrototypeOf = __webpack_require__(7);
-
-var isNativeFunction = __webpack_require__(13);
-
-var construct = __webpack_require__(14);
-
-function _wrapNativeSuper(Class) {
-  var _cache = typeof Map === "function" ? new Map() : undefined;
-
-  module.exports = _wrapNativeSuper = function _wrapNativeSuper(Class) {
-    if (Class === null || !isNativeFunction(Class)) return Class;
-
-    if (typeof Class !== "function") {
-      throw new TypeError("Super expression must either be null or a function");
-    }
-
-    if (typeof _cache !== "undefined") {
-      if (_cache.has(Class)) return _cache.get(Class);
-
-      _cache.set(Class, Wrapper);
-    }
-
-    function Wrapper() {
-      return construct(Class, arguments, getPrototypeOf(this).constructor);
-    }
-
-    Wrapper.prototype = Object.create(Class.prototype, {
-      constructor: {
-        value: Wrapper,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    return setPrototypeOf(Wrapper, Class);
-  };
-
-  return _wrapNativeSuper(Class);
-}
-
-module.exports = _wrapNativeSuper;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = function () {
-  return this || typeof self === "object" && self;
-}() || Function("return this")(); // Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-
-
-var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0; // Save the old regeneratorRuntime in case it needs to be restored later.
-
-var oldRuntime = hadRuntime && g.regeneratorRuntime; // Force reevalutation of runtime.js.
-
-g.regeneratorRuntime = undefined;
-module.exports = __webpack_require__(11);
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch (e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-!function (global) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-  var inModule = typeof module === "object";
-  var runtime = global.regeneratorRuntime;
-
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    } // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-
-
-    return;
-  } // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-
-
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []); // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-    return generator;
-  }
-
-  runtime.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-
-  function tryCatch(fn, obj, arg) {
-    try {
-      return {
-        type: "normal",
-        arg: fn.call(obj, arg)
-      };
-    } catch (err) {
-      return {
-        type: "throw",
-        arg: err
-      };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed"; // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-
-  var ContinueSentinel = {}; // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-
-  function Generator() {}
-
-  function GeneratorFunction() {}
-
-  function GeneratorFunctionPrototype() {} // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-
-
-  var IteratorPrototype = {};
-
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-
-  if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction"; // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function (method) {
-      prototype[method] = function (arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function (genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
-    // do is to check its .name property.
-    (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
-  };
-
-  runtime.mark = function (genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  }; // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-
-
-  runtime.awrap = function (arg) {
-    return {
-      __await: arg
-    };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-
-        if (value && typeof value === "object" && hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function (value) {
-            invoke("next", value, resolve, reject);
-          }, function (err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function (unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function (error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise = // If enqueue has been called before, then we want to wait until
-      // all previous Promises have been resolved before calling invoke,
-      // so that results are always delivered in the correct order. If
-      // enqueue has not been called before, then it is important to
-      // call invoke immediately, without waiting on a callback to fire,
-      // so that the async generator function has the opportunity to do
-      // any necessary setup in a predictable way. This predictability
-      // is why the Promise constructor synchronously invokes its
-      // executor callback, and why async functions synchronously
-      // execute code before the first await. Since we implement simple
-      // async functions in terms of async generators, it is especially
-      // important to get this right, even though it requires care.
-      previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
-      // invocations of the iterator.
-      callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-    } // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-
-
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-
-  runtime.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-
-  runtime.async = function (innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
-    return runtime.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
-    : iter.next().then(function (result) {
-      return result.done ? result.value : iter.next();
-    });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        } // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-
-
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-        var record = tryCatch(innerFn, self, context);
-
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done ? GenStateCompleted : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-        } else if (record.type === "throw") {
-          state = GenStateCompleted; // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  } // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-
-
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator.return) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError("The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (!info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value; // Resume execution at the desired location (see delegateYield).
-
-      context.next = delegate.nextLoc; // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    } // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-
-
-    context.delegate = null;
-    return ContinueSentinel;
-  } // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-
-
-  defineIteratorMethods(Gp);
-  Gp[toStringTagSymbol] = "Generator"; // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-
-  Gp[iteratorSymbol] = function () {
-    return this;
-  };
-
-  Gp.toString = function () {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = {
-      tryLoc: locs[0]
-    };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{
-      tryLoc: "root"
-    }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function (object) {
-    var keys = [];
-
-    for (var key in object) {
-      keys.push(key);
-    }
-
-    keys.reverse(); // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      } // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-
-
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1,
-            next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-          return next;
-        };
-
-        return next.next = next;
-      }
-    } // Return an iterator with no values.
-
-
-    return {
-      next: doneResult
-    };
-  }
-
-  runtime.values = values;
-
-  function doneResult() {
-    return {
-      value: undefined,
-      done: true
-    };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-    reset: function (skipTempReset) {
-      this.prev = 0;
-      this.next = 0; // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-      this.method = "next";
-      this.arg = undefined;
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-    stop: function () {
-      this.done = true;
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-    dispatchException: function (exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !!caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-    abrupt: function (type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-    complete: function (record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" || record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-    finish: function (finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-    "catch": function (tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-
-          return thrown;
-        }
-      } // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-
-
-      throw new Error("illegal catch attempt");
-    },
-    delegateYield: function (iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-}( // In sloppy mode, unbound `this` refers to the global object, fallback to
-// Function constructor if we're in global strict mode. That is sadly a form
-// of indirect eval which violates Content Security Policy.
-function () {
-  return this || typeof self === "object" && self;
-}() || Function("return this")());
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-function _typeof2(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof2 = function _typeof2(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof2 = function _typeof2(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof2(obj);
-}
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-function _isNativeFunction(fn) {
-  return Function.toString.call(fn).indexOf("[native code]") !== -1;
-}
-
-module.exports = _isNativeFunction;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(7);
-
-function isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-
-  try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _construct(Parent, args, Class) {
-  if (isNativeReflectConstruct()) {
-    module.exports = _construct = Reflect.construct;
-  } else {
-    module.exports = _construct = function _construct(Parent, args, Class) {
-      var a = [null];
-      a.push.apply(a, args);
-      var Constructor = Function.bind.apply(Parent, a);
-      var instance = new Constructor();
-      if (Class) setPrototypeOf(instance, Class.prototype);
-      return instance;
-    };
-  }
-
-  return _construct.apply(null, arguments);
-}
-
-module.exports = _construct;
-
-/***/ }),
-/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./src/math/Math.js
-/** @module Math */
-
+// CONCATENATED MODULE: ./src/math/Mathematics.ts
 /**
  * Converting radians to degrees.
- * @param {Number} radians
- * @return {Number} degrees
+ * @param radians
+ * @return degrees
  */
 function radToDeg(radians) {
   return radians * 180 / Math.PI;
 }
 /**
  * Converting degrees to radians.
- * @param {Number} degrees
- * @return {Number} radians
+ * @param degrees
+ * @return  radians
  */
 
 function degToRad(degrees) {
@@ -1163,299 +121,119 @@ function degToRad(degrees) {
 }
 /**
  * Returns true if value is square.
- * @param {Number} value 
+ * @param value 
  */
 
 function isPowerOf2(value) {
   return (value & value - 1) === 0;
 }
-/**
- * Returns default abs.
- * @param {Number} value 
- */
+/* harmony default export */ var Mathematics = ({
+  radToDeg: radToDeg,
+  degToRad: degToRad,
+  isPowerOf2: isPowerOf2
+});
+// CONCATENATED MODULE: ./src/math/Vector3.ts
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function abs(value) {
-  return Math.abs(value);
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
-var classCallCheck = __webpack_require__(0);
-var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/createClass.js
-var createClass = __webpack_require__(1);
-var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// CONCATENATED MODULE: ./src/math/Matrixes.js
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-
-
-/** @module Matrixes */
-
-/**
- * Matrix class with math matrix methods.
- * @class
- * @constructor
- * @public
- */
-var Matrixes_Matrix =
+var Vector3 =
 /*#__PURE__*/
 function () {
-  function Matrix() {
-    classCallCheck_default()(this, Matrix);
+  function Vector3(x, y, z) {
+    _classCallCheck(this, Vector3);
 
-    this.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    return this;
+    _defineProperty(this, "x", 0);
+
+    _defineProperty(this, "y", 0);
+
+    _defineProperty(this, "z", 0);
+
+    this.set(x, y, z);
   }
-  /**
-   * Setting this matrix as perspective projection matrix.
-   * @param {Number} fieldOfViewInRadians fieldOfView of camera.
-   * @param {Number} width canvas width.
-   * @param {Number} height canvas height.
-   * @param {Number} near range of drawn z-coordinates start.
-   * @param {Number} far range of drawn z-coordinates end.
-   * @public
-   */
 
-
-  createClass_default()(Matrix, [{
-    key: "perspective",
-    value: function perspective(fieldOfViewInRadians, width, height, near, far) {
-      var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
-      var rangeInv = 1.0 / (near - far);
-      this.matrix = [f / (width / height), 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
-      return this;
+  _createClass(Vector3, [{
+    key: "set",
+    value: function set(x, y, z) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
     }
-    /**
-     * Sets this matrxi to projection matrix without perscpective.
-     * @param {Number} width 
-     * @param {Number} height
-     * @public 
-     */
-
   }, {
-    key: "projection",
-    value: function projection(width, height) {
-      this.matrix = [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    key: "move",
+    value: function move(x, y, z) {
+      this.x += x;
+      this.y += y;
+      this.z += z;
     }
-    /**
-     * Multiplying this matrix by another.
-     * @param {Array} matrix 
-     * @public
-     */
-
   }, {
-    key: "multiply",
-    value: function multiply(matrix) {
-      var a00 = this.matrix[0 * 4 + 0];
-      var a01 = this.matrix[0 * 4 + 1];
-      var a02 = this.matrix[0 * 4 + 2];
-      var a03 = this.matrix[0 * 4 + 3];
-      var a10 = this.matrix[1 * 4 + 0];
-      var a11 = this.matrix[1 * 4 + 1];
-      var a12 = this.matrix[1 * 4 + 2];
-      var a13 = this.matrix[1 * 4 + 3];
-      var a20 = this.matrix[2 * 4 + 0];
-      var a21 = this.matrix[2 * 4 + 1];
-      var a22 = this.matrix[2 * 4 + 2];
-      var a23 = this.matrix[2 * 4 + 3];
-      var a30 = this.matrix[3 * 4 + 0];
-      var a31 = this.matrix[3 * 4 + 1];
-      var a32 = this.matrix[3 * 4 + 2];
-      var a33 = this.matrix[3 * 4 + 3];
-      var b00 = matrix[0 * 4 + 0];
-      var b01 = matrix[0 * 4 + 1];
-      var b02 = matrix[0 * 4 + 2];
-      var b03 = matrix[0 * 4 + 3];
-      var b10 = matrix[1 * 4 + 0];
-      var b11 = matrix[1 * 4 + 1];
-      var b12 = matrix[1 * 4 + 2];
-      var b13 = matrix[1 * 4 + 3];
-      var b20 = matrix[2 * 4 + 0];
-      var b21 = matrix[2 * 4 + 1];
-      var b22 = matrix[2 * 4 + 2];
-      var b23 = matrix[2 * 4 + 3];
-      var b30 = matrix[3 * 4 + 0];
-      var b31 = matrix[3 * 4 + 1];
-      var b32 = matrix[3 * 4 + 2];
-      var b33 = matrix[3 * 4 + 3];
-      this.matrix = [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
+    key: "moveArray",
+    value: function moveArray(array) {
+      this.x += array[0];
+      this.y += array[1];
+      this.z += array[2];
     }
-    /**
-     * Return multiply this matrix by another.
-     * @param {Array} matrix
-     * @return {Array} result of multiply.
-     * @public
-     */
-
-  }, {
-    key: "multiply_",
-    value: function multiply_(matrix) {
-      var a00 = this.matrix[0 * 4 + 0];
-      var a01 = this.matrix[0 * 4 + 1];
-      var a02 = this.matrix[0 * 4 + 2];
-      var a03 = this.matrix[0 * 4 + 3];
-      var a10 = this.matrix[1 * 4 + 0];
-      var a11 = this.matrix[1 * 4 + 1];
-      var a12 = this.matrix[1 * 4 + 2];
-      var a13 = this.matrix[1 * 4 + 3];
-      var a20 = this.matrix[2 * 4 + 0];
-      var a21 = this.matrix[2 * 4 + 1];
-      var a22 = this.matrix[2 * 4 + 2];
-      var a23 = this.matrix[2 * 4 + 3];
-      var a30 = this.matrix[3 * 4 + 0];
-      var a31 = this.matrix[3 * 4 + 1];
-      var a32 = this.matrix[3 * 4 + 2];
-      var a33 = this.matrix[3 * 4 + 3];
-      var b00 = matrix[0 * 4 + 0];
-      var b01 = matrix[0 * 4 + 1];
-      var b02 = matrix[0 * 4 + 2];
-      var b03 = matrix[0 * 4 + 3];
-      var b10 = matrix[1 * 4 + 0];
-      var b11 = matrix[1 * 4 + 1];
-      var b12 = matrix[1 * 4 + 2];
-      var b13 = matrix[1 * 4 + 3];
-      var b20 = matrix[2 * 4 + 0];
-      var b21 = matrix[2 * 4 + 1];
-      var b22 = matrix[2 * 4 + 2];
-      var b23 = matrix[2 * 4 + 3];
-      var b30 = matrix[3 * 4 + 0];
-      var b31 = matrix[3 * 4 + 1];
-      var b32 = matrix[3 * 4 + 2];
-      var b33 = matrix[3 * 4 + 3];
-      return [b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30, b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31, b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32, b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33, b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30, b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31, b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32, b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33, b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30, b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31, b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32, b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33, b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30, b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31, b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32, b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33];
-    }
-    /**
-     * Multiply matrix on scalar
-     * @param {Number} scalar
-     */
-
-  }, {
-    key: "multiplyScalar",
-    value: function multiplyScalar(scalar) {
-      for (var i = 0; i < this.matrix.length; i++) {
-        this.matrix[i] *= scalar;
-      }
-    }
-    /**
-     * Multiplying matrix by transition matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "translate",
-    value: function translate(x, y, z) {
-      this.multiply(translation(x, y, z));
-    }
-    /**
-     * Multiplying matrix by transition matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "translate_",
-    value: function translate_(x, y, z) {
-      return this.multiply_(translation(x, y, z));
-    }
-    /**
-     * Multiplying matrix by rotationX(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateX",
-    value: function rotateX(angle) {
-      this.multiply(rotationX(angle));
-    }
-    /**
-     * Multiplying matrix by rotationY(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateY",
-    value: function rotateY(angle) {
-      this.multiply(rotationY(angle));
-    }
-    /**
-     * Multiplying matrix by rotationZ(angle).
-     * @param {Number} angle in radians.
-     * @public
-     */
-
-  }, {
-    key: "rotateZ",
-    value: function rotateZ(angle) {
-      this.multiply(rotationZ(angle));
-    }
-    /**
-     * Multiplying matrix by scale matrix (x, y, z).
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
   }, {
     key: "scale",
     value: function scale(x, y, z) {
-      this.multiply(scaling(x, y, z));
+      this.x *= x;
+      this.y *= y;
+      this.z *= z;
+    }
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.x, this.y, this.z];
+    }
+  }, {
+    key: "copy",
+    value: function copy() {
+      return Object.assign(new Vector3(0, 0, 0), this);
     }
   }]);
 
-  return Matrix;
+  return Vector3;
 }();
 /**
- * Returns unit matrix.
- * @returns {Array}
- * @public
+ * Normalize a vector.
  */
 
-function unit() {
-  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-}
-/**
- * Returns translation matrix.
- * @param {Number} x 
- * @param {Number} y 
- * @param {Number} z 
- * @returns {Array}
- * @public
- */
 
-function translation(x, y, z) {
-  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
+
+function normalize(vector) {
+  var length = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+
+  if (length > 0.00001) {
+    vector.x = vector.x / length;
+    vector.y = vector.y / length;
+    vector.z = vector.z / length;
+    return vector;
+  } else {
+    return null;
+  }
 }
 /**
  * Returns rotation matrix for x axis.
- * @param {Number} angle angle in radians.
- * @returns {Array}
  * @public
  */
 
 function rotationX(angle) {
   var c = Math.cos(angle);
   var s = Math.sin(angle);
-  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
+  return [1, 0, 0, 0, c, s, 0, -s, c];
 }
 /**
  * Returns rotation matrix for y axis.
- * @param {Number} angle angle in radians.
- * @returns {Array}
- * @public
  */
 
 function rotationY(angle) {
   var c = Math.cos(angle);
   var s = Math.sin(angle);
-  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
+  return [c, 0, -s, 0, 1, 0, s, 0, c];
 }
 /**
  * Returns rotation matrix for z axis.
@@ -1467,29 +245,229 @@ function rotationY(angle) {
 function rotationZ(angle) {
   var c = Math.cos(angle);
   var s = Math.sin(angle);
+  return [c, s, 0, -s, c, 0, 0, 0, 1];
+}
+/**
+ * 
+ * @param {Array} matrix
+ * @param {Array} vector4
+ * 
+ * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
+ * @public
+ */
+
+function vecMultiply(matrix, vector3) {
+  var c1 = matrix[0] * vector3.x + matrix[1] * vector3.y + matrix[2] * vector3.z;
+  var c2 = matrix[3] * vector3.x + matrix[4] * vector3.y + matrix[5] * vector3.z;
+  var c3 = matrix[6] * vector3.x + matrix[7] * vector3.y + matrix[8] * vector3.z;
+  return [c1, c2, c3];
+}
+/**
+ * Returns multiply of two matrixes.
+ */
+
+function multiply(matrix1, matrix2) {
+  var a00 = matrix1[0 * 3 + 0];
+  var a01 = matrix1[0 * 3 + 1];
+  var a02 = matrix1[0 * 3 + 2];
+  var a10 = matrix1[1 * 3 + 0];
+  var a11 = matrix1[1 * 3 + 1];
+  var a12 = matrix1[1 * 3 + 2];
+  var a20 = matrix1[2 * 3 + 0];
+  var a21 = matrix1[2 * 3 + 1];
+  var a22 = matrix1[2 * 3 + 2];
+  var b00 = matrix2[0 * 3 + 0];
+  var b01 = matrix2[0 * 3 + 1];
+  var b02 = matrix2[0 * 3 + 2];
+  var b10 = matrix2[1 * 3 + 0];
+  var b11 = matrix2[1 * 3 + 1];
+  var b12 = matrix2[1 * 3 + 2];
+  var b20 = matrix2[2 * 3 + 0];
+  var b21 = matrix2[2 * 3 + 1];
+  var b22 = matrix2[2 * 3 + 2];
+  return [b00 * a00 + b01 * a10 + b02 * a20, b00 * a01 + b01 * a11 + b02 * a21, b00 * a02 + b01 * a12 + b02 * a22, b10 * a00 + b11 * a10 + b12 * a20, b10 * a01 + b11 * a11 + b12 * a21, b10 * a02 + b11 * a12 + b12 * a22, b20 * a00 + b21 * a10 + b22 * a20, b20 * a01 + b21 * a11 + b22 * a21, b20 * a02 + b21 * a12 + b22 * a22];
+}
+/**
+ * Return distance between two vectors.
+ * @public
+ */
+
+function distance(vector1, vector2) {
+  var squareSum = 0;
+  squareSum += (vector1.x - vector2.x) * (vector1.x - vector2.x);
+  squareSum += (vector1.y - vector2.y) * (vector1.y - vector2.y);
+  squareSum += (vector1.z - vector2.z) * (vector1.z - vector2.z);
+  return Math.sqrt(squareSum);
+}
+
+// CONCATENATED MODULE: ./src/math/Matrixes4.ts
+function Matrixes4_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Matrixes4_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Matrixes4_createClass(Constructor, protoProps, staticProps) { if (protoProps) Matrixes4_defineProperties(Constructor.prototype, protoProps); if (staticProps) Matrixes4_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Matrixes4_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Matrix4 =
+/*#__PURE__*/
+function () {
+  Matrixes4_createClass(Matrix4, [{
+    key: "value",
+    get: function get() {
+      return this._value;
+    }
+  }]);
+
+  function Matrix4() {
+    Matrixes4_classCallCheck(this, Matrix4);
+
+    Matrixes4_defineProperty(this, "_value", void 0);
+
+    this._value = unit();
+  }
+  /**
+   * Multiplying matrix by transition matrix (x, y, z).
+   * @param x 
+   * @param y 
+   * @param z 
+   * @public
+   */
+
+
+  Matrixes4_createClass(Matrix4, [{
+    key: "translate",
+    value: function translate(x, y, z) {
+      this._value = Matrixes4_multiply(this._value, translation(x, y, z));
+    }
+  }, {
+    key: "rotate",
+    value: function rotate(x, y, z) {
+      this._value = Matrixes4_multiply(this._value, Matrixes4_rotation(x, y, z));
+    }
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this._value = Matrixes4_multiply(this._value, scaling(x, y, z));
+    }
+  }]);
+
+  return Matrix4;
+}();
+/**
+ * Returns unit matrix.
+ */
+
+function unit() {
+  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+}
+/**
+ * Setting this matrix as perspective projection matrix.
+ * @param fieldOfViewInRadians fieldOfView of camera.
+ * @param width canvas width.
+ * @param height canvas height.
+ * @param near range of drawn z-coordinates start.
+ * @param far range of drawn z-coordinates end.
+ * @public
+ */
+
+function perspective(fieldOfViewInRadians, width, height, near, far) {
+  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
+  var rangeInv = 1.0 / (near - far);
+  return [f / (width / height), 0, 0, 0, 0, f, 0, 0, 0, 0, (near + far) * rangeInv, -1, 0, 0, near * far * rangeInv * 2, 0];
+}
+/**
+ * Sets this matrix to projection matrix without perspective.
+ * @param width 
+ * @param height
+ */
+
+function projection(width, height) {
+  return [2 / width, 0, 0, 0, 0, -2 / height, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns translation matrix.
+ */
+
+function translation(x, y, z) {
+  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
+}
+/**
+ * Translate matrix by X
+ * @param matrix 
+ * @param x 
+ */
+
+function translateX(matrix, x) {
+  return [matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5], matrix[6], matrix[7], matrix[8], matrix[9], matrix[10], matrix[11], x * matrix[0] + matrix[12], x * matrix[1] + matrix[13], x * matrix[2] + matrix[14], x * matrix[3] + matrix[15]];
+}
+/**
+ * Translate matrix by Y
+ * @param matrix 
+ * @param y
+ */
+
+function translateY(matrix, y) {
+  return [matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5], matrix[6], matrix[7], matrix[8], matrix[9], matrix[10], matrix[11], y * matrix[4] + matrix[12], y * matrix[5] + matrix[13], y * matrix[6] + matrix[14], y * matrix[7] + matrix[15]];
+}
+/**
+ * Translate matrix by Z
+ * @param matrix 
+ * @param z
+ */
+
+function translateZ(matrix, z) {
+  return [matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5], matrix[6], matrix[7], matrix[8], matrix[9], matrix[10], matrix[11], z * matrix[8] + matrix[12], z * matrix[9] + matrix[13], z * matrix[10] + matrix[14], z * matrix[11] + matrix[15]];
+}
+/**
+ * Returns rotation matrix for x axis.
+ */
+
+function Matrixes4_rotationX(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns rotation matrix for y axis.
+ */
+
+function Matrixes4_rotationY(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
+}
+/**
+ * Returns rotation matrix for z axis.
+ */
+
+function Matrixes4_rotationZ(angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
   return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 }
 /**
  * Returns scaling matrix for every axis.
- * @param {Number} x 
- * @param {Number} y 
- * @param {Number} z 
- * @returns {Array}
- * @public
  */
 
 function scaling(x, y, z) {
   return [x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1];
 }
 /**
- * Returns multiply of two matrixes.
- * @param {Array} matrix1 
- * @param {Array} matrix2 
- * @returns {Array}
- * @public
+ * Return matrix of all three rotations
+ * @param {number} x angle
+ * @param {number} y angle
+ * @param {number} z angle
  */
 
-function multiply(matrix1, matrix2) {
+function Matrixes4_rotation(x, y, z) {
+  return Matrixes4_multiply(Matrixes4_multiply(Matrixes4_rotationX(x), Matrixes4_rotationY(y)), Matrixes4_rotationZ(z));
+}
+/**
+ * Returns multiply of two matrixes.
+ */
+
+function Matrixes4_multiply(matrix1, matrix2) {
   var a00 = matrix1[0 * 4 + 0];
   var a01 = matrix1[0 * 4 + 1];
   var a02 = matrix1[0 * 4 + 2];
@@ -1526,7 +504,7 @@ function multiply(matrix1, matrix2) {
 }
 /**
  * Multiply matrix on scalar
- * @param {Number} scalar
+ * @param scalar a number which will multiply matrix
  */
 
 function multiplyScalar(matrix, scalar) {
@@ -1536,30 +514,26 @@ function multiplyScalar(matrix, scalar) {
 
   return matrix;
 }
-/**
- * 
- * @param {Array} matrix
- * @param {Array} vector4
- * 
- * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
- * @public
- */
-
-function vec3Multiply(matrix, vector4) {
+function multiplyVector4(matrix, vector4) {
   var c1 = matrix[0] * vector4[0] + matrix[1] * vector4[1] + matrix[2] * vector4[2] + matrix[3] * vector4[3];
   var c2 = matrix[4] * vector4[0] + matrix[5] * vector4[1] + matrix[6] * vector4[2] + matrix[7] * vector4[3];
   var c3 = matrix[8] * vector4[0] + matrix[9] * vector4[1] + matrix[10] * vector4[2] + matrix[11] * vector4[3];
   var c4 = matrix[12] * vector4[0] + matrix[13] * vector4[1] + matrix[14] * vector4[2] + matrix[15] * vector4[3];
   return [c1, c2, c3, c4];
 }
-function transformVector(matrix, vector) {
-  var transformed = new Float32Array(4);
+/**
+ * Transform vector by matrix
+ * @returns vector4 [x, y, z, w]
+ */
+
+function transformVector(matrix, vector4) {
+  var transformed = new Array(4);
 
   for (var i = 0; i < 4; ++i) {
     transformed[i] = 0.0;
 
     for (var j = 0; j < 4; ++j) {
-      transformed[i] += vector[j] * matrix[j * 4 + i];
+      transformed[i] += vector4[j] * matrix[j * 4 + i];
     }
   }
 
@@ -1567,13 +541,13 @@ function transformVector(matrix, vector) {
 }
 /**
  * Computes the inverse of a matrix.
- * @param {Array} matrix matrix to compute inverse of.
- * @return {Array} new result matrix.
+ * @param  matrix matrix to compute inverse of.
+ * @return new result matrix.
  * @public
  */
 
 function inverse(matrix) {
-  var result = new Float32Array(16);
+  var result = new Array(16);
   var m00 = matrix[0 * 4 + 0];
   var m01 = matrix[0 * 4 + 1];
   var m02 = matrix[0 * 4 + 2];
@@ -1639,8 +613,8 @@ function inverse(matrix) {
 }
 /**
  * Computes the transpose of a matrix.
- * @param {Array} matrix matrix to compute inverse of.
- * @return {Array} new result matrix.
+ * @param matrix matrix to compute inverse of.
+ * @return  new result matrix.
  * @public
  */
 
@@ -1664,178 +638,78 @@ function transpose(matrix) {
   new_matrix[15] = matrix[15];
   return new_matrix;
 }
-// CONCATENATED MODULE: ./src/math/Vectors.js
-/** @module Vectors */
+/* harmony default export */ var Matrixes4 = ({
+  Matrix4: Matrix4,
+  unit: unit,
+  projection: projection,
+  perspective: perspective,
+  inverse: inverse,
+  multiplyVector4: multiplyVector4,
+  transpose: transpose,
+  multiply: Matrixes4_multiply,
+  translation: translation,
+  translateX: translateX
+});
+// CONCATENATED MODULE: ./src/webgl/Utils.ts
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-/**
- * Normalize a vector.
- * @param {Array[3]} vector vector to normalize.
- * @return {Array[3]} normalized vector
- */
-function Vectors_normalize(vector) {
-  var result = new Float32Array(3);
-  var length = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
+function Utils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  if (length > 0.00001) {
-    result[0] = vector[0] / length;
-    result[1] = vector[1] / length;
-    result[2] = vector[2] / length;
-    return result;
-  } else {
-    return false;
-  }
-}
-/**
- * Returns rotation matrix for x axis.
- * @param {Number} angle angle in radians.
- * @returns {Array}
- * @public
- */
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function Vectors_rotationX(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return [1, 0, 0, 0, c, s, 0, -s, c];
-}
-/**
- * Returns rotation matrix for y axis.
- * @param {Number} angle angle in radians.
- * @returns {Array}
- * @public
- */
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function Vectors_rotationY(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return [c, 0, -s, 0, 1, 0, s, 0, c];
-}
-/**
- * Returns rotation matrix for z axis.
- * @param {Number} angle angle in radians.
- * @returns {Array}
- * @public
- */
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function Vectors_rotationZ(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return [c, s, 0, -s, c, 0, 0, 0, 1];
-}
-/**
- * 
- * @param {Array} matrix
- * @param {Array} vector4
- * 
- * @returns {Array} [x, y, z, w] result of multiplying matrix and vector.
- * @public
- */
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
 
-function vecMultiply(matrix, vector3) {
-  var c1 = matrix[0] * vector3[0] + matrix[1] * vector3[1] + matrix[2] * vector3[2];
-  var c2 = matrix[3] * vector3[0] + matrix[4] * vector3[1] + matrix[5] * vector3[2];
-  var c3 = matrix[6] * vector3[0] + matrix[7] * vector3[1] + matrix[8] * vector3[2];
-  return [c1, c2, c3];
-}
-/**
- * Returns multiply of two matrixes.
- * @param {Array} matrix1 
- * @param {Array} matrix2 
- * @returns {Array}
- * @public
- */
+function isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-function Vectors_multiply(matrix1, matrix2) {
-  var a00 = matrix1[0 * 3 + 0];
-  var a01 = matrix1[0 * 3 + 1];
-  var a02 = matrix1[0 * 3 + 2];
-  var a10 = matrix1[1 * 3 + 0];
-  var a11 = matrix1[1 * 3 + 1];
-  var a12 = matrix1[1 * 3 + 2];
-  var a20 = matrix1[2 * 3 + 0];
-  var a21 = matrix1[2 * 3 + 1];
-  var a22 = matrix1[2 * 3 + 2];
-  var b00 = matrix2[0 * 3 + 0];
-  var b01 = matrix2[0 * 3 + 1];
-  var b02 = matrix2[0 * 3 + 2];
-  var b10 = matrix2[1 * 3 + 0];
-  var b11 = matrix2[1 * 3 + 1];
-  var b12 = matrix2[1 * 3 + 2];
-  var b20 = matrix2[2 * 3 + 0];
-  var b21 = matrix2[2 * 3 + 1];
-  var b22 = matrix2[2 * 3 + 2];
-  return [b00 * a00 + b01 * a10 + b02 * a20, b00 * a01 + b01 * a11 + b02 * a21, b00 * a02 + b01 * a12 + b02 * a22, b10 * a00 + b11 * a10 + b12 * a20, b10 * a01 + b11 * a11 + b12 * a21, b10 * a02 + b11 * a12 + b12 * a22, b20 * a00 + b21 * a10 + b22 * a20, b20 * a01 + b21 * a11 + b22 * a21, b20 * a02 + b21 * a12 + b22 * a22];
-}
-/**
- * Return distance between two vectors.
- * @param {Number[]} vector1 Any vector
- * @param {Number[]} vector2 Any vector that have length same as vector1
- * @public
- * @returns {Number}
- */
+function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function distance(vector1, vector2) {
-  var squareSum = 0;
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
-  for (var i = 0; i < vector1.length; i++) {
-    squareSum += (vector1[i] - vector2[i]) * (vector1[i] - vector2[i]);
-  }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-  return Math.sqrt(squareSum);
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(2);
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(6);
-var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
+function Utils_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// CONCATENATED MODULE: ./src/Utils.js
-/**
- * Returns webgl context
- * 
- * @param {string} id id of canvas on DOM.
- * 
- * @return {CanvasRenderingContext2D} WebGL context.
- */
 function getWebGLById(id) {
-  var canvas = document.getElementById(id);
+  var el = document.getElementById(id);
+
+  if (!(el instanceof HTMLCanvasElement) && el == null) {
+    throw new TypeError("Object with " + id + " not a canvas.");
+  }
+
+  var canvas = el;
   var webGL = canvas.getContext("experimental-webgl", {
     alpha: false
   });
-  window.addEventListener('resize', function () {
+
+  if (webGL == null) {
+    throw new WebglError("Cannot get WebGL context.");
+  }
+
+  window.addEventListener("resize", function () {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
   });
   return webGL;
 }
-/**
- * Returns webgl context
- * 
- * @param {HTMLElement} canvas canvas DOM element.
- * 
- * @return {CanvasRenderingContext2D} WebGL context.
- */
-
 function getWebGL(canvas) {
   var webGL = canvas.getContext("experimental-webgl");
-  window.addEventListener('resize', function () {
+
+  if (webGL == null) {
+    throw new WebglError("Cannot get WebGL context.");
+  }
+
+  window.addEventListener("resize", function () {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
   });
   return webGL;
 }
-/**
- * Creates a shader from script DOM element source.
- * There are two types: shader/fragment and shader/vertex.
- * 
- * @param {String} shaderText text content of shader.
- * @param {String} type type of shader.
- * @param {CanvasRenderingContext2D} webGL webGL context to compile shader.
- * 
- * @return compiled shader.
- */
-
 function compileShader(shaderText, type, webGL) {
   var source = shaderText;
   var shader;
@@ -1849,26 +723,19 @@ function compileShader(shaderText, type, webGL) {
     return null;
   }
 
+  if (shader == null) {
+    throw new WebglError("Cannot create shader.");
+  }
+
   webGL.shaderSource(shader, source);
   webGL.compileShader(shader);
 
   if (!webGL.getShaderParameter(shader, webGL.COMPILE_STATUS)) {
-    throw "Could not compile shader:" + webGL.getShaderInfoLog(shader);
+    throw new WebglError("Could not compile shader:" + webGL.getShaderInfoLog(shader));
   }
 
   return shader;
 }
-/**
- * Creates a program, attaches shaders and link program.
- * 
- * @param {CanvasRenderingContext2D} webGL WebGL context for creating program.
- * @param vertexShader compiled vertexShader.
- * @param fragmentShader compiled fragmentShader.
- * @param {Bool} [deleteShaders] will delete shader after attaching.
- * 
- * @return shader program.
- */
-
 function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) {
   var shaderProgram = webGL.createProgram();
   webGL.attachShader(shaderProgram, vertexShader);
@@ -1883,384 +750,133 @@ function createWebGLProgram(webGL, vertexShader, fragmentShader, deleteShaders) 
 
   return shaderProgram;
 }
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(4);
-var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(3);
-var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(5);
-var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
-var wrapNativeSuper = __webpack_require__(9);
-var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper);
-
-// CONCATENATED MODULE: ./src/textures/SimpleTexture.js
-
-
-
-
-
-
-
-/**
- * Texture for polygons or objects.
- * @class
- * @constructor
- * @param {String} path - path to image location.
- * @param {Number} [width] - custom width for image.
- * @param {Number} [height] - custom height for image.
- */
-
-var SimpleTexture_SimpleTexture =
+var WebglError =
 /*#__PURE__*/
-function (_Image) {
-  inherits_default()(SimpleTexture, _Image);
+function (_Error) {
+  _inherits(WebglError, _Error);
 
-  function SimpleTexture(path, width, height) {
+  function WebglError(message) {
     var _this;
 
-    classCallCheck_default()(this, SimpleTexture);
+    Utils_classCallCheck(this, WebglError);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(SimpleTexture).call(this));
-    _this.src = path;
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(WebglError).call(this, message));
 
-    if (width != null && height != null) {
-      _this.width = width;
-      _this.height = height;
-    }
-    /**
-     * Texture coordinates.
-     * @private
-     */
+    Utils_defineProperty(_assertThisInitialized(_this), "name", "WebglError");
 
-
-    _this.coords = [];
-    /**
-     * Color of texture. Texture drawing with color if image was not set.
-     * @readonly
-     */
-
-    _this.color = new Uint8Array([255, 255, 255, 255]);
-    /**
-     * Location of texture block in engine.
-     * @private
-     */
-
-    _this._textureBlockLocation = null;
-    _this.mipmapFilter = 'LINEAR';
-    _this.mipmap = [];
-    _this.mips = null;
-    /**
-     * Execute every function in array when texture loaded.
-     * @type {Function[]}
-     */
-
-    _this.onTextureLoad = [];
-    _this.alpha = false;
+    Error.captureStackTrace(_assertThisInitialized(_this), WebglError);
     return _this;
   }
-  /**
-   * Adds mip maps.
-   * @type {Array} mipmaps
-   */
 
+  return WebglError;
+}(_wrapNativeSuper(Error));
 
-  createClass_default()(SimpleTexture, [{
-    key: "generateMipmap",
-    value: function generateMipmap(mips) {
-      this.mips = mips;
-    }
-  }, {
-    key: "logImage",
-    value: function logImage(image, height, width) {
-      var img = new Image();
+/* harmony default export */ var Utils = ({
+  createWebGLProgram: createWebGLProgram,
+  compileShader: compileShader,
+  getWebGL: getWebGL,
+  getWebGLById: getWebGLById
+});
+// CONCATENATED MODULE: ./src/webgl/ShaderProgram.ts
+function ShaderProgram_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ShaderProgram_typeof = function _typeof(obj) { return typeof obj; }; } else { ShaderProgram_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ShaderProgram_typeof(obj); }
 
-      img.onload = function () {
-        console.log("%c" + "+", "padding: " + Math.floor(height / 2) + "px " + Math.floor(width / 2) + "px; line-height: " + height + "px;" + "background: url(" + img + "); background-size: " + width + "px " + height + "px; color: transparent;");
-      };
+function ShaderProgram_possibleConstructorReturn(self, call) { if (call && (ShaderProgram_typeof(call) === "object" || typeof call === "function")) { return call; } return ShaderProgram_assertThisInitialized(self); }
 
-      img.src = image.toDataURL();
-    }
-  }, {
-    key: "autoGenerateMipmap",
-    value: function autoGenerateMipmap(texture) {
-      texture._autoGenerateMipmap = true;
-    }
-  }, {
-    key: "quickGenerateMipmap",
-    value: function quickGenerateMipmap(texture) {
-      if (texture.width / texture.height == 2) {
-        var i = texture.height;
-        var offsetX = 0;
+function ShaderProgram_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        while (true) {
-          var tempCanvas = document.createElement("canvas");
-          tempCanvas.width = i;
-          tempCanvas.height = i;
-          var tempCanvasContext = tempCanvas.getContext("2d");
-          tempCanvasContext.drawImage(texture, offsetX, 0, i, i, 0, 0, i, i);
-          texture.mipmap.push(tempCanvas);
+function ShaderProgram_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ShaderProgram_setPrototypeOf(subClass, superClass); }
 
-          if (i == 1) {
-            break;
-          }
+function ShaderProgram_wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; ShaderProgram_wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !ShaderProgram_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return ShaderProgram_construct(Class, arguments, ShaderProgram_getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return ShaderProgram_setPrototypeOf(Wrapper, Class); }; return ShaderProgram_wrapNativeSuper(Class); }
 
-          offsetX += i;
-          i = i / 2;
-        }
-      } else {
-        return console.warn('Wrong image sizes for quick generation mipmap.');
-      }
-    }
-  }, {
-    key: "_generateMipmaps",
-    value: function _generateMipmaps(mips) {
-      mips = mips || this.mips;
-      var currentSize = this.width;
-      var generatedMips = [];
-      var mipIndex = 0;
+function ShaderProgram_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-      while (currentSize != 1) {
-        currentSize = currentSize / 2;
+function ShaderProgram_construct(Parent, args, Class) { if (ShaderProgram_isNativeReflectConstruct()) { ShaderProgram_construct = Reflect.construct; } else { ShaderProgram_construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) ShaderProgram_setPrototypeOf(instance, Class.prototype); return instance; }; } return ShaderProgram_construct.apply(null, arguments); }
 
-        if (mipIndex > mips.length - 1) {
-          var mip = mips[mipIndex - 1].image;
-          mip.width = currentSize;
-          mip.height = currentSize;
-          generatedMips.push(mip);
-          continue;
-        }
+function ShaderProgram_isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
-        if (mips[mipIndex].size == currentSize) {
-          var _mip = mips[mipIndex].image;
-          _mip.width = currentSize;
-          _mip.height = currentSize;
-          generatedMips.push(_mip);
-          mipIndex++;
-        } else {
-          this.setSize(currentSize, currentSize);
-          generatedMips.push(this);
-        }
-      }
+function ShaderProgram_setPrototypeOf(o, p) { ShaderProgram_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ShaderProgram_setPrototypeOf(o, p); }
 
-      this.mipmap = generatedMips;
-    }
-  }, {
-    key: "setSize",
-    value: function setSize(width, height) {
-      this.width = width;
-      this.height = height;
-    }
-    /**
-     * Scale image width by x, height by y.
-     * @param {Number} x
-     * @param {Number} y
-     * @public
-     */
+function ShaderProgram_getPrototypeOf(o) { ShaderProgram_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ShaderProgram_getPrototypeOf(o); }
 
-  }, {
-    key: "scale",
-    value: function scale(x, y) {
-      this.width = width * x;
-      this.height = height * y;
-    }
-    /**
-     * Setting texture coords.
-     * @param {Number[]} coords 
-     * @public
-     */
+function ShaderProgram_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  }, {
-    key: "setCoords",
-    value: function setCoords(coords) {
-      this.coords = coords;
-    }
-    /**
-     * Setting color of polygon. The color will be shown until the texture is loaded.
-     * @param {Number} r red value from 0 to 255.
-     * @param {Number} g green value from 0 to 255.
-     * @param {Number} b blue value from 0 to 255.
-     * @param {Number} a alpha value from 0 to 255.
-     * @public
-     */
+function ShaderProgram_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  }, {
-    key: "setColorRGBA",
-    value: function setColorRGBA(r, g, b, a) {
-      this.color = new Uint8Array([r, g, b, a]);
-    }
-    /**
-     * Binding texture to engine.
-     * @param {Texture} texture 
-     * @public
-     */
+function ShaderProgram_createClass(Constructor, protoProps, staticProps) { if (protoProps) ShaderProgram_defineProperties(Constructor.prototype, protoProps); if (staticProps) ShaderProgram_defineProperties(Constructor, staticProps); return Constructor; }
 
-  }, {
-    key: "bind",
-    value: function bind(engine) {
-      var _this2 = this;
+function ShaderProgram_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-      this.engine = engine;
-      this._textureBlockLocation = this.engine.textures.length;
-      this.engine.textures.push(this);
-      this._WebGLTexture = this.engine.webGL.createTexture();
-      this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
-      this.engine.webGL.bindTexture(this.engine.webGL.TEXTURE_2D, this._WebGLTexture);
-      this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, 0, this.engine.webGL.RGBA, 1, 1, 0, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, this.color);
-      this.addEventListener('load', function () {
-        var texture = _this2;
-
-        _this2.onTextureLoad.forEach(function (func) {
-          func(texture);
-        });
-
-        _this2.engine.textureLoaded(_this2);
-
-        _this2.engine.webGL.activeTexture(_this2.engine.webGL.TEXTURE0 + _this2._textureBlockLocation);
-
-        var mipmapFilter;
-        var mipmapRequire = true;
-
-        switch (_this2.mipmapFilter) {
-          case 'NEAREST':
-            mipmapFilter = _this2.engine.webGL.NEAREST;
-            mipmapRequire = false;
-            break;
-
-          case 'LINEAR':
-            mipmapFilter = _this2.engine.webGL.LINEAR;
-            mipmapRequire = false;
-            break;
-
-          case 'NEAREST_MIPMAP_NEAREST':
-            mipmapFilter = _this2.engine.webGL.NEAREST_MIPMAP_NEAREST;
-            break;
-
-          case 'LINEAR_MIPMAP_NEAREST':
-            mipmapFilter = _this2.engine.webGL.LINEAR_MIPMAP_NEAREST;
-            break;
-
-          case 'NEAREST_MIPMAP_LINEAR':
-            mipmapFilter = _this2.engine.webGL.LINEAR_MIPMAP_NEAREST;
-            break;
-
-          case 'LINEAR_MIPMAP_LINEAR':
-            mipmapFilter = _this2.engine.webGL.LINEAR_MIPMAP_LINEAR;
-            break;
-
-          default:
-            mipmapRequire = false;
-            mipmapFilter = _this2.engine.webGL.LINEAR;
-            break;
-        }
-
-        _this2.WebGLMipmapFilter = mipmapFilter;
-
-        _this2.engine.webGL.texParameteri(_this2.engine.webGL.TEXTURE_2D, _this2.engine.webGL.TEXTURE_MIN_FILTER, mipmapFilter);
-
-        _this2.engine.webGL.texParameteri(_this2.engine.webGL.TEXTURE_2D, _this2.engine.webGL.TEXTURE_MAG_FILTER, _this2.engine.webGL.LINEAR);
-
-        if (mipmapRequire && !_this2._autoGenerateMipmap) {
-          if (_this2.mipmap.length > 0) {
-            _this2.mipmap.forEach(function (mip, level) {
-              _this2.engine.webGL.texImage2D(_this2.engine.webGL.TEXTURE_2D, level, _this2.engine.webGL.RGBA, _this2.engine.webGL.RGBA, _this2.engine.webGL.UNSIGNED_BYTE, mip);
-            });
-          } else {
-            console.warn('Need to generate mipmaps for texture:');
-            console.warn(_this2);
-          }
-        } else {
-          _this2.engine.webGL.texImage2D(_this2.engine.webGL.TEXTURE_2D, 0, _this2.engine.webGL.RGBA, _this2.engine.webGL.RGBA, _this2.engine.webGL.UNSIGNED_BYTE, _this2);
-        }
-
-        if ((mipmapRequire || _this2._autoGenerateMipmap) && isPowerOf2(_this2.width) && isPowerOf2(_this2.height)) {
-          _this2.engine.webGL.generateMipmap(_this2.engine.webGL.TEXTURE_2D);
-        } else {
-          _this2.engine.webGL.texParameteri(_this2.engine.webGL.TEXTURE_2D, _this2.engine.webGL.TEXTURE_WRAP_S, _this2.engine.webGL.CLAMP_TO_EDGE);
-
-          _this2.engine.webGL.texParameteri(_this2.engine.webGL.TEXTURE_2D, _this2.engine.webGL.TEXTURE_WRAP_T, _this2.engine.webGL.CLAMP_TO_EDGE);
-        }
-      });
+var ShaderProgram =
+/*#__PURE__*/
+function () {
+  ShaderProgram_createClass(ShaderProgram, [{
+    key: "program",
+    get: function get() {
+      return this._program;
     }
   }]);
 
-  return SimpleTexture;
-}(wrapNativeSuper_default()(Image));
-// CONCATENATED MODULE: ./src/shaders/ShaderProgram.js
-
-
-var ShaderProgram_ShaderProgram =
-/*#__PURE__*/
-function () {
   function ShaderProgram(webGL) {
-    classCallCheck_default()(this, ShaderProgram);
+    ShaderProgram_classCallCheck(this, ShaderProgram);
+
+    ShaderProgram_defineProperty(this, "webGL", void 0);
+
+    ShaderProgram_defineProperty(this, "VERTEX_SHADER", "vertex");
+
+    ShaderProgram_defineProperty(this, "FRAGMENT_SHADER", "fragment");
+
+    ShaderProgram_defineProperty(this, "ATTRIBUTE", "attribute");
+
+    ShaderProgram_defineProperty(this, "UNIFORM", "uniform");
+
+    ShaderProgram_defineProperty(this, "_program", null);
+
+    ShaderProgram_defineProperty(this, "_vertexShader", null);
+
+    ShaderProgram_defineProperty(this, "_fragmentShader", null);
 
     this.webGL = webGL;
-    /**
-     * Shader type
-     */
-
-    this.VERTEX_SHADER = 'vertex';
-    /**
-     * Shader type
-     */
-
-    this.FRAGMENT_SHADER = 'fragment';
-    /*
-     * Variable type
-    */
-
-    this.ATTRIBUTE = 'attribute';
-    /*
-     * Variable type
-     */
-
-    this.UNIFORM = 'uniform';
     return this;
   }
   /**
    * Compiling and attaching shader to this program.
    * @param {String} type can be ['vertex', 'fragment'].
-   * @param {String} source 
+   * @param {String} source
    */
 
 
-  createClass_default()(ShaderProgram, [{
+  ShaderProgram_createClass(ShaderProgram, [{
     key: "addShader",
     value: function addShader(type, source) {
       var shader;
 
       switch (type) {
-        case 'vertex' || false:
+        case "vertex" || false:
           shader = this.webGL.createShader(this.webGL.VERTEX_SHADER);
-          this.vertexShader = shader;
+          this._vertexShader = shader;
           break;
 
-        case 'fragment' || false:
+        case "fragment" || false:
           shader = this.webGL.createShader(this.webGL.FRAGMENT_SHADER);
-          this.fragmentShader = shader;
+          this._fragmentShader = shader;
           break;
 
         default:
-          throw new BronzeShaderException('Wrong shader type');
-          break;
+          throw new BronzeError("Wrong shader type.");
       }
 
       this.webGL.shaderSource(shader, source);
       this.webGL.compileShader(shader);
 
       if (!this.webGL.getShaderParameter(shader, this.webGL.COMPILE_STATUS)) {
+        console.error("There are shader error:");
         console.error(this.webGL.getShaderInfoLog(shader));
-        throw 'Could not compile shader:';
+        throw new BronzeError("Could not compile shader.");
       }
     }
     /**
-     * @param {bool} [deleteShaders] will delete shader after attaching.
+     * @param {boolean} [deleteShaders] will delete shader after attaching.
      */
 
   }, {
@@ -2268,17 +884,22 @@ function () {
     value: function create() {
       var deleteShaders = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var program = this.webGL.createProgram();
-      this.webGL.attachShader(program, this.vertexShader);
-      this.webGL.attachShader(program, this.fragmentShader);
+
+      if (this._vertexShader == null && this._fragmentShader == null) {
+        throw new BronzeError("Shader programs isn`t complete.");
+      }
+
+      this.webGL.attachShader(program, this._vertexShader);
+      this.webGL.attachShader(program, this._fragmentShader);
       this.webGL.linkProgram(program);
       this.webGL.useProgram(program);
 
       if (deleteShaders) {
-        this.webGL.deleteShader(this.vertexShader);
-        this.webGL.deleteShader(this.fragmentShader);
+        this.webGL.deleteShader(this._vertexShader);
+        this.webGL.deleteShader(this._fragmentShader);
       }
 
-      this.program = program;
+      this._program = program;
       return program;
     }
     /**
@@ -2294,21 +915,25 @@ function () {
       customName = customName || name;
 
       if (this[customName] !== undefined) {
-        console.warn('Shader program: Custom name for uniform was switched from ' + customName + ' to ' + customName + '1');
-        customName = customName + '1';
+        console.warn("Shader program: Custom name for uniform was switched from " + customName + " to " + customName + "1");
+        customName = customName + "1";
+      }
+
+      if (this._program == null) {
+        throw new BronzeError("Shader program is null.");
       }
 
       switch (type) {
         case this.ATTRIBUTE:
-          this[customName] = this.webGL.getAttribLocation(this.program, name);
+          this[customName] = this.webGL.getAttribLocation(this._program, name);
           break;
 
         case this.UNIFORM:
-          this[customName] = this.webGL.getUniformLocation(this.program, name);
+          this[customName] = this.webGL.getUniformLocation(this._program, name);
           break;
 
         default:
-          throw 'Wrong variable type';
+          throw "Wrong variable type";
       }
 
       return this[customName];
@@ -2325,14 +950,18 @@ function () {
       customName = customName || name;
 
       if (this[customName] != undefined) {
-        console.warn('Shader program: Custom name for uniform was switched from ' + customName + ' to ' + customName + '1');
-        customName = customName + '1';
+        console.warn("Shader program: Custom name for uniform was switched from " + customName + " to " + customName + "1");
+        customName = customName + "1";
+      }
+
+      if (this._program == null) {
+        throw new BronzeError("Shader program is null.");
       }
 
       this[customName] = this.webGL.getAttribLocation(this.program, name);
 
       if (this[customName] == null) {
-        throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.');
+        throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
       }
 
       return this[customName];
@@ -2349,14 +978,18 @@ function () {
       customName = customName || name;
 
       if (this[customName] != undefined) {
-        console.warn('Shader program: Custom name for attribute was switched from ' + customName + ' to ' + customName + '1');
-        customName = customName + '';
+        console.warn("Shader program: Custom name for attribute was switched from " + customName + " to " + customName + "1");
+        customName = customName + "";
+      }
+
+      if (this._program == null) {
+        throw new BronzeError("Shader program is null.");
       }
 
       this[customName] = this.webGL.getUniformLocation(this.program, name);
 
       if (this[customName] == null) {
-        throw new Error('Can not link uniform ' + name + '. The variable may not be used in shader.');
+        throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
       }
 
       return this[customName];
@@ -2375,388 +1008,57 @@ function () {
 
   return ShaderProgram;
 }();
-// CONCATENATED MODULE: ./src/shaders/Shaders.js
 
 
 
-var Shaders_Shaders =
+var BronzeError =
 /*#__PURE__*/
-function () {
-  function Shaders(webGL) {
-    classCallCheck_default()(this, Shaders);
+function (_Error) {
+  ShaderProgram_inherits(BronzeError, _Error);
 
-    this.webGL = webGL;
-    /**
-     * Extensions objects that allow you to use extensions which was added by addExtension()
-     * @public
-     * @type {Object[]}
-     */
+  function BronzeError(message) {
+    var _this;
 
-    this.extensions = {};
+    ShaderProgram_classCallCheck(this, BronzeError);
+
+    _this = ShaderProgram_possibleConstructorReturn(this, ShaderProgram_getPrototypeOf(BronzeError).call(this, message));
+
+    ShaderProgram_defineProperty(ShaderProgram_assertThisInitialized(_this), "name", "WebglError");
+
+    Error.captureStackTrace(ShaderProgram_assertThisInitialized(_this), BronzeError);
+    return _this;
   }
-  /**
-   * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
-   * @public
-   * @param {String} name
-   * @param {String} vertexSource
-   * @param {String} fragmentSource
-   * @param {Object} [options]
-   */
 
+  return BronzeError;
+}(ShaderProgram_wrapNativeSuper(Error));
+// CONCATENATED MODULE: ./src/webgl/Shaders.ts
+function Shaders_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Shaders_typeof = function _typeof(obj) { return typeof obj; }; } else { Shaders_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Shaders_typeof(obj); }
 
-  createClass_default()(Shaders, [{
-    key: "addProgram",
-    value: function addProgram(name, vertexSource, fragmentSource, options) {
-      var program = new ShaderProgram_ShaderProgram(this.webGL);
-      program.addShader('vertex', vertexSource);
-      program.addShader('fragment', fragmentSource);
-      program.create();
-      program = this._linkAllAttributesFromSource(program, vertexSource, options);
-      program = this._linkAllAttributesFromSource(program, fragmentSource, options);
-      this[name] = program;
-    }
-  }, {
-    key: "_linkAllAttributesFromSource",
-    value: function _linkAllAttributesFromSource(program, source, options) {
-      var rows = source.split(';').join('\r').split('\r');
-      var outName;
-      rows.forEach(function (row) {
-        row = row.replace(new RegExp('\r', 'g'), '');
-        row = row.replace(new RegExp('\n', 'g'), '');
-        var words = row.split(' '); // console.log(words)
+function Shaders_possibleConstructorReturn(self, call) { if (call && (Shaders_typeof(call) === "object" || typeof call === "function")) { return call; } return Shaders_assertThisInitialized(self); }
 
-        for (var i = words.length - 1; i--;) {
-          if (words[i] === '') {
-            words.splice(i, 1);
-          }
-        }
+function Shaders_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        if (words[0].toLowerCase().includes('attribute')) {
-          var inName = words[2];
-          var arraySizeIndexStart = inName.indexOf('[');
+function Shaders_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Shaders_setPrototypeOf(subClass, superClass); }
 
-          if (arraySizeIndexStart != -1) {
-            inName = inName.slice(0, arraySizeIndexStart);
-          }
+function Shaders_wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; Shaders_wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !Shaders_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return Shaders_construct(Class, arguments, Shaders_getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return Shaders_setPrototypeOf(Wrapper, Class); }; return Shaders_wrapNativeSuper(Class); }
 
-          outName = inName;
+function Shaders_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-          if (options && options.removePrefixes) {
-            outName = outName.slice(2, outName.length);
-          }
+function Shaders_construct(Parent, args, Class) { if (Shaders_isNativeReflectConstruct()) { Shaders_construct = Reflect.construct; } else { Shaders_construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) Shaders_setPrototypeOf(instance, Class.prototype); return instance; }; } return Shaders_construct.apply(null, arguments); }
 
-          if (options && options.addLocationMarker) {
-            outName = outName + 'Location';
-          }
+function Shaders_isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
-          program.linkAttribute(words[2], outName);
-        } else if (words[0].toLowerCase().includes('uniform')) {
-          var _inName = words[2];
+function Shaders_setPrototypeOf(o, p) { Shaders_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Shaders_setPrototypeOf(o, p); }
 
-          var _arraySizeIndexStart = _inName.indexOf('[');
+function Shaders_getPrototypeOf(o) { Shaders_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Shaders_getPrototypeOf(o); }
 
-          if (_arraySizeIndexStart != -1) {
-            _inName = _inName.slice(0, _arraySizeIndexStart);
-          }
+function Shaders_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-          outName = _inName;
+function Shaders_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-          if (options && options.removePrefixes) {
-            outName = outName.slice(2, outName.length);
-          }
+function Shaders_createClass(Constructor, protoProps, staticProps) { if (protoProps) Shaders_defineProperties(Constructor.prototype, protoProps); if (staticProps) Shaders_defineProperties(Constructor, staticProps); return Constructor; }
 
-          if (options && options.addLocationMarker) {
-            outName = outName + 'Location';
-          }
-
-          program.linkUniform(_inName, outName);
-        }
-      });
-      return program;
-    }
-    /**
-     * Adds extension form webgl to this object with custom name
-     * @param {String} name custom name to use in shaders  
-     * @param {String} nameInWebGL extension name in webgl
-     */
-
-  }, {
-    key: "addExtension",
-    value: function addExtension(name, nameInWebGL) {
-      this.extensions[name] = this.webGL.getExtension(nameInWebGL);
-    }
-  }]);
-
-  return Shaders;
-}();
-// CONCATENATED MODULE: ./src/Camera.js
-
-
-
-
-/**
- * Creates camera object.
- * @class
- * @constructor
- */
-
-var Camera_Camera =
-/*#__PURE__*/
-function () {
-  function Camera() {
-    classCallCheck_default()(this, Camera);
-
-    /**
-     * Camera position.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-    this._position = [0, 0, 100];
-    this.up = [0, 1, 0];
-    this.target = [0, 0, 0];
-    /**
-     * Field of view for drawing in angles.
-     * @readonly
-     * @type {Number} angle in degrees
-     */
-
-    this.fieldOfView = 90;
-    /**
-     * Field of view in radians.
-     * @readonly
-     * @type {Number} field of view in radians.
-     */
-
-    this.fieldOfViewRad = degToRad(90);
-    /**
-     * Matrix of camera.
-     * @public
-     * @type {Array.Array} matrix 4x4
-     */
-
-    this.matrix = unit();
-    /**
-     * Camera rotation.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this.rotation = [0, 0, 0];
-    /**
-     * Sets collision for camera.
-     * @readonly
-     * @type {Array.<{x: Number, y: Number, z: Number}>} vector 3
-     */
-
-    this._collisions = false;
-    this._lookUpMatrix = null;
-    /**
-     * Set range of camera for view.
-     * @default 20000
-     * @public
-     */
-
-    this.range = 20000;
-    /**
-     * Rotation matrix of this camera.
-     * @readonly
-     */
-
-    this.rotationMatrix = null;
-    /**
-     * Inverse matrix of this camera. Including positions and rotation.
-     * @readonly
-     */
-
-    this.inverseMatrix = null;
-    /**
-     * Inverse matrix of this camera rotation.
-     * @readonly
-     */
-
-    this.inverseRotationMatrix;
-    this.moved = false;
-    this.distanceBeforeCollision = 100;
-    this.moving = [0, 0, 0];
-  }
-  /**
-   * Sets field of view for camera.
-   * @param {Number} angle
-   * @public
-   */
-
-
-  createClass_default()(Camera, [{
-    key: "setFieldOfView",
-    value: function setFieldOfView(angle) {
-      this.fieldOfView = angle;
-      this.fieldOfViewRad = degToRad(angle);
-    }
-    /**
-     * Sets collision.
-     * @param {boolean} bool 
-     * @public
-     */
-
-  }, {
-    key: "setCollisions",
-    value: function setCollisions(bool) {
-      this._collisions = bool;
-    }
-    /**
-     * Execute when camera have collision with object
-     * @param {Object} object 
-     */
-
-  }, {
-    key: "onCollision",
-    value: function onCollision(object) {
-      this.position[0] = this.positionBeforeMovement[0];
-      this.position[1] = this.positionBeforeMovement[1];
-      this.position[2] = this.positionBeforeMovement[2];
-    }
-    /**
-     * Absolutely sets position for camera.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
-    }
-  }, {
-    key: "move",
-
-    /**
-     * Moving camera.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-    value: function move(x, y, z) {
-      this.moving[0] += x;
-      this.moving[1] += y;
-      this.moving[2] += z;
-      this.moved = true;
-    }
-    /**
-     * Rotate for x, y, z degrees.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      this.rotation[0] += x;
-      this.rotation[1] += y;
-      this.rotation[2] += z;
-      this.computeMatrix();
-    }
-    /**
-     * Sets rotation angles
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      this.rotation = [x, y, z];
-      this.computeMatrix();
-    }
-    /**
-     * Compute camera matrix with rotation, positions.
-     * @private
-     */
-
-  }, {
-    key: "computeMatrix",
-    value: function computeMatrix() {
-      this.matrix = unit();
-      this.matrix = multiply(this.matrix, translation(this.position[0], this.position[1], this.position[2]));
-      var rotation = new Matrixes_Matrix();
-      rotation.multiply(rotationY(degToRad(this.rotation[1])));
-      rotation.multiply(rotationX(degToRad(this.rotation[0])));
-      rotation.multiply(rotationZ(degToRad(this.rotation[2])));
-      this.matrix = multiply(this.matrix, rotation.matrix);
-
-      if (this._lookUpMatrix != null) {
-        this.matrix = multiply(this.matrix, this.lookAt(camera._lookUpMatrix, [0, 1, 0]));
-      }
-
-      this.rotationMatrix = rotation.matrix;
-      this.inverseRotationMatrix = inverse(rotation.matrix);
-      this.inverseMatrix = inverse(this.matrix);
-    }
-    /**
-     * Sets function to control camera.
-     * @param {Function} handler
-     * @public
-     */
-
-  }, {
-    key: "setControl",
-    value: function setControl(handler) {
-      this._controlFunction = handler;
-    }
-  }, {
-    key: "setLookUp",
-    value: function setLookUp(x, y, radius) {
-      if (x == null) {
-        this._lookUpMatrix = null;
-        return;
-      }
-
-      this._lookUpMatrix = [x, y, radius];
-    }
-    /**
-     * Sets camera to the coordinates
-     * @deprecated
-     * @param {*} result 
-     */
-
-  }, {
-    key: "lookAt",
-    value: function lookAt(target, up) {
-      if (target != null) {
-        var zAxis = normalize(subVec3(this.position, target));
-        var xAxis = normalize(cross(up, zAxis));
-        var yAxis = normalize(cross(zAxis, xAxis));
-        return [xAxis[0], xAxis[1], xAxis[2], 0, yAxis[0], yAxis[1], yAxis[2], 0, zAxis[0], zAxis[1], zAxis[2], 0, this.position[0], this.position[1], this.position[2], 1];
-      } else {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
-      }
-    }
-  }, {
-    key: "position",
-    get: function get() {
-      return this._position;
-    },
-    set: function set(value) {
-      this._position = value;
-      this.computeMatrix();
-    }
-  }]);
-
-  return Camera;
-}();
-// CONCATENATED MODULE: ./src/Engine.js
-
-
-
-
-
-
+function Shaders_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -2789,278 +1091,460 @@ var skyboxFragmentShaderSource = "    precision mediump float;\r\n     \r\n    u
 
 /* babel-plugin-inline-import './shaders/skybox/vertex-shader.glsl' */
 var skyboxVertexShaderSource = "attribute vec4 a_position;\r\nvarying vec4 v_position;\r\nvoid main() {\r\n    v_position = a_position;\r\n    gl_Position = a_position;\r\n    gl_Position.z = .9999999;\r\n}";
+var Shaders_Shaders =
+/*#__PURE__*/
+function () {
+  function Shaders(webGL) {
+    Shaders_classCallCheck(this, Shaders);
 
-/**
- * GameEngine core class.
- * @class
- * @constructor
- * @param {HTMLElement|HTMLCanvasElement} canvas
- */
+    Shaders_defineProperty(this, "extensions", new Extensions());
+
+    Shaders_defineProperty(this, "webGL", void 0);
+
+    this.webGL = webGL;
+    var options = {
+      removePrefixes: true,
+      addLocationMarker: true
+    };
+    this.addExtension("anisotropic", "EXT_texture_filter_anisotropic");
+    this.addExtension("standard", "OES_standard_derivatives");
+    this.addProgram("default", vertexShaderSource, fragmentShaderSource, options);
+    this.addProgram("cube", cubeVertexShaderSource, cubeFragmentShaderSource, options);
+    this.addProgram("grid", gridVertexShaderSource, gridFragmentShaderSource, options);
+    this.addProgram("reflection", reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
+    this.addProgram("skybox", skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
+    this["default"].use();
+    this.webGL.enable(this.webGL.BLEND);
+    this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
+  }
+  /**
+   * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
+   * @public
+   * @param {String} name
+   * @param {String} vertexSource
+   * @param {String} fragmentSource
+   * @param {Object} [options]
+   */
+
+
+  Shaders_createClass(Shaders, [{
+    key: "addProgram",
+    value: function addProgram(name, vertexSource, fragmentSource, options) {
+      var program = new ShaderProgram(this.webGL);
+      program.addShader("vertex", vertexSource);
+      program.addShader("fragment", fragmentSource);
+      program.create();
+      program = this._linkAllAttributesFromSource(program, vertexSource, options);
+      program = this._linkAllAttributesFromSource(program, fragmentSource, options);
+      this[name] = program;
+    }
+  }, {
+    key: "_linkAllAttributesFromSource",
+    value: function _linkAllAttributesFromSource(program, source, options) {
+      var rows = source.split(";").join("\r").split("\r");
+      var outName;
+      rows.forEach(function (row) {
+        row = row.replace(new RegExp("\r", "g"), "");
+        row = row.replace(new RegExp("\n", "g"), "");
+        var words = row.split(" "); // console.log(words)
+
+        for (var i = words.length - 1; i--;) {
+          if (words[i] === "") {
+            words.splice(i, 1);
+          }
+        }
+
+        if (words[0].toLowerCase().includes("attribute")) {
+          var inName = words[2];
+          var arraySizeIndexStart = inName.indexOf("[");
+
+          if (arraySizeIndexStart != -1) {
+            inName = inName.slice(0, arraySizeIndexStart);
+          }
+
+          outName = inName;
+
+          if (options && options.removePrefixes) {
+            outName = outName.slice(2, outName.length);
+          }
+
+          if (options && options.addLocationMarker) {
+            outName = outName + "Location";
+          }
+
+          program.linkAttribute(words[2], outName);
+        } else if (words[0].toLowerCase().includes("uniform")) {
+          var _inName = words[2];
+
+          var _arraySizeIndexStart = _inName.indexOf("[");
+
+          if (_arraySizeIndexStart != -1) {
+            _inName = _inName.slice(0, _arraySizeIndexStart);
+          }
+
+          outName = _inName;
+
+          if (options && options.removePrefixes) {
+            outName = outName.slice(2, outName.length);
+          }
+
+          if (options && options.addLocationMarker) {
+            outName = outName + "Location";
+          }
+
+          program.linkUniform(_inName, outName);
+        }
+      });
+      return program;
+    }
+    /**
+     * Adds extension form webgl to this object with custom name
+     * @param {String} name custom name to use in shaders
+     * @param {String} nameInWebGL extension name in webgl
+     */
+
+  }, {
+    key: "addExtension",
+    value: function addExtension(name, nameInWebGL) {
+      this.extensions[name] = this.webGL.getExtension(nameInWebGL);
+    }
+  }]);
+
+  return Shaders;
+}();
+
+var Options =
+/*#__PURE__*/
+function (_Object) {
+  Shaders_inherits(Options, _Object);
+
+  function Options() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    Shaders_classCallCheck(this, Options);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = Shaders_possibleConstructorReturn(this, (_getPrototypeOf2 = Shaders_getPrototypeOf(Options)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    Shaders_defineProperty(Shaders_assertThisInitialized(_this), "addLocationMarker", false);
+
+    Shaders_defineProperty(Shaders_assertThisInitialized(_this), "removePrefixes", false);
+
+    return _this;
+  }
+
+  return Options;
+}(Shaders_wrapNativeSuper(Object));
+
+var Extensions =
+/*#__PURE__*/
+function (_Object2) {
+  Shaders_inherits(Extensions, _Object2);
+
+  function Extensions() {
+    Shaders_classCallCheck(this, Extensions);
+
+    return Shaders_possibleConstructorReturn(this, Shaders_getPrototypeOf(Extensions).apply(this, arguments));
+  }
+
+  return Extensions;
+}(Shaders_wrapNativeSuper(Object));
+
+/* harmony default export */ var webgl_Shaders = ({
+  Shaders: Shaders_Shaders
+});
+// CONCATENATED MODULE: ./src/debug/Error.ts
+function Error_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function Error_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Error_BronzeError = function BronzeError(message) {
+  Error_classCallCheck(this, BronzeError);
+
+  throw new CustomError(message);
+};
+
+
+
+var CustomError = function CustomError(message) {
+  Error_classCallCheck(this, CustomError);
+
+  Error_defineProperty(this, "name", 'BronzeError');
+
+  Error_defineProperty(this, "message", void 0);
+
+  Error.apply(this, [message]);
+  this.message = message;
+};
+
+CustomError.prototype = new Error();
+
+var BronzeWarn = function BronzeWarn(message) {
+  Error_classCallCheck(this, BronzeWarn);
+
+  console.warn(message);
+};
+
+var BronzeLog = function BronzeLog(log) {
+  Error_classCallCheck(this, BronzeLog);
+
+  console.log(log);
+};
+
+
+// CONCATENATED MODULE: ./src/textures/Texture.ts
+function Texture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Texture_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Texture_createClass(Constructor, protoProps, staticProps) { if (protoProps) Texture_defineProperties(Constructor.prototype, protoProps); if (staticProps) Texture_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Texture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var Texture_Texture =
+/*#__PURE__*/
+function () {
+  function Texture(engine) {
+    Texture_classCallCheck(this, Texture);
+
+    Texture_defineProperty(this, "alpha", false);
+
+    Texture_defineProperty(this, "color", new Uint8Array([229, 91, 91, 255]));
+
+    Texture_defineProperty(this, "engine", void 0);
+
+    Texture_defineProperty(this, "textureBlockLocation", -1);
+
+    Texture_defineProperty(this, "loaded", false);
+
+    Texture_defineProperty(this, "webglTexture", void 0);
+
+    this.engine = engine;
+  }
+  /**
+   * Sets color for texture
+   * @param r number from 0 to 255
+   * @param g number from 0 to 255
+   * @param b number from 0 to 255
+   * @param a number from 0 to 255
+   */
+
+
+  Texture_createClass(Texture, [{
+    key: "setColor",
+    value: function setColor(r, g, b, a) {
+      if (r.constructor instanceof String) {
+        var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
+
+        if (rgb == null) {
+          new Error_BronzeError('Wrong hex color!');
+          return;
+        }
+
+        this.color = new Uint8Array([parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]), 255]);
+      } else if (r.constructor === Number && g != undefined && b != undefined && a != undefined) {
+        this.color = new Uint8Array([Number(r), g, b, a]);
+        var _webgl = this.engine.webgl;
+
+        _webgl.activeTexture(_webgl.TEXTURE0 + this.textureBlockLocation);
+
+        _webgl.bindTexture(_webgl.TEXTURE_2D, this.webglTexture);
+
+        _webgl.texImage2D(_webgl.TEXTURE_2D, 0, _webgl.RGBA, 1, 1, 0, _webgl.RGBA, _webgl.UNSIGNED_BYTE, this.color);
+      } else {
+        new Error_BronzeError('Wrong color');
+        return;
+      }
+
+      var webgl = this.engine.webgl;
+      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
+      webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture);
+      webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
+    }
+  }]);
+
+  return Texture;
+}();
+
+
+
+// CONCATENATED MODULE: ./src/textures/ColorTexture.ts
+function ColorTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColorTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { ColorTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColorTexture_typeof(obj); }
+
+function ColorTexture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ColorTexture_possibleConstructorReturn(self, call) { if (call && (ColorTexture_typeof(call) === "object" || typeof call === "function")) { return call; } return ColorTexture_assertThisInitialized(self); }
+
+function ColorTexture_getPrototypeOf(o) { ColorTexture_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ColorTexture_getPrototypeOf(o); }
+
+function ColorTexture_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ColorTexture_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ColorTexture_setPrototypeOf(subClass, superClass); }
+
+function ColorTexture_setPrototypeOf(o, p) { ColorTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColorTexture_setPrototypeOf(o, p); }
+
+function ColorTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var ColorTexture_SimpleTexture =
+/*#__PURE__*/
+function (_Texture) {
+  ColorTexture_inherits(SimpleTexture, _Texture);
+
+  function SimpleTexture(engine) {
+    var _this;
+
+    ColorTexture_classCallCheck(this, SimpleTexture);
+
+    _this = ColorTexture_possibleConstructorReturn(this, ColorTexture_getPrototypeOf(SimpleTexture).call(this, engine));
+
+    ColorTexture_defineProperty(ColorTexture_assertThisInitialized(_this), "textureBlockLocation", -1);
+
+    _this.engine = engine;
+    _this.textureBlockLocation = _this.engine.textures.length;
+
+    _this.engine.textures.push(ColorTexture_assertThisInitialized(_this));
+
+    var webgl = _this.engine.webgl;
+    _this.webglTexture = webgl.createTexture();
+    webgl.activeTexture(webgl.TEXTURE0 + _this.textureBlockLocation);
+    webgl.bindTexture(webgl.TEXTURE_2D, _this.webglTexture);
+    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, _this.color);
+
+    _this.engine.textureLoaded(ColorTexture_assertThisInitialized(_this));
+
+    _this.loaded = true;
+    return _this;
+  }
+
+  return SimpleTexture;
+}(Texture_Texture);
+
+
+
+// CONCATENATED MODULE: ./src/Engine.ts
+function Engine_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Engine_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Engine_createClass(Constructor, protoProps, staticProps) { if (protoProps) Engine_defineProperties(Constructor.prototype, protoProps); if (staticProps) Engine_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Engine_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
 
 var Engine_Engine =
 /*#__PURE__*/
 function () {
   function Engine(div) {
-    classCallCheck_default()(this, Engine);
+    var _this = this;
 
-    this.infoConsoleLog();
-    /**
-     * @private
-     */
+    Engine_classCallCheck(this, Engine);
+
+    Engine_defineProperty(this, "div", void 0);
+
+    Engine_defineProperty(this, "canvas", void 0);
+
+    Engine_defineProperty(this, "webgl", void 0);
+
+    Engine_defineProperty(this, "width", void 0);
+
+    Engine_defineProperty(this, "height", void 0);
+
+    Engine_defineProperty(this, "camera", null);
+
+    Engine_defineProperty(this, "debugger", null);
+
+    Engine_defineProperty(this, "controls", null);
+
+    Engine_defineProperty(this, "lightsPositions", []);
+
+    Engine_defineProperty(this, "lightsRanges", []);
+
+    Engine_defineProperty(this, "globalLightMinValue", 0.5);
+
+    Engine_defineProperty(this, "noTexture", void 0);
+
+    Engine_defineProperty(this, "reflections", false);
+
+    Engine_defineProperty(this, "status", 'Creating');
+
+    Engine_defineProperty(this, "shaders", void 0);
+
+    Engine_defineProperty(this, "textures", []);
+
+    Engine_defineProperty(this, "lights", []);
+
+    Engine_defineProperty(this, "_ui", null);
+
+    Engine_defineProperty(this, "_objectsWithoutAlpha", []);
+
+    Engine_defineProperty(this, "_objectsWithAlpha", []);
+
+    Engine_defineProperty(this, "_resourcesLoaded", false);
+
+    Engine_defineProperty(this, "_texturesLoaded", false);
+
+    Engine_defineProperty(this, "_objectsLoaded", false);
+
+    Engine_defineProperty(this, "_loadedObjectsCount", 0);
+
+    Engine_defineProperty(this, "_loadedTexturesCount", 0);
+
+    Engine_defineProperty(this, "_onResourcesLoadedHandlers", []);
+
+    Engine_defineProperty(this, "_selectedObject", null);
+
+    Engine_defineProperty(this, "_onObjectSelectedHandlers", []);
+
+    Engine_defineProperty(this, "_running", false);
+
+    Engine_defineProperty(this, "_onRun", []);
 
     this.div = div;
-    this.div.style = "position: relative;";
-    /**
-     * Canvas for drawing.
-     * @readonly
-     */
+    this.width = div.offsetWidth;
+    this.height = div.offsetHeight;
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = div.offsetWidth;
+    this.canvas.height = div.offsetHeight;
+    this.webgl = getWebGL(this.canvas);
+    this.addOnResourcesLoadedListener(function () {
+      if (!_this.reflections) {
+        _this.appendCanvas();
 
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = div.width;
-    this.canvas.height = div.height;
-    div.appendChild(this.canvas);
-    /**
-     * WebGL context of canvas
-     * @private
-     */
+        _this.status = 'Drawing';
+      }
 
-    this.webGL = getWebGL(this.canvas);
-    /**
-     * Width of drawing resolution
-     * @type {Number}
-     */
-
-    this.width = div.width;
-    /**
-     * Height of drawing resolution.
-     * @type {Number}
-     */
-
-    this.height = div.height;
-    /**
-     * @type {Polygon[]}
-     * @private
-     */
-
-    this.polygons = [];
-    /**
-     * @type {UI}
-     * @private
-     */
-
-    this.ui = null;
-    /**
-     * True if all resources like textures and objects loaded.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.resourcesLoaded = false;
-    /**
-     * Array of objects in engine. You can remove objects. Get them by index. But do not add objects to array - use new Object()
-     * @type {Objects[]}
-     * @public
-     */
-
-    this.objects = [];
-    /**
-     * Array of objects with alpha texture which draws after all another objects and sorting by z.
-     */
-
-    this.objectsWithAlphaTexture = [];
-    /**
-     * @type {Number}
-     * @readonly
-     */
-
-    this.loadedObjectsCount = 0;
-    /**
-     * True if all attached objects loaded.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.objectsLoaded = false;
-    /**
-     * @type {Texture[]}
-     * @private
-     */
-
-    this.textures = [];
-    /**
-     * @type {Number}
-     * @readonly
-     */
-
-    this.loadedTexturesCount = 1;
-    /**
-     * True if all attached textures loaded.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.texturesLoaded = false;
-    /**
-     * On resources loaded functions array
-     */
-
-    this.onResourcesLoadedHandlers = [];
-    /**
-     * Default texture for all object.
-     * @type {Texture}
-     * @public
-     */
-
-    this.noTexture = new SimpleTexture_SimpleTexture();
-    this.noTexture.setColorRGBA(219, 58, 52, 255);
-    this.noTexture.bind(this);
-    this.textureLoaded(this.noTexture);
-    /**
-     * The camera that is attached to the engine.
-     * @type {Camera}
-     * @public
-     */
-
-    this.camera = null;
-    /**
-     * The debugger that is attached to the engine.
-     * @type {Debugger}
-     * @public
-     */
-
-    this.debugger = null;
-    /**
-     * The controls that is attached to the engine.
-     * @type {Controls}
-     * @public
-     */
-
-    this.controls = null;
-    /**
-     * An object that is under the cursor now.
-     * @type {Object}
-     * @readonly
-     */
-
-    this.selectedObject = null;
-    /**
-     * Execute every time when object is selected
-     * @type {Function}
-     * @private
-     */
-
-    this._objectSelectHandler;
-    /**
-     * Count of drawCalls.
-     * @type {Number}
-     * @readonly
-     */
-
-    this.drawCalls = 0;
-    /**
-     * Count of drawCalls.
-     * @type {Number}
-     * @readonly
-     */
-
-    this.drawCallsPerFrame = 0;
-    /**
-     * Array of function which executes on engine run.
-     * @type {Function[]}
-     */
-
-    this.onrun = [];
-    /**
-     * Rendering reflections size
-     * @type {Number}
-     * @default 1024
-     */
-
-    this.reflectionQuality = 2048;
-    /**
-     * Shaders container
-     */
-
-    this.shaders = new Shaders_Shaders(this.webGL);
-
-    this._initShaders();
-
-    this.shaders.default.use();
-    this.webGL.viewport(0, 0, this.width, this.height);
-    this.webGL.enable(this.webGL.CULL_FACE);
-    this.webGL.enable(this.webGL.DEPTH_TEST);
-    /**
-     * Array of x, y, z position of global light.
-     * @type {Number[]} 
-     */
-
-    this.globalLightPosition = [0, 100, 400];
-    /**
-     * Global light max distance.
-     * @type {Number}
-     */
-
-    this.globalLightRange = 200000;
-    /**
-     * Minimum global light value.
-     * @type {Number} from 0 to 1 float
-     */
-
-    this.globalLightMinValue = 0.2;
-    /**
-     * Array with all lights
-     * @tpye {Light[]}
-     */
-
-    this.lights = [];
-    this.lightsPositions = [];
-    this.lightsRanges = [];
+      _this.status = 'Creating reflections';
+    });
+    this.shaders = new Shaders_Shaders(this.webgl);
+    this.shaders["default"].use();
+    this.webgl.viewport(0, 0, this.width, this.height);
+    this.webgl.enable(this.webgl.CULL_FACE);
+    this.webgl.enable(this.webgl.DEPTH_TEST);
+    this.noTexture = new ColorTexture_SimpleTexture(this);
+    this.infoConsoleLog();
   }
-  /**
-   * Showing info about engine.
-   * @private
-   */
 
-
-  createClass_default()(Engine, [{
-    key: "infoConsoleLog",
-    value: function infoConsoleLog() {
-      console.log();
-      console.log('     %c%s', 'color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700', "Bronze Engine is running");
-      console.log();
-      console.info('     Version : 0.2.96');
-      console.info('     Docs    : http://m0ksem.design/Bronze-Engine/docs/global');
-      console.info('     GitHub  : https://github.com/m0ksem/Bronze-Engine');
-      console.info('     Author  : https://github.com/m0ksem');
-      console.log();
+  Engine_createClass(Engine, [{
+    key: "appendCanvas",
+    value: function appendCanvas() {
+      this.div.appendChild(this.canvas);
     }
     /**
-     * Creating shaders and attaching to webGL context.
-     * @private
-     */
-
-  }, {
-    key: "_initShaders",
-    value: function _initShaders() {
-      var options = {
-        removePrefixes: true,
-        addLocationMarker: true
-      };
-      this.shaders.addExtension('anisotropic', 'EXT_texture_filter_anisotropic');
-      this.shaders.addExtension('standard', 'OES_standard_derivatives');
-      this.shaders.addProgram('default', vertexShaderSource, fragmentShaderSource, options);
-      this.shaders.addProgram('cube', cubeVertexShaderSource, cubeFragmentShaderSource, options);
-      this.shaders.addProgram('grid', gridVertexShaderSource, gridFragmentShaderSource, options);
-      this.shaders.addProgram('reflection', reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
-      this.shaders.addProgram('skybox', skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
-      this.shaders.default.use();
-      this.webGL.enable(this.webGL.BLEND);
-      this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
-    }
-    /**
-     * Setting a camera to the engine. There are can be only one camera.
-     * @param {Camera} camera
-     * @public
+     * Attach camera to engine.
+     * @param camera
      */
 
   }, {
@@ -3069,148 +1553,115 @@ function () {
       this.camera = camera;
     }
     /**
-     * Update drawing parameters for correct drawing resized canvas.
-     * @public
+     * Update drawing parameters for correct drawing resized canvas. Use it when canvas resized.
      */
 
   }, {
-    key: "canvasResized",
-    value: function canvasResized() {
-      this.canvas.width = this.canvas.clientWidth;
-      this.canvas.height = this.canvas.clientHeight;
-      this.width = this.canvas.clientWidth;
-      this.height = this.canvas.clientHeight;
-      this.webGL.viewport(0, 0, this.width, this.height);
-    }
-    /**
-     * Sets function when object is selected.
-     * @param {Function(object)} handler
-     * @public
-     */
+    key: "onCanvasResized",
+    value: function onCanvasResized() {
+      if (this.canvas.clientWidth != 0) {
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+        this.width = this.canvas.clientWidth;
+        this.height = this.canvas.clientHeight;
+      }
 
-  }, {
-    key: "onObjectSelect",
-    value: function onObjectSelect(handler) {
-      this._objectSelectHandler = handler;
+      this.webgl.viewport(0, 0, this.width, this.height);
     }
   }, {
     key: "addObject",
     value: function addObject(object) {
-      this.objects.push(object);
-    }
-    /**
-     * Function to update all positions, size etc.
-     * @private
-     */
-
-  }, {
-    key: "_update",
-    value: function _update() {
-      var _this = this;
-
-      if (this.camera._controlFunction != null) {
-        this.camera.moving = [0, 0, 0];
-
-        this.camera._controlFunction();
-
-        this.controls.mouse.movement.x = 0;
-        this.controls.mouse.movement.y = 0;
-      }
-
-      this.selectedObject = null;
-
-      for (var i = 0; i < this.objects.length; i++) {
-        var object = this.objects[i];
-
-        if (object.checkCollision) {
-          object.checkCollision();
-        }
-      }
-
-      for (var _i = 0; _i < this.objectsWithAlphaTexture.length; _i++) {
-        var _object = this.objectsWithAlphaTexture[_i];
-
-        if (_object.checkCollision) {
-          _object.checkCollision();
-        }
-      }
-
-      this.camera.position[0] += this.camera.moving[0];
-      this.camera.position[1] += this.camera.moving[1];
-      this.camera.position[2] += this.camera.moving[2];
-      this.camera.computeMatrix();
-      this.ui.objects.forEach(function (object) {
-        object.update();
-      });
-      this.objects.forEach(function (element, index) {
-        element.update();
-
-        if (element.texture.alpha) {
-          _this.objectsWithAlphaTexture.push(element);
-
-          _this.objects.splice(index, 1);
-        }
-      });
-      this.objectsWithAlphaTexture.sort(function (a, b) {
-        return distance(b.position, _this.camera.position) - distance(a.position, _this.camera.position);
-      });
-      this.objectsWithAlphaTexture.forEach(function (element) {
-        element.update();
-      });
-
-      if (this.selectedObject && this._objectSelectHandler != null) {
-        this._objectSelectHandler(this.selectedObject);
+      if (object.texture.alpha) {
+        this._objectsWithAlpha.push(object);
+      } else {
+        this._objectsWithoutAlpha.push(object);
       }
     }
     /**
-     * Main drawing function. All polygons are drawn here.
-     * @private
+     * Removes objects if its exist
      */
 
   }, {
-    key: "_draw",
-    value: function () {
-      var _draw2 = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee() {
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
-                this.shaders.default.use();
-                this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
-                this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
-                this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
-                this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
-                this.drawCallsPerFrame = 0;
-                this.ui.drawUIOnMainCanvas();
-                this.objects.forEach(function (object) {
-                  object.draw();
-                });
-                this.objectsWithAlphaTexture.forEach(function (object) {
-                  object.draw();
-                });
-                this.ui.drawUI();
+    key: "removeObject",
+    value: function removeObject(object) {
+      var index = this.objects.indexOf(object);
 
-                if (this.debugger != null) {
-                  this.debugger.updateInfo();
-                }
-
-              case 12:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function _draw() {
-        return _draw2.apply(this, arguments);
+      if (index == -1) {
+        console.warn("Objects", this.objects);
+        new Error_BronzeError("Object not found");
       }
 
-      return _draw;
-    }()
+      this.objects.splice(index, 1);
+    }
+  }, {
+    key: "addOnObjectSelectedListener",
+    value: function addOnObjectSelectedListener(callback) {
+      this._onObjectSelectedHandlers.push(callback);
+    }
+  }, {
+    key: "addOnResourcesLoadedListener",
+    value: function addOnResourcesLoadedListener(callback) {
+      this._onResourcesLoadedHandlers.push(callback);
+    }
+    /**
+     * Function should be executed when texture loaded and ready to use.
+     */
+
+  }, {
+    key: "textureLoaded",
+    value: function textureLoaded(texture) {
+      this._loadedTexturesCount += 1;
+      texture.loaded = true;
+
+      if (this.running && this._loadedTexturesCount == this.textures.length) {
+        this._texturesLoaded = true;
+
+        if (this.objectsLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    }
+    /**
+     * Function should be executed when object loaded and ready to use.
+     */
+
+  }, {
+    key: "objectLoaded",
+    value: function objectLoaded(object) {
+      var objectsCount = this.objects.length;
+
+      if (this.ui) {
+        objectsCount += this.ui.objects.length;
+      }
+
+      this._loadedObjectsCount += 1;
+      object.loaded = true;
+
+      if (this.running && this._loadedObjectsCount == objectsCount) {
+        this._objectsLoaded = true;
+
+        if (this._texturesLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    }
+  }, {
+    key: "setDrawingRange",
+    value: function setDrawingRange(range) {
+      if (this.camera != null) {
+        this.camera.range = range;
+      } else {
+        throw 'Failed to set drawing range. Camera wasn\'t set.';
+      }
+    }
   }, {
     key: "captureFrame",
     value: function captureFrame(camera, options) {
@@ -3219,7 +1670,7 @@ function () {
       var drawUI = false;
       var imageHeight = 128;
       var imageWidth = 128;
-      var background = 'rgba(0, 0, 0, 0)';
+      var background = "rgba(0, 0, 0, 0)";
       var backgroundAlpha = 1;
       var imageAlpha = 1;
       var noDrawObjects = [];
@@ -3234,19 +1685,19 @@ function () {
         noDrawObjects = options.noDrawObjects || [];
       }
 
+      this.width = imageWidth;
+      this.height = imageHeight;
       this.canvas.width = imageWidth;
       this.canvas.height = imageHeight;
-      this.canvasResized();
+      this.onCanvasResized();
       this.camera = camera;
-      this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
-      this.shaders.default.use();
-      this.webGL.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
-      this.webGL.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
-      this.webGL.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
-      this.webGL.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
-      this.drawCallsPerFrame = 0;
-
-      this._update();
+      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+      this.shaders["default"].use();
+      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
+      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
+      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
+      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+      this.update();
 
       for (var i = 0; i < this.objects.length; i++) {
         var object = this.objects[i];
@@ -3258,21 +1709,16 @@ function () {
         }
       }
 
-      this.objectsWithAlphaTexture.forEach(function (object) {
-        if (noDrawObjects.indexOf(object) == -1) {
-          object.draw();
-        }
-      });
-      var frame = document.createElement('canvas');
+      var frame = document.createElement("canvas");
       frame.height = this.canvas.height;
       frame.width = this.canvas.width;
-      var context = frame.getContext('2d');
+      var context = frame.getContext("2d");
       context.globalAlpha = backgroundAlpha;
 
-      if (typeof background === 'string') {
+      if (typeof background === "string") {
         context.fillStyle = background;
         context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      } else if (typeof background === 'image') {
+      } else if (background.constructor === HTMLImageElement) {
         context.drawImage(background, 0, 0, frame.width, frame.height);
       }
 
@@ -3281,181 +1727,214 @@ function () {
       this.camera = currentCamera;
       this.canvas.width = currentCanvasSize[0];
       this.canvas.height = currentCanvasSize[1];
-      this.canvasResized();
+      this.width = currentCanvasSize[0];
+      this.height = currentCanvasSize[1];
+      this.onCanvasResized();
       return frame;
     }
-    /**
-     * Sets range where objects will no draws.
-     * @param {Number} range 
-     */
-
-  }, {
-    key: "setDrawingRange",
-    value: function setDrawingRange(range) {
-      if (this.camera != null) {
-        this.camera.range = range;
-      } else {
-        throw 'Failed to set drawing range. Camera wasn\'t set.';
-      }
-    }
-    /**
-     * Rendering function.
-     * @public
-     */
-
   }, {
     key: "render",
-    value: function () {
-      var _render = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee2() {
-        return regenerator_default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return this._update();
-
-              case 2:
-                _context2.next = 4;
-                return this._draw();
-
-              case 4:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function render() {
-        return _render.apply(this, arguments);
-      }
-
-      return render;
-    }()
-    /**
-     * Start rendering with default requestAnimationFrame function.
-     * @public
-     */
-
+    value: function render() {
+      this.update();
+      this.draw();
+    }
   }, {
     key: "run",
     value: function run() {
       var _this2 = this;
 
       _engine = this;
-      this.running = true;
+      this._running = true;
+      this.status = 'Loading resources';
 
-      if (this.loadedTexturesCount == this.textures.length) {
-        console.log('a');
-        this.texturesLoaded = true;
+      if (this._loadedTexturesCount == this.textures.length) {
+        this._texturesLoaded = true;
       }
 
-      var objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length;
+      var objectsCount = this.objects.length;
 
-      if (this.loadedObjectsCount == objectsCount) {
-        this.objectsLoaded = true;
+      if (this.ui) {
+        objectsCount += this.ui.objects.length + 1;
+      }
+
+      if (this._loadedObjectsCount == objectsCount) {
+        this._objectsLoaded = true;
 
         if (this.textureLoaded) {
-          this.resourcesLoaded = true;
-          this.onResourcesLoadedHandlers.forEach(function (func) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
             func(_this2.textures.length);
           });
         }
       }
 
       requestAnimationFrameEngine();
-      this.onrun.forEach(function (func) {
-        func();
-      });
+
+      for (var i = 0; i < this._onRun.length; i++) {
+        this._onRun[i];
+      }
     }
   }, {
     key: "stop",
     value: function stop() {
-      this.stopped = true;
+      this._running = false;
     }
-    /**
-     * Adds functions which will execute on engine run.
-     * @param {Function} func 
-     */
-
   }, {
-    key: "addOnRunFunction",
-    value: function addOnRunFunction(func) {
-      this.onrun.push(func);
-    }
-    /**
-     * Function should be executed when texture loaded and ready to use.
-     * @param {Texture} texture 
-     */
-
-  }, {
-    key: "textureLoaded",
-    value: function textureLoaded(texture) {
+    key: "update",
+    value: function update() {
       var _this3 = this;
 
-      this.loadedTexturesCount += 1;
+      this._selectedObject = null;
 
-      if (this.running && this.loadedTexturesCount == this.textures.length) {
-        this.texturesLoaded = true;
+      if (this.camera && this.controls && this.controls.controlFunction) {
+        this.camera.moving.set(0, 0, 0);
+        this.controls.controlFunction();
+        this.controls.mouse.movement.x = 0;
+        this.controls.mouse.movement.y = 0;
+      }
 
-        if (this.objectsLoaded) {
-          this.resourcesLoaded = true;
-          this.onResourcesLoadedHandlers.forEach(function (func) {
-            func(_this3.textures.length);
+      for (var i = 0; i < this._objectsWithoutAlpha.length; i++) {
+        var object = this._objectsWithoutAlpha[i];
+        object.updateMatrixes();
+
+        if (object.checkCollision) {
+          object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+            _this3.camera.moving[coordinate] = 0;
           });
         }
       }
-    }
-    /**
-     * Function should be executed when object loaded and ready to use.
-     * @param {Object} object
-     */
 
-  }, {
-    key: "objectLoaded",
-    value: function objectLoaded(object) {
-      var _this4 = this;
+      for (var _i = 0; _i < this._objectsWithAlpha.length; _i++) {
+        var _object = this._objectsWithAlpha[_i];
 
-      var objectsCount = this.objects.length + this.ui.objects.length + this.objectsWithAlphaTexture.length;
-      this.loadedObjectsCount += 1;
+        _object.updateMatrixes();
 
-      if (this.running && this.loadedObjectsCount == objectsCount) {
-        this.objectsLoaded = true;
-
-        if (this.textureLoaded) {
-          this.resourcesLoaded = true;
-          this.onResourcesLoadedHandlers.forEach(function (func) {
-            func(_this4.textures.length);
+        if (_object.checkCollision) {
+          _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+            _this3.camera.moving[coordinate] = 0;
           });
         }
       }
-    }
-    /**
-     * @param {Function} func function which will execute when all textures loaded.
-     */
 
-  }, {
-    key: "addOnResourcesLoaded",
-    value: function addOnResourcesLoaded(func) {
-      this.onResourcesLoadedHandlers.push(func);
-    }
-    /**
-     * Removes objects if its exist
-     * @param {Object} object 
-     */
+      this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
+      this.camera.computeMatrix();
+      this.ui.objects.forEach(function (object) {
+        object.updateMatrixes();
+        object.update();
+      });
 
-  }, {
-    key: "removeObject",
-    value: function removeObject(object) {
-      var index = this.objects.indexOf(object);
+      this._objectsWithoutAlpha.forEach(function (element, index) {
+        element.update();
 
-      if (index == -1) {
-        throw new Error('Object not found');
+        if (element.texture.alpha) {
+          _this3._objectsWithAlpha.push(element);
+
+          _this3._objectsWithoutAlpha.splice(index, 1);
+        }
+      });
+
+      this._objectsWithAlpha.sort(function (a, b) {
+        return distance(b.position, _this3.camera.position) - distance(a.position, _this3.camera.position);
+      });
+
+      this._objectsWithAlpha.forEach(function (element) {
+        element.update();
+      });
+
+      if (this.selectedObject && this._onObjectSelectedHandlers.length > 0) {
+        for (var _i2 = 0; _i2 < this._onObjectSelectedHandlers.length; _i2++) {
+          this._onObjectSelectedHandlers[_i2]();
+        }
       }
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+      this.shaders["default"].use();
+      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
+      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
+      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
+      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+      this.ui.draw();
+      this.objects.forEach(function (object) {
+        object.draw();
+      });
 
-      this.objects.splice(index, 1);
+      this._objectsWithAlpha.forEach(function (object) {
+        object.draw();
+      });
+
+      this.ui.drawUI();
+
+      if (this["debugger"] != null) {
+        this["debugger"].updateInfo();
+      }
+    }
+  }, {
+    key: "infoConsoleLog",
+    value: function infoConsoleLog() {
+      console.log();
+      console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
+      console.log();
+      console.info("   Version : 0.2.96");
+      console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
+      console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
+      console.info("   Author  : https://github.com/m0ksem");
+      console.log();
+    }
+  }, {
+    key: "ui",
+    set: function set(v) {
+      this._ui = v;
+      var objectsCount = this.objects.length + this.ui.objects.length;
+      this._loadedObjectsCount += 1;
+
+      if (this.running && this._loadedObjectsCount == objectsCount) {
+        this._objectsLoaded = true;
+
+        if (this._texturesLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    },
+    get: function get() {
+      return this._ui;
+    }
+  }, {
+    key: "objects",
+    get: function get() {
+      return this._objectsWithoutAlpha.concat(this._objectsWithAlpha);
+    }
+  }, {
+    key: "resourcesLoaded",
+    get: function get() {
+      return this._resourcesLoaded;
+    }
+  }, {
+    key: "texturesLoaded",
+    get: function get() {
+      return this._texturesLoaded;
+    }
+  }, {
+    key: "objectsLoaded",
+    get: function get() {
+      return this._objectsLoaded;
+    }
+  }, {
+    key: "selectedObject",
+    get: function get() {
+      return this._selectedObject;
+    }
+  }, {
+    key: "running",
+    get: function get() {
+      return this._running;
     }
   }]);
 
@@ -3470,7 +1949,7 @@ var _engine;
 
 
 function requestAnimationFrameEngine() {
-  if (_engine.stopped) {
+  if (!_engine.running) {
     return;
   }
 
@@ -3481,14 +1960,15 @@ function requestAnimationFrameEngine() {
 
 (function () {
   var lastTime = 0;
-  var vendors = ['ms', 'moz', 'webkit', 'o'];
+  var vendors = ["ms", "moz", "webkit", "o"];
+  var win = window;
 
   for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    window.requestAnimationFrame = win[vendors[x] + "RequestAnimationFrame"];
+    window.cancelAnimationFrame = win[vendors[x] + "CancelAnimationFrame"] || win[vendors[x] + "CancelRequestAnimationFrame"];
   }
 
-  if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback, element) {
+  if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback) {
     var currTime = new Date().getTime();
     var timeToCall = Math.max(0, 16 - (currTime - lastTime));
     var id = window.setTimeout(function () {
@@ -3501,178 +1981,835 @@ function requestAnimationFrameEngine() {
     clearTimeout(id);
   };
 })();
-// CONCATENATED MODULE: ./src/Controls.js
+// CONCATENATED MODULE: ./src/objects/Entity.ts
+function Entity_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function Entity_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Entity_createClass(Constructor, protoProps, staticProps) { if (protoProps) Entity_defineProperties(Constructor.prototype, protoProps); if (staticProps) Entity_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Entity_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var Entity_Entity =
+/*#__PURE__*/
+function () {
+  function Entity(engine) {
+    Entity_classCallCheck(this, Entity);
+
+    Entity_defineProperty(this, "name", "Just entity :)");
+
+    Entity_defineProperty(this, "loaded", false);
+
+    Entity_defineProperty(this, "verticalAlign", true);
+
+    Entity_defineProperty(this, "vertexes", []);
+
+    Entity_defineProperty(this, "textureCoordinates", []);
+
+    Entity_defineProperty(this, "normals", []);
+
+    Entity_defineProperty(this, "vertexesBuffer", null);
+
+    Entity_defineProperty(this, "textureCoordinatesBuffer", null);
+
+    Entity_defineProperty(this, "normalsBuffer", null);
+
+    Entity_defineProperty(this, "matrix", unit());
+
+    Entity_defineProperty(this, "rotationMatrix", unit());
+
+    Entity_defineProperty(this, "worldMatrix", unit());
+
+    Entity_defineProperty(this, "texture", void 0);
+
+    Entity_defineProperty(this, "rotationInDeg", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "rotation", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "rotationSelf", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "rotationPoint", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "scaling", new Vector3(1, 1, 1));
+
+    Entity_defineProperty(this, "_engine", void 0);
+
+    Entity_defineProperty(this, "webgl", void 0);
+
+    Entity_defineProperty(this, "camera", void 0);
+
+    Entity_defineProperty(this, "maxSize", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "minSize", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "maxBaseSize", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "minBaseSize", new Vector3(0, 0, 0));
+
+    Entity_defineProperty(this, "hidden", false);
+
+    Entity_defineProperty(this, "rotationPointPos", null);
+
+    Entity_defineProperty(this, "shaderProgram", void 0);
+
+    Entity_defineProperty(this, "_collisionBox", new Entity_CollisionBox());
+
+    Entity_defineProperty(this, "_UIElement", false);
+
+    Entity_defineProperty(this, "_animationInterval", void 0);
+
+    Entity_defineProperty(this, "_position", new Vector3(0, 0, 0));
+
+    this._engine = engine;
+    this.webgl = engine.webgl;
+    this.camera = engine.camera;
+    this.texture = this._engine.noTexture;
+    this.shaderProgram = engine.shaders["default"];
+    engine.addObject(this);
+  }
+
+  Entity_createClass(Entity, [{
+    key: "setPosition",
+    value: function setPosition(value, y, z) {
+      if (value.constructor === Vector3) {
+        this.position = value;
+      } else if (value.constructor === Array) {
+        this.position.set(value[0], value[1], value[2]);
+      } else {
+        this.position.set(value, y, z);
+      }
+    }
+  }, {
+    key: "move",
+    value: function move(x, y, z) {
+      this._position.move(x, y, z);
+    }
+  }, {
+    key: "moveRelativeToTheCamera",
+    value: function moveRelativeToTheCamera(x, y, z) {
+      var position = [x, y, z, 1];
+      position = transformVector(this.matrix, position);
+      this.position.moveArray(position);
+    }
+    /**
+     * Set rotation for x, y, z axis.
+     * @param x in deg.
+     * @param y in deg.
+     * @param z in deg.
+     * @public
+     */
+
+  }, {
+    key: "setRotation",
+    value: function setRotation(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotationInDeg.set(x, y, z);
+      this.rotation.set(xRad, yRad, zRad);
+    }
+  }, {
+    key: "rotate",
+    value: function rotate(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotationInDeg.move(x, y, z);
+      this.rotation.move(xRad, yRad, zRad);
+    }
+  }, {
+    key: "rotateSelf",
+    value: function rotateSelf(x, y, z) {
+      var xRad = degToRad(x);
+      var yRad = degToRad(y);
+      var zRad = degToRad(z);
+      this.rotationInDeg.move(x, y, z);
+      this.rotationSelf.move(xRad, yRad, zRad);
+    }
+    /**
+     * Set rotation point directly using coordinates.
+     * @param x
+     * @param y
+     * @param z
+     */
+
+  }, {
+    key: "setRotationPoint",
+    value: function setRotationPoint(x, y, z) {
+      if (x.constructor === String) {
+        switch (x) {
+          case "center":
+            this.rotationPoint.set(0, 0, 0);
+            this.rotationPoint.set(0, 0, 0);
+            this.rotationPoint.set(0, 0, 0);
+            this.rotationPointPos = "center";
+            break;
+
+          default:
+            new Error_BronzeError("Wrong point type");
+        }
+      } else {
+        this.rotationPoint.set(x, y, z);
+      }
+    }
+    /**
+     * Scale object.
+     * @param x
+     * @param y
+     * @param z
+     */
+
+  }, {
+    key: "scale",
+    value: function scale(x, y, z) {
+      this.scaling.set(x, y, z);
+      this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, this.maxBaseSize.z * z);
+      this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
+    }
+    /**
+     * Resize objects to pixels
+     * @param x pixels
+     * @param y pixels
+     * @param z pixels
+     */
+
+  }, {
+    key: "resize",
+    value: function resize(x, y, z) {
+      x = x / this.maxBaseSize.x;
+      y = y / this.maxBaseSize.y;
+      z = z / this.maxBaseSize.z;
+      this.scaling.set(x, y, z);
+      this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, this.maxBaseSize.z * z);
+      this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
+    }
+  }, {
+    key: "setTexture",
+    value: function setTexture(texture) {
+      this.texture = texture;
+    }
+  }, {
+    key: "checkCollision",
+    value: function checkCollision(position, moving, movingObjectCollisionBox, callback) {}
+  }, {
+    key: "useShader",
+    value: function useShader(shader) {
+      this.shaderProgram = shader;
+    }
+  }, {
+    key: "updateMatrixes",
+    value: function updateMatrixes() {
+      var world = inverse(translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+      world = Matrixes4_multiply(world, translation(this._position.x, this._position.y, this._position.z));
+
+      if (!this.verticalAlign) {
+        world = Matrixes4_multiply(world, translation(0, -(this.maxSize.y - this.minSize.y) / 2, 0));
+      }
+
+      var rot = Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z);
+      world = Matrixes4_multiply(world, rot);
+      world = Matrixes4_multiply(world, translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+      world = Matrixes4_multiply(world, translation(-this.minSize.x - (this.maxSize.x - this.minSize.x) / 2, -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2, -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2));
+      world = Matrixes4_multiply(world, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+      this.worldMatrix = world;
+      this.rotationMatrix = rot;
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      if (!this.hidden) {
+        var matrix;
+
+        if (!this.UIElement) {
+          matrix = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+          matrix = Matrixes4_multiply(matrix, this.engine.camera.inverseMatrix);
+        } else {
+          matrix = projection(this.engine.camera.fieldOfViewRad, this.engine.width);
+        }
+
+        matrix = Matrixes4_multiply(matrix, this.worldMatrix);
+        this.matrix = matrix;
+      }
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      if (!this.hidden) {
+        this.shaderProgram.use();
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.normalsBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
+        this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 3);
+      }
+    }
+  }, {
+    key: "animate",
+    value: function animate(fps, animateFunction) {
+      var _this = this;
+
+      animateFunction = animateFunction;
+      this._animationInterval = setInterval(function () {
+        animateFunction(_this);
+      }, 1000 / fps);
+      return this._animationInterval;
+    }
+    /**
+     * Deletes this object from engine.
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.engine.objects.splice(this.engine.objects.indexOf(this), 1);
+    }
+  }, {
+    key: "engine",
+    get: function get() {
+      return this._engine;
+    }
+  }, {
+    key: "position",
+    get: function get() {
+      return this._position;
+    },
+    set: function set(v) {
+      this._position = v;
+
+      if (!this._UIElement) {
+        this._position = v;
+      } else {
+        this._position.set(this.engine.width / 100 * v.x, -this.engine.height / 100 * v.y, v.z);
+      }
+    }
+  }, {
+    key: "UIElement",
+    set: function set(v) {
+      this._UIElement = v;
+
+      if (this.engine.ui != null) {
+        if (v) {
+          this.engine.ui.addObject(this);
+        } else {
+          this.engine.ui.removeObject(this);
+        }
+      } else {
+        new Error_BronzeError("UI not set for engine.");
+      }
+    },
+    get: function get() {
+      return this._UIElement;
+    }
+  }, {
+    key: "collisionBox",
+    get: function get() {
+      if (!this._collisionBox) {
+        throw new Error_BronzeError("Collision box is null");
+      }
+
+      return this._collisionBox;
+    }
+  }, {
+    key: "size",
+    get: function get() {
+      return {
+        base: {
+          max: this.maxBaseSize,
+          min: this.minBaseSize
+        },
+        current: {
+          max: this.maxSize,
+          min: this.minSize
+        }
+      };
+    }
+    /**
+     * Sets position for object. Using another vector.
+     */
+
+  }]);
+
+  return Entity;
+}();
+
+
+
+var Entity_CollisionBox = function CollisionBox() {
+  Entity_classCallCheck(this, CollisionBox);
+
+  Entity_defineProperty(this, "maxPoint", new Vector3(0, 0, 0));
+
+  Entity_defineProperty(this, "minPoint", new Vector3(0, 0, 0));
+};
+
+
+// CONCATENATED MODULE: ./src/Camera.ts
+function Camera_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Camera_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Camera_createClass(Constructor, protoProps, staticProps) { if (protoProps) Camera_defineProperties(Constructor.prototype, protoProps); if (staticProps) Camera_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Camera_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+/**
+ * Creates camera object.
+ * @class
+ * @constructor
+ */
+var Camera_Camera =
+/*#__PURE__*/
+function () {
+  /**
+   * Field of view for drawing in angles.
+   */
+
+  /**
+   * Field of view in radians.
+   */
+
+  /**
+   * Camera rotation.
+   * @readonly
+   */
+
+  /**
+   * Set range of camera for view.
+   * @default 20000
+   */
+
+  /**
+   * Matrix of camera.
+   */
+
+  /**
+   * Rotation matrix of this camera.
+   */
+
+  /**
+   * Inverse matrix of this camera.
+   */
+
+  /**
+   * Inverse matrix of this camera rotation.
+   */
+
+  /**
+   * True if camera move.
+   */
+
+  /**
+   * Array of moving values for camera for frame.
+   */
+
+  /**
+   * Collision box for camera.
+   */
+
+  /**
+   * True if camera have collisions.
+   */
+  function Camera(engine) {
+    Camera_classCallCheck(this, Camera);
+
+    Camera_defineProperty(this, "fieldOfView", 90);
+
+    Camera_defineProperty(this, "fieldOfViewRad", degToRad(90));
+
+    Camera_defineProperty(this, "rotation", new Vector3(0, 0, 0));
+
+    Camera_defineProperty(this, "range", 20000);
+
+    Camera_defineProperty(this, "matrix", unit());
+
+    Camera_defineProperty(this, "rotationMatrix", unit());
+
+    Camera_defineProperty(this, "inverseMatrix", unit());
+
+    Camera_defineProperty(this, "inverseRotationMatrix", unit());
+
+    Camera_defineProperty(this, "moved", false);
+
+    Camera_defineProperty(this, "moving", new Vector3(0, 0, 0));
+
+    Camera_defineProperty(this, "collisionBox", new Entity_CollisionBox());
+
+    Camera_defineProperty(this, "collisions", true);
+
+    Camera_defineProperty(this, "engine", void 0);
+
+    Camera_defineProperty(this, "_position", new Vector3(0, 400, 500));
+
+    this.engine = engine;
+  }
+  /**
+   * Camera position.
+   * @public
+   * @type
+   */
+
+
+  Camera_createClass(Camera, [{
+    key: "setCubeCollisionBox",
+    value: function setCubeCollisionBox(size) {
+      var halfSize = size / 2;
+      this.collisionBox.minPoint.x = -halfSize;
+      this.collisionBox.minPoint.y = -halfSize;
+      this.collisionBox.minPoint.z = -halfSize;
+      this.collisionBox.maxPoint.x = halfSize;
+      this.collisionBox.maxPoint.y = halfSize;
+      this.collisionBox.maxPoint.z = halfSize;
+    }
+    /**
+     * Sets field of view for camera.
+     * @param {Number} angle
+     * @public
+     */
+
+  }, {
+    key: "setFieldOfView",
+    value: function setFieldOfView(angle) {
+      this.fieldOfView = angle;
+      this.fieldOfViewRad = degToRad(angle);
+    }
+    /**
+     * Sets collision.
+     * @param {boolean} bool
+     * @public
+     */
+
+  }, {
+    key: "setCollisions",
+    value: function setCollisions(bool) {
+      this.collisions = bool;
+    }
+    /**
+     * Execute when camera have collision with object
+     * @param {Object} object
+     */
+
+  }, {
+    key: "onCollision",
+    value: function onCollision(object) {
+      this.moving.x = 0;
+      this.moving.y = 0;
+      this.moving.z = 0;
+    }
+    /**
+     * Absolutely sets position for camera.
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @public
+     */
+
+  }, {
+    key: "setPosition",
+    value: function setPosition(x, y, z) {
+      this.position.set(x, y, z);
+    }
+    /**
+     * Move camera.
+     */
+
+  }, {
+    key: "move",
+    value: function move(x, y, z) {
+      this.moving.move(x, y, z);
+      this.moved = true;
+    }
+    /**
+     * Rotate for x, y, z degrees.
+     */
+
+  }, {
+    key: "rotate",
+    value: function rotate(x, y, z) {
+      this.rotation.x += x;
+      this.rotation.y += y;
+      this.rotation.z += z;
+      this.computeMatrix();
+    }
+    /**
+     * Sets rotation angles
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     */
+
+  }, {
+    key: "setRotation",
+    value: function setRotation(x, y, z) {
+      this.rotation.set(x, y, z);
+      this.computeMatrix();
+    }
+    /**
+     * Compute camera matrix with rotation, positions.
+     */
+
+  }, {
+    key: "computeMatrix",
+    value: function computeMatrix() {
+      this.matrix = translation(this.position.x, this.position.y, this.position.z);
+      var rotation = Matrixes4_rotationY(degToRad(this.rotation.y));
+      rotation = Matrixes4_multiply(rotation, Matrixes4_rotationX(degToRad(this.rotation.x)));
+      rotation = Matrixes4_multiply(rotation, Matrixes4_rotationZ(degToRad(this.rotation.z)));
+      this.matrix = Matrixes4_multiply(this.matrix, rotation);
+      this.rotationMatrix = rotation;
+      this.inverseRotationMatrix = inverse(rotation);
+      this.inverseMatrix = inverse(this.matrix);
+    }
+  }, {
+    key: "position",
+    get: function get() {
+      return this._position;
+    }
+    /**
+     * Camera position.
+     * @public
+     */
+    ,
+    set: function set(value) {
+      this._position = value;
+      this.computeMatrix();
+    }
+  }]);
+
+  return Camera;
+}();
+
+
+
+// CONCATENATED MODULE: ./src/math/Vector2.ts
+function Vector2_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Vector2_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Vector2_createClass(Constructor, protoProps, staticProps) { if (protoProps) Vector2_defineProperties(Constructor.prototype, protoProps); if (staticProps) Vector2_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Vector2_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Vector2 =
+/*#__PURE__*/
+function () {
+  function Vector2(x, y) {
+    Vector2_classCallCheck(this, Vector2);
+
+    Vector2_defineProperty(this, "x", 0);
+
+    Vector2_defineProperty(this, "y", 0);
+
+    this.set(x, y);
+  }
+
+  Vector2_createClass(Vector2, [{
+    key: "set",
+    value: function set(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  }, {
+    key: "move",
+    value: function move(x, y) {
+      this.x += x;
+      this.y += y;
+    }
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.x, this.y, this.z];
+    }
+  }]);
+
+  return Vector2;
+}();
+/**
+ * Normalize a vector.
+ */
+
+
+
+function Vector2_normalize(vector) {
+  var length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+
+  if (length > 0.00001) {
+    vector.x = vector.x / length;
+    vector.y = vector.y / length;
+    return vector;
+  } else {
+    return null;
+  }
+}
+/**
+ * @returns [x, y, z] result of multiplying matrix and vector.
+ * @public
+ */
+
+function vec2Multiply(matrix, vector2) {
+  var c1 = matrix[0] * vector2.x + matrix[1] * vector2.y;
+  var c2 = matrix[3] * vector2.x + matrix[4] * vector2.y;
+  return [c1, c2];
+}
+/**
+ * Returns multiply of two matrixes.
+ */
+
+function Vector2_multiply(matrix1, matrix2) {
+  var a00 = matrix1[0 * 3 + 0];
+  var a01 = matrix1[0 * 3 + 1];
+  var a02 = matrix1[0 * 3 + 2];
+  var a10 = matrix1[1 * 3 + 0];
+  var a11 = matrix1[1 * 3 + 1];
+  var a12 = matrix1[1 * 3 + 2];
+  var b00 = matrix2[0 * 3 + 0];
+  var b01 = matrix2[0 * 3 + 1];
+  var b10 = matrix2[1 * 3 + 0];
+  var b11 = matrix2[1 * 3 + 1];
+  return [b00 * a00 + b01 * a10, b00 * a01 + b01 * a11, b00 * a02 + b01 * a12, b10 * a00 + b11 * a10, b10 * a01 + b11 * a11, b10 * a02 + b11 * a12];
+}
+/**
+ * Return distance between two vectors.
+ * @public
+ */
+
+function Vector2_distance(vector1, vector2) {
+  var squareSum = 0;
+  squareSum += (vector1.x - vector2.x) * (vector1.x - vector2.x);
+  squareSum += (vector1.y - vector2.y) * (vector1.y - vector2.y);
+  return Math.sqrt(squareSum);
+}
+
+// CONCATENATED MODULE: ./src/Controls.ts
+function Controls_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Controls_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Controls_createClass(Constructor, protoProps, staticProps) { if (protoProps) Controls_defineProperties(Constructor.prototype, protoProps); if (staticProps) Controls_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Controls_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 /**
  * Help class for creating user controls.
  * @class
  * @constructor
- * @param {Engine} engine 
  */
+
 var Controls_Controls =
 /*#__PURE__*/
 function () {
   /**
+   * True if canvas focused.
+   */
+
+  /**
+   * True if keys pressed. False if not.
+   */
+
+  /**
+   * True if mouse cursor over canvas element.
+   */
+
+  /**
+   * The time that the user must spend on a long press.
+   * A long press counts as a right mouse click.
+   */
+
+  /**
+   * Rebind default key events
+   * @default true
+   */
+
+  /**
+   * Functions which triggers if key pressed.
+   */
+
+  /**
+   * Set focus only if canvas clicked like on default input or button.
+   * If [true] then you need to click on canvas before it will be focused.
+   * If [false] then you just need to move your cursor over canvas.
+   * @type {boolean}
+   * @default true
+   * @private
+   */
+
+  /**
+   * Functions which triggers if mouse button pressed.
+   * @private
+   */
+
+  /**
+   * Functions which triggers if mouse button pressed.
+   * @private
+   */
+
+  /**
    * Help class for creating user controls.
-   * @param {Engine} engine 
    */
   function Controls(engine) {
     var _this = this;
 
-    classCallCheck_default()(this, Controls);
+    Controls_classCallCheck(this, Controls);
+
+    Controls_defineProperty(this, "engine", void 0);
+
+    Controls_defineProperty(this, "isFocused", false);
+
+    Controls_defineProperty(this, "keys", []);
+
+    Controls_defineProperty(this, "mouseOverCanvas", false);
+
+    Controls_defineProperty(this, "pointerLocked", false);
+
+    Controls_defineProperty(this, "mouse", new Controls_Mouse());
+
+    Controls_defineProperty(this, "touch", new Controls_Touch());
+
+    Controls_defineProperty(this, "longTouchTime", 500);
+
+    Controls_defineProperty(this, "touchDuration", 100);
+
+    Controls_defineProperty(this, "controlFunction", null);
+
+    Controls_defineProperty(this, "_lockPointer", false);
+
+    Controls_defineProperty(this, "_rebind", true);
+
+    Controls_defineProperty(this, "_globalRebind", false);
+
+    Controls_defineProperty(this, "_handlers", []);
+
+    Controls_defineProperty(this, "_focusHandlers", []);
+
+    Controls_defineProperty(this, "_blurHandlers", []);
+
+    Controls_defineProperty(this, "_focusOnlyIfClick", true);
+
+    Controls_defineProperty(this, "_mouseDownHandlers", [null, null, null, null, null, null]);
+
+    Controls_defineProperty(this, "_mouseUpHandlers", [null, null, null, null, null, null]);
 
     engine.controls = this;
     this.engine = engine;
-    /**
-     * True if mouse cursor over canvas element.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.mouseOverCanvas = false;
-    /**
-     * @type {boolean}
-     * @private
-     */
-
-    this._lockPointer = true;
-    /**
-     * @type {boolean}
-     * @public
-     */
-
-    this.pointerLocked = false;
-    /**
-     * Rebind
-     * @type {boolean}
-     * @private 
-     */
-
-    this._rebind = true;
-    /**
-     * Rebind
-     * @type {boolean}
-     * @private 
-     */
-
-    this._globalRebind = false;
-    /**
-     * Array in which the true elements if button are pressed. Every element corresponds to the button code.
-     * @type {Array.<{boolean}>}
-     * @readonly
-     */
-
-    this.keys = [];
-    /**
-     * Functions which triggers if key pressed.
-     * @type {Array.<{Function}>}
-     * @private
-     */
-
-    this._handlers = [];
-    /**
-     * Handlers for canvas on focus.
-     * @type {Array.{Function}}
-     * @private
-     */
-
-    this._focusHandlers = [];
-    /**
-     * Handlers for canvas on blur (or un focus).
-     * @type {Array.{Function}}
-     * @private
-     */
-
-    this._blurHandlers = [];
-    /**
-     * Set focus only if canvas clicked like on default input or button. 
-     * If [true] then you need to click on canvas before it will be focused.
-     * If [false] then you just need to move your cursor over canvas.
-     * @type {boolean}
-     * @default true
-     * @private
-     */
-
-    this._focusOnlyIfClick = true;
-    /**
-     * Displays if canvas focused.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.isFocused = false;
-    /**
-     * Functions which triggers if mouse button pressed.
-     * @type {Array.<{Function}>}
-     * @private
-     */
-
-    this._mouseDownHandlers = [null, null, null, null, null, null];
-    /**
-     * Functions which triggers if mouse button pressed.
-     * @type {Array.<{Function}>}
-     * @private
-     */
-
-    this._mouseUpHandlers = [null, null, null, null, null, null];
-    /**
-     * Mouse object which contains position and pressed buttons.
-     * @type {Object}
-     * @property {Number} x mouse position x.
-     * @property {Number} y mouse position y.
-     * @property {Array}  buttons mouse buttons clicks.
-     * @property {Number} movement.x mouse movement x from last frame.
-     * @property {Number} movement.y mouse movement y from last frame.
-     * @property {Number} sensitivity sensitivity for mouse movement.
-     * @public
-     */
-
-    this.mouse = {
-      x: 0,
-      y: 0,
-      buttons: [false, false, false],
-      movement: {
-        x: 0,
-        y: 0
-      },
-      sensitivity: 1
-      /**
-       * @type {Object}
-       * @property {Number} x mouse position x.
-       * @property {Number} y mouse position y.
-       * @property {Number} movement.x mouse movement x from last frame.
-       * @property {Number} movement.y mouse movement y from last frame.
-       * @property {boolean} click is current action is click.
-       * @property {boolean} longClick is current action is longClick.
-       * @property {Number} duration how long does it take to press.
-       * @property {String} actionBeforeMove 'click' or 'long click'
-       * @public
-       */
-
-    };
-    this.touch = {
-      x: 0,
-      y: 0,
-      movement: {
-        x: 0,
-        y: 0
-      },
-      click: false,
-      longClick: false,
-      duration: null,
-      actionBeforeMove: null
-      /**
-       * The time that the user must spend on a long press.
-       * A long press counts as a right mouse click.
-       * @type {Number} 
-       * @default 500
-       */
-
-    };
-    this.longTouchTime = 500;
-    this.touchDuration;
 
     for (var i = 0; i < 255; i++) {
       this.keys[i] = false;
@@ -3706,7 +2843,7 @@ function () {
       return !_this._rebind;
     };
 
-    engine.div.setAttribute('tabindex', '0');
+    engine.div.setAttribute("tabindex", "0");
 
     engine.div.onblur = function () {
       _this.isFocused = false;
@@ -3754,7 +2891,10 @@ function () {
       var durationCalculation;
       var touchMoved = false;
       engine.div.addEventListener("touchstart", function (event) {
-        if (_this._mouseDownHandlers[2] != null) _this._mouseDownHandlers[2](event);
+        if (_this._mouseDownHandlers[2] != null) {
+          _this._mouseDownHandlers[2](event);
+        }
+
         durationCalculation = setInterval(touchDurationFunction, 100);
         toucheTime = new Date().getTime();
         _this.touch.duration = 0;
@@ -3768,7 +2908,7 @@ function () {
             _this.touch.click = false;
           }, 100);
         } else {
-          _this.touch.actionBeforeMove = false;
+          _this.touch.actionBeforeMove = null;
         }
 
         lastMousePosition = null;
@@ -3785,10 +2925,7 @@ function () {
         _this.mouse.y = y;
 
         if (lastMousePosition == null) {
-          lastMousePosition = {
-            x: x,
-            y: y
-          };
+          lastMousePosition = new Vector2(x, y);
         }
 
         var moveX = (x - lastMousePosition.x) * _this.mouse.sensitivity;
@@ -3804,10 +2941,10 @@ function () {
 
         if (!touchMoved) {
           if (_this.touch.duration > _this.longTouchTime) {
-            _this.touch.actionBeforeMove = 'long click';
+            _this.touch.actionBeforeMove = "long click";
             _this.touch.longClick = false;
           } else {
-            _this.touch.actionBeforeMove = 'click';
+            _this.touch.actionBeforeMove = "click";
             _this.touch.click = false;
           }
         }
@@ -3817,7 +2954,7 @@ function () {
       }, false);
     } else {
       var _lastMousePosition = null;
-      engine.div.addEventListener('mousemove', function (event) {
+      engine.div.addEventListener("mousemove", function (event) {
         if (_this.isFocused) {
           if (!_this.pointerLocked) {
             var mousePos = engine.div.getBoundingClientRect();
@@ -3827,10 +2964,7 @@ function () {
             _this.mouse.y = y;
 
             if (_lastMousePosition == null) {
-              _lastMousePosition = {
-                x: x,
-                y: y
-              };
+              _lastMousePosition = new Vector2(x, y);
             }
 
             _this.mouse.movement.x = (x - _lastMousePosition.x) * _this.mouse.sensitivity;
@@ -3845,7 +2979,7 @@ function () {
           }
         }
       }, false);
-      window.addEventListener('mousemove', function (event) {
+      window.addEventListener("mousemove", function (event) {
         var canvasPos = engine.div.getBoundingClientRect();
         var x = event.clientX;
         var y = event.clientY;
@@ -3879,7 +3013,7 @@ function () {
         return false;
       };
 
-      document.addEventListener('pointerlockchange', function () {
+      document.addEventListener("pointerlockchange", function () {
         if (document.pointerLockElement === engine.div) {
           engine.div.focus();
           _this.pointerLocked = true;
@@ -3891,11 +3025,11 @@ function () {
     }
   }
   /**
-   * 
+   * Sets mode when user need click to focus canvas
    */
 
 
-  createClass_default()(Controls, [{
+  Controls_createClass(Controls, [{
     key: "clickForFocus",
     value: function clickForFocus(bool) {
       bool = bool || !this._focusOnlyIfClick;
@@ -3904,8 +3038,7 @@ function () {
     /**
      * Set sensitivity for mouse movement
      * @default 1
-     * @param {Number} sensitivity 
-     * @public
+     * @param sensitivity
      */
 
   }, {
@@ -3916,7 +3049,7 @@ function () {
     /**
      * Rebind default browser shortcut actions. Will switch rebind option.
      * @default true
-     * @param {boolean} [bool] switch to
+     * @param bool switch to
      */
 
   }, {
@@ -3928,7 +3061,7 @@ function () {
     /**
      * Rebind default browser shortcut actions on all page. By default rebind occurs only if canvas focused.
      * @default false
-     * @param {boolean} bool 
+     * @param {boolean} bool
      */
 
   }, {
@@ -3939,7 +3072,7 @@ function () {
     }
     /**
      * Adds handler which will execute on canvas focus.
-     * @param {Function} handler 
+     * @param {Function} handler
      */
 
   }, {
@@ -3949,7 +3082,7 @@ function () {
     }
     /**
      * Adds handler which will execute on canvas blur.
-     * @param {Function} handler 
+     * @param {Function} handler
      */
 
   }, {
@@ -3959,8 +3092,8 @@ function () {
     }
     /**
      * Sets handler for keyboard key down.
-     * @param {Number} keyCode 
-     * @param {Function} handler 
+     * @param {Number} keyCode
+     * @param {Function} handler
      * @public
      */
 
@@ -3971,8 +3104,8 @@ function () {
     }
     /**
      * Sets handler for mouse key down.
-     * @param {Number} keyCode 
-     * @param {Function} handler 
+     * @param {Number} keyCode
+     * @param {Function} handler
      * @public
      */
 
@@ -3983,8 +3116,8 @@ function () {
     }
     /**
      * Sets handler for mouse key down.
-     * @param {Number} keyCode 
-     * @param {Function} handler 
+     * @param {Number} keyCode
+     * @param {Function} handler
      * @public
      */
 
@@ -3995,18 +3128,18 @@ function () {
     }
     /**
      * Sets handler for mouse moving.
-     * @param {Function} handler 
+     * @param {Function} handler
      * @public
      */
 
   }, {
     key: "onMouseMove",
     value: function onMouseMove(handler) {
-      this.engine.div.addEventListener('mousemove', handler, false);
+      this.engine.div.addEventListener("mousemove", handler, false);
     }
     /**
      * Sets function on right click for context menu.
-     * @param {Function} handler 
+     * @param {Function} handler
      * @public
      */
 
@@ -4027,28 +3160,401 @@ function () {
       bool = bool || !this._lockPointer;
       this._lockPointer = bool;
     }
+  }, {
+    key: "setControlFunction",
+    value: function setControlFunction(func) {
+      this.controlFunction = func;
+    }
   }]);
 
   return Controls;
 }();
+/**
+ * Mouse object which contains position and pressed buttons.
+ * @property {Number} x mouse position x.
+ * @property {Number} y mouse position y.
+ * @property {Array}  buttons mouse buttons clicks.
+ * @property {Number} movement.x mouse movement x from last frame.
+ * @property {Number} movement.y mouse movement y from last frame.
+ * @property {Number} sensitivity sensitivity for mouse movement.
+ * @public
+ */
+
+
+
+var Controls_Mouse = function Mouse() {
+  Controls_classCallCheck(this, Mouse);
+
+  Controls_defineProperty(this, "x", 0);
+
+  Controls_defineProperty(this, "y", 0);
+
+  Controls_defineProperty(this, "movement", new Vector2(0, 0));
+
+  Controls_defineProperty(this, "click", false);
+
+  Controls_defineProperty(this, "longClick", false);
+
+  Controls_defineProperty(this, "duration", null);
+
+  Controls_defineProperty(this, "actionBeforeMove", null);
+
+  Controls_defineProperty(this, "sensitivity", 1);
+
+  Controls_defineProperty(this, "buttons", [false, false, false]);
+};
+/**
+ * @type {Object}
+ * @property {Number} x mouse position x.
+ * @property {Number} y mouse position y.
+ * @property {Number} movement.x mouse movement x from last frame.
+ * @property {Number} movement.y mouse movement y from last frame.
+ * @property {boolean} click is current action is click.
+ * @property {boolean} longClick is current action is longClick.
+ * @property {Number} duration how long does it take to press.
+ * @property {String} actionBeforeMove 'click' or 'long click'
+ * @public
+ */
+
+var Controls_Touch = function Touch() {
+  Controls_classCallCheck(this, Touch);
+
+  Controls_defineProperty(this, "x", 0);
+
+  Controls_defineProperty(this, "y", 0);
+
+  Controls_defineProperty(this, "movement", new Vector2(0, 0));
+
+  Controls_defineProperty(this, "click", false);
+
+  Controls_defineProperty(this, "longClick", false);
+
+  Controls_defineProperty(this, "duration", null);
+
+  Controls_defineProperty(this, "actionBeforeMove", null);
+};
 
 function isTouchDevice() {
-  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+  var prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
 
   var mq = function mq(query) {
     return window.matchMedia(query).matches;
   };
 
-  if ('ontouchstart' in window || window.DocumentTouch && document instanceof DocumentTouch) {
+  if ("ontouchstart" in window || window.DocumentTouch && document instanceof window.DocumentTouch) {
     return true;
   }
 
-  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+  var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
   return mq(query);
 }
-// CONCATENATED MODULE: ./src/Debugger.js
 
 
+// CONCATENATED MODULE: ./src/ui/UI.ts
+function UI_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function UI_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function UI_createClass(Constructor, protoProps, staticProps) { if (protoProps) UI_defineProperties(Constructor.prototype, protoProps); if (staticProps) UI_defineProperties(Constructor, staticProps); return Constructor; }
+
+function UI_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/**
+ * @class
+ * @constructor
+ * @param {Engine} e
+ */
+var UI =
+/*#__PURE__*/
+function () {
+  function UI(engine) {
+    UI_classCallCheck(this, UI);
+
+    UI_defineProperty(this, "canvas", void 0);
+
+    UI_defineProperty(this, "div", void 0);
+
+    UI_defineProperty(this, "width", void 0);
+
+    UI_defineProperty(this, "height", void 0);
+
+    UI_defineProperty(this, "centerX", void 0);
+
+    UI_defineProperty(this, "centerY", void 0);
+
+    UI_defineProperty(this, "context", void 0);
+
+    UI_defineProperty(this, "objects", void 0);
+
+    UI_defineProperty(this, "htmlElements", void 0);
+
+    UI_defineProperty(this, "engine", void 0);
+
+    UI_defineProperty(this, "webgl", void 0);
+
+    UI_defineProperty(this, "_screen", void 0);
+
+    UI_defineProperty(this, "_texture", void 0);
+
+    UI_defineProperty(this, "_webglTexture", void 0);
+
+    UI_defineProperty(this, "frameBuffer", void 0);
+
+    UI_defineProperty(this, "Screen", UI_Screen);
+
+    this.width = engine.div.offsetWidth;
+    this.height = engine.div.offsetHeight;
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    this.canvas.style.position = "absolute";
+    this.canvas.style.height = "100%";
+    this.canvas.style.width = "100%";
+    this.canvas.style.zIndex = "999999";
+    this.canvas.style.left = "0";
+    this.canvas.style.right = "0";
+    this.canvas.style.top = "0";
+    this.div = document.createElement("div");
+    this.div.style.position = "absolute";
+    this.div.style.height = "100%";
+    this.div.style.width = "100%";
+    this.div.style.zIndex = "999999";
+    this.div.style.left = "0";
+    this.div.style.right = "0";
+    this.div.style.top = "0";
+    engine.div.appendChild(this.canvas);
+    engine.div.appendChild(this.div);
+    this.centerX = this.width / 2;
+    this.centerY = this.height / 2;
+    this.context = this.canvas.getContext("2d");
+    this.objects = [];
+    this.htmlElements = [];
+    engine.ui = this;
+    this.engine = engine;
+    this.webgl = engine.webgl;
+    this._screen = new UI_Screen(this.engine);
+    this._texture = {
+      _textureBlockLocation: this.engine.textures.length
+    };
+    this.engine.textures.push(this._texture);
+    this.engine.textureLoaded(this._texture);
+    this.engine.webgl.activeTexture(this.engine.webgl.TEXTURE0 + this._texture._textureBlockLocation);
+    this._webglTexture = this.webgl.createTexture();
+    this.webgl.bindTexture(this.webgl.TEXTURE_2D, this._webglTexture);
+    this.webgl.texImage2D(this.webgl.TEXTURE_2D, 0, this.webgl.RGBA, this.width, this.height, 0, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, null);
+    this.webgl.texParameteri(this.webgl.TEXTURE_2D, this.webgl.TEXTURE_MAG_FILTER, this.webgl.NEAREST);
+    this.webgl.texParameteri(this.webgl.TEXTURE_2D, this.webgl.TEXTURE_MIN_FILTER, this.webgl.NEAREST);
+    this.webgl.texParameteri(this.webgl.TEXTURE_2D, this.webgl.TEXTURE_WRAP_S, this.webgl.CLAMP_TO_EDGE);
+    this.webgl.texParameteri(this.webgl.TEXTURE_2D, this.webgl.TEXTURE_WRAP_T, this.webgl.CLAMP_TO_EDGE);
+    this.frameBuffer = this.webgl.createFramebuffer();
+    this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, this.frameBuffer);
+    this.webgl.framebufferTexture2D(this.webgl.FRAMEBUFFER, this.webgl.COLOR_ATTACHMENT0, this.webgl.TEXTURE_2D, this._webglTexture, 0);
+    this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
+  }
+  /**
+   * Adds object to draw.
+   * @param element some UI element.
+   */
+
+
+  UI_createClass(UI, [{
+    key: "addObject",
+    value: function addObject(object) {
+      this.objects.push(object);
+      this.engine.removeObject(object);
+    }
+    /**
+     * Removes element from drawing function.
+     * @param element
+     */
+
+  }, {
+    key: "removeObject",
+    value: function removeObject(object) {
+      var index = this.objects.indexOf(object);
+
+      if (index != -1) {
+        this.objects.splice(index, 1);
+        this.engine.addObject(object);
+      } else {
+        console.warn("Object not found");
+      }
+    }
+    /**
+     * Adding DOM element upper game engine canvas.
+     * @param element
+     * @param position.vertical from 0 to 100
+     */
+
+  }, {
+    key: "appendDOMElement",
+    value: function appendDOMElement(element, name) {
+      this.div.appendChild(element);
+      this.htmlElements.push(new uiHTMLElement(name, element));
+      return element;
+    }
+    /**
+     * Draws image on canvas. Read about addImage
+     * @param image
+     */
+
+  }, {
+    key: "drawImage",
+    value: function drawImage(image) {
+      this.context.drawImage(image, 0, 0);
+    }
+    /**
+     * Clear canvas
+     */
+
+  }, {
+    key: "clearCanvas",
+    value: function clearCanvas() {
+      this.context.clearRect(0, 0, this.width, this.height);
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      var webgl = this.engine.webgl;
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, this.frameBuffer);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+      webgl.viewport(0, 0, this.engine.width, this.engine.height);
+      this.objects.forEach(function (object) {
+        object.draw();
+      });
+
+      this._screen.setTexture(this._texture);
+
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, null);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+    }
+  }, {
+    key: "drawUI",
+    value: function drawUI() {
+      this._screen.draw();
+    }
+  }]);
+
+  return UI;
+}();
+
+
+
+var UI_Screen =
+/*#__PURE__*/
+function () {
+  function Screen(engine) {
+    UI_classCallCheck(this, Screen);
+
+    UI_defineProperty(this, "webgl", void 0);
+
+    UI_defineProperty(this, "engine", void 0);
+
+    UI_defineProperty(this, "shaderProgram", void 0);
+
+    UI_defineProperty(this, "vertexes", void 0);
+
+    UI_defineProperty(this, "textureCoords", void 0);
+
+    UI_defineProperty(this, "normals", void 0);
+
+    UI_defineProperty(this, "vertexesBuffer", void 0);
+
+    UI_defineProperty(this, "coordsBuffer", void 0);
+
+    UI_defineProperty(this, "normalBuffer", void 0);
+
+    UI_defineProperty(this, "texture", void 0);
+
+    this.webgl = engine.webgl;
+    this.engine = engine;
+    this.shaderProgram = engine.shaders["default"];
+    this.vertexes = [-1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, -1];
+    this.textureCoords = [0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
+    this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
+    this.vertexesBuffer = this.webgl.createBuffer();
+    this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+    this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
+    this.coordsBuffer = this.webgl.createBuffer();
+    this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.coordsBuffer);
+    this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webgl.STATIC_DRAW);
+    this.normalBuffer = this.webgl.createBuffer();
+    this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalBuffer);
+    this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
+  }
+
+  UI_createClass(Screen, [{
+    key: "setTexture",
+    value: function setTexture(texture) {
+      this.texture = texture;
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
+      this.shaderProgram.use();
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.coordsBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.normalBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+      var unitMatrix = unit();
+      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, unitMatrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, unitMatrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, unitMatrix);
+      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 3);
+    }
+  }]);
+
+  return Screen;
+}();
+
+var uiHTMLElement =
+/*#__PURE__*/
+function () {
+  function uiHTMLElement(name, el) {
+    UI_classCallCheck(this, uiHTMLElement);
+
+    UI_defineProperty(this, "name", void 0);
+
+    UI_defineProperty(this, "el", void 0);
+
+    this.name = name;
+    this.el = el;
+  }
+
+  UI_createClass(uiHTMLElement, [{
+    key: "hide",
+    value: function hide() {
+      this.el.style.display = "none";
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      this.el.style.display = "block";
+    }
+  }]);
+
+  return uiHTMLElement;
+}();
+
+// CONCATENATED MODULE: ./src/debug/Debugger.ts
+function Debugger_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Debugger_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Debugger_createClass(Constructor, protoProps, staticProps) { if (protoProps) Debugger_defineProperties(Constructor.prototype, protoProps); if (staticProps) Debugger_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Debugger_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
  * Debugger for engine. Only for development.
@@ -4056,18 +3562,22 @@ function isTouchDevice() {
  * @class
  * @constructor
  */
-var Debugger_Debugger =
+var Debugger =
 /*#__PURE__*/
 function () {
   function Debugger(engine) {
-    classCallCheck_default()(this, Debugger);
+    Debugger_classCallCheck(this, Debugger);
 
-    engine.debugger = this;
+    Debugger_defineProperty(this, "logArray", void 0);
+
+    Debugger_defineProperty(this, "element", void 0);
+
+    engine["debugger"] = this;
     this.logArray = [];
     this.element = null;
   }
 
-  createClass_default()(Debugger, [{
+  Debugger_createClass(Debugger, [{
     key: "setElement",
     value: function setElement(element) {
       this.element = element;
@@ -4099,62 +3609,312 @@ function () {
         e.view.innerText = e.output(e);
       });
     }
-  }, {
-    key: "logObject",
-    value: function logObject(object) {
-      var output = '{\n';
-
-      for (var property in object) {
-        if (property[0] != '_') {
-          output += property + ': ' + object[property] + ',';
-        }
-      }
-
-      output.slice(-1, 1);
-      output += '}\n';
-      return output;
-    }
   }]);
 
   return Debugger;
 }();
-// CONCATENATED MODULE: ./src/textures/CubeTexture.js
+
+
+
+// CONCATENATED MODULE: ./src/textures/SimpleTexture.ts
+function SimpleTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SimpleTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { SimpleTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SimpleTexture_typeof(obj); }
+
+function SimpleTexture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function SimpleTexture_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function SimpleTexture_createClass(Constructor, protoProps, staticProps) { if (protoProps) SimpleTexture_defineProperties(Constructor.prototype, protoProps); if (staticProps) SimpleTexture_defineProperties(Constructor, staticProps); return Constructor; }
+
+function SimpleTexture_possibleConstructorReturn(self, call) { if (call && (SimpleTexture_typeof(call) === "object" || typeof call === "function")) { return call; } return SimpleTexture_assertThisInitialized(self); }
+
+function SimpleTexture_getPrototypeOf(o) { SimpleTexture_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SimpleTexture_getPrototypeOf(o); }
+
+function SimpleTexture_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function SimpleTexture_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) SimpleTexture_setPrototypeOf(subClass, superClass); }
+
+function SimpleTexture_setPrototypeOf(o, p) { SimpleTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SimpleTexture_setPrototypeOf(o, p); }
+
+function SimpleTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var SimpleTexture_SimpleTexture =
+/*#__PURE__*/
+function (_Texture) {
+  SimpleTexture_inherits(SimpleTexture, _Texture);
+
+  function SimpleTexture(engine, path) {
+    var _this;
+
+    SimpleTexture_classCallCheck(this, SimpleTexture);
+
+    _this = SimpleTexture_possibleConstructorReturn(this, SimpleTexture_getPrototypeOf(SimpleTexture).call(this, engine));
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "textureBlockLocation", -1);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "mipmapFilter", 'LINEAR');
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "AUTO_GENERATE", 0);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "QUICK_GENERATE", 1);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_mipmap", []);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_onTextureLoadedHandlers", []);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_width", -1);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_height", -1);
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_image", new Image());
+
+    SimpleTexture_defineProperty(SimpleTexture_assertThisInitialized(_this), "_mipmapGenerationMethod", -1);
+
+    _this.engine = engine;
+    _this.textureBlockLocation = _this.engine.textures.length;
+
+    _this.engine.textures.push(SimpleTexture_assertThisInitialized(_this));
+
+    var webgl = _this.engine.webgl;
+    _this.webglTexture = webgl.createTexture();
+    webgl.activeTexture(webgl.TEXTURE0 + _this.textureBlockLocation);
+    webgl.bindTexture(webgl.TEXTURE_2D, _this.webglTexture);
+    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, _this.color);
+    return _this;
+  }
+
+  SimpleTexture_createClass(SimpleTexture, [{
+    key: "setMipmapGenerationMethod",
+    value: function setMipmapGenerationMethod(method) {
+      this._mipmapGenerationMethod = method;
+    }
+  }, {
+    key: "setSize",
+    value: function setSize(width, height) {
+      this.width = width;
+      this.height = height;
+      this._image.width = width;
+      this._image.height = height;
+
+      if (this.loaded) {
+        this._createWebglTexture();
+      }
+    }
+  }, {
+    key: "_createWebglTexture",
+    value: function _createWebglTexture() {
+      var webgl = this.engine.webgl;
+      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
+      var mipmapFilter;
+      var mipmapRequire = true;
+
+      switch (this.mipmapFilter) {
+        case 'NEAREST':
+          mipmapFilter = webgl.NEAREST;
+          mipmapRequire = false;
+          break;
+
+        case 'LINEAR':
+          mipmapFilter = webgl.LINEAR;
+          mipmapRequire = false;
+          break;
+
+        case 'NEAREST_MIPMAP_NEAREST':
+          mipmapFilter = webgl.NEAREST_MIPMAP_NEAREST;
+          break;
+
+        case 'LINEAR_MIPMAP_NEAREST':
+          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
+          break;
+
+        case 'NEAREST_MIPMAP_LINEAR':
+          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
+          break;
+
+        case 'LINEAR_MIPMAP_LINEAR':
+          mipmapFilter = webgl.LINEAR_MIPMAP_LINEAR;
+          break;
+
+        default:
+          mipmapRequire = false;
+          mipmapFilter = webgl.LINEAR;
+          break;
+      }
+
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, mipmapFilter);
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
+
+      if (this._mipmapGenerationMethod == this.QUICK_GENERATE) {
+        if (this.width / this.height == 2) {
+          var i = this.height;
+          var offsetX = 0;
+
+          while (true) {
+            var tempCanvas = document.createElement("canvas");
+            tempCanvas.width = i;
+            tempCanvas.height = i;
+            var tempCanvasContext = tempCanvas.getContext("2d");
+            tempCanvasContext.drawImage(this._image, offsetX, 0, i, i, 0, 0, i, i);
+
+            this._mipmap.push(tempCanvas);
+
+            if (i == 1) {
+              break;
+            }
+
+            offsetX += i;
+            i = i / 2;
+          }
+        } else {
+          return console.warn('Wrong _image sizes for quick generation _mipmap.');
+        }
+      }
+
+      if (mipmapRequire && !(this._mipmapGenerationMethod == this.AUTO_GENERATE)) {
+        if (this._mipmap.length > 0) {
+          this._mipmap.forEach(function (mip, level) {
+            webgl.texImage2D(webgl.TEXTURE_2D, level, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, mip);
+          });
+        } else {
+          console.warn('Need to generate mipmaps for texture:');
+          console.warn(this);
+        }
+      } else {
+        webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, this._image);
+      }
+
+      if ((mipmapRequire || this._mipmapGenerationMethod == this.AUTO_GENERATE) && isPowerOf2(this._width) && isPowerOf2(this._height)) {
+        webgl.generateMipmap(webgl.TEXTURE_2D);
+      } else {
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
+      }
+    }
+  }, {
+    key: "loadFrom",
+    value: function loadFrom(path) {
+      var _this2 = this;
+
+      this._image.src = path;
+
+      this._image.addEventListener('load', function () {
+        _this2.engine.textureLoaded(_this2);
+
+        _this2.loaded = true;
+
+        for (var i = 0; i < _this2._onTextureLoadedHandlers.length; i++) {
+          _this2._onTextureLoadedHandlers[i]();
+        }
+
+        if (_this2._height == -1 || _this2._width == -1) {
+          _this2._height = _this2._image.height;
+          _this2._width = _this2._image.width;
+        }
+
+        _this2._createWebglTexture();
+      });
+    }
+  }, {
+    key: "image",
+    get: function get() {
+      return this._image;
+    }
+  }, {
+    key: "height",
+    set: function set(v) {
+      this._height = v;
+      this._image.height = v;
+    },
+    get: function get() {
+      return this._height;
+    }
+  }, {
+    key: "width",
+    set: function set(v) {
+      this._width = v;
+      this._image.width = v;
+    },
+    get: function get() {
+      return this._width;
+    }
+  }]);
+
+  return SimpleTexture;
+}(Texture_Texture);
+
+
+
+// CONCATENATED MODULE: ./src/textures/CubeTexture.ts
+function CubeTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { CubeTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { CubeTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return CubeTexture_typeof(obj); }
+
+function CubeTexture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function CubeTexture_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function CubeTexture_createClass(Constructor, protoProps, staticProps) { if (protoProps) CubeTexture_defineProperties(Constructor.prototype, protoProps); if (staticProps) CubeTexture_defineProperties(Constructor, staticProps); return Constructor; }
+
+function CubeTexture_possibleConstructorReturn(self, call) { if (call && (CubeTexture_typeof(call) === "object" || typeof call === "function")) { return call; } return CubeTexture_assertThisInitialized(self); }
+
+function CubeTexture_getPrototypeOf(o) { CubeTexture_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return CubeTexture_getPrototypeOf(o); }
+
+function CubeTexture_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function CubeTexture_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) CubeTexture_setPrototypeOf(subClass, superClass); }
+
+function CubeTexture_setPrototypeOf(o, p) { CubeTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return CubeTexture_setPrototypeOf(o, p); }
+
+function CubeTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 /**
  * Cube texture.
  * @class
- * @constructor
- * @param {String} path - path to image location.
- * @param {Number} [width] - custom width for image.
- * @param {Number} [height] - custom height for image.
  */
-var CubeTexture_CubeTexture =
+var CubeTexture =
 /*#__PURE__*/
-function () {
-  function CubeTexture() {
-    classCallCheck_default()(this, CubeTexture);
+function (_Texture) {
+  CubeTexture_inherits(CubeTexture, _Texture);
 
-    /**
-     * Color of texture. Texture drawing with color if image was not set.
-     * @readonly
-     */
-    this.color = new Uint8Array([255, 255, 255, 255]);
-    /**
-     * Location of texture block in engine.
-     * @private
-     */
+  function CubeTexture(engine) {
+    var _this;
 
-    this._textureBlockLocation = null;
+    CubeTexture_classCallCheck(this, CubeTexture);
+
+    _this = CubeTexture_possibleConstructorReturn(this, CubeTexture_getPrototypeOf(CubeTexture).call(this, engine));
+
+    CubeTexture_defineProperty(CubeTexture_assertThisInitialized(_this), "textures", void 0);
+
+    CubeTexture_defineProperty(CubeTexture_assertThisInitialized(_this), "_onTextureLoad", void 0);
+
+    CubeTexture_defineProperty(CubeTexture_assertThisInitialized(_this), "webgl", void 0);
+
+    CubeTexture_defineProperty(CubeTexture_assertThisInitialized(_this), "_loadedTextureCount", 0);
+
+    _this.engine = engine;
+
+    _this.engine.textures.push(CubeTexture_assertThisInitialized(_this));
+
+    _this.webgl = engine.webgl;
+    _this.textureBlockLocation = _this.engine.textures.length;
+    _this.webglTexture = _this.engine.webgl.createTexture();
+
+    _this.engine.webgl.activeTexture(_this.engine.webgl.TEXTURE0 + _this.textureBlockLocation);
+
+    _this.engine.webgl.bindTexture(_this.engine.webgl.TEXTURE_2D, _this.webglTexture);
+
+    _this.engine.webgl.texImage2D(_this.engine.webgl.TEXTURE_2D, 0, _this.engine.webgl.RGBA, 1, 1, 0, _this.engine.webgl.RGBA, _this.engine.webgl.UNSIGNED_BYTE, _this.color);
     /**
      * Execute every function in array when texture loaded.
      * @type {Function[]}
      */
 
-    this.onTextureLoad = [];
-    this.loaded = false;
-    this.textures = {
+
+    _this._onTextureLoad = [];
+    _this.loaded = false;
+    _this.textures = {
       positiveX: null,
       negativeX: null,
       positiveY: null,
@@ -4162,28 +3922,33 @@ function () {
       positiveZ: null,
       negativeZ: null
     };
-    this._loadedTextureCount = 0;
+    _this._loadedTextureCount = 0;
+    return _this;
   }
+  /**
+   * Load images from path or url.
+   */
 
-  createClass_default()(CubeTexture, [{
+
+  CubeTexture_createClass(CubeTexture, [{
     key: "setImagesFromPath",
     value: function setImagesFromPath(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
-      var _this = this;
+      var _this2 = this;
 
       this.textures.positiveX = new Image();
       this.textures.positiveX.crossOrigin = '';
 
       this.textures.positiveX.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
 
@@ -4193,16 +3958,16 @@ function () {
       this.textures.negativeX.src = negativeX;
 
       this.textures.negativeX.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
 
@@ -4211,16 +3976,16 @@ function () {
       this.textures.positiveY.src = positiveY;
 
       this.textures.positiveY.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
 
@@ -4229,16 +3994,16 @@ function () {
       this.textures.negativeY.src = negativeY;
 
       this.textures.negativeY.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
 
@@ -4247,16 +4012,16 @@ function () {
       this.textures.positiveZ.src = positiveZ;
 
       this.textures.positiveZ.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
 
@@ -4265,23 +4030,27 @@ function () {
       this.textures.negativeZ.src = negativeZ;
 
       this.textures.negativeZ.onload = function () {
-        _this._loadedTextureCount++;
+        _this2._loadedTextureCount++;
 
-        if (_this._loadedTextureCount == 6) {
-          _this.loaded = true;
+        if (_this2._loadedTextureCount == 6) {
+          _this2.loaded = true;
 
-          _this.onTextureLoad.forEach(function (func) {
-            func(_this);
+          _this2._onTextureLoad.forEach(function (func) {
+            func(_this2);
           });
 
-          _this.bindCubeTexture();
+          _this2.bindCubeTexture();
         }
       };
     }
+    /**
+     * Sets images that have src, but not loaded.
+     */
+
   }, {
     key: "setLoadingImages",
     value: function setLoadingImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
-      var _this2 = this;
+      var _this3 = this;
 
       for (var i = 0; i < arguments.length - 1; i++) {
         if (arguments[i].width != arguments[i].height || arguments[i].height != arguments[i + 1].height || arguments[i + 1].width != arguments[i + 1].height) {
@@ -4289,97 +4058,101 @@ function () {
         }
       }
 
-      this.textures.positiveX = this.engine.noTexture;
+      this.textures.positiveX = this.engine.noTexture.webglTexture;
       positiveX.addEventListener('load', function () {
-        _this2.textures.positiveX = positiveX;
-        _this2._loadedTextureCount++;
+        _this3.textures.positiveX = positiveX;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
-      this.textures.negativeX = this.engine.noTexture;
+      this.textures.negativeX = this.engine.noTexture.webglTexture;
       negativeX.addEventListener('load', function () {
-        _this2.textures.negativeX = negativeX;
-        _this2._loadedTextureCount++;
+        _this3.textures.negativeX = negativeX;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
-      this.textures.positiveY = this.engine.noTexture;
+      this.textures.positiveY = this.engine.noTexture.webglTexture;
       positiveY.addEventListener('load', function () {
-        _this2.textures.positiveY = positiveY;
-        _this2._loadedTextureCount++;
+        _this3.textures.positiveY = positiveY;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
-      this.textures.negativeY = this.engine.noTexture;
+      this.textures.negativeY = this.engine.noTexture.webglTexture;
       negativeY.addEventListener('load', function () {
-        _this2.textures.negativeY = negativeY;
-        _this2._loadedTextureCount++;
+        _this3.textures.negativeY = negativeY;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
-      this.textures.positiveZ = this.engine.noTexture;
+      this.textures.positiveZ = this.engine.noTexture.webglTexture;
       positiveZ.addEventListener('load', function () {
-        _this2.textures.positiveZ = positiveZ;
-        _this2._loadedTextureCount++;
+        _this3.textures.positiveZ = positiveZ;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
-      this.textures.negativeZ = this.engine.noTexture;
+      this.textures.negativeZ = this.engine.noTexture.webglTexture;
       negativeZ.addEventListener('load', function () {
-        _this2.textures.negativeZ = negativeZ;
-        _this2._loadedTextureCount++;
+        _this3.textures.negativeZ = negativeZ;
+        _this3._loadedTextureCount++;
 
-        if (_this2._loadedTextureCount == 6) {
-          _this2.loaded = true;
+        if (_this3._loadedTextureCount == 6) {
+          _this3.loaded = true;
 
-          _this2.onTextureLoad.forEach(function (func) {
-            func(_this2);
+          _this3._onTextureLoad.forEach(function (func) {
+            func(_this3);
           });
 
-          _this2.bindCubeTexture();
+          _this3.bindCubeTexture();
         }
       });
     }
+    /**
+     * Sets images that loaded.
+     */
+
   }, {
     key: "setLoadedImages",
     value: function setLoadedImages(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ) {
@@ -4400,7 +4173,7 @@ function () {
   }, {
     key: "setSkybox",
     value: function setSkybox(path) {
-      var _this3 = this;
+      var _this4 = this;
 
       var texture = new Image();
       texture.crossOrigin = '';
@@ -4422,290 +4195,287 @@ function () {
         canvas.width = size;
         var context = canvas.getContext('2d');
         context.drawImage(texture, 0, size, size, size, 0, 0, size, size);
-        _this3.textures.negativeX = canvas;
+        _this4.textures.negativeX = canvas;
         canvas = document.createElement('canvas');
         canvas.height = size;
         canvas.width = size;
         context = canvas.getContext('2d');
         context.drawImage(texture, size * 2, size, size, size, 0, 0, size, size);
-        _this3.textures.positiveX = canvas;
+        _this4.textures.positiveX = canvas;
         canvas = document.createElement('canvas');
         canvas.height = size;
         canvas.width = size;
         context = canvas.getContext('2d');
         context.drawImage(texture, size, size, size, size, 0, 0, size, size);
-        _this3.textures.positiveZ = canvas;
+        _this4.textures.positiveZ = canvas;
         canvas = document.createElement('canvas');
         canvas.height = size;
         canvas.width = size;
         context = canvas.getContext('2d');
         context.drawImage(texture, size * 3, size, size, size, 0, 0, size, size);
-        _this3.textures.negativeZ = canvas;
+        _this4.textures.negativeZ = canvas;
         canvas = document.createElement('canvas');
         canvas.height = size;
         canvas.width = size;
         context = canvas.getContext('2d');
         context.drawImage(texture, size, 0, size, size, 0, 0, size, size);
-        _this3.textures.positiveY = canvas;
+        _this4.textures.positiveY = canvas;
         canvas = document.createElement('canvas');
         canvas.height = size;
         canvas.width = size;
         context = canvas.getContext('2d');
         context.drawImage(texture, size, size * 2, size, size, 0, 0, size, size);
-        _this3.textures.negativeY = canvas;
-        _this3.loaded = true;
+        _this4.textures.negativeY = canvas;
+        _this4.loaded = true;
 
-        _this3.onTextureLoad.forEach(function (func) {
-          func(_this3);
+        _this4._onTextureLoad.forEach(function (func) {
+          func(_this4);
         });
 
-        _this3.bindCubeTexture();
+        _this4.bindCubeTexture();
       };
-    }
-  }, {
-    key: "setSize",
-    value: function setSize(width, height) {
-      this.width = width;
-      this.height = height;
-    }
-    /**
-     * Scale image width by x, height by y.
-     * @param {Number} x
-     * @param {Number} y
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y) {
-      this.width = width * x;
-      this.height = height * y;
-    }
-    /**
-     * Setting texture coords.
-     * @param {Number[]} coords 
-     * @public
-     */
-
-  }, {
-    key: "setCoords",
-    value: function setCoords(coords) {
-      this.coords = coords;
-    }
-    /**
-     * Setting color of polygon. The color will be shown until the texture is loaded.
-     * @param {Number} r red value from 0 to 255.
-     * @param {Number} g green value from 0 to 255.
-     * @param {Number} b blue value from 0 to 255.
-     * @param {Number} a alpha value from 0 to 255.
-     * @public
-     */
-
-  }, {
-    key: "setColorRGBA",
-    value: function setColorRGBA(r, g, b, a) {
-      this.color = new Uint8Array([r, g, b, a]);
-    }
-  }, {
-    key: "bind",
-    value: function bind(engine) {
-      this.engine = engine;
-      this.engine.textures.push(this);
-      this.webGL = engine.webGL;
-      this._textureBlockLocation = this.engine.textures.length;
-      this._WebGLTexture = this.engine.webGL.createTexture();
-      this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
-      this.engine.webGL.bindTexture(this.engine.webGL.TEXTURE_2D, this._WebGLTexture);
-      this.engine.webGL.texImage2D(this.engine.webGL.TEXTURE_2D, 0, this.engine.webGL.RGBA, 1, 1, 0, this.engine.webGL.RGBA, this.engine.webGL.UNSIGNED_BYTE, this.color);
     }
   }, {
     key: "bindCubeTexture",
     value: function bindCubeTexture() {
-      this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
-      this._WebGLTexture = this.webGL.createTexture();
-      this.webGL.bindTexture(this.webGL.TEXTURE_CUBE_MAP, this._WebGLTexture);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveX);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeX);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveY);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeY);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveZ);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ);
-      this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP);
-      this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR);
+      this.engine.webgl.activeTexture(this.engine.webgl.TEXTURE0 + this.textureBlockLocation);
+      this.webglTexture = this.webgl.createTexture();
+      this.webgl.bindTexture(this.webgl.TEXTURE_CUBE_MAP, this.webglTexture);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveX);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeX);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveY);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeY);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveZ);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeZ);
+      this.webgl.generateMipmap(this.webgl.TEXTURE_CUBE_MAP);
+      this.webgl.texParameteri(this.webgl.TEXTURE_CUBE_MAP, this.webgl.TEXTURE_MIN_FILTER, this.webgl.LINEAR_MIPMAP_LINEAR);
       this.engine.textureLoaded(this);
       this.loaded = true;
     }
   }]);
 
   return CubeTexture;
-}();
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__(8);
-var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
+}(Texture_Texture);
+// CONCATENATED MODULE: ./src/textures/ReflectionTexture.ts
+function ReflectionTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ReflectionTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { ReflectionTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ReflectionTexture_typeof(obj); }
 
-// CONCATENATED MODULE: ./src/textures/ReflectionTexture.js
+function ReflectionTexture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ReflectionTexture_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function ReflectionTexture_createClass(Constructor, protoProps, staticProps) { if (protoProps) ReflectionTexture_defineProperties(Constructor.prototype, protoProps); if (staticProps) ReflectionTexture_defineProperties(Constructor, staticProps); return Constructor; }
+
+function ReflectionTexture_possibleConstructorReturn(self, call) { if (call && (ReflectionTexture_typeof(call) === "object" || typeof call === "function")) { return call; } return ReflectionTexture_assertThisInitialized(self); }
+
+function ReflectionTexture_getPrototypeOf(o) { ReflectionTexture_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ReflectionTexture_getPrototypeOf(o); }
+
+function ReflectionTexture_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ReflectionTexture_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ReflectionTexture_setPrototypeOf(subClass, superClass); }
+
+function ReflectionTexture_setPrototypeOf(o, p) { ReflectionTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ReflectionTexture_setPrototypeOf(o, p); }
+
+function ReflectionTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-
-
-
-
-
+var anotherTextures = [];
+var loadedReflectionCount = 0;
 /**
  * Reflection texture.
- * @param {Engine} engine 
- * @param {String|Image} background
- * @param {Number} quality
- * @param {Number} alpha
- * @class
  */
 
 var ReflectionTexture_ReflectionTexture =
 /*#__PURE__*/
 function (_CubeTexture) {
-  inherits_default()(ReflectionTexture, _CubeTexture);
+  ReflectionTexture_inherits(ReflectionTexture, _CubeTexture);
 
   function ReflectionTexture(engine, background, quality, reflectionAlpha) {
     var _this;
 
-    classCallCheck_default()(this, ReflectionTexture);
+    ReflectionTexture_classCallCheck(this, ReflectionTexture);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(ReflectionTexture).call(this));
-    _this.engine = engine;
-    _this.webGL = engine.webGL;
-    _this.background = background || 'rgba(0, 0, 0, 0)';
-    _this.quality = quality || _this.engine.reflectionQuality;
+    _this = ReflectionTexture_possibleConstructorReturn(this, ReflectionTexture_getPrototypeOf(ReflectionTexture).call(this, engine));
 
-    if (!reflectionAlpha) {
-      var _reflectionAlpha = background.replace('rgba(', '');
+    ReflectionTexture_defineProperty(ReflectionTexture_assertThisInitialized(_this), "_background", void 0);
 
-      _reflectionAlpha = alpha.replace(')', '');
-      _reflectionAlpha = alpha.split(',');
-      _this.reflectionAlpha = _reflectionAlpha[3];
-    } else {
-      _this.reflectionAlpha = reflectionAlpha;
-    }
+    ReflectionTexture_defineProperty(ReflectionTexture_assertThisInitialized(_this), "_quality", void 0);
 
+    ReflectionTexture_defineProperty(ReflectionTexture_assertThisInitialized(_this), "_reflectionAlpha", -1);
+
+    ReflectionTexture_defineProperty(ReflectionTexture_assertThisInitialized(_this), "_object", void 0);
+
+    ReflectionTexture_defineProperty(ReflectionTexture_assertThisInitialized(_this), "_camera", void 0);
+
+    anotherTextures.push(ReflectionTexture_assertThisInitialized(_this));
+    engine.reflections = true;
     _this.alpha = true;
     _this.loaded = false;
+    _this._background = background || 'rgba(0, 0, 0, 0)';
+    _this._quality = quality || 512;
     _this._object = null;
     var texture = document.createElement('canvas');
-    texture.width = background.width || 16;
-    texture.height = background.height || 16;
     var context = texture.getContext('2d');
+    texture.width = 16;
+    texture.height = 16;
 
     if (typeof background === 'string') {
+      if (!reflectionAlpha) {
+        var _reflectionAlpha = background.replace('rgba(', '');
+
+        _reflectionAlpha = _reflectionAlpha.replace(')', '');
+        _reflectionAlpha = _reflectionAlpha.split(',')[3];
+        _this._reflectionAlpha = Number(_reflectionAlpha);
+      } else {
+        _this._reflectionAlpha = Number(reflectionAlpha);
+      }
+
       context.fillStyle = background;
       context.fillRect(0, 0, 16, 16);
-    } else if (typeof background === 'image') {
+    } else if (background.constructor === HTMLImageElement) {
+      if (!reflectionAlpha) {
+        _this._reflectionAlpha = 1;
+      } else {
+        _this._reflectionAlpha = Number(reflectionAlpha);
+      }
+
+      texture.width = Number(background.width);
+      texture.height = Number(background.height);
       context.drawImage(background, 0, 0, background.width, background.height);
     }
 
-    _this._WebGLTexture = _this.webGL.createTexture();
+    _this.webglTexture = _this.webgl.createTexture();
 
-    _this.webGL.bindTexture(_this.webGL.TEXTURE_CUBE_MAP, _this._WebGLTexture);
+    _this.webgl.bindTexture(_this.webgl.TEXTURE_CUBE_MAP, _this.webglTexture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.texImage2D(_this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, _this.webGL.RGBA, _this.webGL.RGBA, _this.webGL.UNSIGNED_BYTE, texture);
+    _this.webgl.texImage2D(_this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, _this.webgl.RGBA, _this.webgl.RGBA, _this.webgl.UNSIGNED_BYTE, texture);
 
-    _this.webGL.generateMipmap(_this.webGL.TEXTURE_CUBE_MAP);
+    _this.webgl.generateMipmap(_this.webgl.TEXTURE_CUBE_MAP);
 
-    _this.webGL.texParameteri(_this.webGL.TEXTURE_CUBE_MAP, _this.webGL.TEXTURE_MIN_FILTER, _this.webGL.LINEAR_MIPMAP_LINEAR);
+    _this.webgl.texParameteri(_this.webgl.TEXTURE_CUBE_MAP, _this.webgl.TEXTURE_MIN_FILTER, _this.webgl.LINEAR_MIPMAP_LINEAR);
 
-    _this.engine.textureLoaded(assertThisInitialized_default()(_this));
+    _this.engine.textureLoaded(ReflectionTexture_assertThisInitialized(_this));
 
-    _this.engine.addOnResourcesLoaded(function () {
+    _this.engine.addOnResourcesLoadedListener(function () {
       if (_this.object != null) {
-        _this.generate();
+        setTimeout(function () {
+          _this.generate();
+        }, 1000);
       }
     });
 
-    _this.camera = new Camera_Camera();
-    _this.camera.fieldOfViewRad = _this.engine.camera.fieldOfViewRad;
-    _this.camera.range = _this.engine.camera.range;
+    _this._camera = new Camera_Camera(_this.engine);
+    _this._camera.fieldOfViewRad = _this.engine.camera.fieldOfViewRad;
+    _this._camera.range = _this.engine.camera.range;
     return _this;
   }
 
-  createClass_default()(ReflectionTexture, [{
+  ReflectionTexture_createClass(ReflectionTexture, [{
     key: "generate",
     value: function generate() {
-      this.camera.position = this.object.position;
-      this.camera.setRotation(0, 270, 0);
-      var posXP = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+      this.object.updateMatrixes();
+      this.object.update();
+      this._camera.position = this.object.position.copy();
+
+      if (!this.object.verticalAlign) {
+        this._camera.position.move(0, -(this.object.size.current.max.y - this.object.size.current.min.y) / 2, 0);
+      }
+
+      this._camera.setRotation(0, 270, 0);
+
+      var posXP = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.camera.setRotation(0, 90, 0);
-      var posXN = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+
+      this._camera.setRotation(0, 90, 0);
+
+      var posXN = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.camera.setRotation(-90, 0, 0);
-      var posYP = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+
+      this._camera.setRotation(-90, 0, 0);
+
+      var posYP = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.camera.setRotation(90, 0, 0);
-      var posYN = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+
+      this._camera.setRotation(90, 0, 0);
+
+      var posYN = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.camera.setRotation(0, 0, 0);
-      var posZP = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+
+      this._camera.setRotation(0, 0, 0);
+
+      var posZP = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.camera.setRotation(0, 180, 0);
-      var posZN = this.engine.captureFrame(this.camera, {
-        background: this.background,
-        width: this.quality,
-        height: this.quality,
-        imageAlpha: this.reflectionAlpha,
+
+      this._camera.setRotation(0, 180, 0);
+
+      var posZN = this.engine.captureFrame(this._camera, {
+        background: this._background,
+        width: this._quality,
+        height: this._quality,
+        imageAlpha: this._reflectionAlpha,
         noDrawObjects: [this.object]
       });
-      this.bind(this.engine);
       this.setLoadedImages(posXP, posXN, posYN, posYP, posZP, posZN);
+      loadedReflectionCount++;
+
+      if (anotherTextures.length == loadedReflectionCount) {
+        for (var i = 0; i < anotherTextures.length; i++) {
+          anotherTextures[i].generate();
+        }
+
+        this.engine.appendCanvas();
+        this.engine.status = 'Drawing';
+      }
     }
   }, {
     key: "bindCubeTexture",
     value: function bindCubeTexture() {
-      this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._textureBlockLocation);
-      this._WebGLTexture = this.webGL.createTexture();
-      this.webGL.bindTexture(this.webGL.TEXTURE_CUBE_MAP, this._WebGLTexture);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveX);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeX);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveY);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeY);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.positiveZ);
-      this.webGL.texImage2D(this.webGL.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webGL.RGBA, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, this.textures.negativeZ);
-      this.webGL.generateMipmap(this.webGL.TEXTURE_CUBE_MAP);
-      this.webGL.texParameteri(this.webGL.TEXTURE_CUBE_MAP, this.webGL.TEXTURE_MIN_FILTER, this.webGL.LINEAR_MIPMAP_LINEAR); // this.engine.textureLoaded(this)
-
+      this.engine.webgl.activeTexture(this.engine.webgl.TEXTURE0 + this.textureBlockLocation);
+      this.webglTexture = this.webgl.createTexture();
+      this.webgl.bindTexture(this.webgl.TEXTURE_CUBE_MAP, this.webglTexture);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveX);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeX);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveY);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeY);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.positiveZ);
+      this.webgl.texImage2D(this.webgl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.webgl.RGBA, this.webgl.RGBA, this.webgl.UNSIGNED_BYTE, this.textures.negativeZ);
+      this.webgl.generateMipmap(this.webgl.TEXTURE_CUBE_MAP);
+      this.webgl.texParameteri(this.webgl.TEXTURE_CUBE_MAP, this.webgl.TEXTURE_MIN_FILTER, this.webgl.LINEAR_MIPMAP_LINEAR);
       this.loaded = true;
     }
   }, {
@@ -4714,1514 +4484,108 @@ function (_CubeTexture) {
       return this._object;
     },
     set: function set(object) {
+      object.updateMatrixes();
+      object.update();
       this._object = object;
 
       if (this.engine.resourcesLoaded) {
-        console.log('resourcesLoaded set object');
         this.generate();
       }
     }
   }]);
 
   return ReflectionTexture;
-}(CubeTexture_CubeTexture);
-// CONCATENATED MODULE: ./src/objects/Rect.js
+}(CubeTexture);
+// CONCATENATED MODULE: ./src/objects/Object.ts
+function Object_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Object_typeof = function _typeof(obj) { return typeof obj; }; } else { Object_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Object_typeof(obj); }
+
+function Object_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Object_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Object_createClass(Constructor, protoProps, staticProps) { if (protoProps) Object_defineProperties(Constructor.prototype, protoProps); if (staticProps) Object_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Object_possibleConstructorReturn(self, call) { if (call && (Object_typeof(call) === "object" || typeof call === "function")) { return call; } return Object_assertThisInitialized(self); }
+
+function Object_getPrototypeOf(o) { Object_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Object_getPrototypeOf(o); }
+
+function Object_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Object_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Object_setPrototypeOf(subClass, superClass); }
+
+function Object_setPrototypeOf(o, p) { Object_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Object_setPrototypeOf(o, p); }
+
+function Object_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-
-
-/**
- * Rect for using custom shaders
- * @tutorial
- * @param {Engine} engine
- * @class
- * @constructor
- */
-
-var Rect_Rect =
+var _Object =
 /*#__PURE__*/
-function () {
-  /**
-   * Flat rectangle with square texture.
-   * @param {Engine} engine 
-   */
-  function Rect(engine) {
-    classCallCheck_default()(this, Rect);
+function (_Entity) {
+  Object_inherits(_Object, _Entity);
 
-    if (engine) {
-      engine.addObject(this);
-    }
+  function _Object(engine) {
+    var _this;
 
-    this.engine = engine;
-    this.camera = engine.camera;
-    this.webGL = engine.webGL;
-    this.shaderProgram = engine.shaders.default;
-    /**
-     * Rect position.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
+    Object_classCallCheck(this, _Object);
 
-    this.position = [0, 0, 0];
-    /**
-     * Rect rotation point.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
+    _this = Object_possibleConstructorReturn(this, Object_getPrototypeOf(_Object).call(this, engine));
 
-    this.rotationPoint = [0, 0, 0];
-    this.vertexes = [0, 0, 0, 100, 100, 0, 0, 100, 0, 100, 100, 0, 0, 0, 0, 100, 0, 0];
-    this.textureCoords = [0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1];
-    this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
-    this.collisionBoxes = [{
-      x: [0, 100],
-      y: [0, 100],
-      z: [0, 0]
-    }];
-    /**
-     * Object texture.
-     * @type {Texture} texture
-     * @public
-     */
+    Object_defineProperty(Object_assertThisInitialized(_this), "_drawingMode", void 0);
 
-    this.texture = engine.noTexture;
-    /**
-     * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x position on axis x
-     * @property {Number} y position on axis y
-     * @property {Number} z position on axis z
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation on axis x
-     * @property {Number} y rotation on axis y
-     * @property {Number} z rotation on axis z
-     */
-
-    this.rotation = [0, 0, 0];
-    this.rotationDeg = [0, 0, 0];
-    /**
-     * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x scaling on axis x
-     * @property {Number} y scaling on axis x
-     * @property {Number} z scaling on axis x
-     */
-
-    this.scaling = [1, 1, 1];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation point coordinate on axis x
-     * @property {Number} y rotation point coordinate on axis y
-     * @property {Number} z rotation point coordinate on axis z
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x parent rotation on axis x
-     * @property {Number} y parent rotation on axis y
-     * @property {Number} z parent rotation on axis z
-     */
-
-    this.parentRotation = [0, 0, 0];
-    /**
-     * These are the edges of the object on the monitor.
-     * @readonly
-     * @Type {Object}   
-     * @property {Number} relativeCameraPosition.x.left
-     * @property {Number} relativeCameraPosition.x.right
-     * @property {Number} relativeCameraPosition.y.top
-     * @property {Number} relativeCameraPosition.y.bottom
-     * @property {Number} relativeCameraPosition.depth
-     */
-
-    this.relativeCameraPosition = null;
-    /**
-     * Collision boxes coordinates array.
-     * @type {
-     *      x: Number[2],
-     *      y: Number[2],
-     *      z: Number[2]
-     *  }
-     * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
-     * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
-     * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
-     * @public
-     */
-
-    this.collisionBoxes = [];
-    /**
-     * Sets whether the object will be attached to the camera like UI this.
-     * @type {boolean}
-     * @public
-     */
-
-    this.UIElement = false;
-    /**
-     * True if the object is behind the camera.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.behindTheCamera = false;
-    /**
-     * Max and smallest coords of object by default without scaling.
-     * @readonly
-     */
-
-    this.maxSizes = {
-      x: {
-        smallest: 0,
-        biggest: 0
-      },
-      y: {
-        smallest: 0,
-        biggest: 0
-      },
-      z: {
-        smallest: 0,
-        biggest: 0
-      }
-      /**
-       * Size of object without scaling.
-       * @readonly
-       */
-
-    };
-    this.size = [0, 0, 0];
-    /**
-     * Triggers when object load and compiled.
-     * @type {Function}
-     */
-
-    this.onload = function () {
-      return null;
-    };
-    /**
-     * @type {bool} is it UIElement
-     */
-
-
-    this.UIElement = false;
-    /**
-     * @type {bool}
-     */
-
-    this.hidden = false;
-    this.vertexesBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    this.coordsBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW);
-    this.normalBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this.setNormals([0, 0, 1, 0, 0, 1, 0, 0, 1]);
-    this.engine.objectLoaded(this);
+    _this._drawingMode = _this.webgl.TRIANGLES;
+    _this.hidden = true;
+    _this.name = 'Just object :)';
+    return _this;
   }
   /**
-   * Setting square texture for rect.
-   * @param {Texture} texture
-   * @public
+   * Sets how WebGL will draw object
+   * @param {String} mode 
    */
 
 
-  createClass_default()(Rect, [{
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-    }
-    /**
-    * Sets custom shader program.
-    * @param {ShaderProgram} shader shader program which object will use.
-    */
+  Object_createClass(_Object, [{
+    key: "setDrawingMode",
+    value: function setDrawingMode(mode) {
+      switch (mode) {
+        case 'TRIANGLES':
+          this._drawingMode = this.webgl.TRIANGLES;
+          break;
 
-  }, {
-    key: "useShader",
-    value: function useShader(shader) {
-      this.shaderProgram = shader;
-    }
-    /**
-     * Repeats texture on rect.
-     * @param {Number} count 
-     * @default 1
-     */
+        case 'DEFAULT':
+          this._drawingMode = this.webgl.TRIANGLES;
+          break;
 
-  }, {
-    key: "setTextureRepeating",
-    value: function setTextureRepeating(x, y) {
-      this.textureCoords = [0, y, x, 0, 0, 0, x, 0, 0, y, x, y];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Changing size of rect.
-     * @param {Number} width
-     * @param {Number} height
-     * @public
-     */
+        case 'TRIANGLE_FAN':
+          this._drawingMode = this.webgl.TRIANGLE_FAN;
+          break;
 
-  }, {
-    key: "setSize",
-    value: function setSize(width, height) {
-      this.width = width;
-      this.height = height;
-      this.vertexes = [0, 0, 0, width, height, 0, 0, height, 0, width, height, 0, 0, 0, 0, width, 0, 0];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Change position of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
+        case 'FAN':
+          this._drawingMode = this.webgl.TRIANGLE_FAN;
+          break;
 
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
-    }
-    /**
-     * Change scaling of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
+        case 'STRIP':
+          this.webgl.TRIANGLE_STRIP;
+          break;
 
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.scale = [x, y, z];
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
+        case 'TRIANGLE_STRIP':
+          this.webgl.TRIANGLE_STRIP;
+          break;
 
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotationDeg = [x, y, z];
-      this.rotation = [xRad, yRad, zRad];
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotationDeg[0] += x;
-      this.rotationDeg[1] += y;
-      this.rotationDeg[2] += z;
-      this.rotation[0] += xRad;
-      this.rotation[1] += yRad;
-      this.rotation[2] += zRad;
-    }
-    /**
-     * Setting rotation of parent object in radians.
-     * @param {Number} x parent rotation of x axis in radians.
-     * @param {Number} y parent rotation of y axis in radians.
-     * @param {Number} z parent rotation of z axis in radians.
-     * @public
-     */
-
-  }, {
-    key: "setParentRotation",
-    value: function setParentRotation(x, y, z) {
-      this.parentRotation = [x, y, z];
-    }
-    /**
-     * Sets rotation point coordinates.
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setRotationPoint",
-    value: function setRotationPoint(x, y, z) {
-      this.rotationPoint = [x, y, z];
-    }
-    /**
-     * Set normals vector.
-     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
-     * @public
-     */
-
-  }, {
-    key: "setNormals",
-    value: function setNormals(normals) {
-      this.normals = [normals[0], normals[1], normals[2], normals[3], normals[4], normals[5], normals[6], normals[7], normals[8], normals[0], normals[1], normals[2], normals[3], normals[4], normals[5], normals[6], normals[7], normals[8]];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Set normal normal to all vertexes.
-     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
-     * @public
-     */
-
-  }, {
-    key: "setNormal",
-    value: function setNormal(normals) {
-      this.normals = [normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2], normals[0], normals[1], normals[2]];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Auto generate normals respectively to the rotation.
-     */
-
-  }, {
-    key: "autoGenerateNormals",
-    value: function autoGenerateNormals() {
-      var normal = [0, 0, 1];
-      var rot = Vectors_rotationX(this.rotation[0]);
-      rot = Vectors_multiply(rot, Vectors_rotationY(this.rotation[1]));
-      rot = Vectors_multiply(rot, Vectors_rotationZ(this.rotation[2]));
-      normal = vecMultiply(rot, normal);
-      this.normals = [normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2], normal[0], normal[1], normal[2]];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Sets whether the all polygons will be attached to the camera like UI this.
-     * @param {bolean} bool 
-     */
-
-  }, {
-    key: "setAsUIElement",
-    value: function setAsUIElement(bool) {
-      this.UIElement = bool;
-    }
-    /**
-     * Object will no drawn
-     */
-
-  }, {
-    key: "hide",
-    value: function hide() {
-      this.hidden = true;
-    }
-    /**
-     * Object will drawn
-     */
-
-  }, {
-    key: "show",
-    value: function show() {
-      this.hidden = false;
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      if (!this.hidden) {
-        this.shaderProgram.use();
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-        this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-        this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
-        this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
-        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
-        this.engine.drawCallsPerFrame++;
-        this.engine.drawCalls++;
+        default:
+          throw Error("Wrong drawing mode. See WebGL drawing mods.");
       }
     }
   }, {
-    key: "checkCollision",
-    value: function checkCollision() {
-      var _this = this;
+    key: "compile",
 
-      this.collisionBoxes.forEach(function (collisionBox) {
-        if (_this.engine.camera.moved) {
-          var maxX = collisionBox.x[1] * _this.scaling[0] + _this.position[0] + _this.camera.distanceBeforeCollision;
-          var minX = collisionBox.x[0] * _this.scaling[0] + _this.position[0] - _this.camera.distanceBeforeCollision;
-          var maxY = collisionBox.y[1] * _this.scaling[1] + _this.position[1] + _this.camera.distanceBeforeCollision;
-          var minY = collisionBox.y[0] * _this.scaling[1] + _this.position[1] - _this.camera.distanceBeforeCollision;
-          var maxZ = collisionBox.z[1] * _this.scaling[2] + _this.position[2] + _this.camera.distanceBeforeCollision;
-          var minZ = collisionBox.z[0] * _this.scaling[2] + _this.position[2] - _this.camera.distanceBeforeCollision;
-          var newPosX = _this.camera.position[0] + _this.camera.moving[0];
-          var newPosY = _this.camera.position[1] + _this.camera.moving[1];
-          var newPosZ = _this.camera.position[2] + _this.camera.moving[2];
-
-          if (newPosX > minX && newPosX < maxX && _this.engine.camera.position[1] > minY && _this.engine.camera.position[1] < maxY && _this.engine.camera.position[2] > minZ && _this.engine.camera.position[2] < maxZ) {
-            // this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
-            _this.camera.moving[0] = 0;
-          }
-
-          if (_this.engine.camera.position[0] > minX && _this.engine.camera.position[0] < maxX && newPosY > minY && newPosY < maxY && _this.engine.camera.position[2] > minZ && _this.engine.camera.position[2] < maxZ) {
-            // (this.engine.camera.position[2] > minZ && this.engine.camera.position[2] < maxZ)
-            _this.camera.moving[1] = 0;
-          }
-
-          if (_this.engine.camera.position[0] > minX && _this.engine.camera.position[0] < maxX && _this.engine.camera.position[1] > minY && _this.engine.camera.position[1] < maxY && newPosZ > minZ && newPosZ < maxZ) {
-            _this.camera.moving[2] = 0;
-          }
-        }
-      });
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var temp = new Matrixes_Matrix();
-
-      if (!this.UIElement) {
-        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inverseMatrix);
-      } else {
-        temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      }
-
-      var world = new Matrixes_Matrix();
-      world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
-      world.translate(this.position[0], this.position[1], this.position[2]);
-      var rot = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
-      rot = multiply(rot, rotationZ(this.rotation[2]));
-      var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
-      parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      rot = multiply(parentRot, rot);
-      world.multiply(rot);
-      world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
-      world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = world.matrix;
-      temp.multiply(world.matrix);
-      this._matrix = temp.matrix;
-      this._rotationMatrix = rot;
-    }
-  }, {
-    key: "animate",
-    value: function animate(fps, animateFunction) {
-      animateFunction = animateFunction || this.animation;
-      this._animationInterval = setInterval(animateFunction, 1000 / fps);
-    }
-  }]);
-
-  return Rect;
-}();
-// CONCATENATED MODULE: ./src/objects/Cube.js
-
-
-
-
-
-/**
- * Cube for using custom shaders
- * @tutorial
- * @param {Engine} engine
- * @class
- * @constructor
- */
-
-var Cube_Cube =
-/*#__PURE__*/
-function () {
-  /**
-   * Flat rectangle with square texture.
-   * @param {Engine} engine 
-   */
-  function Cube(engine) {
-    classCallCheck_default()(this, Cube);
-
-    if (engine) {
-      engine.objects.push(this);
-    }
-
-    this.engine = engine;
-    this.camera = engine.camera;
-    this.webGL = engine.webGL;
-    /**
-     * Shader program. Use setShader() for change.
-     * @readonly
-     */
-
-    this.shaderProgram = engine.shaders.cube;
-    /**
-     * Rect position.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Rect rotation point.
-     * @readonly
-     * @type {Array.{0: Number, 1: Number, 2: Number}} vector 3
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    this.vertexes = [-100, -100, -100, -100, 100, -100, 100, -100, -100, -100, 100, -100, 100, 100, -100, 100, -100, -100, -100, -100, 100, 100, -100, 100, -100, 100, 100, -100, 100, 100, 100, -100, 100, 100, 100, 100, -100, 100, -100, -100, 100, 100, 100, 100, -100, -100, 100, 100, 100, 100, 100, 100, 100, -100, -100, -100, -100, 100, -100, -100, -100, -100, 100, -100, -100, 100, 100, -100, -100, 100, -100, 100, -100, -100, -100, -100, -100, 100, -100, 100, -100, -100, -100, 100, -100, 100, 100, -100, 100, -100, 100, -100, -100, 100, 100, -100, 100, -100, 100, 100, -100, 100, 100, 100, -100, 100, 100, 100];
-    this.normals = [0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0];
-    /**
-     * Object texture.
-     * @type {Texture} texture
-     * @public
-     */
-
-    this.texture = engine.noTexture;
-    /**
-     * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x position on axis x
-     * @property {Number} y position on axis y
-     * @property {Number} z position on axis z
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation on axis x
-     * @property {Number} y rotation on axis y
-     * @property {Number} z rotation on axis z
-     */
-
-    this.rotation = [0, 0, 0];
-    /**
-     * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x scaling on axis x
-     * @property {Number} y scaling on axis x
-     * @property {Number} z scaling on axis x
-     */
-
-    this.scaling = [1, 1, 1];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation point coordinate on axis x
-     * @property {Number} y rotation point coordinate on axis y
-     * @property {Number} z rotation point coordinate on axis z
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x parent rotation on axis x
-     * @property {Number} y parent rotation on axis y
-     * @property {Number} z parent rotation on axis z
-     */
-
-    this.parentRotation = [0, 0, 0];
-    /**
-     * These are the edges of the object on the monitor.
-     * @readonly
-     * @Type {Object}   
-     * @property {Number} relativeCameraPosition.x.left
-     * @property {Number} relativeCameraPosition.x.right
-     * @property {Number} relativeCameraPosition.y.top
-     * @property {Number} relativeCameraPosition.y.bottom
-     * @property {Number} relativeCameraPosition.depth
-     */
-
-    this.relativeCameraPosition = null;
-    /**
-     * Collision boxes coordinates array.
-     * @type {
-     *      x: Number[2],
-     *      y: Number[2],
-     *      z: Number[2]
-     *  }
-     * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
-     * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
-     * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
-     * @public
-     */
-
-    this.collisionBoxes = [];
-    /**
-     * Sets whether the object will be attached to the camera like UI this.
-     * @type {boolean}
-     * @public
-     */
-
-    this.UIElement = false;
-    /**
-     * True if the object is behind the camera.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.behindTheCamera = false;
-    /**
-     * Max and smallest coords of object by default without scaling.
-     * @readonly
-     */
-
-    this.maxSizes = {
-      x: {
-        smallest: 0,
-        biggest: 0
-      },
-      y: {
-        smallest: 0,
-        biggest: 0
-      },
-      z: {
-        smallest: 0,
-        biggest: 0
-      }
-      /**
-       * Size of object without scaling.
-       * @readonly
-       */
-
-    };
-    this.size = [0, 0, 0];
-    /**
-     * Triggers when object load and compiled.
-     * @type {Function}
-     */
-
-    this.onload = function () {
-      return null;
-    };
-
-    this.UIElement = false;
-    this.vertexesBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    this.normalBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    /**
-     * @private
-     */
-
-    this._matrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this._rotationMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this.engine.objectLoaded(this);
-    this.collisionBoxes = [{
-      x: [-100, 100],
-      y: [-100, 100],
-      z: [-100, 100]
-    }];
-  }
-  /**
-   * Sets custom shader program.
-   * @param {ShaderProgram} shader shader program which object will use.
-   */
-
-
-  createClass_default()(Cube, [{
-    key: "useShader",
-    value: function useShader(shader) {
-      this.shaderProgram = shader;
-    }
-    /**
-     * Setting square texture for rect.
-     * @param {Texture} texture
-     * @public
-     */
-
-  }, {
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-      texture.object = this;
-    }
-    /**
-     * Changing size of rect.
-     * @param {Number} width
-     * @param {Number} height
-     * @public
-     */
-
-  }, {
-    key: "setSize",
-    value: function setSize(width, height, depth) {
-      this.width = width;
-      this.height = height;
-      this.depth = depth;
-      this.vertexes = [-width, -height, -depth, -width, height, -depth, width, -height, -depth, -width, height, -depth, width, height, -depth, width, -height, -depth, -width, -height, depth, width, -height, depth, -width, height, depth, -width, height, depth, width, -height, depth, width, height, depth, -width, height, -depth, -width, height, depth, width, height, -depth, -width, height, depth, width, height, depth, width, height, -depth, -width, -height, -depth, width, -height, -depth, -width, -height, depth, -width, -height, depth, width, -height, -depth, width, -height, depth, -width, -height, -depth, -width, -height, depth, -width, height, -depth, -width, -height, depth, -width, height, depth, -width, height, -depth, width, -height, -depth, width, height, -depth, width, -height, depth, width, -height, depth, width, height, -depth, width, height, depth];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Change position of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
-    }
-    /**
-     * Change scaling of all polygons in rect.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.scale = [x, y, z];
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
-
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotation = [xRad, yRad, zRad];
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotation[0] += xRad;
-      this.rotation[1] += yRad;
-      this.rotation[2] += zRad;
-    }
-    /**
-     * Setting rotation of parent object in radians.
-     * @param {Number} x parent rotation of x axis in radians.
-     * @param {Number} y parent rotation of y axis in radians.
-     * @param {Number} z parent rotation of z axis in radians.
-     * @public
-     */
-
-  }, {
-    key: "setParentRotation",
-    value: function setParentRotation(x, y, z) {
-      this.parentRotation = [x, y, z];
-    }
-    /**
-     * Sets rotation point coordinates.
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setRotationPoint",
-    value: function setRotationPoint(x, y, z) {
-      this.rotationPoint = [x, y, z];
-    }
-    /**
-     * Set normals vector.
-     * @param {Array} normals 6:3 array. Every 3 thiss is a vector of normal.
-     * @public
-     */
-
-  }, {
-    key: "setNormals",
-    value: function setNormals(normals) {
-      this.normals = [normals[0], normals[1], normals[2], normals[3], normals[4], normals[5], normals[6], normals[7], normals[8], normals[0], normals[1], normals[2], normals[3], normals[4], normals[5], normals[6], normals[7], normals[8]];
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-    }
-    /**
-     * Sets whether the all polygons will be attached to the camera like UI this.
-     * @param {boolean} bool 
-     */
-
-  }, {
-    key: "setAsUIElement",
-    value: function setAsUIElement(bool) {
-      this.UIElement = bool;
-    }
-  }, {
-    key: "animate",
-    value: function animate(fps, animateFunction) {
-      animateFunction = animateFunction || this.animation;
-      this._animationInterval = setInterval(animateFunction, 1000 / fps);
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.shaderProgram.use();
-      this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
-      this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
-      this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
-      this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
-      this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this._rotationMatrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this._world);
-      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
-      this.engine.drawCallsPerFrame++;
-      this.engine.drawCalls++;
-    }
-  }, {
-    key: "checkCollision",
-    value: function checkCollision() {
-      var _this = this;
-
-      this.collisionBoxes.forEach(function (collisionBox) {
-        if (_this.engine.camera.moved) {
-          var maxX = collisionBox.x[1] * _this.scaling[0] + _this.position[0] + _this.camera.distanceBeforeCollision;
-          var minX = collisionBox.x[0] * _this.scaling[0] + _this.position[0] - _this.camera.distanceBeforeCollision;
-          var maxY = collisionBox.y[1] * _this.scaling[1] + _this.position[1] + _this.camera.distanceBeforeCollision;
-          var minY = collisionBox.y[0] * _this.scaling[1] + _this.position[1] - _this.camera.distanceBeforeCollision;
-          var maxZ = collisionBox.z[1] * _this.scaling[2] + _this.position[2] + _this.camera.distanceBeforeCollision;
-          var minZ = collisionBox.z[0] * _this.scaling[2] + _this.position[2] - _this.camera.distanceBeforeCollision;
-          var newPosX = _this.camera.position[0] + _this.camera.moving[0];
-          var newPosY = _this.camera.position[1] + _this.camera.moving[1];
-          var newPosZ = _this.camera.position[2] + _this.camera.moving[2];
-
-          if (newPosX > minX && newPosX < maxX && _this.engine.camera.position[1] > minY && _this.engine.camera.position[1] < maxY && _this.engine.camera.position[2] > minZ && _this.engine.camera.position[2] < maxZ) {
-            _this.camera.moving[0] = 0;
-          }
-
-          if (_this.engine.camera.position[0] > minX && _this.engine.camera.position[0] < maxX && newPosY > minY && newPosY < maxY && _this.engine.camera.position[2] > minZ && _this.engine.camera.position[2] < maxZ) {
-            _this.camera.moving[1] = 0;
-          }
-
-          if (_this.engine.camera.position[0] > minX && _this.engine.camera.position[0] < maxX && _this.engine.camera.position[1] > minY && _this.engine.camera.position[1] < maxY && newPosZ > minZ && newPosZ < maxZ) {
-            _this.camera.moving[2] = 0;
-          }
-        }
-      });
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var temp = new Matrixes_Matrix();
-
-      if (!this.UIElement) {
-        temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        temp.multiply(this.engine.camera.inverseMatrix);
-      } else {
-        temp.projection(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      }
-
-      var world = new Matrixes_Matrix();
-      world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
-      world.translate(this.position[0], this.position[1], this.position[2]);
-      var rot = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
-      rot = multiply(rot, rotationZ(this.rotation[2]));
-      var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
-      parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      rot = multiply(parentRot, rot);
-      world.multiply(rot);
-      this._rotationMatrix = rot;
-      world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
-      world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = world.matrix;
-      temp.multiply(world.matrix);
-      this._matrix = temp.matrix;
-      this._rotationMatrix = rot;
-    }
-  }, {
-    key: "useMaterial",
-    value: function useMaterial(material) {
-      var _this2 = this;
-
-      this._draw = this.draw;
-      material.object = this;
-
-      this.draw = function () {
-        material.drawCube(_this2);
-      };
-    }
-  }]);
-
-  return Cube;
-}();
-// CONCATENATED MODULE: ./src/objects/Skybox.js
-
-
-
-
-var Skybox_Skybox =
-/*#__PURE__*/
-function () {
-  function Skybox(engine) {
-    classCallCheck_default()(this, Skybox);
-
-    if (engine) {
-      engine.objects.push(this);
-      this.engine = engine;
-    }
-
-    this.webGL = engine.webGL;
-    this.vertexes = [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1];
-    this.shaderProgram = engine.shaders.skybox;
-    this.texture = engine.noTexture;
-    this.vertexesBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    this.engine.objectLoaded(this);
-    /**
-     * Skybox rotation. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
-     * @type {Number[]}
-     */
-
-    this.rotation = [0, 0, 0];
-  }
-  /**
-   * Setting square texture for rect.
-   * @param {Texture} texture
-   * @public
-   */
-
-
-  createClass_default()(Skybox, [{
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-      texture.object = this;
-    }
-    /**
-     * Set rotation for x, y, z axis.
-     * @param {Number} x in deg.
-     * @param {Number} y in deg.
-     * @param {Number} z in deg.
-     * @public
-     */
-
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotation = [xRad, yRad, zRad];
-    }
-    /**
-    * Set rotation for x, y, z axis.
-    * @param {Number} x in deg.
-    * @param {Number} y in deg.
-    * @param {Number} z in deg.
-    * @public
-    */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      var xRad = degToRad(x);
-      var yRad = degToRad(y);
-      var zRad = degToRad(z);
-      this.rotation[0] += xRad;
-      this.rotation[1] += yRad;
-      this.rotation[2] += zRad;
-    }
-    /**
-     * Updating camera matrix for drawing Skybox
-     */
-
-  }, {
-    key: "update",
-    value: function update() {
-      var temp = new Matrixes_Matrix();
-      temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      var cameraM = this.engine.camera.inverseRotationMatrix;
-      temp.multiply(cameraM);
-      temp.rotateX(this.rotation[0]);
-      temp.rotateY(this.rotation[1]);
-      temp.rotateZ(this.rotation[2]);
-      this._matrix = inverse(temp.matrix);
-    }
-    /**
-     * Function draws skybox
-     */
-
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.shaderProgram.use();
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 2);
-      this.engine.drawCallsPerFrame++;
-      this.engine.drawCalls++;
-      this.engine.shaders.default.use();
-    }
-  }, {
-    key: "animate",
-    value: function animate(fps, animateFunction) {
-      this._animationInterval = setInterval(animateFunction, 1000 / fps);
-    }
-  }]);
-
-  return Skybox;
-}();
-// CONCATENATED MODULE: ./src/objects/Object.js
-
-
-
-
-/**
-* Creates and bind to engine object. The object must be loaded from .obj file.
-* @class
-* @constructor
-* @param {Engine} engine 
-*/
-
-var Object_Object =
-/*#__PURE__*/
-function () {
-  function Object(engine) {
-    classCallCheck_default()(this, Object);
-
-    engine.objects.push(this);
-    /**
-     * Engine where object attached.
-     * @type {Engine}
-     * @private
-     */
-
-    this.engine = engine;
-    this.shaderProgram = engine.shaders.default;
-    /**
-     * WebGL context of engine
-     * @private
-     */
-
-    this.webGL = engine.webGL;
-    /**
-     * Camera of engine.
-     * @type {Camera}
-     * @private
-     */
-
-    this.camera = engine.camera;
-    /**
-     * Object texture.
-     * @type {Texture} texture
-     * @public
-     */
-
-    this.texture = engine.noTexture;
-    /**
-     * Object position vector. Maybe you need setPosition(), move() or moveRelativeToTheCamera() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x position on axis x
-     * @property {Number} y position on axis y
-     * @property {Number} z position on axis z
-     */
-
-    this.position = [0, 0, 0];
-    /**
-     * Object rotation vector. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation on axis x
-     * @property {Number} y rotation on axis y
-     * @property {Number} z rotation on axis z
-     */
-
-    this.rotation = [0, 0, 0];
-    /**
-     * Object scaling vector. Maybe you need scale() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x scaling on axis x
-     * @property {Number} y scaling on axis x
-     * @property {Number} z scaling on axis x
-     */
-
-    this.scaling = [1, 1, 1];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setRotationPoint() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x rotation point coordinate on axis x
-     * @property {Number} y rotation point coordinate on axis y
-     * @property {Number} z rotation point coordinate on axis z
-     */
-
-    this.rotationPoint = [0, 0, 0];
-    /**
-     * Object scaling vector. Angles in radians. Maybe you need setParentRotation() method? It'd be more convenient to use.
-     * @public
-     * @type {Array.<{0: Number, 1: Number, 2: Number}>} vector 3 array
-     * @property {Number} x parent rotation on axis x
-     * @property {Number} y parent rotation on axis y
-     * @property {Number} z parent rotation on axis z
-     */
-
-    this.parentRotation = [0, 0, 0];
-    /**
-     * These are the edges of the object on the monitor.
-     * @readonly
-     * @Type {Object}   
-     * @property {Number} relativeCameraPosition.x.left
-     * @property {Number} relativeCameraPosition.x.right
-     * @property {Number} relativeCameraPosition.y.top
-     * @property {Number} relativeCameraPosition.y.bottom
-     * @property {Number} relativeCameraPosition.depth
-     */
-
-    this.relativeCameraPosition = null;
-    /**
-     * Faces of object. Needs to draw object. Creates when object is compiled.
-     * @readonly
-     * @type {Array}
-     */
-
-    this.faces = [];
-    /**
-     * Collision boxes coordinates array.
-     * @type {
-     *      x: Number[2],
-     *      y: Number[2],
-     *      z: Number[2]
-     *  }
-     * @property {Number[]} collisionBoxes.x contains array[2] of left and right x coords.
-     * @property {Number[]} collisionBoxes.y contains array[2] of bottom and top y coords.
-     * @property {Number[]} collisionBoxes.z contains array[2] of far and close z coords.
-     * @public
-     */
-
-    this.collisionBoxes = [];
-    /**
-     * Sets whether the object will be attached to the camera like UI element.
-     * @type {boolean}
-     * @public
-     */
-
-    this._UIElement = false;
-    /**
-     * True if the object is behind the camera.
-     * @type {boolean}
-     * @readonly
-     */
-
-    this.behindTheCamera = false;
-    /**
-     * Max and smallest coords of object by default without scaling.
-     * @readonly
-     */
-
-    this.maxSizes = {
-      x: {
-        smallest: 0,
-        biggest: 0
-      },
-      y: {
-        smallest: 0,
-        biggest: 0
-      },
-      z: {
-        smallest: 0,
-        biggest: 0
-      }
-      /**
-       * Size of object without scaling.
-       * @readonly
-       */
-
-    };
-    this.size = [0, 0, 0];
-    /**
-     * Triggers when object load and compiled.
-     * @type {Function}
-     */
-
-    this.onload = function () {
-      return null;
-    };
-
-    this._world = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this._drawingMode = this.webGL.TRIANGLES;
-  }
-  /**
-   * @type {bool}
-   */
-
-
-  createClass_default()(Object, [{
-    key: "useShader",
-
-    /**
-    * Sets custom shader program.
-    * @param {ShaderProgram} shader shader program which object will use.
-    */
-    value: function useShader(shader) {
-      this.shaderProgram = shader;
-    }
-    /**
-     * Setting texture for object.
-     * @param {Texture} texture 
-     * @public
-     */
-
-  }, {
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-      texture.object = this;
-      this.alpha = texture.alpha || false;
-    }
-    /**
-     * Translate polygon for x,y,z pixels.
-     * 
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "setPosition",
-    value: function setPosition(x, y, z) {
-      if (!this._UIElement) {
-        this.position[0] = x;
-        this.position[1] = y;
-        this.position[2] = z;
-      } else {
-        this.position[0] = this.engine.width / 100 * x;
-        this.position[1] = -this.engine.height / 100 * y;
-        this.position[2] = z;
-      }
-    }
-    /**
-     * Adds values to position which moves object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "move",
-    value: function move(x, y, z) {
-      this.position[0] += x;
-      this.position[1] += y;
-      this.position[2] += z;
-    }
-    /**
-     * Moves object around x, y, z axis relative to the camera angles.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "moveRelativeToTheCamera",
-    value: function moveRelativeToTheCamera(x, y, z) {
-      var pos = [x, y, z, 1];
-      pos = vec3Multiply(this.camera.rotationMatrix, pos);
-      this.position[0] += pos[0];
-      this.position[1] += pos[1];
-      this.position[2] += pos[2];
-    }
-    /**
-     * Add rotation for x, y, z axis for current rotation.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "rotate",
-    value: function rotate(x, y, z) {
-      this.rotation[0] += x;
-      this.rotation[1] += y;
-      this.rotation[2] += z;
-    }
-    /**
-     * Set rotate for x, y, z axis.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public 
-     */
-
-  }, {
-    key: "setRotation",
-    value: function setRotation(x, y, z) {
-      this.rotation[0] = degToRad(x);
-      this.rotation[1] = degToRad(y);
-      this.rotation[2] = degToRad(z);
-    }
-    /**
-     * Setting coordinates for rotation point.
-     * @param {Number} x
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setRotationPoint",
-    value: function setRotationPoint(x, y, z) {
-      this.rotationPoint = [x, y, z];
-    }
-    /**
-     * Setting rotation values of parent object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z
-     * @public
-     */
-
-  }, {
-    key: "setParentRotation",
-    value: function setParentRotation(x, y, z) {
-      this.parentRotation = [x, y, z];
-    }
-    /**
-     * Set scaling for object.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "scale",
-    value: function scale(x, y, z) {
-      this.scaling = [x, y, z];
-    }
-    /**
-     * @returns {Number[]} array of sizes object by default
-     * @public
-     */
-
-  }, {
-    key: "getSize",
-    value: function getSize() {
-      var size = [0, 0, 0];
-      size[0] = abs(this.maxSizes.x.smallest - this.maxSizes.x.biggest);
-      size[1] = abs(this.maxSizes.y.smallest - this.maxSizes.y.biggest);
-      size[2] = abs(this.maxSizes.z.smallest - this.maxSizes.z.biggest);
-      return size;
-    }
-    /**
-     * Sets scaling for this object to scale object for pixel coords.
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     * @public
-     */
-
-  }, {
-    key: "scaleToPixels",
-    value: function scaleToPixels(x, y, z) {
-      this.scaling = [x / this.size[0], y / this.size[1], z / this.size[2]];
-    }
-    /**
-     * Default animation function.
-     * @private
-     */
-
-  }, {
-    key: "animation",
-    value: function animation() {
-      this.rotate(0, 0, 0);
-    }
-    /**
-     * Sets the animation function which execute every engine update.
-     * @param {Number} fps
-     * @param {Function} [animateFunction] default - animation function.
-     * @public
-     */
-
-  }, {
-    key: "animate",
-    value: function animate(fps, animateFunction) {
-      animateFunction = animateFunction || this.animation;
-      setInterval(animateFunction, 1000 / fps);
-    }
-    /**
-     * Function detaches from engine. If you need to clean memory, you this method and then you default javascript operator `delete`.
-     * @public
-     */
-
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.engine.objects.splice(this.engine.objects.indexOf(this), 1);
-    }
     /**
      * Function to compile object from text of .obj file.
      * @param {String} fileText
      * @public
      */
-
-  }, {
-    key: "compile",
     value: function compile(fileText) {
-      var _this = this;
+      var _this2 = this;
 
       var vertexes = [];
       var textureCoords = [];
@@ -6271,110 +4635,79 @@ function () {
 
           vertexes.push([v1, v2, v3]);
         } else if (values[name] == 'vn') {
-          normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
+          normals.push([Number(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
         } else if (values[name] == 'vt') {
           textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
         } else if (values[name] == "f") {
-          (function () {
-            // Transform 4 > faces to triangles 
-            var faces = [values[1], values[2], values[3]];
+          // Transform 4 > faces to triangles 
+          var faces = [values[1], values[2], values[3]];
 
-            if (values.length - 1 > 3) {
-              for (var _i = 4; _i < values.length; _i++) {
-                faces.push(values[_i - 3]);
-                faces.push(values[_i - 1]);
-                faces.push(values[_i]);
-              }
+          if (values.length - 1 > 3) {
+            for (var _i = 4; _i < values.length; _i++) {
+              faces.push(values[_i - 3]);
+              faces.push(values[_i - 1]);
+              faces.push(values[_i]);
+            }
+          }
+
+          for (var _i2 = 0; _i2 < faces.length; _i2++) {
+            var point = faces[_i2];
+            var indexes = point.split('/').map(function (el) {
+              return Number(el);
+            });
+            var vertexPosition = indexes[0];
+            if (vertexPosition <= 0) vertexPosition = vertexes.length + vertexPosition + 1;
+            var textureCoordinatePosition = indexes[1];
+            if (textureCoordinatePosition < 0) textureCoordinatePosition = textureCoords.length + textureCoordinatePosition + 1;
+            var normalPosition = indexes[2];
+            if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
+            vertexes[vertexPosition - 1].forEach(function (coordinate) {
+              _this2.vertexes.push(coordinate);
+            });
+
+            if (textureCoordinatePosition != 0 && textureCoords[textureCoordinatePosition - 1] != undefined) {
+              textureCoords[textureCoordinatePosition - 1].forEach(function (textureCoordinate) {
+                _this2.textureCoordinates.push(textureCoordinate);
+              });
+            } else {
+              _this2.textureCoordinates.push(0);
+
+              _this2.textureCoordinates.push(0);
             }
 
-            var faceVertexes = null,
-                faceTextureCoords,
-                faceNormals;
-
-            for (var _i2 = 0; _i2 < faces.length; _i2++) {
-              var point = faces[_i2];
-              var indexes = point.split('/').map(function (el) {
-                return Number(el);
+            if (indexes[2] != undefined) {
+              normals[normalPosition - 1].forEach(function (normal) {
+                _this2.normals.push(normal);
               });
-              var allFacesCount = _this.faces.length;
-
-              for (var k = 0; k < allFacesCount; k++) {
-                var _element = _this.faces[k];
-
-                if (_element.vertexesCount == 3) {
-                  faceVertexes = _element.vertexes;
-                  faceTextureCoords = _element.textureCoords;
-                  faceNormals = _element.normals;
-                }
-              }
-
-              if (faceVertexes == null) {
-                _this.faces.push({
-                  vertexesCount: 3,
-                  vertexes: [],
-                  textureCoords: [],
-                  normals: []
-                });
-
-                faceVertexes = _this.faces[allFacesCount].vertexes;
-                faceTextureCoords = _this.faces[allFacesCount].textureCoords;
-                faceNormals = _this.faces[allFacesCount].normals;
-              }
-
-              var vertexPosition = indexes[0];
-              if (vertexPosition <= 0) vertexPosition = vertexes.length + vertexPosition + 1;
-              var textureCoordPosition = indexes[1];
-              if (textureCoordPosition < 0) textureCoordPosition = textureCoords.length + textureCoordPosition + 1;
-              var normalPosition = indexes[2];
-              if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
-              vertexes[vertexPosition - 1].forEach(function (coord) {
-                faceVertexes.push(coord);
-              });
-
-              if (textureCoordPosition != 0) {
-                textureCoords[textureCoordPosition - 1].forEach(function (textureCoord) {
-                  faceTextureCoords.push(textureCoord);
-                });
-              } else {
-                faceTextureCoords.push(0);
-                faceTextureCoords.push(0);
-              }
-
-              if (indexes[2] != undefined) {
-                normals[normalPosition - 1].forEach(function (normal) {
-                  faceNormals.push(normal);
-                });
-              } else {
-                faceNormals.push(1, 1, 1);
-              }
+            } else {
+              _this2.normals.push(1, 1, 1);
             }
-          })();
+          }
         }
       });
-
-      for (var i = 0; i < this.faces.length; i++) {
-        var element = this.faces[i];
-        element.vertexesBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.vertexesBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.vertexes), this.webGL.STATIC_DRAW);
-        element.coordsBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.coordsBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.textureCoords), this.webGL.STATIC_DRAW);
-        element.normalBuffer = this.webGL.createBuffer();
-        this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, element.normalBuffer);
-        this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(element.normals), this.webGL.STATIC_DRAW);
-      }
-
-      this.maxSizes.x.smallest = collisionBox.x[0];
-      this.maxSizes.x.biggest = collisionBox.x[1];
-      this.maxSizes.y.smallest = collisionBox.y[0];
-      this.maxSizes.y.biggest = collisionBox.y[1];
-      this.maxSizes.z.smallest = collisionBox.z[0];
-      this.maxSizes.z.biggest = collisionBox.z[1];
-      this.collisionBoxes.push(collisionBox);
-      this.size = this.getSize();
+      this.vertexesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
+      this.textureCoordinatesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
+      this.normalsBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
+      this.maxBaseSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0]);
+      this.minBaseSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1]);
+      this.maxSize = this.maxBaseSize;
+      this.minSize = this.minBaseSize;
+      this.maxSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
+      this.minSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
+      this.collisionBox.maxPoint = this.maxSize;
+      this.collisionBox.minPoint = this.minSize;
       this.engine.objectLoaded(this);
+      this.hidden = false;
     }
+  }, {
+    key: "onload",
+    value: function onload() {}
     /**
      * Async load object using ajax and compile on load.
      * @param {String} path
@@ -6397,264 +4730,17 @@ function () {
 
       objectsLoader.send();
     }
-    /**
-     * Sets how WebGL will draw object
-     * @param {String} mode 
-     */
-
-  }, {
-    key: "setDrawingMode",
-    value: function setDrawingMode(mode) {
-      switch (mode) {
-        case 'TRIANGLES':
-          this._drawingMode = this.webGL.TRIANGLES;
-          break;
-
-        case 'DEFAULT':
-          this._drawingMode = this.webGL.TRIANGLES;
-          break;
-
-        case 'TRIANGLE_FAN':
-          this._drawingMode = this.webGL.TRIANGLE_FAN;
-          break;
-
-        case 'FAN':
-          this._drawingMode = this.webGL.TRIANGLE_FAN;
-          break;
-
-        case 'STRIP':
-          this.webGL.TRIANGLE_STRIP;
-          break;
-
-        case 'TRIANGLE_STRIP':
-          this.webGL.TRIANGLE_STRIP;
-          break;
-
-        default:
-          throw Error("Wrong drawing mode. See WebGL drawing mods.");
-      }
-    }
-  }, {
-    key: "draw",
-
-    /**
-     * Function to draw object.
-     */
-    value: function draw() {
-      var _this2 = this;
-
-      this.shaderProgram.use();
-
-      if (!this.behindTheCamera) {
-        this.faces.forEach(function (face) {
-          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.positionLocation);
-
-          _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer);
-
-          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.positionLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
-
-          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.texcoordLocation);
-
-          _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.coordsBuffer);
-
-          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.texcoordLocation, 2, _this2.engine.webGL.FLOAT, false, 0, 0);
-
-          _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.normalLocation);
-
-          _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
-
-          _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.normalLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
-
-          _this2.engine.webGL.uniform1i(_this2.shaderProgram.textureLocation, _this2.texture._textureBlockLocation);
-
-          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.matrixLocation, false, _this2._matrix);
-
-          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.objectRotationLocation, false, _this2._rotationMatrix);
-
-          _this2.engine.webGL.uniformMatrix4fv(_this2.shaderProgram.worldMatrixLocation, false, _this2._world);
-
-          _this2.engine.webGL.drawArrays(_this2._drawingMode, 0, face.vertexes.length / 3);
-
-          _this2.engine.drawCallsPerFrame++;
-          _this2.engine.drawCalls++;
-        });
-      }
-    }
-  }, {
-    key: "checkCollision",
-    value: function checkCollision() {
-      var _this3 = this;
-
-      this.collisionBoxes.forEach(function (collisionBox) {
-        if (_this3.engine.camera.moved) {
-          var maxX = collisionBox.x[1] * _this3.scaling[0] + _this3.position[0] + _this3.camera.distanceBeforeCollision;
-          var minX = collisionBox.x[0] * _this3.scaling[0] + _this3.position[0] - _this3.camera.distanceBeforeCollision;
-          var maxY = collisionBox.y[1] * _this3.scaling[1] + _this3.position[1] + _this3.camera.distanceBeforeCollision;
-          var minY = collisionBox.y[0] * _this3.scaling[1] + _this3.position[1] - _this3.camera.distanceBeforeCollision;
-          var maxZ = collisionBox.z[1] * _this3.scaling[2] + _this3.position[2] + _this3.camera.distanceBeforeCollision;
-          var minZ = collisionBox.z[0] * _this3.scaling[2] + _this3.position[2] - _this3.camera.distanceBeforeCollision;
-          var newPosX = _this3.camera.position[0] + _this3.camera.moving[0];
-          var newPosY = _this3.camera.position[1] + _this3.camera.moving[1];
-          var newPosZ = _this3.camera.position[2] + _this3.camera.moving[2];
-
-          if (newPosX > minX && newPosX < maxX && _this3.engine.camera.position[1] > minY && _this3.engine.camera.position[1] < maxY && _this3.engine.camera.position[2] > minZ && _this3.engine.camera.position[2] < maxZ) {
-            _this3.camera.moving[0] = 0;
-          }
-
-          if (_this3.engine.camera.position[0] > minX && _this3.engine.camera.position[0] < maxX && newPosY > minY && newPosY < maxY && _this3.engine.camera.position[2] > minZ && _this3.engine.camera.position[2] < maxZ) {
-            _this3.camera.moving[1] = 0;
-          }
-
-          if (_this3.engine.camera.position[0] > minX && _this3.engine.camera.position[0] < maxX && _this3.engine.camera.position[1] > minY && _this3.engine.camera.position[1] < maxY && newPosZ > minZ && newPosZ < maxZ) {
-            _this3.camera.moving[2] = 0;
-          }
-        }
-      });
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var _this4 = this;
-
-      var objectMatrix = new Matrixes_Matrix();
-      var world = new Matrixes_Matrix();
-      var objectRotationMatrix = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
-      objectRotationMatrix = multiply(objectRotationMatrix, rotationZ(this.rotation[2]));
-
-      if (!this._UIElement) {
-        objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        objectMatrix.multiply(this.engine.camera.inverseMatrix);
-        world.translate(this.position[0], this.position[1], this.position[2]);
-        world.multiply(objectRotationMatrix);
-        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-        objectMatrix.multiply(world.matrix);
-      } else {
-        objectMatrix.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-        world.translate(this.position[0], this.position[1], this.position[2]);
-        world.multiply(objectRotationMatrix);
-        world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-        objectMatrix.multiply(world.matrix);
-        objectRotationMatrix = multiply(objectRotationMatrix, this.engine.camera.rotationMatrix);
-      }
-
-      this._world = world.matrix;
-
-      if (!this._UIElement) {
-        var mouseOverHitBox = false;
-        this.collisionBoxes.forEach(function (collisionBox) {
-          var boxInPixels = [];
-
-          for (var ix = 0; ix < collisionBox.x.length; ix++) {
-            var x = collisionBox.x[ix];
-
-            for (var iy = 0; iy < collisionBox.y.length; iy++) {
-              var y = collisionBox.y[iy];
-
-              for (var iz = 0; iz < collisionBox.z.length; iz++) {
-                var z = collisionBox.z[iz];
-                var coordsInPixels = transformVector(objectMatrix.matrix, [x, y, z, 1]);
-                coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
-                coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
-                coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * _this4.engine.width;
-                coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * _this4.engine.height;
-                coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
-                coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
-                coordsInPixels[0] = coordsInPixels[0] > _this4.engine.width ? _this4.engine.width : coordsInPixels[0];
-                coordsInPixels[1] = coordsInPixels[1] > _this4.engine.height ? _this4.engine.height : coordsInPixels[1];
-
-                if (coordsInPixels[2] >= 0) {
-                  boxInPixels.push(coordsInPixels);
-                }
-              }
-            }
-          }
-
-          var smallest = [10000, 10000, -1000];
-          var biggest = [-10000, -10000];
-
-          for (var i = 0; i < boxInPixels.length; i++) {
-            var box = boxInPixels[i];
-
-            if (box[0] < smallest[0]) {
-              smallest[0] = box[0];
-            } else if (box[0] > biggest[0]) {
-              biggest[0] = box[0];
-            }
-
-            if (box[1] < smallest[1]) {
-              smallest[1] = box[1];
-            } else if (box[1] > biggest[1]) {
-              biggest[1] = box[1];
-            }
-
-            if (box[2] > smallest[2]) {
-              smallest[2] = box[2];
-            }
-          }
-
-          _this4.relativeCameraPosition = {
-            x: {
-              left: smallest[0],
-              right: biggest[0]
-            },
-            y: {
-              top: smallest[1],
-              bottom: biggest[1]
-            },
-            depth: smallest[2] // NEED TO FIND OBJECT BEHIND CAMERA
-
-          };
-
-          if (_this4.relativeCameraPosition.x.left >= _this4.engine.width || _this4.relativeCameraPosition.x.right <= 0 || _this4.relativeCameraPosition.y.top >= _this4.engine.height * 1.5 || _this4.relativeCameraPosition.x.bottom <= -_this4.engine.height * 0.5) {
-            _this4.behindTheCamera = false;
-          } else {
-            _this4.behindTheCamera = false;
-          }
-
-          if (_this4.engine.controls.mouse.x > smallest[0] && _this4.engine.controls.mouse.x < biggest[0] && _this4.engine.controls.mouse.y > smallest[1] && _this4.engine.controls.mouse.y < biggest[1]) {
-            mouseOverHitBox = true;
-          }
-
-          if (mouseOverHitBox) {
-            if (_this4.engine.selectedObject == null) {
-              _this4.engine.selectedObject = _this4;
-            }
-
-            if (_this4.engine.selectedObject.relativeCameraPosition.depth >= smallest[2]) {
-              _this4.engine.selectedObject = _this4;
-            }
-          }
-        });
-      }
-
-      this._matrix = objectMatrix.matrix;
-      this._rotationMatrix = objectRotationMatrix;
-    }
   }, {
     key: "useMaterial",
     value: function useMaterial(material) {
-      var _this5 = this;
+      var _this3 = this;
 
-      this._draw = this.draw;
+      material.defaultDraw = this.draw;
       material.object = this;
 
       this.draw = function () {
-        material.drawObject(_this5);
+        material.drawObject(_this3);
       };
-    }
-  }, {
-    key: "UIElement",
-    set: function set(value) {
-      this._UIElement = value;
-
-      if (value) {
-        this.engine.ui.addObject(this);
-      } else {
-        this.engine.ui.removeObject(this);
-      }
-    },
-    get: function get() {
-      return this._UIElement;
     }
   }, {
     key: "drawingMode",
@@ -6666,100 +4752,108 @@ function () {
     }
   }]);
 
-  return Object;
-}();
-// CONCATENATED MODULE: ./src/objects/Grid.js
+  return _Object;
+}(Entity_Entity);
 
 
 
+// CONCATENATED MODULE: ./src/objects/Rect.ts
+function Rect_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Rect_typeof = function _typeof(obj) { return typeof obj; }; } else { Rect_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Rect_typeof(obj); }
+
+function Rect_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Rect_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Rect_createClass(Constructor, protoProps, staticProps) { if (protoProps) Rect_defineProperties(Constructor.prototype, protoProps); if (staticProps) Rect_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Rect_possibleConstructorReturn(self, call) { if (call && (Rect_typeof(call) === "object" || typeof call === "function")) { return call; } return Rect_assertThisInitialized(self); }
+
+function Rect_getPrototypeOf(o) { Rect_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Rect_getPrototypeOf(o); }
+
+function Rect_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Rect_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Rect_setPrototypeOf(subClass, superClass); }
+
+function Rect_setPrototypeOf(o, p) { Rect_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Rect_setPrototypeOf(o, p); }
+
+function Rect_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-
-
-/**
- * Rect for using custom shaders
- * @tutorial
- * @param {Engine} engine
- * @class
- * @constructor
- */
-
-var Grid_Grid =
+var Rect =
 /*#__PURE__*/
-function (_Rect) {
-  inherits_default()(Grid, _Rect);
+function (_Entity) {
+  Rect_inherits(Rect, _Entity);
 
-  /**
-   * Flat rectangle with square texture.
-   * @param {Engine} engine 
-   */
-  function Grid(engine) {
+  function Rect(engine) {
     var _this;
 
-    classCallCheck_default()(this, Grid);
+    Rect_classCallCheck(this, Rect);
 
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Grid).call(this, engine));
-    _this.shaderProgram = _this.engine.shaders.grid;
-    _this.cellSize = [1000, 1000];
+    _this = Rect_possibleConstructorReturn(this, Rect_getPrototypeOf(Rect).call(this, engine));
+
+    Rect_defineProperty(Rect_assertThisInitialized(_this), "width", 100);
+
+    Rect_defineProperty(Rect_assertThisInitialized(_this), "height", 100);
+
+    Rect_defineProperty(Rect_assertThisInitialized(_this), "name", 'Just a rect :)');
+
+    _this.vertexes = [0, 0, 0, 100, 100, 0, 0, 100, 0, 100, 100, 0, 0, 0, 0, 100, 0, 0];
+    _this.textureCoordinates = [0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1];
+    _this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
+    _this.shaderProgram = _this.engine.shaders["default"];
+    _this.vertexesBuffer = _this.webgl.createBuffer();
+
+    _this.webgl.bindBuffer(_this.webgl.ARRAY_BUFFER, _this.vertexesBuffer);
+
+    _this.webgl.bufferData(_this.webgl.ARRAY_BUFFER, new Float32Array(_this.vertexes), _this.webgl.STATIC_DRAW);
+
+    _this.textureCoordinatesBuffer = _this.webgl.createBuffer();
+
+    _this.webgl.bindBuffer(_this.webgl.ARRAY_BUFFER, _this.textureCoordinatesBuffer);
+
+    _this.webgl.bufferData(_this.webgl.ARRAY_BUFFER, new Float32Array(_this.textureCoordinates), _this.webgl.STATIC_DRAW);
+
+    _this.normalsBuffer = _this.webgl.createBuffer();
+
+    _this.webgl.bindBuffer(_this.webgl.ARRAY_BUFFER, _this.normalsBuffer);
+
+    _this.webgl.bufferData(_this.webgl.ARRAY_BUFFER, new Float32Array(_this.normals), _this.webgl.STATIC_DRAW);
+
+    _this.collisionBox.maxPoint.set(100, 100, 0);
+
+    _this.collisionBox.minPoint.set(0, 0, 0);
+
+    _this.maxBaseSize.set(100, 100, 0);
+
+    _this.maxSize = _this.maxBaseSize;
+
+    _this.engine.objectLoaded(Rect_assertThisInitialized(_this));
+
     return _this;
   }
+  /**
+   * Scale object.
+   * @param x 
+   * @param y 
+   */
 
-  createClass_default()(Grid, [{
-    key: "draw",
-    value: function draw() {
-      this.shaderProgram.use();
-      this.engine.webGL.texParameteri(this.engine.webGL.TEXTURE_2D, this.engine.shaders.extensions.anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, 16);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this._matrix);
-      this.engine.webGL.uniform2fv(this.shaderProgram.movingLocation, this._moving);
-      this.engine.webGL.uniform2fv(this.shaderProgram.cellSizeLocation, this.cellSize);
-      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
-      this.engine.drawCallsPerFrame++;
-      this.engine.drawCalls++;
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var temp = new Matrixes_Matrix();
-      temp.perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      var cameraMatrix = unit();
-      cameraMatrix = multiply(cameraMatrix, translation(0, this.engine.camera.position[1], 0));
-      cameraMatrix = multiply(cameraMatrix, this.engine.camera.rotationMatrix);
-      temp.multiply(inverse(cameraMatrix));
-      var world = new Matrixes_Matrix();
-      world.multiply(inverse(translation(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2])));
-      world.translate(this.position[0], this.position[1], this.position[2]);
-      var rot = multiply(rotationX(this.rotation[0]), rotationY(this.rotation[1]));
-      rot = multiply(rot, rotationZ(this.rotation[2]));
-      var parentRot = multiply(rotationX(this.parentRotation[0]), rotationY(this.parentRotation[1]));
-      parentRot = multiply(parentRot, rotationZ(this.parentRotation[2]));
-      rot = multiply(parentRot, rot);
-      world.multiply(rot);
-      world.translate(this.rotationPoint[0], this.rotationPoint[1], this.rotationPoint[2]);
-      world.scale(this.scaling[0], this.scaling[1], this.scaling[2]);
-      this._world = world;
-      temp.multiply(world.matrix);
-      this._moving = [this.engine.camera.position[0], this.engine.camera.position[2]];
-      this._matrix = temp.matrix;
-      this._rotationMatrix = rot;
-    }
-  }, {
-    key: "setCellSize",
-    value: function setCellSize(width, height) {
-      this.cellSize = [width, height];
-      this.setTextureRepeating(this.width / width, this.height / height);
+
+  Rect_createClass(Rect, [{
+    key: "scale",
+    value: function scale(x, y) {
+      this.scaling.set(x, y, 1);
+      this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, 0);
+      this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, 0);
+
+      if (this.rotationPointPos == 'center') {
+        this.rotationPoint.set(this.minSize.x + (this.maxSize.x - this.minSize.x) / 2, this.minSize.y + (this.maxSize.y - this.minSize.y) / 2, this.minSize.z + (this.maxSize.z - this.minSize.z) / 2);
+      }
     }
     /**
      * Changing size of rect.
-     * @param {Number} width
-     * @param {Number} height
+     * @param width
+     * @param height
      * @public
      */
 
@@ -6768,621 +4862,290 @@ function (_Rect) {
     value: function setSize(width, height) {
       this.width = width;
       this.height = height;
+      this.scale(this.width / 100, this.height / 100);
+    }
+    /**
+     * Repeats texture on rect.
+     * @param x count for x
+     * @param y count for y
+     * @default {x:1,y:1}
+     */
+
+  }, {
+    key: "setTextureRepeating",
+    value: function setTextureRepeating(x, y) {
+      this.textureCoordinates = [0, y, x, 0, 0, 0, x, 0, 0, y, x, y];
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
+    }
+  }]);
+
+  return Rect;
+}(Entity_Entity);
+
+
+
+// CONCATENATED MODULE: ./src/objects/Skybox.ts
+function Skybox_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Skybox_typeof = function _typeof(obj) { return typeof obj; }; } else { Skybox_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Skybox_typeof(obj); }
+
+function Skybox_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Skybox_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Skybox_createClass(Constructor, protoProps, staticProps) { if (protoProps) Skybox_defineProperties(Constructor.prototype, protoProps); if (staticProps) Skybox_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Skybox_possibleConstructorReturn(self, call) { if (call && (Skybox_typeof(call) === "object" || typeof call === "function")) { return call; } return Skybox_assertThisInitialized(self); }
+
+function Skybox_getPrototypeOf(o) { Skybox_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Skybox_getPrototypeOf(o); }
+
+function Skybox_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Skybox_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Skybox_setPrototypeOf(subClass, superClass); }
+
+function Skybox_setPrototypeOf(o, p) { Skybox_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Skybox_setPrototypeOf(o, p); }
+
+
+
+var Skybox_Skybox =
+/*#__PURE__*/
+function (_Entity) {
+  Skybox_inherits(Skybox, _Entity);
+
+  function Skybox(engine) {
+    var _this;
+
+    Skybox_classCallCheck(this, Skybox);
+
+    _this = Skybox_possibleConstructorReturn(this, Skybox_getPrototypeOf(Skybox).call(this, engine));
+    _this.name = 'Just skybox :)';
+    _this.webgl = engine.webgl;
+    _this.vertexes = [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1];
+    _this.shaderProgram = engine.shaders.skybox;
+    _this.texture = engine.noTexture;
+    _this.vertexesBuffer = _this.webgl.createBuffer();
+
+    _this.webgl.bindBuffer(_this.webgl.ARRAY_BUFFER, _this.vertexesBuffer);
+
+    _this.webgl.bufferData(_this.webgl.ARRAY_BUFFER, new Float32Array(_this.vertexes), _this.webgl.STATIC_DRAW);
+
+    _this.engine.objectLoaded(Skybox_assertThisInitialized(_this));
+    /**
+     * Skybox rotation. Angles in radians. Maybe you need setRotation() or rotate() methods? It'd be more convenient to use.
+     * @type {Number[]}
+     */
+
+
+    return _this;
+  }
+
+  Skybox_createClass(Skybox, [{
+    key: "updateMatrixes",
+    value: function updateMatrixes() {
+      var temp = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+      var cameraM = this.engine.camera.inverseRotationMatrix;
+      temp = Matrixes4_multiply(temp, cameraM);
+      temp = Matrixes4_multiply(temp, Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z));
+      this.matrix = inverse(temp);
+    }
+    /**
+     * Updating camera matrix for drawing Skybox
+     */
+
+  }, {
+    key: "update",
+    value: function update() {}
+    /**
+     * Function draws skybox
+     */
+
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.shaderProgram.use();
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 2);
+      this.engine.shaders["default"].use();
+    }
+  }]);
+
+  return Skybox;
+}(Entity_Entity);
+// CONCATENATED MODULE: ./src/objects/Grid.ts
+function Grid_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Grid_typeof = function _typeof(obj) { return typeof obj; }; } else { Grid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Grid_typeof(obj); }
+
+function Grid_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Grid_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Grid_createClass(Constructor, protoProps, staticProps) { if (protoProps) Grid_defineProperties(Constructor.prototype, protoProps); if (staticProps) Grid_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Grid_possibleConstructorReturn(self, call) { if (call && (Grid_typeof(call) === "object" || typeof call === "function")) { return call; } return Grid_assertThisInitialized(self); }
+
+function Grid_getPrototypeOf(o) { Grid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Grid_getPrototypeOf(o); }
+
+function Grid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Grid_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Grid_setPrototypeOf(subClass, superClass); }
+
+function Grid_setPrototypeOf(o, p) { Grid_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Grid_setPrototypeOf(o, p); }
+
+function Grid_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+/**
+ * Rect for using custom shaders
+ * @class
+ * @constructor
+ */
+var Grid_Grid =
+/*#__PURE__*/
+function (_Rect) {
+  Grid_inherits(Grid, _Rect);
+
+  /**
+   * Flat rectangle with square texture.
+   * @param engine 
+   */
+  function Grid(engine) {
+    var _this;
+
+    Grid_classCallCheck(this, Grid);
+
+    _this = Grid_possibleConstructorReturn(this, Grid_getPrototypeOf(Grid).call(this, engine));
+
+    Grid_defineProperty(Grid_assertThisInitialized(_this), "cellSize", void 0);
+
+    Grid_defineProperty(Grid_assertThisInitialized(_this), "movingMatrix", []);
+
+    _this.shaderProgram = _this.engine.shaders.grid;
+    _this.cellSize = [1000, 1000];
+    _this.name = 'Just a gird :)';
+    return _this;
+  }
+
+  Grid_createClass(Grid, [{
+    key: "draw",
+    value: function draw() {
+      this.shaderProgram.use();
+      this.engine.webgl.texParameteri(this.engine.webgl.TEXTURE_2D, this.engine.shaders.extensions.anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, 16);
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+      this.engine.webgl.uniform2fv(this.shaderProgram.movingLocation, this.movingMatrix);
+      this.engine.webgl.uniform2fv(this.shaderProgram.cellSizeLocation, this.cellSize);
+      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 3);
+    }
+    /**
+     * Updated matrixes
+     */
+
+  }, {
+    key: "updateMatrixes",
+    value: function updateMatrixes() {
+      var world = inverse(translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+      world = Matrixes4_multiply(world, translation(this.position.x, this.position.y, this.position.z));
+      var rot = Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z);
+      world = Matrixes4_multiply(world, rot);
+      world = Matrixes4_multiply(world, translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+      world = Matrixes4_multiply(world, translation(-this.minSize.x - (this.maxSize.x - this.minSize.x) / 2, -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2, -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2));
+      world = Matrixes4_multiply(world, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+      this.worldMatrix = world;
+      this.rotationMatrix = rot;
+    }
+    /**
+     * Updates object
+     */
+
+  }, {
+    key: "update",
+    value: function update() {
+      var matrix = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+      var cameraMatrix = unit();
+      cameraMatrix = Matrixes4_multiply(cameraMatrix, translation(0, this.engine.camera.position.y, 0));
+      cameraMatrix = Matrixes4_multiply(cameraMatrix, this.engine.camera.rotationMatrix);
+      matrix = Matrixes4_multiply(matrix, inverse(cameraMatrix));
+      matrix = Matrixes4_multiply(matrix, this.worldMatrix);
+      this.movingMatrix = [this.engine.camera.position.x, this.engine.camera.position.z];
+      this.matrix = matrix;
+    }
+    /**
+     * Sets size for one cell in pixels
+     * @param width 
+     * @param height 
+     */
+
+  }, {
+    key: "setCellSize",
+    value: function setCellSize(width, height) {
+      this.cellSize = [width, height];
+      this.setTextureRepeating(this.width / width, this.height / height);
+    }
+    /**
+     * Changing size of rect.
+     * @param width
+     * @param height
+     */
+
+  }, {
+    key: "setSize",
+    value: function setSize(width, height) {
+      this.width = width;
+      this.height = height;
       this.vertexes = [0, 0, 0, width, height, 0, 0, height, 0, width, height, 0, 0, 0, 0, width, 0, 0];
+      this.maxSize.set(width, height, 0);
+      this.minSize.set(0, 0, 0);
       this.setCellSize(this.cellSize[0], this.cellSize[1]);
-      this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
     }
   }]);
 
   return Grid;
-}(Rect_Rect);
-// CONCATENATED MODULE: ./src/map/Map.js
+}(Rect);
+// CONCATENATED MODULE: ./src/lights/Light.ts
+function Light_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function Light_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function Light_createClass(Constructor, protoProps, staticProps) { if (protoProps) Light_defineProperties(Constructor.prototype, protoProps); if (staticProps) Light_defineProperties(Constructor, staticProps); return Constructor; }
 
-var Map_Map =
-/*#__PURE__*/
-function () {
-  function Map(engine) {
-    classCallCheck_default()(this, Map);
-
-    this.engine = engine;
-    this.objects = [];
-    this.lands = [];
-    this.camera;
-  }
-
-  createClass_default()(Map, [{
-    key: "createObject",
-    value: function createObject() {
-      var object = new Object_Object(engine);
-      this.engine.objects.push(object);
-      return object;
-    }
-  }, {
-    key: "addObject",
-    value: function addObject(object) {
-      this.objects.push(object);
-    }
-  }, {
-    key: "removeObject",
-    value: function removeObject(object) {
-      var index = this.objects.indexOf(object);
-      if (index == -1) return false;
-      this.objects.splice(index, 1);
-      return true;
-    }
-  }, {
-    key: "removeObjectByName",
-    value: function removeObjectByName(name) {
-      var _this = this;
-
-      this.objects.forEach(function (object) {
-        if (object.name == name) {
-          _this.removeObject(object);
-
-          return true;
-        }
-      });
-      return false;
-    }
-  }]);
-
-  return Map;
-}();
-// CONCATENATED MODULE: ./src/ui/UI.js
-
-
-
-
-
-
-/**
- * @class
- * @constructor
- * @param {Engine} e
- */
-
-var UI_UI =
-/*#__PURE__*/
-function () {
-  function UI(engine) {
-    classCallCheck_default()(this, UI);
-
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = engine.div.width;
-    this.canvas.height = engine.div.height;
-    this.canvas.style = 'position: absolute; height: 100%; width: 100%; z-index: 999999; left: 0; right: 0; top: 0;';
-    this.div = document.createElement('div');
-    this.div.style = 'position: absolute; height: 100%; width: 100%; z-index: 9999999; left: 0; right: 0; top: 0;';
-    engine.div.appendChild(this.canvas);
-    engine.div.appendChild(this.div);
-    this.width = engine.div.width;
-    this.height = engine.div.height;
-    this.centerX = this.width / 2;
-    this.centerY = this.height / 2;
-    /**
-     * 2D context for UI drawing. 
-     * @type {CanvasRenderingContext2D}
-     */
-
-    this.context = this.canvas.getContext('2d');
-    /**
-     * There are objects which object needs to draw.
-     * @type {Objects[]}
-     */
-
-    this.objects = [];
-    /**
-     * Images to draw
-     * @type {Image[]}
-     */
-
-    this.images = [];
-    /**
-     * @type {HTMLElement[]}
-     */
-
-    this.htmlElements = [];
-    engine.ui = this;
-    this.engine = engine;
-    this.webGL = engine.webGL;
-    this._screen = new UI_Screen(this.engine);
-    this._texture = {
-      _textureBlockLocation: this.engine.textures.length
-    };
-    this.engine.textures.push(this._texture);
-    this.engine.webGL.activeTexture(this.engine.webGL.TEXTURE0 + this._texture._textureBlockLocation);
-    this._webGLTexture = this.webGL.createTexture();
-    this.webGL.bindTexture(this.webGL.TEXTURE_2D, this._webGLTexture);
-    this.webGL.texImage2D(this.webGL.TEXTURE_2D, 0, this.webGL.RGBA, this.width, this.height, 0, this.webGL.RGBA, this.webGL.UNSIGNED_BYTE, null);
-    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MAG_FILTER, this.webGL.NEAREST);
-    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_MIN_FILTER, this.webGL.NEAREST);
-    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_S, this.webGL.CLAMP_TO_EDGE);
-    this.webGL.texParameteri(this.webGL.TEXTURE_2D, this.webGL.TEXTURE_WRAP_T, this.webGL.CLAMP_TO_EDGE);
-    this.frameBuffer = this.webGL.createFramebuffer();
-    this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, this.frameBuffer);
-    this.webGL.framebufferTexture2D(this.webGL.FRAMEBUFFER, this.webGL.COLOR_ATTACHMENT0, this.webGL.TEXTURE_2D, this._webGLTexture, 0);
-    this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, null);
-  }
-  /**
-   * Adds object to draw.
-   * @param {Object} element some UI element. 
-   */
-
-
-  createClass_default()(UI, [{
-    key: "addObject",
-    value: function addObject(element) {
-      this.objects.push(element);
-      this.engine.removeObject(element);
-    }
-    /**
-     * Removes element from drawing function.
-     * @param {Object} element 
-     */
-
-  }, {
-    key: "removeObject",
-    value: function removeObject(element) {
-      var index = this.objects.indexOf(element);
-      this.objects.removeAt(index);
-      this.engine.addObject(element);
-    }
-    /**
-     * Adding DOM element upper game engine canvas.
-     * @param {HTMLElement} element
-     * @param {Number} position.vertical from 0 to 100
-     */
-
-  }, {
-    key: "appendDOMElement",
-    value: function appendDOMElement(element, name, position) {
-      var style = '';
-      style += 'top' + ':  ' + (this.height / 100 * position.vertical - element.width / 2) + 'px;';
-      style += 'left' + ':  ' + (this.width / 100 * position.horizontal - element.height / 2) + 'px;';
-      style += 'position: absolute;';
-      element.style = style;
-      this.div.appendChild(element);
-      this.htmlElements.push({
-        name: name,
-        el: element
-      });
-      element.hidden = false;
-
-      element.hide = function () {
-        element.style.display = 'none';
-      };
-
-      element.show = function () {
-        element.style.display = 'block';
-      };
-
-      return element;
-    }
-    /**
-     * Adding DOM element upper game engine canvas.
-     * @param {HTMLElement} element 
-     */
-
-  }, {
-    key: "appendDOMElementWithCustomProperties",
-    value: function appendDOMElementWithCustomProperties(element, properties) {
-      var style = '';
-
-      for (var property in properties) {
-        style += property + ':  ' + properties[property] + ';';
-      }
-
-      element.style = style;
-      this.div.appendChild(element);
-      this.htmlElements.push({
-        name: name,
-        el: element
-      });
-      element.hidden = false;
-
-      element.hide = function () {
-        element.style.display = 'none';
-      };
-
-      element.show = function () {
-        element.style.display = 'block';
-      };
-
-      return element;
-    }
-    /**
-     * Draws image on canvas. Read about addImage
-     * @param {Image} image 
-     * @param {Number} width 
-     * @param {Number} height 
-     */
-
-  }, {
-    key: "drawImage",
-    value: function () {
-      var _drawImage = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee(image, width, height) {
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.context.drawImage(image, 0, 0);
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function drawImage(_x, _x2, _x3) {
-        return _drawImage.apply(this, arguments);
-      }
-
-      return drawImage;
-    }()
-  }, {
-    key: "addImage",
-    value: function addImage(image, width, height, x, y) {
-      image.width = width;
-      image.height = height;
-      image.xPos = x;
-      image.yPos = y;
-      this.images.push(image);
-
-      image.hide = function () {
-        image.hidden = true;
-      };
-
-      image.show = function () {
-        image.hidden = false;
-      };
-
-      return image;
-    }
-    /**
-     * Clear canvas
-     */
-
-  }, {
-    key: "clearCanvas",
-    value: function clearCanvas() {
-      this.context.clearRect(0, 0, this.width, this.height);
-    }
-  }, {
-    key: "draw",
-    value: function () {
-      var _draw = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee2() {
-        var _this = this;
-
-        return regenerator_default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                this.images.forEach(function (img) {
-                  if (!img.hidden) {
-                    _this.context.drawImage(img, img.xPos, img.yPos, img.width, img.height);
-                  }
-                });
-
-              case 1:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function draw() {
-        return _draw.apply(this, arguments);
-      }
-
-      return draw;
-    }()
-  }, {
-    key: "drawUIFromEngine",
-    value: function () {
-      var _drawUIFromEngine = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee3() {
-        return regenerator_default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                this.clearCanvas();
-                this.objects.forEach(function (object) {
-                  object.draw();
-                });
-                this.context.drawImage(this.engine.webGL.canvas, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
-                return _context3.abrupt("return", true);
-
-              case 4:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function drawUIFromEngine() {
-        return _drawUIFromEngine.apply(this, arguments);
-      }
-
-      return drawUIFromEngine;
-    }()
-  }, {
-    key: "drawUIOnMainCanvas",
-    value: function drawUIOnMainCanvas() {
-      var webGL = this.engine.webGL;
-      webGL.bindFramebuffer(webGL.FRAMEBUFFER, this.frameBuffer);
-      webGL.clearColor(0, 0, 0, 0);
-      webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
-      webGL.viewport(0, 0, this.engine.width, this.engine.height);
-      this.objects.forEach(function (object) {
-        object.draw();
-      });
-
-      this._screen.setTexture(this._texture);
-
-      webGL.bindFramebuffer(webGL.FRAMEBUFFER, null);
-      webGL.clearColor(0, 0, 0, 0);
-      webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
-    }
-  }, {
-    key: "drawUI",
-    value: function drawUI() {
-      this._screen.draw();
-    }
-  }]);
-
-  return UI;
-}();
-
-var UI_Screen =
-/*#__PURE__*/
-function () {
-  function Screen(engine) {
-    classCallCheck_default()(this, Screen);
-
-    this.webGL = engine.webGL;
-    this.engine = engine;
-    this.shaderProgram = engine.shaders.default;
-    this.vertexes = [-1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, -1 // -100, -100, -100,
-    // 100, 100, -100,
-    // -100, 100, -100,
-    // 100, 100, -100,
-    // -100, -100, -100,
-    // 100, -100, -100
-    // 0, 0, 0,
-    // 1000, 1000, 0,
-    // 0, 1000, 0,
-    // 1000, 1000, 0,
-    // 0, 0, 0,
-    // 1000, 0, 0,
-    ];
-    this.textureCoords = [0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
-    this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
-    this.vertexesBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webGL.STATIC_DRAW);
-    this.coordsBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.coordsBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webGL.STATIC_DRAW);
-    this.normalBuffer = this.webGL.createBuffer();
-    this.webGL.bindBuffer(this.webGL.ARRAY_BUFFER, this.normalBuffer);
-    this.webGL.bufferData(this.webGL.ARRAY_BUFFER, new Float32Array(this.normals), this.webGL.STATIC_DRAW);
-  }
-
-  createClass_default()(Screen, [{
-    key: "setTexture",
-    value: function setTexture(texture) {
-      this.texture = texture;
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.webGL.bindFramebuffer(this.webGL.FRAMEBUFFER, null);
-      this.shaderProgram.use();
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.coordsBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webGL.FLOAT, false, 0, 0);
-      this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-      this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, this.normalBuffer);
-      this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-      var unitMatrix = new Matrixes_Matrix().matrix;
-      var projectionMatrix = new Matrixes_Matrix(); // projectionMatrix.projection(this.engine.width, this.engine.height)
-
-      var rotatedMatrix = projectionMatrix.matrix; // rotatedMatrix[13] = -1
-
-      this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, rotatedMatrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, unitMatrix);
-      this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, unitMatrix);
-      this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, this.vertexes.length / 3);
-    }
-  }]);
-
-  return Screen;
-}();
-// CONCATENATED MODULE: ./src/materials/Material.js
-
-
-
-/**
- * Base class for materials which will attached to objects. 
- * @param {Engine} engine
- * @param {Object} [object]
- */
-var Material_Material =
-/*#__PURE__*/
-function () {
-  function Material(engine, object) {
-    classCallCheck_default()(this, Material);
-
-    this.engine = engine;
-    this.object = object || null;
-    this.webGL = engine.webGL;
-  }
-  /**
-   * Adds shader for material.
-   * @param {ShaderProgram} shader 
-   */
-
-
-  createClass_default()(Material, [{
-    key: "setShaderProgram",
-    value: function setShaderProgram(shaderProgram) {
-      this.shaderProgram = shaderProgram;
-    }
-    /**
-     * Draws object using this material.
-     * @param {Object} object 
-     */
-
-  }, {
-    key: "drawObject",
-    value: function drawObject(object) {}
-  }]);
-
-  return Material;
-}();
-// CONCATENATED MODULE: ./src/materials/Glass.js
-
-
-
-
-
-
-
-/**
- * Base class for materials which will attached to objects. 
- * @param {Engine} engine
- * @param {Object} [object]
- */
-
-var Glass_Glass =
-/*#__PURE__*/
-function (_Material) {
-  inherits_default()(Glass, _Material);
-
-  function Glass(engine, object) {
-    var _this;
-
-    classCallCheck_default()(this, Glass);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Glass).call(this, engine, object));
-    _this.shaderProgram = engine.shaders.reflection;
-    return _this;
-  }
-  /**
-   * Adds shader for material.
-   * @param {ShaderProgram} shader 
-   */
-
-
-  createClass_default()(Glass, [{
-    key: "setShaderProgram",
-    value: function setShaderProgram(shaderProgram) {
-      this.shaderProgram = shaderProgram;
-    }
-    /**
-     * Draws cube using this material.
-     * @param {Object} object 
-     */
-
-  }, {
-    key: "drawCube",
-    value: function drawCube(object) {
-      if (object.texture.loaded) {
-        this.shaderProgram.use();
-        this.webGL.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
-        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
-        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
-        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
-        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world);
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.positionLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.vertexesBuffer);
-        this.engine.webGL.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-        this.engine.webGL.enableVertexAttribArray(this.shaderProgram.normalLocation);
-        this.engine.webGL.bindBuffer(this.engine.webGL.ARRAY_BUFFER, object.normalBuffer);
-        this.engine.webGL.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webGL.FLOAT, false, 0, 0);
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix);
-        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
-        this.engine.webGL.drawArrays(this.engine.webGL.TRIANGLES, 0, object.vertexes.length / 3);
-        this.engine.drawCallsPerFrame++;
-        this.engine.drawCalls++;
-      }
-    }
-    /**
-     * Draws object using this material.
-     * @param {Object} object 
-     */
-
-  }, {
-    key: "drawObject",
-    value: function drawObject(object) {
-      var _this2 = this;
-
-      if (object.texture.loaded) {
-        this.shaderProgram.use();
-        this.webGL.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
-        this.webGL.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
-        this.webGL.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
-        this.webGL.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
-        this.engine.webGL.uniform1i(this.shaderProgram.textureLocation, object.texture._textureBlockLocation);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object._matrix);
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object._rotationMatrix);
-        this.engine.webGL.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position));
-        this.engine.webGL.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object._world);
-
-        if (!object.behindTheCamera) {
-          object.faces.forEach(function (face) {
-            _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.positionLocation);
-
-            _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.vertexesBuffer);
-
-            _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.positionLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
-
-            _this2.engine.webGL.enableVertexAttribArray(_this2.shaderProgram.normalLocation);
-
-            _this2.engine.webGL.bindBuffer(_this2.engine.webGL.ARRAY_BUFFER, face.normalBuffer);
-
-            _this2.engine.webGL.vertexAttribPointer(_this2.shaderProgram.normalLocation, 3, _this2.engine.webGL.FLOAT, false, 0, 0);
-
-            _this2.engine.webGL.drawArrays(_this2.engine.webGL.TRIANGLES, 0, face.vertexes.length / 3);
-
-            _this2.engine.drawCallsPerFrame++;
-            _this2.engine.drawCalls++;
-          });
-        }
-      }
-    }
-  }]);
-
-  return Glass;
-}(Material_Material);
-// CONCATENATED MODULE: ./src/light/Light.js
+function Light_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 var lightsCount = 0;
+
 var Light_Light =
 /*#__PURE__*/
 function () {
   function Light(engine) {
-    classCallCheck_default()(this, Light);
+    Light_classCallCheck(this, Light);
+
+    Light_defineProperty(this, "engine", void 0);
+
+    Light_defineProperty(this, "_position", new Vector3(0, 0, 0));
+
+    Light_defineProperty(this, "_range", 2000);
+
+    Light_defineProperty(this, "_color", new Uint8Array([255, 255, 255, 255]));
+
+    Light_defineProperty(this, "_index", -1);
+
+    Light_defineProperty(this, "_on", false);
+
+    Light_defineProperty(this, "_positionsWritten", false);
+
+    Light_defineProperty(this, "_rangeWritten", false);
 
     lightsCount++;
 
@@ -7391,39 +5154,42 @@ function () {
     }
 
     this.engine = engine;
-    this._position = [0, 0, 0];
     this._range = 2000;
-    this.color = new Uint8Array([255, 255, 255, 255]);
-    this._index = null;
     this._on = false;
-    this._positionsWritten = false;
-    this._rangeWritten = false;
   }
   /**
-   * @param {Number} value
+    Range of light
    */
 
 
-  createClass_default()(Light, [{
+  Light_createClass(Light, [{
     key: "setPosition",
+    value: function setPosition(value, y, z) {
+      if (value.constructor === Vector3) {
+        this._position = value;
+        return;
+      } else if (value.constructor === Array) {
+        this._position.set(value[0], value[1], value[2]);
 
-    /**
-     * 
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} z 
-     */
-    value: function setPosition(x, y, z) {
-      this.position = [x, y, z];
+        return;
+      } else {
+        this._position.set(value, y, z);
+      }
     }
+    /**
+     * Move light
+     * @param x 
+     * @param y 
+     * @param z 
+     */
+
   }, {
     key: "move",
     value: function move(x, y, z) {
-      this.position = [this.position[0] + x, this.position[1] + y, this.position[2] + z];
+      this.position.move(x, y, z);
     }
     /**
      * Set range for light
-     * @param {Number} value 
      */
 
   }, {
@@ -7433,20 +5199,20 @@ function () {
     }
     /**
      * Setting color of light
-     * @param {Number} r red value from 0 to 255.
-     * @param {Number} g green value from 0 to 255.
-     * @param {Number} b blue value from 0 to 255.
-     * @param {Number} a alpha value from 0 to 255.
+     * @param r red value from 0 to 255.
+     * @param g green value from 0 to 255.
+     * @param b blue value from 0 to 255.
+     * @param a alpha value from 0 to 255.
      * @public
      */
 
   }, {
     key: "setColorRGBA",
     value: function setColorRGBA(r, g, b, a) {
-      this.color = new Uint8Array([r, g, b, a]);
+      this._color = new Uint8Array([r, g, b, a]);
     }
     /**
-     * Adds this light to drawing.
+     * Turn light on. Light will be drawn if turned on.
      */
 
   }, {
@@ -7459,18 +5225,16 @@ function () {
       this.range = this._range;
     }
     /**
-     * Remove this light from drawing.
+     * Turn off light. Remove this light from drawing process.
      */
 
   }, {
     key: "off",
     value: function off() {
       var index = this._index;
-      this.engine.lights.removeAt(index);
-      this.engine.lightsPositions.removeAt(index * 3 + 0);
-      this.engine.lightsPositions.removeAt(index * 3 + 1);
-      this.engine.lightsPositions.removeAt(index * 3 + 2);
-      this.engine.lightsRanges.removeAt(index);
+      this.engine.lights.splice(index, 1);
+      this.engine.lightsPositions.splice(index * 3 + 0, 3);
+      this.engine.lightsRanges.splice(index, 1);
       this._positionsWritten = false;
       this._rangeWritten = false;
     }
@@ -7484,7 +5248,11 @@ function () {
       } else if (this._on) {
         this.engine.lightsRanges[this._index] = value;
       }
-    },
+    }
+    /**
+     * Range of light
+     */
+    ,
     get: function get() {
       return this._range;
     }
@@ -7494,180 +5262,198 @@ function () {
       this._position = value;
 
       if (this._on && !this._positionsWritten) {
-        this.engine.lightsPositions.push(value[0]);
-        this.engine.lightsPositions.push(value[1]);
-        this.engine.lightsPositions.push(value[2]);
+        this.engine.lightsPositions.push(value.x);
+        this.engine.lightsPositions.push(value.y);
+        this.engine.lightsPositions.push(value.z);
         this._positionsWritten = true;
       } else if (this._on) {
-        this.engine.lightsPositions[this._index * 3 + 0] = value[0];
-        this.engine.lightsPositions[this._index * 3 + 1] = value[1];
-        this.engine.lightsPositions[this._index * 3 + 2] = value[2];
+        this.engine.lightsPositions[this._index * 3 + 0] = value.x;
+        this.engine.lightsPositions[this._index * 3 + 1] = value.y;
+        this.engine.lightsPositions[this._index * 3 + 2] = value.z;
       }
     },
     get: function get() {
       return this._position;
     }
+    /**
+     * Sets position for object. Using another vector.
+     */
+
   }]);
 
   return Light;
 }();
-// CONCATENATED MODULE: ./src/sound/Sound.js
 
 
-var Sound_Sound =
+
+// CONCATENATED MODULE: ./src/materials/Material.ts
+function Material_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Material_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Material_createClass(Constructor, protoProps, staticProps) { if (protoProps) Material_defineProperties(Constructor.prototype, protoProps); if (staticProps) Material_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Material_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var Material_Material =
 /*#__PURE__*/
 function () {
-  /**
-   * 
-   * @param {String} src 
-   */
-  function Sound(src) {
-    var _this = this;
+  function Material(engine, object) {
+    Material_classCallCheck(this, Material);
 
-    classCallCheck_default()(this, Sound);
+    Material_defineProperty(this, "defaultDraw", null);
 
-    this.audios = [];
-    this._audioCount = 60;
-    var argIndex = 0;
+    Material_defineProperty(this, "engine", void 0);
 
-    for (var i = 0; i < this._audioCount; i++) {
-      this.audios.push(new Audio(arguments[argIndex]));
-      this.audios[i].volume = 0.1;
-      argIndex++;
+    Material_defineProperty(this, "_object", void 0);
 
-      if (argIndex === arguments.length) {
-        argIndex = 0;
-      }
-    }
+    Material_defineProperty(this, "webgl", void 0);
 
-    this.src = src;
-    this._playableAudioIndex = 0;
-    this._delay = 100;
-    this._canBePlayed = true;
-    this._canBePlayedInterval = setInterval(function () {
-      _this._canBePlayed = true;
-    }, this._delay);
-    this.playing = false;
+    Material_defineProperty(this, "shaderProgram", null);
+
+    this.engine = engine;
+    this._object = object || null;
+    this.webgl = engine.webgl;
   }
 
-  createClass_default()(Sound, [{
-    key: "play",
-    value: function play() {
-      if (this._canBePlayed) {
-        this.audios[this._playableAudioIndex].play();
+  Material_createClass(Material, [{
+    key: "setShaderProgram",
 
-        this._playableAudioIndex++;
+    /**
+     * Adds shader for material.
+     */
+    value: function setShaderProgram(shaderProgram) {
+      this.shaderProgram = shaderProgram;
+    }
+    /**
+     * Draw object method for this material.
+     * 
+     */
 
-        if (this._playableAudioIndex == this._audioCount) {
-          this._playableAudioIndex = 0;
-        }
-
-        this._canBePlayed = false;
-      }
+  }, {
+    key: "drawObject",
+    value: function drawObject(object) {
+      throw new Error("Method not implemented.");
     }
   }, {
-    key: "playLoop",
-    value: function playLoop() {
-      var _this2 = this;
-
-      clearInterval(this._loopInterval);
-      this._loopInterval = setInterval(function () {
-        _this2.play();
-      }, this._delay);
-      this.playing = true;
-    }
-  }, {
-    key: "playLoopRandom",
-    value: function playLoopRandom() {
-      var _this3 = this;
-
-      clearInterval(this._loopInterval);
-      this._loopInterval = setInterval(function () {
-        if (_this3._canBePlayed) {
-          _this3.audios[_this3._playableAudioIndex].play();
-
-          _this3._playableAudioIndex = Math.floor(Math.random() * _this3._audioCount);
-
-          if (_this3._playableAudioIndex == _this3._audioCount) {
-            _this3._playableAudioIndex = 0;
-          }
-
-          _this3._canBePlayed = false;
-        }
-      }, this._delay);
-      this.playing = true;
-    }
-  }, {
-    key: "stop",
-    value: function stop() {
-      clearInterval(this._loopInterval);
-      this._canBePlayed = false;
-      this.playing = false;
-
-      for (var i = 0; i < this.audios.length; i++) {
-        this.audios[i].stop();
-      }
-    }
-  }, {
-    key: "delay",
-    set: function set(value) {
-      var _this4 = this;
-
-      this._delay = value;
-      clearInterval(this._canBePlayedInterval);
-      this._canBePlayedInterval = setInterval(function () {
-        _this4._canBePlayed = true;
-      }, this._delay);
-    },
+    key: "object",
     get: function get() {
-      return this._delay;
+      return this._object;
+    },
+    set: function set(v) {
+      this._object = v;
+
+      if (v != null && v.texture instanceof ReflectionTexture_ReflectionTexture) {
+        v.texture.object = v;
+        v.update();
+        v.updateMatrixes();
+      }
     }
   }]);
 
-  return Sound;
+  return Material;
 }();
-// CONCATENATED MODULE: ./src/Bronze.js
-/* concated harmony reexport radToDeg */__webpack_require__.d(__webpack_exports__, "radToDeg", function() { return radToDeg; });
-/* concated harmony reexport degToRad */__webpack_require__.d(__webpack_exports__, "degToRad", function() { return degToRad; });
-/* concated harmony reexport isPowerOf2 */__webpack_require__.d(__webpack_exports__, "isPowerOf2", function() { return isPowerOf2; });
-/* concated harmony reexport abs */__webpack_require__.d(__webpack_exports__, "abs", function() { return abs; });
-/* concated harmony reexport Matrix */__webpack_require__.d(__webpack_exports__, "Matrix", function() { return Matrixes_Matrix; });
-/* concated harmony reexport unit */__webpack_require__.d(__webpack_exports__, "unit", function() { return unit; });
-/* concated harmony reexport translation */__webpack_require__.d(__webpack_exports__, "translation", function() { return translation; });
-/* concated harmony reexport rotationX */__webpack_require__.d(__webpack_exports__, "rotationX", function() { return rotationX; });
-/* concated harmony reexport rotationY */__webpack_require__.d(__webpack_exports__, "rotationY", function() { return rotationY; });
-/* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return rotationZ; });
-/* concated harmony reexport scaling */__webpack_require__.d(__webpack_exports__, "scaling", function() { return scaling; });
-/* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return multiply; });
-/* concated harmony reexport multiplyScalar */__webpack_require__.d(__webpack_exports__, "multiplyScalar", function() { return multiplyScalar; });
-/* concated harmony reexport vec3Multiply */__webpack_require__.d(__webpack_exports__, "vec3Multiply", function() { return vec3Multiply; });
-/* concated harmony reexport transformVector */__webpack_require__.d(__webpack_exports__, "transformVector", function() { return transformVector; });
-/* concated harmony reexport inverse */__webpack_require__.d(__webpack_exports__, "inverse", function() { return inverse; });
-/* concated harmony reexport transpose */__webpack_require__.d(__webpack_exports__, "transpose", function() { return transpose; });
-/* concated harmony reexport normalize */__webpack_require__.d(__webpack_exports__, "normalize", function() { return Vectors_normalize; });
-/* concated harmony reexport rotationX */__webpack_require__.d(__webpack_exports__, "rotationX", function() { return Vectors_rotationX; });
-/* concated harmony reexport rotationY */__webpack_require__.d(__webpack_exports__, "rotationY", function() { return Vectors_rotationY; });
-/* concated harmony reexport rotationZ */__webpack_require__.d(__webpack_exports__, "rotationZ", function() { return Vectors_rotationZ; });
-/* concated harmony reexport vecMultiply */__webpack_require__.d(__webpack_exports__, "vecMultiply", function() { return vecMultiply; });
-/* concated harmony reexport multiply */__webpack_require__.d(__webpack_exports__, "multiply", function() { return Vectors_multiply; });
-/* concated harmony reexport distance */__webpack_require__.d(__webpack_exports__, "distance", function() { return distance; });
+// CONCATENATED MODULE: ./src/materials/Glass.ts
+function Glass_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Glass_typeof = function _typeof(obj) { return typeof obj; }; } else { Glass_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Glass_typeof(obj); }
+
+function Glass_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Glass_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Glass_createClass(Constructor, protoProps, staticProps) { if (protoProps) Glass_defineProperties(Constructor.prototype, protoProps); if (staticProps) Glass_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Glass_possibleConstructorReturn(self, call) { if (call && (Glass_typeof(call) === "object" || typeof call === "function")) { return call; } return Glass_assertThisInitialized(self); }
+
+function Glass_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Glass_getPrototypeOf(o) { Glass_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Glass_getPrototypeOf(o); }
+
+function Glass_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Glass_setPrototypeOf(subClass, superClass); }
+
+function Glass_setPrototypeOf(o, p) { Glass_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Glass_setPrototypeOf(o, p); }
+
+
+
+/**
+ * Base class for materials which will attached to objects. 
+ * @param {Engine} engine
+ * @param {Object} [object]
+ */
+var Glass =
+/*#__PURE__*/
+function (_Material) {
+  Glass_inherits(Glass, _Material);
+
+  function Glass(engine, object) {
+    var _this;
+
+    Glass_classCallCheck(this, Glass);
+
+    _this = Glass_possibleConstructorReturn(this, Glass_getPrototypeOf(Glass).call(this, engine, object));
+    _this.shaderProgram = engine.shaders.reflection;
+    return _this;
+  }
+  /**
+   * Draws object using this material.
+   * @param {Object} object 
+   */
+
+
+  Glass_createClass(Glass, [{
+    key: "drawObject",
+    value: function drawObject(object) {
+      if (object.texture.loaded && object.loaded) {
+        this.shaderProgram.use();
+        this.webgl.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
+        this.webgl.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
+        this.webgl.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
+        this.webgl.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
+        this.webgl.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, object.vertexesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, object.normalsBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, object.texture.textureBlockLocation);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, object.matrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, object.worldMatrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.rotationMatrixLocation, false, object.rotationMatrix);
+        this.engine.webgl.uniform3fv(this.shaderProgram.worldCameraPositionLocation, new Float32Array(this.engine.camera.position.toArray()));
+        this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, object.vertexes.length / 3);
+      }
+    }
+  }]);
+
+  return Glass;
+}(Material_Material);
+
+
+
+// CONCATENATED MODULE: ./src/Bronze.ts
 /* concated harmony reexport Engine */__webpack_require__.d(__webpack_exports__, "Engine", function() { return Engine_Engine; });
 /* concated harmony reexport Camera */__webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera_Camera; });
 /* concated harmony reexport Controls */__webpack_require__.d(__webpack_exports__, "Controls", function() { return Controls_Controls; });
-/* concated harmony reexport Debugger */__webpack_require__.d(__webpack_exports__, "Debugger", function() { return Debugger_Debugger; });
+/* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI; });
+/* concated harmony reexport Debugger */__webpack_require__.d(__webpack_exports__, "Debugger", function() { return Debugger; });
+/* concated harmony reexport Texture */__webpack_require__.d(__webpack_exports__, "Texture", function() { return Texture_Texture; });
 /* concated harmony reexport SimpleTexture */__webpack_require__.d(__webpack_exports__, "SimpleTexture", function() { return SimpleTexture_SimpleTexture; });
-/* concated harmony reexport CubeTexture */__webpack_require__.d(__webpack_exports__, "CubeTexture", function() { return CubeTexture_CubeTexture; });
+/* concated harmony reexport CubeTexture */__webpack_require__.d(__webpack_exports__, "CubeTexture", function() { return CubeTexture; });
 /* concated harmony reexport ReflectionTexture */__webpack_require__.d(__webpack_exports__, "ReflectionTexture", function() { return ReflectionTexture_ReflectionTexture; });
-/* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect_Rect; });
-/* concated harmony reexport Cube */__webpack_require__.d(__webpack_exports__, "Cube", function() { return Cube_Cube; });
+/* concated harmony reexport Entity */__webpack_require__.d(__webpack_exports__, "Entity", function() { return Entity_Entity; });
+/* concated harmony reexport CollisionBox */__webpack_require__.d(__webpack_exports__, "CollisionBox", function() { return Entity_CollisionBox; });
+/* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return _Object; });
+/* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect; });
 /* concated harmony reexport Skybox */__webpack_require__.d(__webpack_exports__, "Skybox", function() { return Skybox_Skybox; });
-/* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
 /* concated harmony reexport Grid */__webpack_require__.d(__webpack_exports__, "Grid", function() { return Grid_Grid; });
-/* concated harmony reexport Map */__webpack_require__.d(__webpack_exports__, "Map", function() { return Map_Map; });
-/* concated harmony reexport UI */__webpack_require__.d(__webpack_exports__, "UI", function() { return UI_UI; });
-/* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
 /* concated harmony reexport Light */__webpack_require__.d(__webpack_exports__, "Light", function() { return Light_Light; });
-/* concated harmony reexport Sound */__webpack_require__.d(__webpack_exports__, "Sound", function() { return Sound_Sound; });
+/* concated harmony reexport Material */__webpack_require__.d(__webpack_exports__, "Material", function() { return Material_Material; });
+/* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass; });
+/* concated harmony reexport Mathematics */__webpack_require__.d(__webpack_exports__, "Mathematics", function() { return Mathematics; });
+/* concated harmony reexport Vector3 */__webpack_require__.d(__webpack_exports__, "Vector3", function() { return Vector3; });
+/* concated harmony reexport Matrixes */__webpack_require__.d(__webpack_exports__, "Matrixes", function() { return Matrixes4; });
+
 
 
 

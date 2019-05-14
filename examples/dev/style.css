@@ -1,0 +1,31 @@
+#bronze {
+    height: 100%;
+    width: 100%;
+    background: black;
+    position: absolute;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+}
+
+.debug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999999999;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    color: #2ec4b6;
+}
+.debug h2 {
+    margin: 0 0 5px 0;
+    font-family: 'Courier New', Courier, monospace
+}
+.debug p {
+    margin: 0;
+    font-weight: 500;
+    font-family: 'Courier New', Courier, monospace
+}
