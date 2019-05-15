@@ -87,6 +87,17 @@ export default class Light {
       return
     } else {
       this._position.set(value, y!, z!)
+      if (this._on && !this._positionsWritten) {
+        this.engine.lightsPositions.push(value)
+        this.engine.lightsPositions.push(y!)
+        this.engine.lightsPositions.push(z!)
+        this._positionsWritten = true
+      }
+      else if (this._on) {
+        this.engine.lightsPositions[this._index * 3 + 0] = value
+        this.engine.lightsPositions[this._index * 3 + 1] = y!
+        this.engine.lightsPositions[this._index * 3 + 2] = z!
+      }
     }
   }
 

@@ -12,12 +12,12 @@ window.addEventListener('resize', () => {
 })
 
 let camera = new Bronze.Camera()
-camera.setPosition(0, 800, 1500)
-camera.setRotation(-45, 0, 0)
-camera.setFieldOfView(90)
-camera.setCubeCollisionBox(100)
-engine.setCamera(camera)
-engine.setDrawingRange(100000000000000)
+    camera.setPosition(0, 800, 1500)
+    camera.setRotation(-45, 0, 0)
+    camera.setFieldOfView(90)
+    camera.setCubeCollisionBox(100)
+    engine.setCamera(camera)
+    engine.setDrawingRange(100000000000000)
 
 let controls = new Bronze.Controls(engine)
 
@@ -29,7 +29,7 @@ debug.addLog(debug.createLogView(), () => {
 
 
 let ui = new Bronze.UI(engine)
-// ui.appendDOMElementWithCustomProperties(debug.element, { width: 'auto%' })
+ui.appendDOMElement(debug.element)
 
 // Setting control function for camera
 controls.setSensitivity(1)
@@ -88,8 +88,6 @@ controls.setControlFunction(() => {
     // engine.globalLightPosition = [engine.camera.position[0], engine.camera.position[1] + 500, engine.camera.position[2] + 500]
 })
 
-// engine.globalLightPosition = [10000, 9000, 10000]
-// engine.globalLightRange = 20000
 engine.globalLightMinValue = 0.01
 let moonLight = new Bronze.Light(engine)
     moonLight.setPosition(10000, 9000, 10000)
@@ -107,11 +105,6 @@ let light = new Bronze.Light(engine)
     light.setPosition(2000, 500, 800)
     light.range = 2000
     light.on()
-
-
-// engine.globalLightPosition = [0, 500, 0]
-// engine.globalLightRange = 1200
-// engine.globalLightMinValue = 0.01
 
 // Loading textures
 let dirtTexture = new Bronze.SimpleTexture(engine)
@@ -161,12 +154,11 @@ let glass = new Bronze.Glass(engine)
 
 // Setting elements and objects 
 let grid = new Bronze.Grid(engine)
-grid.setTexture(gridTexture)
-grid.setCellSize(1000, 1000)
-let width = 50000, height = 50000
-grid.setSize(width, height)
-grid.setPosition(0, -5, 0)
-grid.setRotation(-90, 0, 0)
+    grid.setTexture(gridTexture)
+    grid.setCellSize(1000, 1000)
+    grid.setSize(50000, 50000)
+    grid.setPosition(0, -5, 0)
+    grid.setRotation(-90, 0, 0)
 
 let rect = new Bronze.Rect(engine)
     rect.setTexture(grassTexture)
@@ -259,11 +251,14 @@ let cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
     cola2.setTexture(colaTexture)
     cola2.setPosition(100, 100, -1400)
-    cola2.name = "box"
+    cola2.name = "UI ELEMENT BOX"
     cola2.loadFromObj("assets/objects/cola.obj")
     cola2.setRotationPoint(0, 0, 0)
     cola2.setRotation(90, 25, 0)
     cola2.scale(20, 20, 20)
+    // cola2.animate(60, (object) => {
+    //     object.rotate(1, 2, 3)
+    // })
 
 
 let cubeObj = new Bronze.Object(engine)
@@ -289,7 +284,17 @@ let kitten = new Bronze.Object(engine)
     kitten.animate(60, (object) => {
         object.rotate(1, 2, 3)
     })
+let uiKitten = new Bronze.Object(engine)
+    uiKitten.UIElement = true
+    uiKitten.setPosition(90, 0, -100)
+    uiKitten.name = "UI ELEMENT BOX"
+    uiKitten.loadFromObj("assets/objects/kitten.obj")
+    uiKitten.setRotationPoint(0, 0, 0)
+    uiKitten.setRotation(90, 25, 0)
+    uiKitten.scale(20, 20, 20)
+    uiKitten.animate(60, (object) => {
+        object.rotate(1, 2, 3)
+    })
 
 // Run engine
 engine.run()
-// engine.stop()

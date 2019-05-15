@@ -42,10 +42,6 @@ export default abstract class Texture {
       ])
     } else if (r.constructor === Number && g != undefined && b != undefined && a != undefined) {
       this.color = new Uint8Array([Number(r), g, b, a])
-      let webgl = this.engine.webgl
-      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation)
-      webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture)
-      webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
     } else {
       new BronzeError('Wrong color')
       return

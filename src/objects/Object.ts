@@ -138,8 +138,8 @@ export default class Object extends Entity {
               this.textureCoordinates.push(textureCoordinate)
             })
           } else {
-            this.textureCoordinates!.push(0)
-            this.textureCoordinates!.push(0)
+            this.textureCoordinates!.push(1)
+            this.textureCoordinates!.push(1)
           }
 
 

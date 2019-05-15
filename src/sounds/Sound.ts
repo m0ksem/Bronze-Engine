@@ -86,7 +86,10 @@ export class Sound {
     this._canBePlayed = false;
     this.playing = false;
     for (let i = 0; i < this.audios.length; i++) {
-      this.audios[i].stop();
+      const audio = this.audios[i]
+      if (audio.stop) {
+        audio.stop()
+      }
     }
   }
 }

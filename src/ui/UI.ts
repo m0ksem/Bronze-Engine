@@ -3,6 +3,7 @@ import { Engine } from "../Engine";
 import { Entity } from "../objects/Entity";
 import { Texture } from "../textures/Texture";
 import ShaderProgram from "../webgl/ShaderProgram";
+import SimpleTexture from "../textures/SimpleTexture";
 
 /**
  * @class
@@ -26,7 +27,7 @@ export default class UI {
   private _webglTexture: any;
   private frameBuffer: any;
   Screen = Screen;
-  images: uiHTMLElement[] = [];
+  images: uiHTMLImage[] = [];
 
   constructor(engine: Engine) {
     this.width = engine.div.offsetWidth;
@@ -135,19 +136,32 @@ export default class UI {
   }
 
 
-  addImage(image: HTMLImageElement, width: number, height: number, x: number, y: number) {
+  addImage(image: HTMLImageElement, width: number, height: number, x: number, y: number): uiHTMLImage {
     image.width = width
     image.height = height
-    this.images.push(new uiHTMLElement('', image))
+    let uiHTML = new uiHTMLImage('', image, x, y, width, height)
+    this.images.push(uiHTML)
 
-    return image
+    return this.images[this.images.length - 1]
   }
 
-  hide (element: HTMLElement) {
+  hide (element: HTMLElement | SimpleTexture | uiHTMLElement) {
+    if (element instanceof SimpleTexture) {
+      element = element.image
+    } else if (element instanceof uiHTMLElement) {
+      element.hidden = true
+      element = element.el
+    }
     element.style.display = 'none'
   }
 
-  show (element: HTMLElement) {
+  show (element: HTMLElement | SimpleTexture) {
+    if (element instanceof SimpleTexture) {
+      element = element.image
+    } else if (element instanceof uiHTMLElement) {
+      element.hidden = false
+      element = element.el
+    }
     element.style.display = 'block'
   }
 
@@ -176,6 +190,15 @@ export default class UI {
     webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
 
     webgl.viewport(0, 0, this.engine.width, this.engine.height);
+    this.context.clearRect(0, 0, this.width, this.height)
+    this.images.forEach(img => {
+      if (!img.hidden) {
+        if (img.el instanceof HTMLImageElement) {
+          let image: HTMLImageElement = img.el
+          this.context.drawImage(image, img.x, img.y, img.width, img.height)
+        }
+      }
+    })
 
     this.objects.forEach(object => {
       object.draw();
@@ -250,6 +273,7 @@ class Screen {
 export class uiHTMLElement {
   public name: string;
   public el: HTMLElement;
+  public hidden: boolean = false
 
   constructor(name: string, el: HTMLElement) {
     this.name = name;
@@ -258,10 +282,27 @@ export class uiHTMLElement {
 
   hide() {
     this.el.style.display = "none";
+    this.hidden = true
   }
 
   show() {
     this.el.style.display = "block";
+    this.hidden = false
+  }
+}
+
+export class uiHTMLImage extends uiHTMLElement {
+  public x: number = 0
+  public y: number = 0
+  public width: number = 0
+  public height: number = 0
+
+  constructor (name: string, el: HTMLImageElement, x: number, y: number, width: number, height: number) {
+    super(name, el)
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
   }
 }
 
