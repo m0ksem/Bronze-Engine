@@ -26,6 +26,7 @@ export default class UI {
   private _webglTexture: any;
   private frameBuffer: any;
   Screen = Screen;
+  images: uiHTMLElement[] = [];
 
   constructor(engine: Engine) {
     this.width = engine.div.offsetWidth;
@@ -88,6 +89,13 @@ export default class UI {
     this.frameBuffer = this.webgl.createFramebuffer();
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, this.frameBuffer);
     this.webgl.framebufferTexture2D(this.webgl.FRAMEBUFFER, this.webgl.COLOR_ATTACHMENT0, this.webgl.TEXTURE_2D, this._webglTexture, 0);
+
+    const depthBuffer = this.webgl.createRenderbuffer();
+    this.webgl.bindRenderbuffer(this.webgl.RENDERBUFFER, depthBuffer);
+
+    this.webgl.renderbufferStorage(this.webgl.RENDERBUFFER, this.webgl.DEPTH_COMPONENT16, this.width, this.height);
+    this.webgl.framebufferRenderbuffer(this.webgl.FRAMEBUFFER, this.webgl.DEPTH_ATTACHMENT, this.webgl.RENDERBUFFER, depthBuffer);
+
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
   }
 
@@ -126,6 +134,23 @@ export default class UI {
     return element;
   }
 
+
+  addImage(image: HTMLImageElement, width: number, height: number, x: number, y: number) {
+    image.width = width
+    image.height = height
+    this.images.push(new uiHTMLElement('', image))
+
+    return image
+  }
+
+  hide (element: HTMLElement) {
+    element.style.display = 'none'
+  }
+
+  show (element: HTMLElement) {
+    element.style.display = 'block'
+  }
+
   /**
    * Draws image on canvas. Read about addImage
    * @param image
@@ -145,6 +170,8 @@ export default class UI {
     const webgl = this.engine.webgl;
 
     webgl.bindFramebuffer(webgl.FRAMEBUFFER, this.frameBuffer);
+    webgl.enable(this.webgl.CULL_FACE);
+    webgl.enable(this.webgl.DEPTH_TEST);
     webgl.clearColor(0, 0, 0, 0);
     webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
 
@@ -172,7 +199,6 @@ class Screen {
   shaderProgram: ShaderProgram;
   vertexes: number[];
   textureCoords: number[];
-  normals: number[];
   vertexesBuffer: any;
   coordsBuffer: any;
   normalBuffer: any;
@@ -180,13 +206,14 @@ class Screen {
   constructor(engine: Engine) {
     this.webgl = engine.webgl;
     this.engine = engine;
-    this.shaderProgram = engine.shaders.default;
+    this.shaderProgram = engine.shaders.screen;
+
+    this.webgl.enable(this.webgl.CULL_FACE);
+    this.webgl.enable(this.webgl.DEPTH_TEST);
 
     this.vertexes = [-1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, -1];
 
     this.textureCoords = [0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
-
-    this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
 
     this.vertexesBuffer = this.webgl.createBuffer();
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
@@ -195,10 +222,6 @@ class Screen {
     this.coordsBuffer = this.webgl.createBuffer();
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.coordsBuffer);
     this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoords), this.webgl.STATIC_DRAW);
-
-    this.normalBuffer = this.webgl.createBuffer();
-    this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalBuffer);
-    this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
   }
 
   setTexture(texture: Texture) {
@@ -218,15 +241,7 @@ class Screen {
     this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.coordsBuffer);
     this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
 
-    this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
-    this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.normalBuffer);
-    this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
-
-    let unitMatrix = unit();
     this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture._textureBlockLocation);
-    this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, unitMatrix);
-    this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, unitMatrix);
-    this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, unitMatrix);
 
     this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 3);
   }

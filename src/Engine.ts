@@ -120,6 +120,7 @@ export class Engine {
 
   public appendCanvas() {
     this.div.appendChild(this.canvas);
+    this.onCanvasResized()
   }
 
   /**
@@ -153,13 +154,24 @@ export class Engine {
   /**
    * Removes objects if its exist
    */
-  public removeObject(object: Entity): void {
-    let index = this.objects.indexOf(object);
-    if (index == -1) {
-      console.warn("Objects", this.objects);
-      new BronzeError("Object not found");
+  public removeObject(object: Entity): Entity | null {
+    let index: number = -1
+    if (object.texture.alpha) {
+      index = this._objectsWithAlpha.indexOf(object);
+      if (index == -1) {
+        console.warn("Objects", this.objects);
+        new BronzeError("Object not found");
+      }
+      return this._objectsWithAlpha.splice(index, 1)[0];
+    } else {
+      index = this._objectsWithoutAlpha.indexOf(object);
+      if (index == -1) {
+        console.warn("Objects", this.objects);
+        new BronzeError("Object not found");
+      }
+      return this._objectsWithoutAlpha.splice(index, 1)[0];
     }
-    this.objects.splice(index, 1);
+    return null
   }
 
   public addOnObjectSelectedListener(callback: Function): void {

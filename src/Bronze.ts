@@ -9,6 +9,7 @@ export { UI } from "./ui/UI";
 export { Debugger } from "./debug/Debugger";
 
 export { Texture } from "./textures/Texture";
+export { ColorTexture } from "./textures/ColorTexture";
 export { SimpleTexture } from "./textures/SimpleTexture";
 export { CubeTexture } from "./textures/CubeTexture";
 export { ReflectionTexture } from "./textures/ReflectionTexture";
@@ -23,5 +24,7 @@ export { Light } from "./lights/Light";
 
 export { Material } from "./materials/Material";
 export { Glass } from "./materials/Glass";
+
+export { Sound } from './sounds/Sound'
 
 export { Mathematics, Vector3, Matrixes };

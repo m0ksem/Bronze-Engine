@@ -9,6 +9,8 @@ import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragmen
 import reflectionVertexShaderSource from "./shaders/reflection-texture/vertex-shader.glsl";
 import skyboxFragmentShaderSource from "./shaders/skybox/fragment-shader.glsl";
 import skyboxVertexShaderSource from "./shaders/skybox/vertex-shader.glsl";
+import screenFragmentShaderSource from "./shaders/screen/fragment-shader.glsl";
+import screenVertexShaderSource from "./shaders/screen/vertex-shader.glsl";
 
 export class Shaders {
   /**
@@ -37,6 +39,8 @@ export class Shaders {
     this.addProgram("grid", gridVertexShaderSource, gridFragmentShaderSource, options);
     this.addProgram("reflection", reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
     this.addProgram("skybox", skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
+    this.addProgram("screen", screenVertexShaderSource, screenFragmentShaderSource, options);
+
 
     this.default.use();
     this.webGL.enable(this.webGL.BLEND);

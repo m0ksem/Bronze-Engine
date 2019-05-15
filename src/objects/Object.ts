@@ -160,7 +160,6 @@ export default class Object extends Entity {
     this.textureCoordinatesBuffer = this.webgl.createBuffer()
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer)
     this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW)
-
     this.normalsBuffer = this.webgl.createBuffer();
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
     this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);

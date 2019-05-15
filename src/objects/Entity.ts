@@ -1,22 +1,11 @@
 import { Engine } from "../Engine";
 import { Camera } from "../Camera";
 import { Texture } from "../textures/Texture";
-import { SimpleTexture } from "../textures/SimpleTexture";
 import { Vector3 } from "../math/Vector3";
 import { BronzeError } from "../debug/Error";
 import ShaderProgram from "../webgl/ShaderProgram";
 import { degToRad } from "../math/Mathematics";
-import {
-  translation,
-  rotation,
-  scaling,
-  perspective,
-  projection,
-  multiply,
-  inverse,
-  transformVector,
-  unit
-} from "../math/Matrixes4";
+import { translation, rotation, scaling, perspective, multiply, transformVector, unit, rotationY, rotationZ } from "../math/Matrixes4";
 
 export default abstract class Entity {
   public name: string = "Just entity :)";
@@ -31,6 +20,7 @@ export default abstract class Entity {
   public matrix: number[] = unit();
   public rotationMatrix: number[] = unit();
   public worldMatrix: number[] = unit();
+  public uiMatrix: number[] | null = null;
   public texture: Texture;
   public rotationInDeg: Vector3 = new Vector3(0, 0, 0);
   public rotation: Vector3 = new Vector3(0, 0, 0);
@@ -53,7 +43,7 @@ export default abstract class Entity {
 
   private _animationInterval: any;
   private _position: Vector3 = new Vector3(0, 0, 0);
-  
+
   constructor(engine: Engine) {
     this._engine = engine;
     this.webgl = engine.webgl;
@@ -76,11 +66,7 @@ export default abstract class Entity {
     if (!this._UIElement) {
       this._position = v;
     } else {
-      this._position.set(
-        (this.engine.width / 100) * v.x,
-        (-this.engine.height / 100) * v.y,
-        v.z
-      );
+      this._position.set((this.engine.width / 100) * v.x, (-this.engine.height / 100) * v.y, v.z);
     }
   }
 
@@ -115,9 +101,8 @@ export default abstract class Entity {
     current: {
       max: Vector3;
       min: Vector3;
-    }
-  } 
-  {
+    };
+  } {
     return {
       base: {
         max: this.maxBaseSize,
@@ -147,9 +132,17 @@ export default abstract class Entity {
     if (value.constructor === Vector3) {
       this.position = value;
     } else if (value.constructor === Array) {
-      this.position.set(value[0], value[1], value[2]);
+      if (!this.UIElement) {
+        this._position.set(value[0], value[1], value[2]);
+      } else {
+        this._position.set((this.engine.width / 100) * value[0], (-this.engine.height / 100) * value[1], value[2]);
+      }
     } else {
-      this.position.set(value, y!, z!);
+      if (!this.UIElement) {
+        this._position.set(value, y!, z!);
+      } else {
+        this._position.set((this.engine.width / 100) * value, (-this.engine.height / 100) * y!, z!);
+      }
     }
   }
 
@@ -233,16 +226,8 @@ export default abstract class Entity {
    */
   public scale(x: number, y: number, z: number) {
     this.scaling.set(x, y, z);
-    this.maxSize.set(
-      this.maxBaseSize.x * x,
-      this.maxBaseSize.y * y,
-      this.maxBaseSize.z * z
-    );
-    this.minSize.set(
-      this.minBaseSize.x * x,
-      this.minBaseSize.y * y,
-      this.minBaseSize.z * z
-    );
+    this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, this.maxBaseSize.z * z);
+    this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
   }
 
   /**
@@ -256,98 +241,56 @@ export default abstract class Entity {
     y = y / this.maxBaseSize.y;
     z = z / this.maxBaseSize.z;
     this.scaling.set(x, y, z);
-    this.maxSize.set(
-      this.maxBaseSize.x * x,
-      this.maxBaseSize.y * y,
-      this.maxBaseSize.z * z
-    );
-    this.minSize.set(
-      this.minBaseSize.x * x,
-      this.minBaseSize.y * y,
-      this.minBaseSize.z * z
-    );
+    this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, this.maxBaseSize.z * z);
+    this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
   }
 
   public setTexture(texture: Texture) {
     this.texture = texture;
   }
 
-  public checkCollision(
-    position: Vector3,
-    moving: Vector3,
-    movingObjectCollisionBox: CollisionBox,
-    callback: Function
-  ) {}
+  public checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function) {}
 
   public useShader(shader: ShaderProgram) {
     this.shaderProgram = shader;
   }
 
   public updateMatrixes() {
-    let world = inverse(
-      translation(
-        this.rotationPoint.x,
-        this.rotationPoint.y,
-        this.rotationPoint.z
-      )
-    );
-    world = multiply(
-      world,
-      translation(this._position.x, this._position.y, this._position.z)
-    );
-    if (!this.verticalAlign) {
-      world = multiply(
-        world,
-        translation(0, -(this.maxSize.y - this.minSize.y) / 2, 0)
-      );
-    }
     let rot = rotation(this.rotation.x, this.rotation.y, this.rotation.z);
-    world = multiply(world, rot);
-    world = multiply(
-      world,
-      translation(
-        this.rotationPoint.x,
-        this.rotationPoint.y,
-        this.rotationPoint.z
-      )
-    );
-    world = multiply(
-      world,
-      translation(
+    let world = translation(this._position.x, this._position.y, this._position.z);
+    if (!this.verticalAlign) {
+      world = multiply(world, translation(0, -(this.maxSize.y - this.minSize.y) / 2, 0));
+    }
+    let afterRotation = rot;
+    afterRotation = multiply(afterRotation, translation(
         -this.minSize.x - (this.maxSize.x - this.minSize.x) / 2,
         -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2,
         -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2
-      )
-    );
-    world = multiply(
-      world,
-      scaling(this.scaling.x, this.scaling.y, this.scaling.z)
-    );
+      ))
+    afterRotation = multiply(afterRotation, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+    if (this.UIElement) {
+      this.uiMatrix = multiply(world, afterRotation)
+      world = multiply(this.camera!.matrix, rot)
+    } else {
+      world = multiply(world, afterRotation)
+    }
 
-    this.worldMatrix = world;
+    this.worldMatrix = world
+
     this.rotationMatrix = rot;
   }
 
   public update() {
     if (!this.hidden) {
-      let matrix;
+      let matrix = perspective(this.engine.camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera!.range);
       if (!this.UIElement) {
-        matrix = perspective(
-          this.engine.camera!.fieldOfViewRad,
-          this.engine.width,
-          this.engine.height,
-          1,
-          this.engine.camera!.range
-        );
         matrix = multiply(matrix, this.engine.camera!.inverseMatrix);
+        matrix = multiply(matrix, this.worldMatrix);
       } else {
-        matrix = projection(
-          this.engine.camera!.fieldOfViewRad,
-          this.engine.width
-        );
+        matrix = multiply(matrix, this.uiMatrix!);
+  
+        this.rotationMatrix = multiply(this.engine.camera!.rotationMatrix, this.rotationMatrix)
       }
-
-      matrix = multiply(matrix, this.worldMatrix);
 
       this.matrix = matrix;
     }
@@ -356,79 +299,24 @@ export default abstract class Entity {
   public draw() {
     if (!this.hidden) {
       this.shaderProgram.use();
-      this.engine.webgl.enableVertexAttribArray(
-        this.shaderProgram.positionLocation
-      );
-      this.engine.webgl.bindBuffer(
-        this.engine.webgl.ARRAY_BUFFER,
-        this.vertexesBuffer
-      );
-      this.engine.webgl.vertexAttribPointer(
-        this.shaderProgram.positionLocation,
-        3,
-        this.engine.webgl.FLOAT,
-        false,
-        0,
-        0
-      );
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
 
-      this.engine.webgl.enableVertexAttribArray(
-        this.shaderProgram.texcoordLocation
-      );
-      this.engine.webgl.bindBuffer(
-        this.engine.webgl.ARRAY_BUFFER,
-        this.textureCoordinatesBuffer
-      );
-      this.engine.webgl.vertexAttribPointer(
-        this.shaderProgram.texcoordLocation,
-        2,
-        this.engine.webgl.FLOAT,
-        false,
-        0,
-        0
-      );
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
 
-      this.engine.webgl.enableVertexAttribArray(
-        this.shaderProgram.normalLocation
-      );
-      this.engine.webgl.bindBuffer(
-        this.engine.webgl.ARRAY_BUFFER,
-        this.normalsBuffer
-      );
-      this.engine.webgl.vertexAttribPointer(
-        this.shaderProgram.normalLocation,
-        3,
-        this.engine.webgl.FLOAT,
-        false,
-        0,
-        0
-      );
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.normalsBuffer);
+      this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
 
-      this.engine.webgl.uniform1i(
-        this.shaderProgram.textureLocation,
-        this.texture.textureBlockLocation
-      );
-      this.engine.webgl.uniformMatrix4fv(
-        this.shaderProgram.matrixLocation,
-        false,
-        this.matrix
-      );
-      this.engine.webgl.uniformMatrix4fv(
-        this.shaderProgram.objectRotationLocation,
-        false,
-        this.rotationMatrix
-      );
-      this.engine.webgl.uniformMatrix4fv(
-        this.shaderProgram.worldMatrixLocation,
-        false,
-        this.worldMatrix
-      );
+      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
 
-      this.engine.webgl.drawArrays(
-        this.engine.webgl.TRIANGLES,
-        0,
-        this.vertexes.length / 3
-      );
+      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 3);
     }
   }
 
