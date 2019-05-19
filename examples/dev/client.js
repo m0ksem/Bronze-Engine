@@ -20,11 +20,25 @@ let camera = new Bronze.Camera()
     engine.setDrawingRange(100000000000000)
 
 let controls = new Bronze.Controls(engine)
+controls.lockPointer(false)
 
 let debug = new Bronze.Debugger(engine)
 debug.setElement(document.getElementById('debug'))
 debug.addLog(debug.createLogView(), () => {
     return 'Status ' + engine.status
+})
+debug.addLog(debug.createLogView(), () => {
+    return 'Mouse position ' + controls.mouse.x + ' ' + controls.mouse.y
+})
+debug.addLog(debug.createLogView(), () => {
+    return 'Mouse movement ' + controls.mouse.movement.x + ' ' + controls.mouse.movement.y
+})
+debug.addLog(debug.createLogView(), () => {
+    if (engine.selectedObject) {
+        return 'Selected object name ' + engine.selectedObject.name
+    } else {
+        return 'No objects selected'
+    }
 })
 
 
@@ -33,7 +47,7 @@ ui.appendDOMElement(debug.element)
 
 // Setting control function for camera
 controls.setSensitivity(1)
-controls.lockPointer(true)
+controls.lockPointer(false)
 
 controls.setControlFunction(() => {
     // All coords
@@ -73,7 +87,11 @@ controls.setControlFunction(() => {
     if (controls.mouse.buttons[2] || controls.touch.actionBeforeMove == 'long click') {
         if (engine.selectedObject != null) {
             const object = engine.selectedObject
-            object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, -controls.mouse.movement.y)
+            if (!controls.keys[17]) {
+                object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, controls.mouse.movement.y)
+            } else {
+                object.moveRelativeToTheCamera(0, -controls.mouse.movement.y, 0)
+            }
         }
     }
 
@@ -263,27 +281,49 @@ let cola2 = new Bronze.Object(engine)
 
 let cubeObj = new Bronze.Object(engine)
     cubeObj.setPosition(0, 15, 1500)
-    cubeObj.name = "cube on ground"
+    cubeObj.name = "cube"
     cubeObj.loadFromObj("assets/objects/cube.obj")
     cubeObj.setRotationPoint(0, 0, 0)
     cubeObj.scale(200, 200, 200)
-    cubeObj.setTexture(colaTexture)
-    cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.0)', 1024, 1))
-    cubeObj.useMaterial(glass)
+    cubeObj.setTexture(rjunTexture)
+    // cubeObj.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.0)', 1024, 1))
+    // cubeObj.useMaterial(glass)
     cubeObj.alpha = true
-    cubeObj.verticalAlign = false
+    // cubeObj.verticalAlign = false
 
 let kitten = new Bronze.Object(engine)
     kitten.setTexture(engine.noTexture)
     kitten.setPosition(1500, 100, 0)
-    kitten.name = "box"
+    kitten.name = "Kitten"
     kitten.loadFromObj("assets/objects/kitten.obj")
     kitten.setRotation(0, 180, 0)
     kitten.scale(100, 100, 100)
     kitten.verticalAlign = false
-    kitten.animate(60, (object) => {
-        object.rotate(1, 2, 3)
-    })
+    // kitten.animate(60, (object) => {
+    //     object.rotate(1, 2, 3)
+    // })
+    kitten.selectable = true
+
+function objectToString(obj, level = 0) {
+    let str = '{\n'
+    let keys = Object.keys(obj)
+    keys.forEach(key => {
+        let item = obj[key]
+        if (item.constructor instanceof Array) {
+            str += '\n' + objectToString(item)
+        } else if (item.constructor instanceof Number ||
+                   item.constructor instanceof String) {
+            str += key + ': ' + obj[key] + ',\n'
+        } else if (item.constructor instanceof Object) {
+            str += '\n' + objectToString(item)
+        } else {
+            str += key + ': ' + obj[key] + ',\n'
+        }
+    });
+    str += '}'
+    return str
+}
+
 let uiKitten = new Bronze.Object(engine)
     uiKitten.UIElement = true
     uiKitten.setPosition(90, 0, -100)

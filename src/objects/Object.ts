@@ -166,14 +166,14 @@ export default class Object extends Entity {
 
     this.maxBaseSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0])
     this.minBaseSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1])
-    this.maxSize = this.maxBaseSize
-    this.minSize = this.minBaseSize
+    this.maxSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0])
+    this.minSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1])
     this.maxSize.scale(this.scaling.x, this.scaling.y, this.scaling.z)
     this.minSize.scale(this.scaling.x, this.scaling.y, this.scaling.z)
 
-    this.collisionBox.maxPoint = this.maxSize
-    this.collisionBox.minPoint = this.minSize
-
+    this.collisionBox.maxPoint = this.maxBaseSize
+    this.collisionBox.minPoint = this.minBaseSize
+    
     this.engine.objectLoaded(this)
 
     this.hidden = false

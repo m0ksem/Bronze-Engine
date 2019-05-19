@@ -1,6 +1,6 @@
-import Mathematics from "./math/Mathematics";
-import Vector3 from "./math/Vector3";
-import Matrixes from "./math/Matrixes4";
+import * as Mathematics from "./math/Mathematics";
+import * as Vector3 from "./math/Vector3";
+import * as Matrixes4 from "./math/Matrixes4";
 
 export { Engine } from "./Engine";
 export { Camera } from "./Camera";
@@ -27,4 +27,4 @@ export { Glass } from "./materials/Glass";
 
 export { Sound } from './sounds/Sound'
 
-export { Mathematics, Vector3, Matrixes };
+export { Mathematics, Vector3, Matrixes4 };

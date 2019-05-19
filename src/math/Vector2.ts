@@ -82,6 +82,15 @@ export function distance(vector1: Vector2, vector2: Vector2): number {
   return Math.sqrt(squareSum)
 }
 
+export function length(vector: {x: number, y: number}): number {
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+
+export function angleBetweenVectors(vector1: { x: number, y: number }, vector2: { x: number, y: number }): number {
+  let mul = vector1.x * vector2.x + vector1.y * vector2.y
+  return mul / (length(vector1) * length(vector2))
+}
+
 export {
   Vector2
 }

@@ -33,6 +33,7 @@ export default class Light {
     this._range = value
     if (this._on && !this._rangeWritten) {
       this.engine.lightsRanges.push(value)
+      this._rangeWritten = true
     } else if (this._on) {
       this.engine.lightsRanges[this._index] = value
     }

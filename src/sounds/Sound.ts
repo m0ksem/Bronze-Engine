@@ -8,22 +8,36 @@ export class Sound {
   private _canBePlayed: boolean = true;
   private _canBePlayedInterval: number | null;
   private _loopInterval: number = -1;
+  private _volume = 0.1
 
   /**
    * Simple sound object. 
    * @param  src
    */
-  constructor(src: string) {
+  constructor(src: string | Array<string>, audioCount = 60, volume = 0.1) {
     this.audios = [];
 
-    this._audioCount = 60;
+    this._audioCount = audioCount;
+
+    let sources: string[]
+
+    if (!(src instanceof Array)) {
+      sources = []
+      for (let i = 0; i < audioCount; i++) {
+        sources.push(src)        
+      }
+    } else if (src instanceof Array) {
+      sources = src
+    } else {
+      return
+    }
 
     let argIndex = 0;
     for (let i = 0; i < this._audioCount; i++) {
-      this.audios.push(new Audio(arguments[argIndex]));
-      this.audios[i].volume = 0.1;
+      this.audios.push(new Audio(sources[argIndex]));
+      this.audios[i].volume = volume;
       argIndex++;
-      if (argIndex === arguments.length) {
+      if (argIndex === src.length) {
         argIndex = 0;
       }
     }
@@ -34,6 +48,19 @@ export class Sound {
 
     this.playing = false;
   }
+
+  
+  public set volume(v : number) {
+    for (let i = 0; i < this._audioCount; i++) {
+      this.audios[i].volume = v;
+    }
+  }
+  
+  
+  public get volume(): number {
+    return  this._volume
+  }
+  
 
   set delay(value) {
     this._delay = value;

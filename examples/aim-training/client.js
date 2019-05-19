@@ -42,12 +42,12 @@ skyboxTexture.setImagesFromPath(
   "./assets/texture/skybox/posz.jpg",
   "./assets/texture/skybox/negz.jpg"
 );
-let shotSound = new Bronze.Sound("./assets/sounds/shot.wav");
+let shotSound = new Bronze.Sound("./assets/sounds/shot.wav", 60);
 let screamSound = new Bronze.Sound(
-  "./assets/sounds/scream1.mp3",
+  ["./assets/sounds/scream1.mp3",
   "./assets/sounds/scream2.mp3",
   "./assets/sounds/scream4.mp3",
-  "./assets/sounds/scream4.mp3"
+  "./assets/sounds/scream4.mp3"]
 );
 screamSound.delay = 500;
 
@@ -123,6 +123,7 @@ for (let i = 0; i < enemiesCount; i++) {
   object.hits = 0;
   object.friendly = false;
   object.verticalAlign = false;
+  object.selectable = true
 
   object.speed = {
     x: Math.floor(Math.random() * (10 + 15) - 10),
@@ -159,6 +160,7 @@ for (let i = 0; i < 30; i++) {
   object.hits = 0;
   object.friendly = true;
   object.verticalAlign = false;
+  object.selectable = true
 
   object.speed = {
     x: Math.floor(Math.random() * (10 + 15) - 10),
@@ -185,6 +187,7 @@ controls.setControlFunction(() => {
     if (!screamSound.playing) {
       screamSound.playLoopRandom();
     }
+
     if (engine.selectedObject != null) {
       speedMultiply += 0.5;
       if (speedMultiply > 4) {

@@ -165,6 +165,15 @@ export function distance(vector1: Vector3, vector2: Vector3): number {
   return Math.sqrt(squareSum)
 }
 
+export function length(vector: Vector3): number {
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+}
+
+export function angleBetweenVectors(vector1: Vector3, vector2: Vector3): number {
+  let mul = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z
+  return mul / (length(vector1) * length(vector2))
+}
+
 export {
   Vector3
 }

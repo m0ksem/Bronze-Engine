@@ -26,6 +26,7 @@ export class Engine {
   public noTexture: ColorTexture;
   public reflections: boolean = false;
   public status: string = 'Creating';
+  public selectedObject: Entity | null = null;
 
   readonly shaders: Shaders;
   readonly textures: Array<Texture> = [];
@@ -40,7 +41,6 @@ export class Engine {
   private _loadedObjectsCount: number = 0;
   private _loadedTexturesCount: number = 0;
   private _onResourcesLoadedHandlers: Array<Function> = [];
-  private _selectedObject: Entity | null = null;
   private _onObjectSelectedHandlers: Array<Function> = [];
   private _running: boolean = false;
   private _onRun: Array<Function> = [];
@@ -108,10 +108,6 @@ export class Engine {
 
   public get objectsLoaded(): boolean {
     return this._objectsLoaded;
-  }
-
-  public get selectedObject(): Entity | null {
-    return this._selectedObject;
   }
 
   public get running(): boolean {
@@ -212,7 +208,7 @@ export class Engine {
     this._loadedObjectsCount += 1;
     object.loaded = true;
 
-    if (this.running && this._loadedObjectsCount == objectsCount) {
+    if (this.running && this._loadedObjectsCount >= objectsCount) {
       this._objectsLoaded = true;
       if (this._texturesLoaded) {
         this._resourcesLoaded = true;
@@ -349,14 +345,17 @@ export class Engine {
   }
 
   private update() {
-    this._selectedObject = null;
-
     if (this.camera && this.controls && this.controls.controlFunction) {
       this.camera.moving.set(0, 0, 0);
       this.controls.controlFunction();
+      if (this.debugger != null) {
+        this.debugger.updateInfo();
+      }
       this.controls.mouse.movement.x = 0;
       this.controls.mouse.movement.y = 0;
     }
+
+    this.selectedObject = null;
 
     for (let i = 0; i < this._objectsWithoutAlpha.length; i++) {
       const object = this._objectsWithoutAlpha[i];
@@ -429,10 +428,6 @@ export class Engine {
     });
 
     this.ui!.drawUI();
-
-    if (this.debugger != null) {
-      this.debugger.updateInfo();
-    }
   }
 
   private infoConsoleLog() {
