@@ -108,7 +108,7 @@ __webpack_require__.d(Mathematics_namespaceObject, "isPowerOf2", function() { re
 __webpack_require__.d(Mathematics_namespaceObject, "default", function() { return Mathematics; });
 var Vector3_namespaceObject = {};
 __webpack_require__.r(Vector3_namespaceObject);
-__webpack_require__.d(Vector3_namespaceObject, "default", function() { return Vector3; });
+__webpack_require__.d(Vector3_namespaceObject, "Vector3", function() { return Vector3; });
 __webpack_require__.d(Vector3_namespaceObject, "normalize", function() { return normalize; });
 __webpack_require__.d(Vector3_namespaceObject, "rotationX", function() { return rotationX; });
 __webpack_require__.d(Vector3_namespaceObject, "rotationY", function() { return rotationY; });
@@ -118,7 +118,17 @@ __webpack_require__.d(Vector3_namespaceObject, "multiply", function() { return m
 __webpack_require__.d(Vector3_namespaceObject, "distance", function() { return distance; });
 __webpack_require__.d(Vector3_namespaceObject, "length", function() { return Vector3_length; });
 __webpack_require__.d(Vector3_namespaceObject, "angleBetweenVectors", function() { return angleBetweenVectors; });
-__webpack_require__.d(Vector3_namespaceObject, "Vector3", function() { return Vector3; });
+__webpack_require__.d(Vector3_namespaceObject, "default", function() { return math_Vector3; });
+var Vector2_namespaceObject = {};
+__webpack_require__.r(Vector2_namespaceObject);
+__webpack_require__.d(Vector2_namespaceObject, "Vector2", function() { return Vector2; });
+__webpack_require__.d(Vector2_namespaceObject, "normalize", function() { return Vector2_normalize; });
+__webpack_require__.d(Vector2_namespaceObject, "vec2Multiply", function() { return vec2Multiply; });
+__webpack_require__.d(Vector2_namespaceObject, "multiply", function() { return Vector2_multiply; });
+__webpack_require__.d(Vector2_namespaceObject, "distance", function() { return Vector2_distance; });
+__webpack_require__.d(Vector2_namespaceObject, "length", function() { return Vector2_length; });
+__webpack_require__.d(Vector2_namespaceObject, "angleBetweenVectors", function() { return Vector2_angleBetweenVectors; });
+__webpack_require__.d(Vector2_namespaceObject, "default", function() { return math_Vector2; });
 var Matrixes4_namespaceObject = {};
 __webpack_require__.r(Matrixes4_namespaceObject);
 __webpack_require__.d(Matrixes4_namespaceObject, "Matrix4", function() { return Matrix4; });
@@ -235,6 +245,20 @@ function () {
     value: function copy() {
       return Object.assign(new Vector3(0, 0, 0), this);
     }
+  }, {
+    key: "add",
+    value: function add(vector) {
+      this.x += vector.x;
+      this.y += vector.y;
+      this.z += vector.z;
+    }
+  }, {
+    key: "sub",
+    value: function sub(vector) {
+      this.x -= vector.x;
+      this.y -= vector.y;
+      this.z -= vector.z;
+    }
   }]);
 
   return Vector3;
@@ -242,8 +266,6 @@ function () {
 /**
  * Normalize a vector.
  */
-
-
 
 function normalize(vector) {
   var length = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
@@ -347,7 +369,115 @@ function angleBetweenVectors(vector1, vector2) {
   var mul = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
   return mul / (Vector3_length(vector1) * Vector3_length(vector2));
 }
+/* harmony default export */ var math_Vector3 = ({
+  Vector3: Vector3
+});
+// CONCATENATED MODULE: ./src/math/Vector2.ts
+function Vector2_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function Vector2_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Vector2_createClass(Constructor, protoProps, staticProps) { if (protoProps) Vector2_defineProperties(Constructor.prototype, protoProps); if (staticProps) Vector2_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Vector2_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Vector2 =
+/*#__PURE__*/
+function () {
+  function Vector2(x, y) {
+    Vector2_classCallCheck(this, Vector2);
+
+    Vector2_defineProperty(this, "x", 0);
+
+    Vector2_defineProperty(this, "y", 0);
+
+    this.set(x, y);
+  }
+
+  Vector2_createClass(Vector2, [{
+    key: "set",
+    value: function set(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  }, {
+    key: "move",
+    value: function move(x, y) {
+      this.x += x;
+      this.y += y;
+    }
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.x, this.y, this.z];
+    }
+  }]);
+
+  return Vector2;
+}();
+/**
+ * Normalize a vector.
+ */
+
+function Vector2_normalize(vector) {
+  var length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+
+  if (length > 0.00001) {
+    vector.x = vector.x / length;
+    vector.y = vector.y / length;
+    return vector;
+  } else {
+    return null;
+  }
+}
+/**
+ * @returns [x, y, z] result of multiplying matrix and vector.
+ * @public
+ */
+
+function vec2Multiply(matrix, vector2) {
+  var c1 = matrix[0] * vector2.x + matrix[1] * vector2.y;
+  var c2 = matrix[3] * vector2.x + matrix[4] * vector2.y;
+  return [c1, c2];
+}
+/**
+ * Returns multiply of two matrixes.
+ */
+
+function Vector2_multiply(matrix1, matrix2) {
+  var a00 = matrix1[0 * 3 + 0];
+  var a01 = matrix1[0 * 3 + 1];
+  var a02 = matrix1[0 * 3 + 2];
+  var a10 = matrix1[1 * 3 + 0];
+  var a11 = matrix1[1 * 3 + 1];
+  var a12 = matrix1[1 * 3 + 2];
+  var b00 = matrix2[0 * 3 + 0];
+  var b01 = matrix2[0 * 3 + 1];
+  var b10 = matrix2[1 * 3 + 0];
+  var b11 = matrix2[1 * 3 + 1];
+  return [b00 * a00 + b01 * a10, b00 * a01 + b01 * a11, b00 * a02 + b01 * a12, b10 * a00 + b11 * a10, b10 * a01 + b11 * a11, b10 * a02 + b11 * a12];
+}
+/**
+ * Return distance between two vectors.
+ * @public
+ */
+
+function Vector2_distance(vector1, vector2) {
+  var squareSum = 0;
+  squareSum += (vector1.x - vector2.x) * (vector1.x - vector2.x);
+  squareSum += (vector1.y - vector2.y) * (vector1.y - vector2.y);
+  return Math.sqrt(squareSum);
+}
+function Vector2_length(vector) {
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+function Vector2_angleBetweenVectors(vector1, vector2) {
+  var mul = vector1.x * vector2.x + vector1.y * vector2.y;
+  return mul / (Vector2_length(vector1) * Vector2_length(vector2));
+}
+/* harmony default export */ var math_Vector2 = ({
+  Vector2: Vector2
+});
 // CONCATENATED MODULE: ./src/math/Matrixes4.ts
 function Matrixes4_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1057,8 +1187,6 @@ function () {
   return ShaderProgram;
 }();
 
-
-
 var BronzeError =
 /*#__PURE__*/
 function (_Error) {
@@ -1079,27 +1207,9 @@ function (_Error) {
 
   return BronzeError;
 }(ShaderProgram_wrapNativeSuper(Error));
+
+/* harmony default export */ var webgl_ShaderProgram = (ShaderProgram);
 // CONCATENATED MODULE: ./src/webgl/Shaders.ts
-function Shaders_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Shaders_typeof = function _typeof(obj) { return typeof obj; }; } else { Shaders_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Shaders_typeof(obj); }
-
-function Shaders_possibleConstructorReturn(self, call) { if (call && (Shaders_typeof(call) === "object" || typeof call === "function")) { return call; } return Shaders_assertThisInitialized(self); }
-
-function Shaders_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function Shaders_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Shaders_setPrototypeOf(subClass, superClass); }
-
-function Shaders_wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; Shaders_wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !Shaders_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return Shaders_construct(Class, arguments, Shaders_getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return Shaders_setPrototypeOf(Wrapper, Class); }; return Shaders_wrapNativeSuper(Class); }
-
-function Shaders_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function Shaders_construct(Parent, args, Class) { if (Shaders_isNativeReflectConstruct()) { Shaders_construct = Reflect.construct; } else { Shaders_construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) Shaders_setPrototypeOf(instance, Class.prototype); return instance; }; } return Shaders_construct.apply(null, arguments); }
-
-function Shaders_isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function Shaders_setPrototypeOf(o, p) { Shaders_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Shaders_setPrototypeOf(o, p); }
-
-function Shaders_getPrototypeOf(o) { Shaders_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Shaders_getPrototypeOf(o); }
-
 function Shaders_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function Shaders_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1155,6 +1265,8 @@ function () {
 
     Shaders_defineProperty(this, "webGL", void 0);
 
+    Shaders_defineProperty(this, "shadersRequireLights", []);
+
     this.webGL = webGL;
     var options = {
       removePrefixes: true,
@@ -1185,7 +1297,7 @@ function () {
   Shaders_createClass(Shaders, [{
     key: "addProgram",
     value: function addProgram(name, vertexSource, fragmentSource, options) {
-      var program = new ShaderProgram(this.webGL);
+      var program = new webgl_ShaderProgram(this.webGL);
       program.addShader("vertex", vertexSource);
       program.addShader("fragment", fragmentSource);
       program.create();
@@ -1267,52 +1379,17 @@ function () {
 
   return Shaders;
 }();
+var Options = function Options() {
+  Shaders_classCallCheck(this, Options);
 
-var Options =
-/*#__PURE__*/
-function (_Object) {
-  Shaders_inherits(Options, _Object);
+  Shaders_defineProperty(this, "addLocationMarker", false);
 
-  function Options() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    Shaders_classCallCheck(this, Options);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = Shaders_possibleConstructorReturn(this, (_getPrototypeOf2 = Shaders_getPrototypeOf(Options)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    Shaders_defineProperty(Shaders_assertThisInitialized(_this), "addLocationMarker", false);
-
-    Shaders_defineProperty(Shaders_assertThisInitialized(_this), "removePrefixes", false);
-
-    return _this;
-  }
-
-  return Options;
-}(Shaders_wrapNativeSuper(Object));
-
-var Extensions =
-/*#__PURE__*/
-function (_Object2) {
-  Shaders_inherits(Extensions, _Object2);
-
-  function Extensions() {
-    Shaders_classCallCheck(this, Extensions);
-
-    return Shaders_possibleConstructorReturn(this, Shaders_getPrototypeOf(Extensions).apply(this, arguments));
-  }
-
-  return Extensions;
-}(Shaders_wrapNativeSuper(Object));
-
-/* harmony default export */ var webgl_Shaders = ({
-  Shaders: Shaders_Shaders
-});
+  Shaders_defineProperty(this, "removePrefixes", false);
+};
+var Extensions = function Extensions() {
+  Shaders_classCallCheck(this, Extensions);
+};
+/* harmony default export */ var webgl_Shaders = (Shaders_Shaders);
 // CONCATENATED MODULE: ./src/debug/Error.ts
 function Error_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1323,8 +1400,6 @@ var Error_BronzeError = function BronzeError(message) {
 
   throw new CustomError(message);
 };
-
-
 
 var CustomError = function CustomError(message) {
   Error_classCallCheck(this, CustomError);
@@ -1352,6 +1427,7 @@ var BronzeLog = function BronzeLog(log) {
 };
 
 
+/* harmony default export */ var debug_Error = (Error_BronzeError);
 // CONCATENATED MODULE: ./src/textures/Texture.ts
 function Texture_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1360,7 +1436,6 @@ function Texture_defineProperties(target, props) { for (var i = 0; i < props.len
 function Texture_createClass(Constructor, protoProps, staticProps) { if (protoProps) Texture_defineProperties(Constructor.prototype, protoProps); if (staticProps) Texture_defineProperties(Constructor, staticProps); return Constructor; }
 
 function Texture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 var Texture_Texture =
@@ -1399,7 +1474,7 @@ function () {
         var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
 
         if (rgb == null) {
-          new Error_BronzeError('Wrong hex color!');
+          new debug_Error('Wrong hex color!');
           return;
         }
 
@@ -1407,7 +1482,7 @@ function () {
       } else if (r.constructor === Number && g != undefined && b != undefined && a != undefined) {
         this.color = new Uint8Array([Number(r), g, b, a]);
       } else {
-        new Error_BronzeError('Wrong color');
+        new debug_Error('Wrong color');
         return;
       }
 
@@ -1420,9 +1495,7 @@ function () {
 
   return Texture;
 }();
-
-
-
+/* harmony default export */ var textures_Texture = (Texture_Texture);
 // CONCATENATED MODULE: ./src/textures/ColorTexture.ts
 function ColorTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColorTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { ColorTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColorTexture_typeof(obj); }
 
@@ -1439,7 +1512,6 @@ function ColorTexture_inherits(subClass, superClass) { if (typeof superClass !==
 function ColorTexture_setPrototypeOf(o, p) { ColorTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColorTexture_setPrototypeOf(o, p); }
 
 function ColorTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 var ColorTexture =
@@ -1475,9 +1547,7 @@ function (_Texture) {
 
   return ColorTexture;
 }(Texture_Texture);
-
-
-
+/* harmony default export */ var textures_ColorTexture = (ColorTexture);
 // CONCATENATED MODULE: ./src/Engine.ts
 function Engine_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1526,7 +1596,7 @@ function () {
 
     Engine_defineProperty(this, "reflections", false);
 
-    Engine_defineProperty(this, "status", 'Creating');
+    Engine_defineProperty(this, "status", "Creating");
 
     Engine_defineProperty(this, "selectedObject", null);
 
@@ -1560,6 +1630,8 @@ function () {
 
     Engine_defineProperty(this, "_onRun", []);
 
+    Engine_defineProperty(this, "_onFrameHandlers", []);
+
     this.div = div;
     this.width = div.offsetWidth;
     this.height = div.offsetHeight;
@@ -1571,10 +1643,10 @@ function () {
       if (!_this.reflections) {
         _this.appendCanvas();
 
-        _this.status = 'Drawing';
+        _this.status = "Drawing";
+      } else {
+        _this.status = "Creating reflections";
       }
-
-      _this.status = 'Creating reflections';
     });
     this.shaders = new Shaders_Shaders(this.webgl);
     this.shaders["default"].use();
@@ -1640,7 +1712,7 @@ function () {
 
         if (index == -1) {
           console.warn("Objects", this.objects);
-          new Error_BronzeError("Object not found");
+          new debug_Error("Object not found");
         }
 
         return this._objectsWithAlpha.splice(index, 1)[0];
@@ -1649,7 +1721,7 @@ function () {
 
         if (index == -1) {
           console.warn("Objects", this.objects);
-          new Error_BronzeError("Object not found");
+          new debug_Error("Object not found");
         }
 
         return this._objectsWithoutAlpha.splice(index, 1)[0];
@@ -1799,6 +1871,7 @@ function () {
   }, {
     key: "render",
     value: function render() {
+      this.beforeFrame();
       this.update();
       this.draw();
     }
@@ -1809,7 +1882,7 @@ function () {
 
       _engine = this;
       this._running = true;
-      this.status = 'Loading resources';
+      this.status = "Loading resources";
 
       if (this._loadedTexturesCount == this.textures.length) {
         this._texturesLoaded = true;
@@ -1845,12 +1918,35 @@ function () {
       this._running = false;
     }
   }, {
+    key: "addOnFrameHandler",
+    value: function addOnFrameHandler(callback) {
+      this._onFrameHandlers.push(callback);
+
+      return callback;
+    }
+  }, {
+    key: "removeOnFrameHandler",
+    value: function removeOnFrameHandler(func) {
+      var index = this._onFrameHandlers.indexOf(func);
+
+      this._onFrameHandlers.splice(index, 1);
+    }
+  }, {
+    key: "beforeFrame",
+    value: function beforeFrame() {
+      for (var i = 0; i < this._onFrameHandlers.length; i++) {
+        var func = this._onFrameHandlers[i];
+        func();
+      }
+    }
+  }, {
     key: "update",
     value: function update() {
       var _this3 = this;
 
       if (this.camera && this.controls && this.controls.controlFunction) {
         this.camera.moving.set(0, 0, 0);
+        this.camera.moving.add(this.camera.animatedMoving);
         this.controls.controlFunction();
 
         if (this["debugger"] != null) {
@@ -1920,12 +2016,25 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
+      var _this4 = this;
+
       this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
       this.shaders["default"].use();
       this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
       this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
       this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
       this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+      this.shaders.shadersRequireLights.forEach(function (shader) {
+        shader.use();
+
+        _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
+
+        _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
+
+        _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
+
+        _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
+      });
       this.ui.draw();
       this.objects.forEach(function (object) {
         object.draw();
@@ -1943,7 +2052,7 @@ function () {
       console.log();
       console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
       console.log();
-      console.info("   Version : 0.2.96");
+      console.info("   Version : 0.3.00");
       console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
       console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
       console.info("   Author  : https://github.com/m0ksem");
@@ -2000,6 +2109,7 @@ function () {
 
   return Engine;
 }();
+/* harmony default export */ var src_Engine = (Engine_Engine);
 
 var _engine;
 /**
@@ -2049,7 +2159,6 @@ function Entity_defineProperties(target, props) { for (var i = 0; i < props.leng
 function Entity_createClass(Constructor, protoProps, staticProps) { if (protoProps) Entity_defineProperties(Constructor.prototype, protoProps); if (staticProps) Entity_defineProperties(Constructor, staticProps); return Constructor; }
 
 function Entity_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -2140,8 +2249,6 @@ function () {
     Entity_defineProperty(this, "_animationInterval", void 0);
 
     Entity_defineProperty(this, "_position", new Vector3(0, 0, 0));
-
-    Entity_defineProperty(this, "_w", 0);
 
     this._engine = engine;
     this.webgl = engine.webgl;
@@ -2261,6 +2368,20 @@ function () {
       this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, this.maxBaseSize.z * z);
       this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
     }
+  }, {
+    key: "scaleToPixels",
+    value: function scaleToPixels(x, y, z) {
+      x = x != null ? x / Math.abs(this.maxBaseSize.x - this.minBaseSize.x) : this.scaling.x;
+      y = y != null ? y / Math.abs(this.maxBaseSize.y - this.minBaseSize.y) : this.scaling.y;
+      z = z != null ? z / Math.abs(this.maxBaseSize.z - this.minBaseSize.z) : this.scaling.z;
+      this.scaling.set(x, y, z);
+    }
+  }, {
+    key: "scaleToPixelsX",
+    value: function scaleToPixelsX(x) {
+      x = x / Math.abs(this.maxBaseSize.x - this.minBaseSize.x);
+      this.scaling.set(x, x, x);
+    }
     /**
      * Resize objects to pixels
      * @param x pixels
@@ -2324,19 +2445,19 @@ function () {
 
         if (position.y > minY && position.y < maxY && position.z > minZ && position.z < maxZ) {
           if (position.x < minX && newPosX >= minX || position.x > maxX && newPosX <= maxX) {
-            callback('x');
+            callback("x");
           }
         }
 
         if (position.x > minX && position.x < maxX && position.z > minZ && position.z < maxZ) {
           if (position.y < minY && newPosY >= minY || position.y > maxY && newPosY <= maxY) {
-            callback('y');
+            callback("y");
           }
         }
 
         if (position.y > minY && position.y < maxY && position.x > minX && position.x < maxX) {
           if (position.z < minZ && newPosZ >= minZ || position.z > maxZ && newPosZ <= maxZ) {
-            callback('z');
+            callback("z");
           }
         }
       }
@@ -2347,8 +2468,8 @@ function () {
       this.shaderProgram = shader;
     }
   }, {
-    key: "getPositionOnScreen",
-    value: function getPositionOnScreen() {
+    key: "updateRelativeToCameraPosition",
+    value: function updateRelativeToCameraPosition() {
       var xs = [this.collisionBox.maxPoint.x, this.collisionBox.minPoint.x];
       var ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y];
       var zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z];
@@ -2403,9 +2524,14 @@ function () {
         },
         depth: biggest[2]
       };
+    }
+  }, {
+    key: "getPositionOnScreen",
+    value: function getPositionOnScreen() {
+      this.updateRelativeToCameraPosition();
 
-      if (this.engine.controls.mouse.x > smallest[0] && this.engine.controls.mouse.x < biggest[0] && this.engine.controls.mouse.y > smallest[1] && this.engine.controls.mouse.y < biggest[1]) {
-        if (this.engine.selectedObject == null || this.engine.selectedObject.relativeToCameraPosition.depth >= smallest[2]) {
+      if (this.engine.controls.mouse.x > this.relativeToCameraPosition.min.x && this.engine.controls.mouse.x < this.relativeToCameraPosition.max.x && this.engine.controls.mouse.y > this.relativeToCameraPosition.min.y && this.engine.controls.mouse.y < this.relativeToCameraPosition.max.y) {
+        if (this.engine.selectedObject == null || this.engine.selectedObject.relativeToCameraPosition.depth >= this.relativeToCameraPosition.depth) {
           this.engine.selectedObject = this;
         }
       }
@@ -2458,7 +2584,7 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
-      if (!this.hidden) {
+      if (!this.hidden && this.shaderProgram) {
         this.shaderProgram.use();
         this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
         this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
@@ -2504,7 +2630,7 @@ function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.engine.objects.splice(this.engine.objects.indexOf(this), 1);
+      this.engine.removeObject(this);
     }
   }, {
     key: "engine",
@@ -2575,8 +2701,6 @@ function () {
   return Entity;
 }();
 
-
-
 var Entity_CollisionBox =
 /*#__PURE__*/
 function () {
@@ -2599,6 +2723,7 @@ function () {
 }();
 
 
+/* harmony default export */ var objects_Entity = (Entity_Entity);
 // CONCATENATED MODULE: ./src/Camera.ts
 function Camera_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2664,6 +2789,10 @@ function () {
    */
 
   /**
+   * Vector3 for animated
+   */
+
+  /**
    * Collision box for camera.
    */
 
@@ -2692,6 +2821,8 @@ function () {
     Camera_defineProperty(this, "moved", false);
 
     Camera_defineProperty(this, "moving", new Vector3(0, 0, 0));
+
+    Camera_defineProperty(this, "animatedMoving", new Vector3(0, 0, 0));
 
     Camera_defineProperty(this, "collisionBox", new Entity_CollisionBox());
 
@@ -2780,6 +2911,35 @@ function () {
       this.moved = true;
     }
     /**
+     * Smooth moving camera.
+     * @param x 
+     * @param y 
+     * @param z 
+     */
+
+  }, {
+    key: "moveAnimate",
+    value: function moveAnimate(x, y, z) {
+      var _this = this;
+
+      var time = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+      x = x / time;
+      y = y / time;
+      z = z / time;
+      var vec = new Vector3(x, y, z);
+      this.animatedMoving.add(vec);
+      var t = time;
+      var tick = this.engine.addOnFrameHandler(function () {
+        t -= 1;
+
+        if (t <= 0) {
+          _this.engine.removeOnFrameHandler(tick);
+
+          _this.animatedMoving.sub(vec);
+        }
+      });
+    }
+    /**
      * Rotate for x, y, z degrees.
      */
 
@@ -2838,115 +2998,7 @@ function () {
 
   return Camera;
 }();
-
-
-
-// CONCATENATED MODULE: ./src/math/Vector2.ts
-function Vector2_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function Vector2_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function Vector2_createClass(Constructor, protoProps, staticProps) { if (protoProps) Vector2_defineProperties(Constructor.prototype, protoProps); if (staticProps) Vector2_defineProperties(Constructor, staticProps); return Constructor; }
-
-function Vector2_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Vector2 =
-/*#__PURE__*/
-function () {
-  function Vector2(x, y) {
-    Vector2_classCallCheck(this, Vector2);
-
-    Vector2_defineProperty(this, "x", 0);
-
-    Vector2_defineProperty(this, "y", 0);
-
-    this.set(x, y);
-  }
-
-  Vector2_createClass(Vector2, [{
-    key: "set",
-    value: function set(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-  }, {
-    key: "move",
-    value: function move(x, y) {
-      this.x += x;
-      this.y += y;
-    }
-  }, {
-    key: "toArray",
-    value: function toArray() {
-      return [this.x, this.y, this.z];
-    }
-  }]);
-
-  return Vector2;
-}();
-/**
- * Normalize a vector.
- */
-
-
-
-function Vector2_normalize(vector) {
-  var length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-
-  if (length > 0.00001) {
-    vector.x = vector.x / length;
-    vector.y = vector.y / length;
-    return vector;
-  } else {
-    return null;
-  }
-}
-/**
- * @returns [x, y, z] result of multiplying matrix and vector.
- * @public
- */
-
-function vec2Multiply(matrix, vector2) {
-  var c1 = matrix[0] * vector2.x + matrix[1] * vector2.y;
-  var c2 = matrix[3] * vector2.x + matrix[4] * vector2.y;
-  return [c1, c2];
-}
-/**
- * Returns multiply of two matrixes.
- */
-
-function Vector2_multiply(matrix1, matrix2) {
-  var a00 = matrix1[0 * 3 + 0];
-  var a01 = matrix1[0 * 3 + 1];
-  var a02 = matrix1[0 * 3 + 2];
-  var a10 = matrix1[1 * 3 + 0];
-  var a11 = matrix1[1 * 3 + 1];
-  var a12 = matrix1[1 * 3 + 2];
-  var b00 = matrix2[0 * 3 + 0];
-  var b01 = matrix2[0 * 3 + 1];
-  var b10 = matrix2[1 * 3 + 0];
-  var b11 = matrix2[1 * 3 + 1];
-  return [b00 * a00 + b01 * a10, b00 * a01 + b01 * a11, b00 * a02 + b01 * a12, b10 * a00 + b11 * a10, b10 * a01 + b11 * a11, b10 * a02 + b11 * a12];
-}
-/**
- * Return distance between two vectors.
- * @public
- */
-
-function Vector2_distance(vector1, vector2) {
-  var squareSum = 0;
-  squareSum += (vector1.x - vector2.x) * (vector1.x - vector2.x);
-  squareSum += (vector1.y - vector2.y) * (vector1.y - vector2.y);
-  return Math.sqrt(squareSum);
-}
-function Vector2_length(vector) {
-  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-}
-function Vector2_angleBetweenVectors(vector1, vector2) {
-  var mul = vector1.x * vector2.x + vector1.y * vector2.y;
-  return mul / (Vector2_length(vector1) * Vector2_length(vector2));
-}
-
+/* harmony default export */ var src_Camera = (Camera_Camera);
 // CONCATENATED MODULE: ./src/Controls.ts
 function Controls_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3429,8 +3481,6 @@ function () {
  * @public
  */
 
-
-
 var Controls_Mouse = function Mouse() {
   Controls_classCallCheck(this, Mouse);
 
@@ -3498,7 +3548,7 @@ function isTouchDevice() {
   return mq(query);
 }
 
-
+/* harmony default export */ var src_Controls = (Controls_Controls);
 // CONCATENATED MODULE: ./src/textures/SimpleTexture.ts
 function SimpleTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { SimpleTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { SimpleTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return SimpleTexture_typeof(obj); }
 
@@ -3519,7 +3569,6 @@ function SimpleTexture_inherits(subClass, superClass) { if (typeof superClass !=
 function SimpleTexture_setPrototypeOf(o, p) { SimpleTexture_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SimpleTexture_setPrototypeOf(o, p); }
 
 function SimpleTexture_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -3726,9 +3775,7 @@ function (_Texture) {
 
   return SimpleTexture;
 }(Texture_Texture);
-
-
-
+/* harmony default export */ var textures_SimpleTexture = (SimpleTexture_SimpleTexture);
 // CONCATENATED MODULE: ./src/ui/UI.ts
 function UI_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { UI_typeof = function _typeof(obj) { return typeof obj; }; } else { UI_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return UI_typeof(obj); }
 
@@ -3783,6 +3830,10 @@ function () {
 
     UI_defineProperty(this, "engine", void 0);
 
+    UI_defineProperty(this, "Screen", Screen);
+
+    UI_defineProperty(this, "images", []);
+
     UI_defineProperty(this, "webgl", void 0);
 
     UI_defineProperty(this, "_screen", void 0);
@@ -3792,10 +3843,6 @@ function () {
     UI_defineProperty(this, "_webglTexture", void 0);
 
     UI_defineProperty(this, "frameBuffer", void 0);
-
-    UI_defineProperty(this, "Screen", Screen);
-
-    UI_defineProperty(this, "images", []);
 
     this.width = engine.div.offsetWidth;
     this.height = engine.div.offsetHeight;
@@ -3986,8 +4033,6 @@ function () {
   return UI;
 }();
 
-
-
 var Screen =
 /*#__PURE__*/
 function () {
@@ -4112,7 +4157,7 @@ function (_uiHTMLElement) {
 
   return uiHTMLImage;
 }(uiHTMLElement);
-
+/* harmony default export */ var ui_UI = (UI_UI);
 // CONCATENATED MODULE: ./src/debug/Debugger.ts
 function Debugger_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4179,9 +4224,9 @@ function () {
 
   return Debugger;
 }();
-
-
-
+/* harmony default export */ var debug_Debugger = ({
+  Debugger: Debugger
+});
 // CONCATENATED MODULE: ./src/textures/CubeTexture.ts
 function CubeTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { CubeTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { CubeTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return CubeTexture_typeof(obj); }
 
@@ -4592,6 +4637,7 @@ function (_Texture) {
 
   return CubeTexture;
 }(Texture_Texture);
+/* harmony default export */ var textures_CubeTexture = (CubeTexture);
 // CONCATENATED MODULE: ./src/textures/ReflectionTexture.ts
 function ReflectionTexture_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ReflectionTexture_typeof = function _typeof(obj) { return typeof obj; }; } else { ReflectionTexture_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ReflectionTexture_typeof(obj); }
 
@@ -4832,6 +4878,7 @@ function (_CubeTexture) {
 
   return ReflectionTexture;
 }(CubeTexture);
+/* harmony default export */ var textures_ReflectionTexture = (ReflectionTexture_ReflectionTexture);
 // CONCATENATED MODULE: ./src/objects/Object.ts
 function Object_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Object_typeof = function _typeof(obj) { return typeof obj; }; } else { Object_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Object_typeof(obj); }
 
@@ -4871,12 +4918,12 @@ function (_Entity) {
 
     _this._drawingMode = _this.webgl.TRIANGLES;
     _this.hidden = true;
-    _this.name = 'Just object :)';
+    _this.name = "Just object :)";
     return _this;
   }
   /**
    * Sets how WebGL will draw object
-   * @param {String} mode 
+   * @param {String} mode
    */
 
 
@@ -4884,27 +4931,27 @@ function (_Entity) {
     key: "setDrawingMode",
     value: function setDrawingMode(mode) {
       switch (mode) {
-        case 'TRIANGLES':
+        case "TRIANGLES":
           this._drawingMode = this.webgl.TRIANGLES;
           break;
 
-        case 'DEFAULT':
+        case "DEFAULT":
           this._drawingMode = this.webgl.TRIANGLES;
           break;
 
-        case 'TRIANGLE_FAN':
+        case "TRIANGLE_FAN":
           this._drawingMode = this.webgl.TRIANGLE_FAN;
           break;
 
-        case 'FAN':
+        case "FAN":
           this._drawingMode = this.webgl.TRIANGLE_FAN;
           break;
 
-        case 'STRIP':
+        case "STRIP":
           this.webgl.TRIANGLE_STRIP;
           break;
 
-        case 'TRIANGLE_STRIP':
+        case "TRIANGLE_STRIP":
           this.webgl.TRIANGLE_STRIP;
           break;
 
@@ -4926,21 +4973,21 @@ function (_Entity) {
       var vertexes = [];
       var textureCoords = [];
       var normals = [];
-      var splitted = fileText.split('\n');
+      var splitted = fileText.split("\n");
       var collisionBox = {
         x: [0, 0],
         y: [0, 0],
         z: [0, 0]
       };
       splitted.forEach(function (element) {
-        var values = element.split(' ');
+        var values = element.split(" ");
         var name = 0;
 
         for (var i = values.length; i--;) {
           if (values[i] == "" || values[i] == "\r") values.splice(i, 1);
         }
 
-        if (values[name] == 'v') {
+        if (values[name] == "v") {
           var v1 = parseFloat(values[1]);
           var v2 = parseFloat(values[2]);
           var v3 = parseFloat(values[3]);
@@ -4970,12 +5017,12 @@ function (_Entity) {
           }
 
           vertexes.push([v1, v2, v3]);
-        } else if (values[name] == 'vn') {
+        } else if (values[name] == "vn") {
           normals.push([Number(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
-        } else if (values[name] == 'vt') {
+        } else if (values[name] == "vt") {
           textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
         } else if (values[name] == "f") {
-          // Transform 4 > faces to triangles 
+          // Transform 4 > faces to triangles
           var faces = [values[1], values[2], values[3]];
 
           if (values.length - 1 > 3) {
@@ -4988,7 +5035,7 @@ function (_Entity) {
 
           for (var _i2 = 0; _i2 < faces.length; _i2++) {
             var point = faces[_i2];
-            var indexes = point.split('/').map(function (el) {
+            var indexes = point.split("/").map(function (el) {
               return Number(el);
             });
             var vertexPosition = indexes[0];
@@ -5055,7 +5102,7 @@ function (_Entity) {
     value: function loadFromObj(path) {
       var self = this;
       var objectsLoader = new XMLHttpRequest();
-      objectsLoader.open('GET', path);
+      objectsLoader.open("GET", path);
 
       objectsLoader.onreadystatechange = function () {
         if (objectsLoader.readyState == 4) {
@@ -5115,7 +5162,6 @@ function Rect_setPrototypeOf(o, p) { Rect_setPrototypeOf = Object.setPrototypeOf
 function Rect_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-
 var Rect =
 /*#__PURE__*/
 function (_Entity) {
@@ -5132,7 +5178,7 @@ function (_Entity) {
 
     Rect_defineProperty(Rect_assertThisInitialized(_this), "height", 100);
 
-    Rect_defineProperty(Rect_assertThisInitialized(_this), "name", 'Just a rect :)');
+    Rect_defineProperty(Rect_assertThisInitialized(_this), "name", "Just a rect :)");
 
     _this.vertexes = [0, 0, 0, 100, 100, 0, 0, 100, 0, 100, 100, 0, 0, 0, 0, 100, 0, 0];
     _this.textureCoordinates = [0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1];
@@ -5170,8 +5216,8 @@ function (_Entity) {
   }
   /**
    * Scale object.
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
 
 
@@ -5182,7 +5228,7 @@ function (_Entity) {
       this.maxSize.set(this.maxBaseSize.x * x, this.maxBaseSize.y * y, 0);
       this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, 0);
 
-      if (this.rotationPointPos == 'center') {
+      if (this.rotationPointPos == "center") {
         this.rotationPoint.set(this.minSize.x + (this.maxSize.x - this.minSize.x) / 2, this.minSize.y + (this.maxSize.y - this.minSize.y) / 2, this.minSize.z + (this.maxSize.z - this.minSize.z) / 2);
       }
     }
@@ -5199,6 +5245,17 @@ function (_Entity) {
       this.width = width;
       this.height = height;
       this.scale(this.width / 100, this.height / 100);
+    }
+    /**
+     * Sets size for one cell in pixels
+     * @param width
+     * @param height
+     */
+
+  }, {
+    key: "setCellSize",
+    value: function setCellSize(width, height) {
+      this.setTextureRepeating(this.width / width, this.height / height);
     }
     /**
      * Repeats texture on rect.
@@ -5218,9 +5275,7 @@ function (_Entity) {
 
   return Rect;
 }(Entity_Entity);
-
-
-
+/* harmony default export */ var objects_Rect = (Rect);
 // CONCATENATED MODULE: ./src/objects/Skybox.ts
 function Skybox_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Skybox_typeof = function _typeof(obj) { return typeof obj; }; } else { Skybox_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Skybox_typeof(obj); }
 
@@ -5239,6 +5294,7 @@ function Skybox_assertThisInitialized(self) { if (self === void 0) { throw new R
 function Skybox_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Skybox_setPrototypeOf(subClass, superClass); }
 
 function Skybox_setPrototypeOf(o, p) { Skybox_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Skybox_setPrototypeOf(o, p); }
+
 
 
 
@@ -5297,19 +5353,23 @@ function (_Entity) {
   }, {
     key: "draw",
     value: function draw() {
-      this.shaderProgram.use();
-      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
-      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
-      this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
-      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
-      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
-      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 2);
-      this.engine.shaders["default"].use();
+      if (this.shaderProgram) {
+        this.shaderProgram.use();
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+        this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+        this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 2);
+        this.engine.shaders["default"].use();
+      } else {
+        new BronzeWarn('Shader program is not set.');
+      }
     }
   }]);
 
   return Skybox;
-}(Entity_Entity);
+}(objects_Entity);
 // CONCATENATED MODULE: ./src/objects/Grid.ts
 function Grid_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Grid_typeof = function _typeof(obj) { return typeof obj; }; } else { Grid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Grid_typeof(obj); }
 
@@ -5346,7 +5406,7 @@ function (_Rect) {
 
   /**
    * Flat rectangle with square texture.
-   * @param engine 
+   * @param engine
    */
   function Grid(engine) {
     var _this;
@@ -5361,7 +5421,7 @@ function (_Rect) {
 
     _this.shaderProgram = _this.engine.shaders.grid;
     _this.cellSize = [1000, 1000];
-    _this.name = 'Just a gird :)';
+    _this.name = "Just a gird :)";
     return _this;
   }
 
@@ -5417,8 +5477,8 @@ function (_Rect) {
     }
     /**
      * Sets size for one cell in pixels
-     * @param width 
-     * @param height 
+     * @param width
+     * @param height
      */
 
   }, {
@@ -5449,6 +5509,7 @@ function (_Rect) {
 
   return Grid;
 }(Rect);
+/* harmony default export */ var objects_Grid = (Grid_Grid);
 // CONCATENATED MODULE: ./src/lights/Light.ts
 function Light_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5460,7 +5521,6 @@ function Light_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
 
 var lightsCount = 0;
-
 var Light_Light =
 /*#__PURE__*/
 function () {
@@ -5631,9 +5691,7 @@ function () {
 
   return Light;
 }();
-
-
-
+/* harmony default export */ var lights_Light = (Light_Light);
 // CONCATENATED MODULE: ./src/materials/Material.ts
 function Material_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5676,7 +5734,7 @@ function () {
     }
     /**
      * Draw object method for this material.
-     * 
+     *
      */
 
   }, {
@@ -5702,6 +5760,7 @@ function () {
 
   return Material;
 }();
+/* harmony default export */ var materials_Material = (Material_Material);
 // CONCATENATED MODULE: ./src/materials/Glass.ts
 function Glass_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Glass_typeof = function _typeof(obj) { return typeof obj; }; } else { Glass_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Glass_typeof(obj); }
 
@@ -5776,9 +5835,9 @@ function (_Material) {
 
   return Glass;
 }(Material_Material);
-
-
-
+/* harmony default export */ var materials_Glass = ({
+  Glass: Glass
+});
 // CONCATENATED MODULE: ./src/sounds/Sound.ts
 function Sound_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5792,7 +5851,7 @@ var Sound =
 /*#__PURE__*/
 function () {
   /**
-   * Simple sound object. 
+   * Simple sound object.
    * @param  src
    */
   function Sound(src) {
@@ -5803,7 +5862,7 @@ function () {
 
     Sound_classCallCheck(this, Sound);
 
-    Sound_defineProperty(this, "playing", void 0);
+    Sound_defineProperty(this, "playing", false);
 
     Sound_defineProperty(this, "audios", void 0);
 
@@ -5815,7 +5874,7 @@ function () {
 
     Sound_defineProperty(this, "_canBePlayed", true);
 
-    Sound_defineProperty(this, "_canBePlayedInterval", void 0);
+    Sound_defineProperty(this, "_canBePlayedInterval", null);
 
     Sound_defineProperty(this, "_loopInterval", -1);
 
@@ -5912,10 +5971,8 @@ function () {
 
       for (var i = 0; i < this.audios.length; i++) {
         var audio = this.audios[i];
-
-        if (audio.stop) {
-          audio.stop();
-        }
+        audio.pause();
+        audio.currentTime = 0;
       }
     }
   }, {
@@ -5946,6 +6003,7 @@ function () {
 
   return Sound;
 }();
+/* harmony default export */ var sounds_Sound = (Sound);
 // CONCATENATED MODULE: ./src/Bronze.ts
 /* concated harmony reexport Engine */__webpack_require__.d(__webpack_exports__, "Engine", function() { return Engine_Engine; });
 /* concated harmony reexport Camera */__webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera_Camera; });
@@ -5970,6 +6028,8 @@ function () {
 /* concated harmony reexport Mathematics */__webpack_require__.d(__webpack_exports__, "Mathematics", function() { return Mathematics_namespaceObject; });
 /* concated harmony reexport Vector3 */__webpack_require__.d(__webpack_exports__, "Vector3", function() { return Vector3_namespaceObject; });
 /* concated harmony reexport Matrixes4 */__webpack_require__.d(__webpack_exports__, "Matrixes4", function() { return Matrixes4_namespaceObject; });
+/* concated harmony reexport Vector2 */__webpack_require__.d(__webpack_exports__, "Vector2", function() { return Vector2_namespaceObject; });
+
 
 
 

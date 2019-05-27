@@ -64,6 +64,60 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
+				<h1 align="center"> Bronze-Engine </h1>
+				<h4 align="center">Simple game engine based on WebGL with JavaScript.  </h4>
+				<div style="text-align:center" align="center">
+					<a href="http://m0ksem.design/Bronze-Engine/docs/global"><b>Docs</b></a> -
+					<a href="https://github.com/m0ksem/Bronze-Engine/projects/2"><b>Development plan</b></a> -
+					<a href="https://github.com/m0ksem/Bronze-Editor"><b>Editor</b></a>
+				</div>
+				<h2 id="examples">Examples</h2>
+				<ul>
+					<li>🏗 <a href="https://github.com/m0ksem/Bronze-Editor/examples/dev"><b>Dev ploygon</b></a> - polygon for testing new features.</li>
+					<li>🎯 <a href="http://m0ksem.design/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game shooter game.</li>
+					<li>👻 <a href="http://m0ksem.design/Bronze-Engine/examples/horror/"><b>Horror</b></a> - the horror game, showing the possibilities of light in the engine..<h2 id="using-vanillajs-">Using (vanillaJS)</h2>
+					</li>
+					<li>Setup<br>Download last realese and use it   <pre><code class="language-js">&lt;script src=<span class="hljs-string">"Bronze.min.js"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
+					</li>
+					<li>Define engine<pre><code class="language-js"><span class="hljs-comment">// Creating instance of engine</span>
+<span class="hljs-keyword">var</span> engine = <span class="hljs-keyword">new</span> Bronze.Engine(canvas)
+<span class="hljs-comment">// Creating camera for engine</span>
+<span class="hljs-keyword">var</span> camera = <span class="hljs-keyword">new</span> Bronze.Camera(engine)
+<span class="hljs-comment">// You can also define controls object for control camera or objects.</span>
+<span class="hljs-keyword">var</span> controls = <span class="hljs-keyword">new</span> Bronze.Controls(engine)</code></pre>
+					</li>
+					<li>Map building<pre><code class="language-js"><span class="hljs-comment">// Create all texture files</span>
+<span class="hljs-keyword">var</span> texture = <span class="hljs-keyword">new</span> Bronze.Texture(engine)  
+texture.setColor(<span class="hljs-number">159</span>, <span class="hljs-number">136</span>, <span class="hljs-number">105</span>, <span class="hljs-number">255</span>)  <span class="hljs-comment">// If engine draws before all resources loaded color will be shown</span>
+texture.loadFrom(<span class="hljs-string">"path/to/texture.png"</span>)
+<span class="hljs-comment">// Creating instance of some object</span>
+<span class="hljs-keyword">var</span> object = <span class="hljs-keyword">new</span> Bronze.Object(Engine)
+object.loadFromObj(<span class="hljs-string">"path/to/object.obj"</span>)
+object.setTexture(texture)
+<span class="hljs-comment">// We can transform him</span>
+object.setPosition(<span class="hljs-number">0</span>, <span class="hljs-number">200</span>, <span class="hljs-number">500</span>)
+object.setRotation(<span class="hljs-number">0</span>, <span class="hljs-number">90</span>, <span class="hljs-number">45</span>)
+object.scale(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// Also we can set animation function</span>
+object.animate(<span class="hljs-number">60</span>, (obj) =&gt; {
+    obj.rotate(+<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">if</span> (!(obj.position.y == <span class="hljs-number">100</span>)) {
+      obj.move(<span class="hljs-number">0</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">0</span>)
+    }
+})</code></pre>
+						<h2 id="development">Development</h2>
+						<code>`</code>console<h1 id="install-dependencies">Install dependencies</h1>
+					yarn install</li>
+				</ul>
+				<h1 id="serve-with-hot-reload-at-localhost-8080">Serve with hot reload at localhost:8080</h1>
+				<p>yarn dev </p>
+				<h1 id="production-build-with-minification">Production build with minification</h1>
+				<p>yarn run build</p>
+				<h1 id="create-docs">Create docs</h1>
+				<p>yarn run build:docs
+				<code>`</code></p>
+				<h2 id="author">Author</h2>
+				<p>© <a href="https://github.com/m0ksem">Nedoshev Maksym</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -125,6 +179,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_objects_skybox_.html">"objects/<wbr>Skybox"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_sounds_sound_.html">"sounds/<wbr>Sound"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_textures_colortexture_.html">"textures/<wbr>Color<wbr>Texture"</a>

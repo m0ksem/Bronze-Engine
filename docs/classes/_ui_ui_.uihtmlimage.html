@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SimpleTexture | @m0ksem/bronze</title>
+	<title>uiHTMLImage | @m0ksem/bronze</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_textures_colortexture_.html">&quot;textures/ColorTexture&quot;</a>
+					<a href="../modules/_ui_ui_.html">&quot;ui/UI&quot;</a>
 				</li>
 				<li>
-					<a href="_textures_colortexture_.simpletexture.html">SimpleTexture</a>
+					<a href="_ui_ui_.uihtmlimage.html">uiHTMLImage</a>
 				</li>
 			</ul>
-			<h1>Class SimpleTexture</h1>
+			<h1>Class uiHTMLImage</h1>
 		</div>
 	</div>
 </header>
@@ -73,10 +73,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_textures_texture_.texture.html" class="tsd-signature-type">Texture</a>
+						<a href="_ui_ui_.uihtmlelement.html" class="tsd-signature-type">uiHTMLElement</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">SimpleTexture</span>
+								<span class="target">uiHTMLImage</span>
 							</li>
 						</ul>
 					</li>
@@ -89,24 +89,26 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_textures_colortexture_.simpletexture.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_ui_ui_.uihtmlimage.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#alpha" class="tsd-kind-icon">alpha</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#color" class="tsd-kind-icon">color</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#engine" class="tsd-kind-icon">engine</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#loaded" class="tsd-kind-icon">loaded</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite"><a href="_textures_colortexture_.simpletexture.html#textureblocklocation" class="tsd-kind-icon">texture<wbr>Block<wbr>Location</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#webgltexture" class="tsd-kind-icon">webgl<wbr>Texture</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_ui_ui_.uihtmlimage.html#el" class="tsd-kind-icon">el</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_ui_.uihtmlimage.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_ui_ui_.uihtmlimage.html#hidden" class="tsd-kind-icon">hidden</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_ui_ui_.uihtmlimage.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_ui_.uihtmlimage.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_ui_.uihtmlimage.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_ui_ui_.uihtmlimage.html#y" class="tsd-kind-icon">y</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_textures_colortexture_.simpletexture.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_ui_ui_.uihtmlimage.html#hide" class="tsd-kind-icon">hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_ui_ui_.uihtmlimage.html#show" class="tsd-kind-icon">show</a></li>
 							</ul>
 						</section>
 					</div>
@@ -118,23 +120,38 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Simple<wbr>Texture<span class="tsd-signature-symbol">(</span>engine<span class="tsd-signature-symbol">: </span><a href="_engine_.engine.html" class="tsd-signature-type">Engine</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_textures_colortexture_.simpletexture.html" class="tsd-signature-type">SimpleTexture</a></li>
+						<li class="tsd-signature tsd-kind-icon">new uiHTMLImage<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLImageElement</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ui_ui_.uihtmlimage.html" class="tsd-signature-type">uiHTMLImage</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#constructor">constructor</a></p>
+								<p>Overrides <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in textures/ColorTexture.ts:6</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L298">ui/UI.ts:298</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>engine: <a href="_engine_.engine.html" class="tsd-signature-type">Engine</a></h5>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>el: <span class="tsd-signature-type">HTMLImageElement</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_textures_colortexture_.simpletexture.html" class="tsd-signature-type">SimpleTexture</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_ui_ui_.uihtmlimage.html" class="tsd-signature-type">uiHTMLImage</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -142,68 +159,75 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="alpha" class="tsd-anchor"></a>
-					<h3>alpha</h3>
-					<div class="tsd-signature tsd-kind-icon">alpha<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<a name="el" class="tsd-anchor"></a>
+					<h3>el</h3>
+					<div class="tsd-signature tsd-kind-icon">el<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#alpha">alpha</a></p>
+						<p>Inherited from <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#el">el</a></p>
 						<ul>
-							<li>Defined in textures/Texture.ts:7</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L275">ui/UI.ts:275</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="height" class="tsd-anchor"></a>
+					<h3>height</h3>
+					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L298">ui/UI.ts:298</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="color" class="tsd-anchor"></a>
-					<h3>color</h3>
-					<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> =&nbsp;new Uint8Array([229, 91, 91, 255])</span></div>
+					<a name="hidden" class="tsd-anchor"></a>
+					<h3>hidden</h3>
+					<div class="tsd-signature tsd-kind-icon">hidden<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#color">color</a></p>
+						<p>Inherited from <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#hidden">hidden</a></p>
 						<ul>
-							<li>Defined in textures/Texture.ts:8</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L276">ui/UI.ts:276</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="engine" class="tsd-anchor"></a>
-					<h3>engine</h3>
-					<div class="tsd-signature tsd-kind-icon">engine<span class="tsd-signature-symbol">:</span> <a href="_engine_.engine.html" class="tsd-signature-type">Engine</a></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#engine">engine</a></p>
+						<p>Inherited from <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#name">name</a></p>
 						<ul>
-							<li>Defined in textures/Texture.ts:9</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L274">ui/UI.ts:274</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="loaded" class="tsd-anchor"></a>
-					<h3>loaded</h3>
-					<div class="tsd-signature tsd-kind-icon">loaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="width" class="tsd-anchor"></a>
+					<h3>width</h3>
+					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#loaded">loaded</a></p>
 						<ul>
-							<li>Defined in textures/Texture.ts:11</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L297">ui/UI.ts:297</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite">
-					<a name="textureblocklocation" class="tsd-anchor"></a>
-					<h3>texture<wbr>Block<wbr>Location</h3>
-					<div class="tsd-signature tsd-kind-icon">texture<wbr>Block<wbr>Location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="x" class="tsd-anchor"></a>
+					<h3>x</h3>
+					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Overrides <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#textureblocklocation">textureBlockLocation</a></p>
 						<ul>
-							<li>Defined in textures/ColorTexture.ts:6</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L295">ui/UI.ts:295</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="webgltexture" class="tsd-anchor"></a>
-					<h3>webgl<wbr>Texture</h3>
-					<div class="tsd-signature tsd-kind-icon">webgl<wbr>Texture<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="y" class="tsd-anchor"></a>
+					<h3>y</h3>
+					<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#webgltexture">webglTexture</a></p>
 						<ul>
-							<li>Defined in textures/Texture.ts:12</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L296">ui/UI.ts:296</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -211,74 +235,37 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="setcolor" class="tsd-anchor"></a>
-					<h3>set<wbr>Color</h3>
+					<a name="hide" class="tsd-anchor"></a>
+					<h3>hide</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Color<span class="tsd-signature-symbol">(</span>r<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, g<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Color<span class="tsd-signature-symbol">(</span>hexColor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">hide<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#setcolor">setColor</a></p>
+								<p>Inherited from <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#hide">hide</a></p>
 								<ul>
-									<li>Defined in textures/Texture.ts:25</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L283">ui/UI.ts:283</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets color for texture</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>r: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>number from 0 to 255</p>
-									</div>
-								</li>
-								<li>
-									<h5>g: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>number from 0 to 255</p>
-									</div>
-								</li>
-								<li>
-									<h5>b: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>number from 0 to 255</p>
-									</div>
-								</li>
-								<li>
-									<h5>a: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>number from 0 to 255</p>
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="show" class="tsd-anchor"></a>
+					<h3>show</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">show<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_textures_texture_.texture.html">Texture</a>.<a href="_textures_texture_.texture.html#setcolor">setColor</a></p>
+								<p>Inherited from <a href="_ui_ui_.uihtmlelement.html">uiHTMLElement</a>.<a href="_ui_ui_.uihtmlelement.html#show">show</a></p>
 								<ul>
-									<li>Defined in textures/Texture.ts:31</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/ui/UI.ts#L288">ui/UI.ts:288</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets color for texture</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>hexColor: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -292,40 +279,55 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_textures_colortexture_.html">"textures/<wbr>Color<wbr>Texture"</a>
+						<a href="../modules/_ui_ui_.html">"ui/UI"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_ui_ui_.screen.html" class="tsd-kind-icon">Screen</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_ui_ui_.ui.html" class="tsd-kind-icon">UI</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_ui_ui_.uihtmlelement.html" class="tsd-kind-icon">uiHTMLElement</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_textures_colortexture_.simpletexture.html" class="tsd-kind-icon">Simple<wbr>Texture</a>
+						<a href="_ui_ui_.uihtmlimage.html" class="tsd-kind-icon">uiHTMLImage</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_textures_colortexture_.simpletexture.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_ui_ui_.uihtmlimage.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#alpha" class="tsd-kind-icon">alpha</a>
+								<a href="_ui_ui_.uihtmlimage.html#el" class="tsd-kind-icon">el</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_ui_.uihtmlimage.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#color" class="tsd-kind-icon">color</a>
+								<a href="_ui_ui_.uihtmlimage.html#hidden" class="tsd-kind-icon">hidden</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#engine" class="tsd-kind-icon">engine</a>
+								<a href="_ui_ui_.uihtmlimage.html#name" class="tsd-kind-icon">name</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#loaded" class="tsd-kind-icon">loaded</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_ui_.uihtmlimage.html#width" class="tsd-kind-icon">width</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_textures_colortexture_.simpletexture.html#textureblocklocation" class="tsd-kind-icon">texture<wbr>Block<wbr>Location</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_ui_.uihtmlimage.html#x" class="tsd-kind-icon">x</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#webgltexture" class="tsd-kind-icon">webgl<wbr>Texture</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_ui_ui_.uihtmlimage.html#y" class="tsd-kind-icon">y</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_textures_colortexture_.simpletexture.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a>
+								<a href="_ui_ui_.uihtmlimage.html#hide" class="tsd-kind-icon">hide</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_ui_ui_.uihtmlimage.html#show" class="tsd-kind-icon">show</a>
 							</li>
 						</ul>
 					</li>

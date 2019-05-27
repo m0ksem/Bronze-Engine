@@ -462,7 +462,7 @@ export class Engine {
     console.log();
     console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
     console.log();
-    console.info("   Version : 0.2.96");
+    console.info("   Version : 0.3.00");
     console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
     console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
     console.info("   Author  : https://github.com/m0ksem");

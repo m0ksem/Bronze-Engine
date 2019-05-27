@@ -104,6 +104,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_camera_.camera.html#_position" class="tsd-kind-icon">_position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_camera_.camera.html#animatedmoving" class="tsd-kind-icon">animated<wbr>Moving</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_camera_.camera.html#collisionbox" class="tsd-kind-icon">collision<wbr>Box</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_camera_.camera.html#collisions" class="tsd-kind-icon">collisions</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_camera_.camera.html#engine" class="tsd-kind-icon">engine</a></li>
@@ -130,6 +131,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#computematrix" class="tsd-kind-icon">compute<wbr>Matrix</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#move" class="tsd-kind-icon">move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#moveanimate" class="tsd-kind-icon">move<wbr>Animate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#oncollision" class="tsd-kind-icon">on<wbr>Collision</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#rotate" class="tsd-kind-icon">rotate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_camera_.camera.html#setcollisions" class="tsd-kind-icon">set<wbr>Collisions</a></li>
@@ -154,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:66</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L70">Camera.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -176,9 +178,24 @@
 					<div class="tsd-signature tsd-kind-icon">_position<span class="tsd-signature-symbol">:</span> <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3(0, 400, 500)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:66</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L70">Camera.ts:70</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="animatedmoving" class="tsd-anchor"></a>
+					<h3>animated<wbr>Moving</h3>
+					<div class="tsd-signature tsd-kind-icon">animated<wbr>Moving<span class="tsd-signature-symbol">:</span> <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3(0, 0, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L58">Camera.ts:58</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Vector3 for animated</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="collisionbox" class="tsd-anchor"></a>
@@ -186,7 +203,7 @@
 					<div class="tsd-signature tsd-kind-icon">collision<wbr>Box<span class="tsd-signature-symbol">:</span> <a href="_objects_entity_.collisionbox.html" class="tsd-signature-type">CollisionBox</a><span class="tsd-signature-symbol"> =&nbsp;new CollisionBox()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:58</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L62">Camera.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,7 +218,7 @@
 					<div class="tsd-signature tsd-kind-icon">collisions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:62</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L66">Camera.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -216,7 +233,7 @@
 					<div class="tsd-signature tsd-kind-icon">engine<span class="tsd-signature-symbol">:</span> <a href="_engine_.engine.html" class="tsd-signature-type">Engine</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:64</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L68">Camera.ts:68</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -226,7 +243,7 @@
 					<div class="tsd-signature tsd-kind-icon">field<wbr>OfView<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;90</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:16</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L16">Camera.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -241,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">field<wbr>OfView<wbr>Rad<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;Math.degToRad(90)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:20</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L20">Camera.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -256,7 +273,7 @@
 					<div class="tsd-signature tsd-kind-icon">inverse<wbr>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;Matrixes.unit()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:42</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L42">Camera.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -271,7 +288,7 @@
 					<div class="tsd-signature tsd-kind-icon">inverse<wbr>Rotation<wbr>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;Matrixes.unit()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:46</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L46">Camera.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -286,7 +303,7 @@
 					<div class="tsd-signature tsd-kind-icon">matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;Matrixes.unit()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:34</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L34">Camera.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -301,7 +318,7 @@
 					<div class="tsd-signature tsd-kind-icon">moved<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:50</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L50">Camera.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -316,7 +333,7 @@
 					<div class="tsd-signature tsd-kind-icon">moving<span class="tsd-signature-symbol">:</span> <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3(0, 0, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:54</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L54">Camera.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -331,7 +348,7 @@
 					<div class="tsd-signature tsd-kind-icon">range<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;20000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:30</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L30">Camera.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -351,7 +368,7 @@
 					<div class="tsd-signature tsd-kind-icon">rotation<span class="tsd-signature-symbol">:</span> <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3(0, 0, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:25</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L25">Camera.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -370,7 +387,7 @@
 					<div class="tsd-signature tsd-kind-icon">rotation<wbr>Matrix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;Matrixes.unit()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Camera.ts:38</li>
+							<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L38">Camera.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -393,7 +410,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:77</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L81">Camera.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -410,7 +427,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:84</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L88">Camera.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -441,7 +458,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:171</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L197">Camera.ts:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -463,7 +480,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:142</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L146">Camera.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -488,6 +505,45 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="moveanimate" class="tsd-anchor"></a>
+					<h3>move<wbr>Animate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">move<wbr>Animate<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, time<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L157">Camera.ts:157</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Smooth moving camera.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>z: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> time: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="oncollision" class="tsd-anchor"></a>
 					<h3>on<wbr>Collision</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -497,7 +553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:122</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L126">Camera.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,7 +583,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:150</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L176">Camera.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -561,7 +617,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:114</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L118">Camera.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -589,7 +645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:89</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L93">Camera.ts:93</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -612,7 +668,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:104</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L108">Camera.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,7 +696,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:135</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L139">Camera.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,7 +730,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Camera.ts:163</li>
+									<li>Defined in <a href="https://github.com/m0ksem/Bronze-Engine/blob/ca0f458/src/Camera.ts#L189">Camera.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -727,6 +783,9 @@
 								<a href="_camera_.camera.html#_position" class="tsd-kind-icon">_position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_camera_.camera.html#animatedmoving" class="tsd-kind-icon">animated<wbr>Moving</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_camera_.camera.html#collisionbox" class="tsd-kind-icon">collision<wbr>Box</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -773,6 +832,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_camera_.camera.html#move" class="tsd-kind-icon">move</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_camera_.camera.html#moveanimate" class="tsd-kind-icon">move<wbr>Animate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_camera_.camera.html#oncollision" class="tsd-kind-icon">on<wbr>Collision</a>
