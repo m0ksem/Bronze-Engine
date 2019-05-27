@@ -1,6 +1,5 @@
-import Texture from "./Texture";
+import { Texture } from "./Texture";
 import { Engine } from "../Engine";
-import SimpleTexture from "./SimpleTexture";
 
 /**
  * Cube texture.
@@ -314,3 +313,5 @@ export class CubeTexture extends Texture {
     this.loaded = true
   }
 }
+
+export default CubeTexture

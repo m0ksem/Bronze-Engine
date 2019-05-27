@@ -1,16 +1,15 @@
-import { perspective, unit } from "../math/Matrixes4";
 import { Engine } from "../Engine";
 import { Entity } from "../objects/Entity";
 import { Texture } from "../textures/Texture";
 import ShaderProgram from "../webgl/ShaderProgram";
-import SimpleTexture from "../textures/SimpleTexture";
+import { SimpleTexture } from "../textures/SimpleTexture";
 
 /**
  * @class
  * @constructor
  * @param {Engine} e
  */
-export default class UI {
+export class UI {
   canvas: HTMLCanvasElement;
   div: HTMLDivElement;
   width: number;
@@ -21,13 +20,14 @@ export default class UI {
   objects: Array<Entity>;
   htmlElements: Array<uiHTMLElement>;
   engine: Engine;
+  Screen = Screen;
+  images: uiHTMLImage[] = [];
   private webgl: WebGLRenderingContext;
   private _screen: Screen;
   private _texture: any;
   private _webglTexture: any;
   private frameBuffer: any;
-  Screen = Screen;
-  images: uiHTMLImage[] = [];
+
 
   constructor(engine: Engine) {
     this.width = engine.div.offsetWidth;
@@ -306,4 +306,4 @@ export class uiHTMLImage extends uiHTMLElement {
   }
 }
 
-export { UI };
+export default UI;

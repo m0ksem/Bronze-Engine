@@ -1,5 +1,6 @@
 import * as Mathematics from "./math/Mathematics";
 import * as Vector3 from "./math/Vector3";
+import * as Vector2 from "./math/Vector2";
 import * as Matrixes4 from "./math/Matrixes4";
 
 export { Engine } from "./Engine";
@@ -27,4 +28,4 @@ export { Glass } from "./materials/Glass";
 
 export { Sound } from './sounds/Sound'
 
-export { Mathematics, Vector3, Matrixes4 };
+export { Mathematics, Vector3, Matrixes4, Vector2 };

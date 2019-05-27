@@ -2,13 +2,13 @@ import { Engine } from "../Engine";
 import { Camera } from "../Camera";
 import { Texture } from "../textures/Texture";
 import { Vector3 } from "../math/Vector3";
-import { angleBetweenVectors} from "../math/Vector2"
+import { angleBetweenVectors } from "../math/Vector2";
 import { BronzeError } from "../debug/Error";
 import ShaderProgram from "../webgl/ShaderProgram";
 import { degToRad } from "../math/Mathematics";
 import { translation, rotation, scaling, perspective, multiply, transformVector, unit, rotationY, rotationZ, inverse } from "../math/Matrixes4";
 
-export default abstract class Entity {
+export abstract class Entity {
   public name: string = "Just entity :)";
   public loaded: boolean = false;
   public verticalAlign: boolean = true;
@@ -28,7 +28,7 @@ export default abstract class Entity {
   public rotationSelf: Vector3 = new Vector3(0, 0, 0);
   public rotationPoint: Vector3 = new Vector3(0, 0, 0);
   public scaling: Vector3 = new Vector3(1, 1, 1);
-  public selectable: boolean = false
+  public selectable: boolean = false;
   public relativeToCameraPosition = {
     max: {
       x: 0,
@@ -39,7 +39,7 @@ export default abstract class Entity {
       y: 0
     },
     depth: 0
-  }
+  };
 
   protected _engine: Engine;
   protected webgl: WebGLRenderingContext;
@@ -56,7 +56,6 @@ export default abstract class Entity {
 
   private _animationInterval: any;
   private _position: Vector3 = new Vector3(0, 0, 0);
-  private _w = 0 
 
   constructor(engine: Engine) {
     this._engine = engine;
@@ -173,7 +172,7 @@ export default abstract class Entity {
     // console.log(pos)
 
     // position = transformVector(this.camera!.rotationMatrix, position);
-    this._position.move(x, y, z)
+    this._position.move(x, y, z);
   }
 
   /**
@@ -250,6 +249,18 @@ export default abstract class Entity {
     this.minSize.set(this.minBaseSize.x * x, this.minBaseSize.y * y, this.minBaseSize.z * z);
   }
 
+  public scaleToPixels(x: number, y: number, z: number) {
+    x = x != null ? x / Math.abs(this.maxBaseSize.x - this.minBaseSize.x) : this.scaling.x;
+    y = y != null ? y / Math.abs(this.maxBaseSize.y - this.minBaseSize.y) : this.scaling.y;
+    z = z != null ? z / Math.abs(this.maxBaseSize.z - this.minBaseSize.z) : this.scaling.z;
+    this.scaling.set(x, y, z);
+  }
+
+  public scaleToPixelsX(x: number) {
+    x = x / Math.abs(this.maxBaseSize.x - this.minBaseSize.x);
+    this.scaling.set(x, x, x);
+  }
+
   /**
    * Resize objects to pixels
    * @param x pixels
@@ -271,56 +282,53 @@ export default abstract class Entity {
 
   public checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function) {
     if (!this.hidden && this.engine.camera!.moved) {
-      let maxPoint = [this.collisionBox.maxPoint.x, this.collisionBox.maxPoint.y, this.collisionBox.maxPoint.z, 1]
-      let minPoint = [this.collisionBox.minPoint.x, this.collisionBox.minPoint.y, this.collisionBox.minPoint.z, 1]
+      let maxPoint = [this.collisionBox.maxPoint.x, this.collisionBox.maxPoint.y, this.collisionBox.maxPoint.z, 1];
+      let minPoint = [this.collisionBox.minPoint.x, this.collisionBox.minPoint.y, this.collisionBox.minPoint.z, 1];
 
-      maxPoint = transformVector(this.worldMatrix, maxPoint)
-      minPoint = transformVector(this.worldMatrix, minPoint)
+      maxPoint = transformVector(this.worldMatrix, maxPoint);
+      minPoint = transformVector(this.worldMatrix, minPoint);
 
       if (maxPoint[0] < minPoint[0]) {
-        let temp = maxPoint[0]
-        maxPoint[0] = minPoint[0]
-        minPoint[0] = temp
+        let temp = maxPoint[0];
+        maxPoint[0] = minPoint[0];
+        minPoint[0] = temp;
       }
-      let maxX = maxPoint[0] - movingObjectCollisionBox.minPoint.x
-      let minX = minPoint[0] - movingObjectCollisionBox.maxPoint.x
+      let maxX = maxPoint[0] - movingObjectCollisionBox.minPoint.x;
+      let minX = minPoint[0] - movingObjectCollisionBox.maxPoint.x;
       if (maxPoint[1] < minPoint[1]) {
-        let temp = maxPoint[1]
-        maxPoint[1] = minPoint[1]
-        minPoint[1] = temp
+        let temp = maxPoint[1];
+        maxPoint[1] = minPoint[1];
+        minPoint[1] = temp;
       }
-      let maxY = maxPoint[1] - movingObjectCollisionBox.minPoint.y
-      let minY = minPoint[1] - movingObjectCollisionBox.maxPoint.y
+      let maxY = maxPoint[1] - movingObjectCollisionBox.minPoint.y;
+      let minY = minPoint[1] - movingObjectCollisionBox.maxPoint.y;
       if (maxPoint[2] < minPoint[2]) {
-        let temp = maxPoint[2]
-        maxPoint[2] = minPoint[2]
-        minPoint[2] = temp
+        let temp = maxPoint[2];
+        maxPoint[2] = minPoint[2];
+        minPoint[2] = temp;
       }
-      let maxZ = maxPoint[2] - movingObjectCollisionBox.minPoint.z
-      let minZ = minPoint[2] - movingObjectCollisionBox.maxPoint.z
+      let maxZ = maxPoint[2] - movingObjectCollisionBox.minPoint.z;
+      let minZ = minPoint[2] - movingObjectCollisionBox.maxPoint.z;
 
-      let newPosX = position.x + moving.x
-      let newPosY = position.y + moving.y
-      let newPosZ = position.z + moving.z
+      let newPosX = position.x + moving.x;
+      let newPosY = position.y + moving.y;
+      let newPosZ = position.z + moving.z;
 
-      if (position.y > minY && position.y < maxY &&
-        position.z > minZ && position.z < maxZ) {
+      if (position.y > minY && position.y < maxY && position.z > minZ && position.z < maxZ) {
         if ((position.x < minX && newPosX >= minX) || (position.x > maxX && newPosX <= maxX)) {
-          callback('x')
+          callback("x");
         }
       }
 
-      if (position.x > minX && position.x < maxX &&
-        position.z > minZ && position.z < maxZ) {
+      if (position.x > minX && position.x < maxX && position.z > minZ && position.z < maxZ) {
         if ((position.y < minY && newPosY >= minY) || (position.y > maxY && newPosY <= maxY)) {
-          callback('y')
+          callback("y");
         }
       }
 
-      if (position.y > minY && position.y < maxY &&
-        position.x > minX && position.x < maxX) {
+      if (position.y > minY && position.y < maxY && position.x > minX && position.x < maxX) {
         if ((position.z < minZ && newPosZ >= minZ) || (position.z > maxZ && newPosZ <= maxZ)) {
-          callback('z')
+          callback("z");
         }
       }
     }
@@ -330,13 +338,13 @@ export default abstract class Entity {
     this.shaderProgram = shader;
   }
 
-  public getPositionOnScreen() {
-    let xs = [this.collisionBox.maxPoint.x, this.collisionBox.minPoint.x]
-    let ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y]
-    let zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z]
-    
-    let smallest = [1000000, 1000000]
-    let biggest = [-1000000, -1000000, -1000000]
+  public updateRelativeToCameraPosition() {
+    let xs = [this.collisionBox.maxPoint.x, this.collisionBox.minPoint.x];
+    let ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y];
+    let zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z];
+
+    let smallest = [1000000, 1000000];
+    let biggest = [-1000000, -1000000, -1000000];
 
     for (let ix = 0; ix < 2; ix++) {
       const x = xs[ix];
@@ -345,31 +353,31 @@ export default abstract class Entity {
         for (let iz = 0; iz < 2; iz++) {
           const z = zs[iz];
 
-          let coordsInPixels = transformVector(this.matrix, [x, y, z, 1])
-          coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3]
-          coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3]
+          let coordsInPixels = transformVector(this.matrix, [x, y, z, 1]);
+          coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
+          coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
 
           coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * this.engine.width;
           coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.engine.height;
 
-          coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0]
-          coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1]
+          coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
+          coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
 
-          coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0]
-          coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1]
+          coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0];
+          coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1];
 
           if (coordsInPixels[0] < smallest[0]) {
-            smallest[0] = coordsInPixels[0]
+            smallest[0] = coordsInPixels[0];
           } else if (coordsInPixels[0] > biggest[0]) {
-            biggest[0] = coordsInPixels[0]
+            biggest[0] = coordsInPixels[0];
           }
           if (coordsInPixels[1] < smallest[1]) {
-            smallest[1] = coordsInPixels[1]
+            smallest[1] = coordsInPixels[1];
           } else if (coordsInPixels[1] > biggest[1]) {
-            biggest[1] = coordsInPixels[1]
+            biggest[1] = coordsInPixels[1];
           }
           if (coordsInPixels[2] > biggest[2]) {
-            biggest[2] = coordsInPixels[2]
+            biggest[2] = coordsInPixels[2];
           }
         }
       }
@@ -385,13 +393,20 @@ export default abstract class Entity {
         y: smallest[1]
       },
       depth: biggest[2]
-    }
+    };
+  }
 
-    if (this.engine.controls!.mouse.x > smallest[0] && this.engine.controls!.mouse.x < biggest[0] &&
-      this.engine.controls!.mouse.y > smallest[1] && this.engine.controls!.mouse.y < biggest[1]) {
-      if (this.engine.selectedObject == null ||
-        this.engine.selectedObject.relativeToCameraPosition.depth >= smallest[2]) {
-        this.engine.selectedObject = this
+  public getPositionOnScreen() {
+    this.updateRelativeToCameraPosition();
+
+    if (
+      this.engine.controls!.mouse.x > this.relativeToCameraPosition.min.x &&
+      this.engine.controls!.mouse.x < this.relativeToCameraPosition.max.x &&
+      this.engine.controls!.mouse.y > this.relativeToCameraPosition.min.y &&
+      this.engine.controls!.mouse.y < this.relativeToCameraPosition.max.y
+    ) {
+      if (this.engine.selectedObject == null || this.engine.selectedObject.relativeToCameraPosition.depth >= this.relativeToCameraPosition.depth) {
+        this.engine.selectedObject = this;
       }
     }
   }
@@ -403,20 +418,23 @@ export default abstract class Entity {
       world = multiply(world, translation(0, -(this.maxSize.y - this.minSize.y) / 2, 0));
     }
     let afterRotation = rot;
-    afterRotation = multiply(afterRotation, translation(
+    afterRotation = multiply(
+      afterRotation,
+      translation(
         -this.minSize.x - (this.maxSize.x - this.minSize.x) / 2,
         -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2,
         -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2
-      ))
+      )
+    );
     afterRotation = multiply(afterRotation, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
     if (this.UIElement) {
-      this.uiMatrix = multiply(world, afterRotation)
-      world = multiply(this.camera!.matrix, rot)
+      this.uiMatrix = multiply(world, afterRotation);
+      world = multiply(this.camera!.matrix, rot);
     } else {
-      world = multiply(world, afterRotation)
+      world = multiply(world, afterRotation);
     }
 
-    this.worldMatrix = world
+    this.worldMatrix = world;
 
     this.rotationMatrix = rot;
   }
@@ -429,20 +447,20 @@ export default abstract class Entity {
         matrix = multiply(matrix, this.worldMatrix);
       } else {
         matrix = multiply(matrix, this.uiMatrix!);
-  
-        this.rotationMatrix = multiply(this.engine.camera!.rotationMatrix, this.rotationMatrix)
+
+        this.rotationMatrix = multiply(this.engine.camera!.rotationMatrix, this.rotationMatrix);
       }
 
       this.matrix = matrix;
     }
 
     if (this.selectable) {
-      this.getPositionOnScreen()
+      this.getPositionOnScreen();
     }
   }
 
   public draw(): void {
-    if (!this.hidden) {
+    if (!this.hidden && this.shaderProgram) {
       this.shaderProgram.use();
       this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
       this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer);
@@ -473,30 +491,29 @@ export default abstract class Entity {
     return this._animationInterval;
   }
 
-  public hide () {
-    this.hidden = true
+  public hide() {
+    this.hidden = true;
   }
 
-  public show () {
-    this.hidden = false
+  public show() {
+    this.hidden = false;
   }
 
   /**
    * Deletes this object from engine.
    */
   public destroy() {
-    this.engine.objects.splice(this.engine.objects.indexOf(this), 1);
+    this.engine.removeObject(this)
   }
 }
 
 class CollisionBox {
   public maxPoint: Vector3 = new Vector3(0, 0, 0);
   public minPoint: Vector3 = new Vector3(0, 0, 0);
-  public points: Vector3[] = []
+  public points: Vector3[] = [];
 
-  public generatePoints () {
-    
-  }
+  public generatePoints() {}
 }
 
-export { Entity, CollisionBox };
+export { CollisionBox };
+export default Entity;

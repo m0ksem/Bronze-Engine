@@ -9,7 +9,7 @@ import { Engine } from "./Engine";
  * @class
  * @constructor
  */
-export default class Camera {
+export class Camera {
   /**
    * Field of view for drawing in angles.
    */
@@ -53,6 +53,10 @@ export default class Camera {
    */
   public moving: Vector3 = new Vector3(0, 0, 0);
   /**
+   * Vector3 for animated
+   */
+  public animatedMoving: Vector3 = new Vector3(0, 0, 0);
+  /**
    * Collision box for camera.
    */
   public collisionBox: CollisionBox = new CollisionBox();
@@ -61,7 +65,7 @@ export default class Camera {
    */
   public collisions: boolean = true;
 
-  readonly engine: Engine;
+  public engine: Engine;
 
   private _position: Vector3 = new Vector3(0, 400, 500);
 
@@ -145,6 +149,28 @@ export default class Camera {
   }
 
   /**
+   * Smooth moving camera.
+   * @param x 
+   * @param y 
+   * @param z 
+   */
+  public moveAnimate(x: number, y: number, z: number, time: number = 100) {
+    x = x / time
+    y = y / time
+    z = z / time
+    let vec = new Vector3(x, y, z)
+    this.animatedMoving.add(vec)
+    let t = time
+    let tick = this.engine.addOnFrameHandler(() => {
+      t -= 1
+      if (t <= 0) {
+        this.engine.removeOnFrameHandler(tick)
+        this.animatedMoving.sub(vec)
+      }
+    })
+  }
+
+  /**
    * Rotate for x, y, z degrees.
    */
   public rotate(x: number, y: number, z: number) {
@@ -191,4 +217,4 @@ export default class Camera {
   }
 }
 
-export { Camera };
+export default Camera;

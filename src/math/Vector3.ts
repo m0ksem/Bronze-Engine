@@ -1,4 +1,4 @@
-export default class Vector3 {
+export class Vector3 {
   [key: string]: any
   public x: number = 0
   public y: number = 0
@@ -38,6 +38,18 @@ export default class Vector3 {
 
   public copy (): Vector3 {
     return Object.assign(new Vector3(0, 0, 0), this)
+  }
+
+  public add (vector: Vector3): void {
+    this.x += vector.x
+    this.y += vector.y
+    this.z += vector.z
+  }
+
+  public sub(vector: Vector3): void {
+    this.x -= vector.x
+    this.y -= vector.y
+    this.z -= vector.z
   }
 }
 
@@ -174,6 +186,6 @@ export function angleBetweenVectors(vector1: Vector3, vector2: Vector3): number 
   return mul / (length(vector1) * length(vector2))
 }
 
-export {
+export default {
   Vector3
 }

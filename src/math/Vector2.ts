@@ -1,4 +1,4 @@
-export default class Vector2 {
+export class Vector2 {
   [key: string]: any
   public x: number = 0
   public y: number = 0
@@ -91,6 +91,6 @@ export function angleBetweenVectors(vector1: { x: number, y: number }, vector2: 
   return mul / (length(vector1) * length(vector2))
 }
 
-export {
+export default {
   Vector2
 }

@@ -3,7 +3,7 @@ import { Vector3 } from "../math/Vector3";
 
 let lightsCount = 0
 
-export default class Light {
+export class Light {
   public engine: Engine;
   private _position: Vector3 = new Vector3(0, 0, 0)
   private _range: number = 2000;
@@ -155,6 +155,4 @@ export default class Light {
   }
 }
 
-export {
-  Light
-}
+export default Light;

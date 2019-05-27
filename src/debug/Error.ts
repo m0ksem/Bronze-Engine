@@ -1,4 +1,4 @@
-export default class BronzeError {
+export class BronzeError {
   constructor(message: string) {
     throw new CustomError(message);
   }  
@@ -28,5 +28,7 @@ class BronzeLog {
 }
 
 export {
-  BronzeError, BronzeWarn, BronzeLog
+  BronzeWarn, BronzeLog
 }
+
+export default BronzeError

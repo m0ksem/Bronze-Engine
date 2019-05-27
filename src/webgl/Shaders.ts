@@ -22,6 +22,8 @@ export class Shaders {
    */
   readonly webGL: WebGLRenderingContext;
 
+  public shadersRequireLights: ShaderProgram[] = [];
+
   [key: string]: any;
 
   constructor(webGL: WebGLRenderingContext) {
@@ -127,15 +129,13 @@ export class Shaders {
   }
 }
 
-class Options extends Object {
+export class Options {
   addLocationMarker: boolean = false;
   removePrefixes: boolean = false;
 }
 
-class Extensions extends Object {
+export class Extensions {
   [key: string]: any;
 }
 
-export default {
-  Shaders
-};
+export default Shaders;

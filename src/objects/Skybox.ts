@@ -1,8 +1,7 @@
 import * as Matrixes from '../math/Matrixes4'
 import { Engine } from '../Engine';
 import Entity from './Entity';
-import Texture from '../textures/Texture';
-import ShaderProgram from '../webgl/ShaderProgram';
+import { BronzeWarn } from '../debug/Error';
 
 export class Skybox extends Entity {
   constructor(engine: Engine) {
@@ -55,21 +54,25 @@ export class Skybox extends Entity {
    * Function draws skybox
    */
   public draw() {
-    this.shaderProgram.use()
+    if (this.shaderProgram) {
+      this.shaderProgram.use()
 
-    this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation)
-    this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer)
-    this.engine.webgl.vertexAttribPointer(
-      this.shaderProgram.positionLocation, 2, this.engine.webgl.FLOAT, false, 0, 0
-    )
+      this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation)
+      this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, this.vertexesBuffer)
+      this.engine.webgl.vertexAttribPointer(
+        this.shaderProgram.positionLocation, 2, this.engine.webgl.FLOAT, false, 0, 0
+      )
 
-    this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation)
-    this.engine.webgl.uniformMatrix4fv(
-      this.shaderProgram.matrixLocation, false,
-      this.matrix);
+      this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation)
+      this.engine.webgl.uniformMatrix4fv(
+        this.shaderProgram.matrixLocation, false,
+        this.matrix);
 
-    this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 2)
+      this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, this.vertexes.length / 2)
 
-    this.engine.shaders.default.use()
+      this.engine.shaders.default.use()
+    } else {
+      new BronzeWarn('Shader program is not set.')
+    }
   }
 }

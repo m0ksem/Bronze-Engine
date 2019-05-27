@@ -7,7 +7,7 @@ import Entity from "../objects/Entity";
  * @param {Engine} engine
  * @param {Object} [object]
  */
-export default class Glass extends Material {
+export class Glass extends Material {
   constructor(engine: Engine, object: Entity) {
     super(engine, object)
     this.shaderProgram = engine.shaders.reflection
@@ -48,6 +48,6 @@ export default class Glass extends Material {
   }
 }
 
-export {
+export default {
   Glass
 }

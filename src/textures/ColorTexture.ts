@@ -2,7 +2,7 @@ import { Engine } from "../Engine";
 import { Texture } from "./Texture";
 import {isPowerOf2} from '../math/Mathematics'
 
-export default class ColorTexture extends Texture {
+export class ColorTexture extends Texture {
   public textureBlockLocation: number = -1
   
   constructor(engine: Engine) {
@@ -20,6 +20,4 @@ export default class ColorTexture extends Texture {
   }
 }
 
-export {
-  ColorTexture
-}
+export default ColorTexture

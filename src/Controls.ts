@@ -6,7 +6,7 @@ import { Vector2 } from "./math/Vector2";
  * @class
  * @constructor
  */
-export default class Controls {
+export class Controls {
   public engine: Engine;
   /**
    * True if canvas focused.
@@ -500,4 +500,4 @@ function isTouchDevice() {
   return mq(query);
 }
 
-export { Controls };
+export default Controls;

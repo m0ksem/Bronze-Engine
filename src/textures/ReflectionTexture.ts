@@ -147,3 +147,5 @@ export class ReflectionTexture extends CubeTexture {
     this.loaded = true
   }
 }
+
+export default ReflectionTexture;

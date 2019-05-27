@@ -7,7 +7,7 @@ import Entity from "../objects/Entity";
  * @class
  * @constructor
  */
-export default class Debugger {
+export class Debugger {
   logArray: {view: HTMLElement, output: Function}[];
   element: HTMLElement | null;
   constructor(engine: Engine) {
@@ -40,6 +40,6 @@ export default class Debugger {
     })
   }
 }
-export {
+export default {
   Debugger
 }

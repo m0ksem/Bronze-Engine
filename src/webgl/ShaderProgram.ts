@@ -1,4 +1,4 @@
-export default class ShaderProgram {
+export class ShaderProgram {
   [key: string]: any;
   readonly webGL: WebGLRenderingContext;
   readonly VERTEX_SHADER: string = "vertex";
@@ -166,3 +166,5 @@ class BronzeError extends Error {
     Error.captureStackTrace(this, BronzeError);
   }
 }
+
+export default ShaderProgram

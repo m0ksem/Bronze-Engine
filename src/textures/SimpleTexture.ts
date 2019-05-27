@@ -1,8 +1,8 @@
 import { Engine } from "../Engine";
 import { Texture } from "./Texture";
-import {isPowerOf2} from './../math/Mathematics'
+import {isPowerOf2} from '../math/Mathematics'
 
-export default class SimpleTexture extends Texture {
+export class SimpleTexture extends Texture {
   public textureBlockLocation: number = -1
   public mipmapFilter = 'LINEAR'
 
@@ -160,6 +160,4 @@ export default class SimpleTexture extends Texture {
   }
 }
 
-export {
-  SimpleTexture
-}
+export default SimpleTexture

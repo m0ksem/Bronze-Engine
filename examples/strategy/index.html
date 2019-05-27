@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>GameEngine</title>
+</head>
+<div id="bronze">
+
+</div>
+<div>
+    Controls:
+    <span class="key">w</span>, <span class="key">a</span>, <span class="key">s</span>, <span class="key">d</span> for
+    moving camera. <br />
+    <span class="key">shift + w</span> and <span class="key">shift + s</span> to vertical move camera. <br />
+    <span class="key">left mouse</span> (or <span class="key">short click</span> from phone) to rotate camera. <br />
+    <span class="key">right mouse</span> (or <span class="key">long click</span> from phone) to move object above
+    cursor. <br />
+</div>
+<div>
+    This is dev playground for testing new features. <br />
+
+    Visit <a href="https://github.com/m0ksem/Bronze-Editor">Editor</a> (<a
+        href="https://github.com/m0ksem/Bronze-Editor">Deploy</a>) to use it. <br />
+    Visit <a href="http://m0ksem.design/Bronze-Engine/docs/global">Docs</a> for learning how to use engine <br />
+</div>
+<div class="debug" id="debug">
+    <h2>Debug window</h2>
+</div>
+<script id='fragShader' type="fragment-shader">
+#define MAX_LIGHTS 28
+
+precision mediump float;
+
+varying vec2 v_texcoord;
+varying vec3 v_normal;
+
+uniform sampler2D u_texture;
+uniform float u_lightRanges[MAX_LIGHTS];
+uniform float u_lightMinValue;
+
+varying vec3 v_lightsDirections[MAX_LIGHTS];
+varying float v_lightsCount;
+
+float computeLight(vec3 direction, float range) {
+    float light = dot(v_normal, normalize(direction));
+    float k = (range - length(direction)) / range;
+    if (k < 0.0) k = 0.0;
+    light = light * k;
+    if (light < u_lightMinValue) {
+        light = u_lightMinValue;
+    }
+    return light;
+}
+
+void main() {
+    float light = 0.0;
+
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        if (i > int(v_lightsCount)) {
+            break;
+        }
+        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);
+    }
+    
+    gl_FragColor = texture2D(u_texture, v_texcoord);
+    if (gl_FragColor.a == 0.0) {
+        discard;
+    }
+    gl_FragColor.rgb *= (light);
+    gl_FragColor.rgb *= gl_FragColor.a;
+    gl_FragColor.rgb *= vec3(0.0, 0.5, 0.0);
+}
+</script>
+<script id='fragShaderError' type="fragment-shader">
+#define MAX_LIGHTS 28
+
+precision mediump float;
+
+varying vec2 v_texcoord;
+varying vec3 v_normal;
+
+uniform sampler2D u_texture;
+uniform float u_lightRanges[MAX_LIGHTS];
+uniform float u_lightMinValue;
+
+varying vec3 v_lightsDirections[MAX_LIGHTS];
+varying float v_lightsCount;
+
+float computeLight(vec3 direction, float range) {
+    float light = dot(v_normal, normalize(direction));
+    float k = (range - length(direction)) / range;
+    if (k < 0.0) k = 0.0;
+    light = light * k;
+    if (light < u_lightMinValue) {
+        light = u_lightMinValue;
+    }
+    return light;
+}
+
+void main() {
+    float light = 0.0;
+
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        if (i > int(v_lightsCount)) {
+            break;
+        }
+        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);
+    }
+    
+    gl_FragColor = texture2D(u_texture, v_texcoord);
+    if (gl_FragColor.a == 0.0) {
+        discard;
+    }
+    gl_FragColor.rgb *= (light);
+    gl_FragColor.rgb *= gl_FragColor.a;
+    gl_FragColor.rgb *= vec3(0.8, 0.0, 0.0);
+}
+</script>
+<script id="vertexShader" type="vertex-shader">
+#define MAX_LIGHTS 28
+
+attribute vec4 a_position;
+attribute vec2 a_texcoord;
+attribute vec4 a_normal;
+
+uniform mat4 u_matrix;
+uniform mat4 u_objectRotation;
+uniform mat4 u_worldMatrix;
+
+uniform vec3 u_lightPositions[MAX_LIGHTS];
+uniform int u_lightsCount;
+
+varying vec2 v_texcoord;
+varying vec3 v_normal;
+varying vec3 v_lightsDirections[MAX_LIGHTS];
+varying float v_lightsCount;
+
+void main() {
+    gl_Position = u_matrix * a_position;
+    
+    v_texcoord = a_texcoord;
+    v_normal = vec3(u_objectRotation * a_normal);
+
+    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        if (i > int(u_lightsCount)) {
+            break;
+        }
+        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;
+    }
+
+    v_lightsCount = float(u_lightsCount);
+}
+
+</script>
+<script src="./../../dist/Bronze.min.js"></script>
+<script src="./client.js"></script>
+</body>
+
+</html>

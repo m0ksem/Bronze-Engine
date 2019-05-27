@@ -1,15 +1,15 @@
 import { getWebGL } from "./webgl/Utils";
 import UI from "./ui/UI";
 import Camera from "./Camera";
-import Texture from "./textures/Texture";
+import { Texture } from "./textures/Texture";
 import Entity from "./objects/Entity";
-import Debugger from "./debug/Debugger";
-import Controls from "./Controls";
+import { Debugger } from "./debug/Debugger";
+import { Controls } from "./Controls";
 import { Shaders } from "./webgl/Shaders";
 import Light from "./lights/Light";
 import { distance } from "./math/Vector3";
 import BronzeError from "./debug/Error";
-import ColorTexture from "./textures/ColorTexture";
+import { ColorTexture } from "./textures/ColorTexture";
 
 export class Engine {
   public div: HTMLDivElement;
@@ -25,7 +25,7 @@ export class Engine {
   public globalLightMinValue: number = 0.5;
   public noTexture: ColorTexture;
   public reflections: boolean = false;
-  public status: string = 'Creating';
+  public status: string = "Creating";
   public selectedObject: Entity | null = null;
 
   readonly shaders: Shaders;
@@ -44,6 +44,7 @@ export class Engine {
   private _onObjectSelectedHandlers: Array<Function> = [];
   private _running: boolean = false;
   private _onRun: Array<Function> = [];
+  private _onFrameHandlers: Array<Function> = [];
 
   constructor(div: HTMLDivElement) {
     this.div = div;
@@ -57,9 +58,10 @@ export class Engine {
     this.addOnResourcesLoadedListener(() => {
       if (!this.reflections) {
         this.appendCanvas();
-        this.status = 'Drawing'
+        this.status = "Drawing";
+      } else {
+        this.status = "Creating reflections";
       }
-      this.status = 'Creating reflections'
     });
 
     this.shaders = new Shaders(this.webgl);
@@ -116,7 +118,7 @@ export class Engine {
 
   public appendCanvas() {
     this.div.appendChild(this.canvas);
-    this.onCanvasResized()
+    this.onCanvasResized();
   }
 
   /**
@@ -151,7 +153,7 @@ export class Engine {
    * Removes objects if its exist
    */
   public removeObject(object: Entity): Entity | null {
-    let index: number = -1
+    let index: number = -1;
     if (object.texture.alpha) {
       index = this._objectsWithAlpha.indexOf(object);
       if (index == -1) {
@@ -167,7 +169,7 @@ export class Engine {
       }
       return this._objectsWithoutAlpha.splice(index, 1)[0];
     }
-    return null
+    return null;
   }
 
   public addOnObjectSelectedListener(callback: Function): void {
@@ -257,8 +259,8 @@ export class Engine {
       imageAlpha = options.imageAlpha || imageAlpha;
       noDrawObjects = options.noDrawObjects || [];
     }
-    this.width = imageWidth
-    this.height = imageHeight
+    this.width = imageWidth;
+    this.height = imageHeight;
     this.canvas.width = imageWidth;
     this.canvas.height = imageHeight;
     this.onCanvasResized();
@@ -299,13 +301,14 @@ export class Engine {
     this.camera = currentCamera;
     this.canvas.width = currentCanvasSize[0];
     this.canvas.height = currentCanvasSize[1];
-    this.width = currentCanvasSize[0]
-    this.height = currentCanvasSize[1]
+    this.width = currentCanvasSize[0];
+    this.height = currentCanvasSize[1];
     this.onCanvasResized();
     return frame;
   }
 
   public render() {
+    this.beforeFrame();
     this.update();
     this.draw();
   }
@@ -313,7 +316,7 @@ export class Engine {
   public run() {
     _engine = this;
     this._running = true;
-    this.status = 'Loading resources'
+    this.status = "Loading resources";
 
     if (this._loadedTexturesCount == this.textures.length) {
       this._texturesLoaded = true;
@@ -344,9 +347,27 @@ export class Engine {
     this._running = false;
   }
 
+  public addOnFrameHandler(callback: Function): Function {
+    this._onFrameHandlers.push(callback);
+    return callback;
+  }
+
+  public removeOnFrameHandler(func: Function) {
+    let index = this._onFrameHandlers.indexOf(func);
+    this._onFrameHandlers.splice(index, 1);
+  }
+
+  private beforeFrame() {
+    for (let i = 0; i < this._onFrameHandlers.length; i++) {
+      const func = this._onFrameHandlers[i];
+      func();
+    }
+  }
+
   private update() {
     if (this.camera && this.controls && this.controls.controlFunction) {
       this.camera.moving.set(0, 0, 0);
+      this.camera.moving.add(this.camera.animatedMoving);
       this.controls.controlFunction();
       if (this.debugger != null) {
         this.debugger.updateInfo();
@@ -416,6 +437,13 @@ export class Engine {
     this.webgl.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
     this.webgl.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
     this.webgl.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
+    this.shaders.shadersRequireLights.forEach(shader => {
+      shader.use();
+      this.webgl.uniform3fv(shader.lightPositionsLocation, this.lightsPositions);
+      this.webgl.uniform1fv(shader.lightRangesLocation, this.lightsRanges);
+      this.webgl.uniform1i(shader.lightsCountLocation, this.lights.length);
+      this.webgl.uniform1f(shader.lightMinValueLocation, this.globalLightMinValue);
+    });
 
     this.ui!.draw();
 
@@ -441,6 +469,8 @@ export class Engine {
     console.log();
   }
 }
+
+export default Engine;
 
 let _engine: Engine;
 

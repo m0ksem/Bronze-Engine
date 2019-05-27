@@ -62,7 +62,7 @@ engine.globalLightMinValue = 0.001
 
 let heroLamp = new Bronze.Light(engine)
     heroLamp.setPosition(0, 250, 0)
-    heroLamp.range = 700
+    heroLamp.range = 8000
     heroLamp.off()
 let lamplight = new Bronze.Light(engine)
     lamplight.setPosition(0, 500, -500)
@@ -70,11 +70,6 @@ let lamplight = new Bronze.Light(engine)
     lamplight.on()
 
 let ui = new Bronze.UI(engine)
-
-// let skybox = new Bronze.Skybox(engine)
-// skybox.setTexture(skyboxTexture)
-
-// Objects
 
     // Main corridor
 let floor = new Bronze.Rect(engine)
@@ -287,7 +282,11 @@ controls.setControlFunction(() => {
 
         heroLamp.setPosition(camera.position.x, 250, camera.position.z)
 
-        camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
+        camera.rotate(controls.mouse.movement.y / 10, 0, 0)
+        if (camera.rotation.x < -10 || camera.rotation.x > 40) { 
+            camera.rotate(-controls.mouse.movement.y / 10, 0, 0)
+        }
+        camera.rotate(0, controls.mouse.movement.x / 10, 0)
         
         checkCorridorEnd()
         checkHand()
@@ -317,7 +316,7 @@ function checkCorridor () {
 
 let scared = false
 function checkHand () {
-    if (camera.rotation.x > 12 && camera.rotation.y > -33 && camera.rotation.y < 33 &&
+    if (camera.rotation.x > 12 &&
     camera.position.x > 1900 && camera.position.z < -1800 && camera.position.z > -3000 &&
     !scared) {
         speed = 0

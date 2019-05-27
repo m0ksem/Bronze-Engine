@@ -1,9 +1,7 @@
 import { Engine } from "../Engine";
 import BronzeError from "../debug/Error";
 
-
-
-export default abstract class Texture {
+export abstract class Texture {
   public alpha: boolean = false
   public color: Uint8Array = new Uint8Array([229, 91, 91, 255])
   public engine: Engine
@@ -53,6 +51,4 @@ export default abstract class Texture {
   }
 }
 
-export {
-  Texture
-}
+export default Texture
