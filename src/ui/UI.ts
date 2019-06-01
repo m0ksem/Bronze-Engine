@@ -180,7 +180,7 @@ export class UI {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 
-  draw() {
+  async draw() {
     const webgl = this.engine.webgl;
 
     webgl.bindFramebuffer(webgl.FRAMEBUFFER, this.frameBuffer);

@@ -364,7 +364,7 @@ export class Engine {
     }
   }
 
-  private update() {
+  private async update() {
     if (this.camera && this.controls && this.controls.controlFunction) {
       this.camera.moving.set(0, 0, 0);
       this.camera.moving.add(this.camera.animatedMoving);
@@ -378,7 +378,7 @@ export class Engine {
 
     this.selectedObject = null;
 
-    for (let i = 0; i < this._objectsWithoutAlpha.length; i++) {
+    for (let i = this._objectsWithoutAlpha.length; i--;) {
       const object = this._objectsWithoutAlpha[i];
       object.updateMatrixes();
       if (object.checkCollision) {
@@ -388,7 +388,7 @@ export class Engine {
       }
     }
 
-    for (let i = 0; i < this._objectsWithAlpha.length; i++) {
+    for (let i = this._objectsWithAlpha.length; i--;) {
       const object = this._objectsWithAlpha[i];
       object.updateMatrixes();
       if (object.checkCollision) {

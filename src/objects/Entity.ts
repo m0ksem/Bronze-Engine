@@ -280,7 +280,7 @@ export abstract class Entity {
     this.texture = texture;
   }
 
-  public checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function) {
+  public async checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function) {
     if (!this.hidden && this.engine.camera!.moved) {
       let maxPoint = [this.collisionBox.maxPoint.x, this.collisionBox.maxPoint.y, this.collisionBox.maxPoint.z, 1];
       let minPoint = [this.collisionBox.minPoint.x, this.collisionBox.minPoint.y, this.collisionBox.minPoint.z, 1];
@@ -338,7 +338,7 @@ export abstract class Entity {
     this.shaderProgram = shader;
   }
 
-  public updateRelativeToCameraPosition() {
+  public async updateRelativeToCameraPosition() {
     let xs = [this.collisionBox.maxPoint.x, this.collisionBox.minPoint.x];
     let ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y];
     let zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z];
@@ -396,9 +396,8 @@ export abstract class Entity {
     };
   }
 
-  public getPositionOnScreen() {
-    this.updateRelativeToCameraPosition();
-
+  public async getPositionOnScreen() {
+    await this.updateRelativeToCameraPosition();
     if (
       this.engine.controls!.mouse.x > this.relativeToCameraPosition.min.x &&
       this.engine.controls!.mouse.x < this.relativeToCameraPosition.max.x &&
@@ -411,7 +410,7 @@ export abstract class Entity {
     }
   }
 
-  public updateMatrixes(): void {
+  public async updateMatrixes() {
     let rot = rotation(this.rotation.x, this.rotation.y, this.rotation.z);
     let world = translation(this._position.x, this._position.y, this._position.z);
     if (!this.verticalAlign) {

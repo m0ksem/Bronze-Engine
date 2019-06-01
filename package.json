@@ -15,6 +15,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
+    "@babel/runtime": "^7.4.5",
     "babel-plugin-inline-import": "^3.0.0",
     "jslint": "^0.12.1",
     "typedoc": "^0.14.2",
@@ -31,6 +32,7 @@
     "build:docs": "typedoc --out docs ./src"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "babel-loader": "^8.0.5",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2"
