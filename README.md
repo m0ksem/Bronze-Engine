@@ -10,7 +10,7 @@
 
 ## Examples 
 
- - 🏗 <a href="https://github.com/m0ksem/Bronze-Editor/examples/dev"><b>Dev polygon</b></a> - polygon for testing new features.
+ - 🏗 <a href="https://github.com/m0ksem/Bronze-Engine/examples/dev"><b>Dev polygon</b></a> - polygon for testing new features.
  - 🎯 <a href="http://m0ksem.design/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game shooter game.
  - 👻 <a href="http://m0ksem.design/Bronze-Engine/examples/horror/"><b>Horror</b></a> - the horror game, showing the possibilities of light in the engine.
  - 🧐 <a href="http://m0ksem.design/Bronze-Engine/examples/strategy/"><b>Strategy</b></a> - the game demo, showing the possibilities of camera and different shaders.
