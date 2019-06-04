@@ -152,7 +152,7 @@ export class Engine {
   /**
    * Removes objects if its exist
    */
-  public removeObject(object: Entity): Entity | null {
+  public removeObject(object: Entity): Entity {
     let index: number = -1;
     if (object.texture.alpha) {
       index = this._objectsWithAlpha.indexOf(object);
@@ -169,7 +169,6 @@ export class Engine {
       }
       return this._objectsWithoutAlpha.splice(index, 1)[0];
     }
-    return null;
   }
 
   public addOnObjectSelectedListener(callback: Function): void {
@@ -430,7 +429,7 @@ export class Engine {
     }
   }
 
-  private draw() {
+  private async draw() {
     this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
     this.shaders.default.use();
     this.webgl.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
@@ -447,8 +446,8 @@ export class Engine {
 
     this.ui!.draw();
 
-    this.objects.forEach(object => {
-      object.draw();
+    this.objects.forEach(async (object) => {
+      await object.draw();
     });
 
     this._objectsWithAlpha.forEach(object => {
@@ -479,10 +478,10 @@ let _engine: Engine;
  * @private
  */
 function requestAnimationFrameEngine() {
+  requestAnimationFrame(requestAnimationFrameEngine);
   if (!_engine.running) {
     return;
   }
-  requestAnimationFrame(requestAnimationFrameEngine);
   _engine.render();
 }
 

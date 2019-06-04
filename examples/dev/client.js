@@ -20,7 +20,7 @@ let camera = new Bronze.Camera()
     engine.setDrawingRange(100000000000000)
 
 let controls = new Bronze.Controls(engine)
-controls.lockPointer(false)
+controls.lockPointer(true)
 
 let debug = new Bronze.Debugger(engine)
 debug.setElement(document.getElementById('debug'))
@@ -47,7 +47,6 @@ ui.appendDOMElement(debug.element)
 
 // Setting control function for camera
 controls.setSensitivity(1)
-controls.lockPointer(false)
 
 controls.setControlFunction(() => {
     // All coords

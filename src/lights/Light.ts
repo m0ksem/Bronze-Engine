@@ -153,6 +153,10 @@ export class Light {
     this._positionsWritten = false
     this._rangeWritten = false
   }
+
+  public destroy() {
+    this.off()
+  }
 }
 
 export default Light;

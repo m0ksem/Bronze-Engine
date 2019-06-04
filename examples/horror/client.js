@@ -62,7 +62,7 @@ engine.globalLightMinValue = 0.001
 
 let heroLamp = new Bronze.Light(engine)
     heroLamp.setPosition(0, 250, 0)
-    heroLamp.range = 8000
+    heroLamp.range = 800
     heroLamp.off()
 let lamplight = new Bronze.Light(engine)
     lamplight.setPosition(0, 500, -500)
@@ -229,11 +229,11 @@ let hiddenWall = new Bronze.Rect(engine)
     hiddenWall.setRotation(0, -90, 0)
     hiddenWall.verticalAlign = false
 
-let lamp = new Bronze.Object(engine)
-    lamp.setPosition(0, 800, -1000)
-    lamp.setTexture(lampTexture)
-    lamp.loadFromObj("assets/objects/lamp3.obj")
-    lamp.scale(0.5, 0.5, 0.5)
+// let lamp = new Bronze.Object(engine)
+//     lamp.setPosition(0, 800, -1000)
+//     lamp.setTexture(lampTexture)
+//     lamp.loadFromObj("assets/objects/lamp3.obj")
+//     lamp.scale(0.5, 0.5, 0.5)
 let table = new Bronze.Object(engine)
     table.setPosition(50, 100, -2050)
     table.setTexture(tableTexture)
