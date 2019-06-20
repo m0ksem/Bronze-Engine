@@ -7,7 +7,7 @@ import { Debugger } from "./debug/Debugger";
 import { Controls } from "./Controls";
 import { Shaders } from "./webgl/Shaders";
 import Light from "./lights/Light";
-import { distance } from "./math/Vector3";
+import { distance, Vector3 } from "./math/Vector3";
 import BronzeError from "./debug/Error";
 import { ColorTexture } from "./textures/ColorTexture";
 
@@ -226,6 +226,26 @@ export class Engine {
     } else {
       throw 'Failed to set drawing range. Camera wasn\'t set.';
     }
+  }
+
+  public drawToFrameBuffer (framebuffer: WebGLFramebuffer, width: number, height: number, update: boolean = false) {
+    const webgl = this.webgl;
+
+    webgl.bindFramebuffer(webgl.FRAMEBUFFER, framebuffer);
+    webgl.enable(this.webgl.CULL_FACE);
+    webgl.enable(this.webgl.DEPTH_TEST);
+    webgl.clearColor(0, 0, 0, 0);
+    webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+    webgl.viewport(0, 0, width, height);
+
+    if (update) {
+      this.update()
+    }
+    this.draw()
+
+    webgl.bindFramebuffer(webgl.FRAMEBUFFER, null);
+    webgl.clearColor(0, 0, 0, 0);
+    webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
   }
 
   public captureFrame(

@@ -16,6 +16,16 @@ export function degToRad(degrees: number) {
   return degrees * Math.PI / 180;
 }
 
+export function dropCircle(deg: number) {
+  let piCount = Math.ceil(deg / 360)
+  return deg - 360 * piCount
+}
+
+export function dropCircleRad(rad: number) {
+  let piCount = Math.ceil(rad / Math.PI)
+  return rad - Math.PI * piCount
+}
+
 /**
  * Returns true if value is square.
  * @param value 

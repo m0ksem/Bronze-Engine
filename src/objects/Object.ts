@@ -4,6 +4,7 @@ import { Material } from "../materials/Material";
 
 export default class Object extends Entity {
   private _drawingMode: number;
+  private afterLoadHidden = false;
 
   constructor(engine: Engine) {
     super(engine);
@@ -171,7 +172,23 @@ export default class Object extends Entity {
 
     this.engine.objectLoaded(this);
 
-    this.hidden = false;
+    this.hidden = this.afterLoadHidden;
+
+    this.hide = () => {
+      this.hidden = true
+    }
+
+    this.show = () => {
+      this.hidden = false
+    }
+  }
+
+  public hide () {
+    this.afterLoadHidden = true
+  }
+
+  public show () {
+    this.afterLoadHidden = false
   }
 
   public onload() {}
