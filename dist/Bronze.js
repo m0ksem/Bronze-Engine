@@ -1141,6 +1141,8 @@ var Mathematics_namespaceObject = {};
 __webpack_require__.r(Mathematics_namespaceObject);
 __webpack_require__.d(Mathematics_namespaceObject, "radToDeg", function() { return radToDeg; });
 __webpack_require__.d(Mathematics_namespaceObject, "degToRad", function() { return degToRad; });
+__webpack_require__.d(Mathematics_namespaceObject, "dropCircle", function() { return dropCircle; });
+__webpack_require__.d(Mathematics_namespaceObject, "dropCircleRad", function() { return dropCircleRad; });
 __webpack_require__.d(Mathematics_namespaceObject, "isPowerOf2", function() { return isPowerOf2; });
 __webpack_require__.d(Mathematics_namespaceObject, "default", function() { return Mathematics; });
 var Vector3_namespaceObject = {};
@@ -1206,6 +1208,14 @@ function radToDeg(radians) {
 
 function degToRad(degrees) {
   return degrees * Math.PI / 180;
+}
+function dropCircle(deg) {
+  var piCount = Math.ceil(deg / 360);
+  return deg - 360 * piCount;
+}
+function dropCircleRad(rad) {
+  var piCount = Math.ceil(rad / Math.PI);
+  return rad - Math.PI * piCount;
 }
 /**
  * Returns true if value is square.
@@ -2797,6 +2807,27 @@ function () {
       }
     }
   }, {
+    key: "drawToFrameBuffer",
+    value: function drawToFrameBuffer(framebuffer, width, height) {
+      var update = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var webgl = this.webgl;
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, framebuffer);
+      webgl.enable(this.webgl.CULL_FACE);
+      webgl.enable(this.webgl.DEPTH_TEST);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+      webgl.viewport(0, 0, width, height);
+
+      if (update) {
+        this.update();
+      }
+
+      this.draw();
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, null);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+    }
+  }, {
     key: "captureFrame",
     value: function captureFrame(camera, options) {
       var currentCamera = this.camera;
@@ -3036,37 +3067,80 @@ function () {
     }()
   }, {
     key: "draw",
-    value: function draw() {
-      var _this4 = this;
+    value: function () {
+      var _draw = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee3() {
+        var _this4 = this;
 
-      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-      this.shaders["default"].use();
-      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
-      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
-      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
-      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
-      this.shaders.shadersRequireLights.forEach(function (shader) {
-        shader.use();
+        return regenerator_default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+                this.shaders["default"].use();
+                this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
+                this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
+                this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
+                this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+                this.shaders.shadersRequireLights.forEach(function (shader) {
+                  shader.use();
 
-        _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
+                  _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
 
-        _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
+                  _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
 
-        _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
+                  _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
 
-        _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
-      });
-      this.ui.draw();
-      this.objects.forEach(function (object) {
-        object.draw();
-      });
+                  _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
+                });
+                this.ui.draw();
+                this.objects.forEach(
+                /*#__PURE__*/
+                function () {
+                  var _ref = asyncToGenerator_default()(
+                  /*#__PURE__*/
+                  regenerator_default.a.mark(function _callee2(object) {
+                    return regenerator_default.a.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            _context2.next = 2;
+                            return object.draw();
 
-      this._objectsWithAlpha.forEach(function (object) {
-        object.draw();
-      });
+                          case 2:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
 
-      this.ui.drawUI();
-    }
+                  return function (_x) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
+
+                this._objectsWithAlpha.forEach(function (object) {
+                  object.draw();
+                });
+
+                this.ui.drawUI();
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function draw() {
+        return _draw.apply(this, arguments);
+      }
+
+      return draw;
+    }()
   }, {
     key: "infoConsoleLog",
     value: function infoConsoleLog() {
@@ -3140,11 +3214,11 @@ var _engine;
 
 
 function requestAnimationFrameEngine() {
+  requestAnimationFrame(requestAnimationFrameEngine);
+
   if (!_engine.running) {
     return;
   }
-
-  requestAnimationFrame(requestAnimationFrameEngine);
 
   _engine.render();
 }
@@ -5970,6 +6044,8 @@ function (_Entity) {
 
     defineProperty_default()(assertThisInitialized_default()(_this), "_drawingMode", void 0);
 
+    defineProperty_default()(assertThisInitialized_default()(_this), "afterLoadHidden", false);
+
     _this._drawingMode = _this.webgl.TRIANGLES;
     _this.hidden = true;
     _this.name = "Just object :)";
@@ -6140,7 +6216,25 @@ function (_Entity) {
       this.collisionBox.maxPoint = this.maxBaseSize;
       this.collisionBox.minPoint = this.minBaseSize;
       this.engine.objectLoaded(this);
-      this.hidden = false;
+      this.hidden = this.afterLoadHidden;
+
+      this.hide = function () {
+        _this2.hidden = true;
+      };
+
+      this.show = function () {
+        _this2.hidden = false;
+      };
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.afterLoadHidden = true;
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      this.afterLoadHidden = false;
     }
   }, {
     key: "onload",
@@ -7018,7 +7112,7 @@ function () {
 /* concated harmony reexport Material */__webpack_require__.d(__webpack_exports__, "Material", function() { return Material_Material; });
 /* concated harmony reexport Glass */__webpack_require__.d(__webpack_exports__, "Glass", function() { return Glass_Glass; });
 /* concated harmony reexport Sound */__webpack_require__.d(__webpack_exports__, "Sound", function() { return Sound_Sound; });
-/* concated harmony reexport Mathematics */__webpack_require__.d(__webpack_exports__, "Mathematics", function() { return Mathematics_namespaceObject; });
+/* concated harmony reexport Math */__webpack_require__.d(__webpack_exports__, "Math", function() { return Mathematics_namespaceObject; });
 /* concated harmony reexport Vector3 */__webpack_require__.d(__webpack_exports__, "Vector3", function() { return Vector3_namespaceObject; });
 /* concated harmony reexport Matrixes4 */__webpack_require__.d(__webpack_exports__, "Matrixes4", function() { return Matrixes4_namespaceObject; });
 /* concated harmony reexport Vector2 */__webpack_require__.d(__webpack_exports__, "Vector2", function() { return Vector2_namespaceObject; });
