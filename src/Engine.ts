@@ -391,6 +391,7 @@ export class Engine {
       if (this.debugger != null) {
         this.debugger.updateInfo();
       }
+      this.camera.isCollision = false
       this.controls.mouse.movement.x = 0;
       this.controls.mouse.movement.y = 0;
     }
@@ -403,6 +404,7 @@ export class Engine {
       if (object.checkCollision) {
         object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
+          this.camera!.isCollision = true;
         });
       }
     }
@@ -413,6 +415,7 @@ export class Engine {
       if (object.checkCollision) {
         object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
+          this.camera!.isCollision = true;
         });
       }
     }

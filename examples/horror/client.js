@@ -105,13 +105,13 @@ let floor = new Bronze.Rect(engine)
     // floor.setTextureRepeating(1, 2)
     // floor.setPosition(0, 0, 500)
     // floor.setRotation(-90, 0, 0)
-    // // Second corridor
-    // floor = new Bronze.Rect(engine)
-    // floor.setTexture(landTexture)
-    // floor.setSize(500, 1000)
-    // floor.setTextureRepeating(1, 2)
-    // floor.setPosition(4500, 0, -1750)
-    // floor.setRotation(-90, 0, 0)
+    // Second corridor
+    floor = new Bronze.Rect(engine)
+    floor.setTexture(landTexture)
+    floor.setSize(2000, 2000)
+    floor.setTextureRepeating(2, 2)
+    floor.setPosition(4250, 5, -3250)
+    floor.setRotation(-90, 0, -90)
 
     // Main left 1
 let wall = new Bronze.Rect(engine)
@@ -317,6 +317,7 @@ let hand = new Bronze.Object(engine)
 
 let scream = new Bronze.Sound('assets/sounds/scream.mp3')
 let lightOffSound = new Bronze.Sound('assets/sounds/lightoff.mp3')
+let stepSound = new Bronze.Sound('assets/sounds/step.wav')
 
 let speed = 15
 let scared = false
@@ -324,7 +325,15 @@ let scaredCount = 0
 let moving = false
 let cameraMoving = 0
 let cameraMovingDirection = 1
+let cameraMovingEnd = false
 let movingEnabled = true
+let cameraSubstracted = 0
+
+let playStepSound = false
+let stepSoundTimer = setInterval(() => {
+    playStepSound = true
+}, 500)
+
 controls.setControlFunction(() => {
     moving = false
     if (controls.isFocused) {
@@ -349,24 +358,40 @@ controls.setControlFunction(() => {
 
         heroLamp.setPosition(camera.position.x, 250, camera.position.z)
 
-        if (moving && !scared) {
+        if (moving && playStepSound) {
+            playStepSound = false
+            stepSound.play()
+        }
+
+        if (moving && !scared && !camera.isCollision) {
             cameraMoving += cameraMovingDirection
             camera.rotate(0, 0, (cameraMoving - 20) / 100)
             if (cameraMoving == 40 || cameraMoving == 0) {
                 cameraMovingDirection *= -1
             }
+            cameraMovingEnd = true
+        }
         else if (scared && moving) {
             cameraMoving += cameraMovingDirection
             camera.rotate(0, 0, (cameraMoving - 10) / 200)
-            if (cameraMoving == 20 || cameraMoving == 0) {
+            if (cameraMoving >= 20 || cameraMoving <= 0) {
                 cameraMovingDirection *= -1
             }
-        }
-        } else {
-            camera.rotation.z = 0
-            cameraMoving = 0
-            cameraMovingDirection = 1
-        }
+            cameraMovingEnd = true
+        } else if (!moving && !scared && camera.rotation.z != 0){
+            movingEnabled = false
+            if (cameraSubstracted == 0) {
+                cameraSubstracted = Math.floor(camera.rotation.z) / 10
+            }
+            camera.rotation.z -= cameraSubstracted
+
+            if (Math.floor(camera.rotation.z) <= 4 && Math.floor(camera.rotation.z) >= -4) {
+                movingEnabled = true
+                cameraMoving = 0
+                cameraMovingDirection = 1
+                camera.rotation.z = 0
+            }
+        } 
 
         camera.rotate(controls.mouse.movement.y / 10, 0, 0)
         let xRot = Math.abs(Bronze.Math.dropCircle(camera.rotation.x))
@@ -377,7 +402,7 @@ controls.setControlFunction(() => {
         camera.rotate(0, controls.mouse.movement.x / 10, 0)
         let yRot = Math.abs(Bronze.Math.dropCircle(camera.rotation.y))
         if (scared) {
-            if (yRot < 340 && yRot > 60) {
+            if (yRot < 340 && yRot > 30) {
                 camera.rotate(0, -controls.mouse.movement.x / 10, 0)
             }
         }
@@ -386,8 +411,14 @@ controls.setControlFunction(() => {
                 hand.hide()
                 return
             }
-        } else {
+        } else if (scaredCount < 1) {
             hand.show()
+        }
+
+        if (!movingEnabled) {
+            if (yRot < 340 && yRot > 30) {
+                camera.rotate(0, -controls.mouse.movement.x / 10, 0)
+            }
         }
         
         if (camera.position.x > 1900 && camera.position.z < -1900 && 
@@ -418,7 +449,7 @@ controls.setControlFunction(() => {
 
         if (camera.position.x > 3250) {
             camera.position.x = camera.position.z + 3250
-            camera.position.z = 250
+            camera.position.z = -250
             camera.rotate(0, 90, 0)
             heroLamp.setPosition(camera.position.x, 250, camera.position.z)
         }
@@ -426,8 +457,8 @@ controls.setControlFunction(() => {
         if (camera.position.z < -3750) {
             camera.position.z = -2888
             let interval = setInterval(() => {
-                camera.position.move(0, 2, 0)
-                if (camera.position.y > 800) {
+                camera.position.move(0, 5, 0)
+                if (camera.position.y > 1000) {
                     clearInterval(interval)
                 }
             }, 16)

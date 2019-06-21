@@ -53,7 +53,7 @@ export class Camera {
    */
   public moving: Vector3 = new Vector3(0, 0, 0);
   /**
-   * Vector3 for animated
+   * Vector3 for animated moving.
    */
   public animatedMoving: Vector3 = new Vector3(0, 0, 0);
   /**
@@ -64,6 +64,11 @@ export class Camera {
    * True if camera have collisions.
    */
   public collisions: boolean = true;
+
+  /**
+   * True if collision has occurred.
+   */
+  public isCollision: boolean = false;
 
   public engine: Engine;
 
@@ -127,6 +132,7 @@ export class Camera {
     this.moving.x = 0;
     this.moving.y = 0;
     this.moving.z = 0;
+    this.isCollision = true;
   }
 
   /**
@@ -150,24 +156,24 @@ export class Camera {
 
   /**
    * Smooth moving camera.
-   * @param x 
-   * @param y 
-   * @param z 
+   * @param x
+   * @param y
+   * @param z
    */
   public moveAnimate(x: number, y: number, z: number, time: number = 100) {
-    x = x / time
-    y = y / time
-    z = z / time
-    let vec = new Vector3(x, y, z)
-    this.animatedMoving.add(vec)
-    let t = time
+    x = x / time;
+    y = y / time;
+    z = z / time;
+    let vec = new Vector3(x, y, z);
+    this.animatedMoving.add(vec);
+    let t = time;
     let tick = this.engine.addOnFrameHandler(() => {
-      t -= 1
+      t -= 1;
       if (t <= 0) {
-        this.engine.removeOnFrameHandler(tick)
-        this.animatedMoving.sub(vec)
+        this.engine.removeOnFrameHandler(tick);
+        this.animatedMoving.sub(vec);
       }
-    })
+    });
   }
 
   /**
@@ -195,20 +201,10 @@ export class Camera {
    * Compute camera matrix with rotation, positions.
    */
   public computeMatrix(): void {
-    this.matrix = Matrixes.translation(
-      this.position.x,
-      this.position.y,
-      this.position.z
-    );
+    this.matrix = Matrixes.translation(this.position.x, this.position.y, this.position.z);
     let rotation = Matrixes.rotationY(Math.degToRad(this.rotation.y));
-    rotation = Matrixes.multiply(
-      rotation,
-      Matrixes.rotationX(Math.degToRad(this.rotation.x))
-    );
-    rotation = Matrixes.multiply(
-      rotation,
-      Matrixes.rotationZ(Math.degToRad(this.rotation.z))
-    );
+    rotation = Matrixes.multiply(rotation, Matrixes.rotationX(Math.degToRad(this.rotation.x)));
+    rotation = Matrixes.multiply(rotation, Matrixes.rotationZ(Math.degToRad(this.rotation.z)));
     this.matrix = Matrixes.multiply(this.matrix, rotation);
 
     this.rotationMatrix = rotation;
