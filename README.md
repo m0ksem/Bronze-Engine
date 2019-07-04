@@ -14,6 +14,12 @@
  - 🎯 <a href="http://m0ksem.design/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game shooter game.
  - 👻 <a href="http://m0ksem.design/Bronze-Engine/examples/horror/"><b>Horror</b></a> - the horror game, showing the possibilities of light in the engine.
  - 🧐 <a href="http://m0ksem.design/Bronze-Engine/examples/strategy/"><b>Strategy</b></a> - the game demo, showing the possibilities of camera and different shaders.
+ 
+## Plans
+<a href="https://github.com/m0ksem/Bronze-Engine/projects/2">Roadmap</a>  
+- [X] Create easy object loading.  
+- [ ] Create SceneBundler  
+- [ ] Create Editor for SceneBundler. Scene can be easy created and deployed in site.    
 ## Using (vanillaJS)
  1. Setup  
  Download last realese and use it   
