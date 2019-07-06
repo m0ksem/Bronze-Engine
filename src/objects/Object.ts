@@ -1,10 +1,16 @@
 import { Entity } from "./Entity";
 import { Engine } from "../Engine";
 import { Material } from "../materials/Material";
+import { MTL } from "./mtl/MTL"
+import copy from '../utils/Utils.ts'
 
 export default class Object extends Entity {
   private _drawingMode: number;
   private afterLoadHidden = false;
+  public mtl: MTL | null = null;
+  public onLoadHandlers: Function[] = []
+  private mtlReuqired: bool | Function = false
+  private objLoaded = false
 
   constructor(engine: Engine) {
     super(engine);
@@ -69,6 +75,11 @@ export default class Object extends Entity {
       z: [0, 0]
     };
 
+    let currentMTL: MTL | null = null
+    let currentVertexes = this.vertexes
+    let currentNormals = this.normals
+    let currentTextureCoords = this.textureCoordinates
+
     splitted.forEach(element => {
       let values = element.split(" ");
       let name = 0;
@@ -100,9 +111,14 @@ export default class Object extends Entity {
         }
         vertexes.push([v1, v2, v3]);
       } else if (values[name] == "vn") {
-        normals.push([Number(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
+        normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
       } else if (values[name] == "vt") {
         textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
+      } else if (this.mtl != null && values[name] == "usemtl") {
+        currentMTL = this.mtl.getElementByName(values[1])
+        currentVertexes = currentMTL.vertexes
+        currentNormals = currentMTL.normals
+        currentTextureCoords = currentMTL.textureCoordinates
       } else if (values[name] == "f") {
         // Transform 4 > faces to triangles
         const faces = [values[1], values[2], values[3]];
@@ -127,28 +143,37 @@ export default class Object extends Entity {
           if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
 
           vertexes[vertexPosition - 1].forEach(coordinate => {
-            this.vertexes.push(coordinate);
+            currentVertexes.push(coordinate);
           });
 
-          if (textureCoordinatePosition != 0 && textureCoords[textureCoordinatePosition - 1] != undefined) {
-            textureCoords[textureCoordinatePosition - 1].forEach(textureCoordinate => {
-              this.textureCoordinates.push(textureCoordinate);
-            });
+          if (textureCoords[textureCoordinatePosition - 1] != undefined) {
+            currentTextureCoords.push(textureCoords[textureCoordinatePosition - 1][0]);
+            currentTextureCoords.push(Math.abs(1 - textureCoords[textureCoordinatePosition - 1][1]));
           } else {
-            this.textureCoordinates!.push(1);
-            this.textureCoordinates!.push(1);
+            currentTextureCoords.push(1);
+            currentTextureCoords.push(1);
           }
 
           if (indexes[2] != undefined) {
             normals[normalPosition - 1].forEach(normal => {
-              this.normals.push(normal);
+              currentNormals.push(normal);
             });
           } else {
-            this.normals.push(1, 1, 1);
+            currentNormals.push(1, 1, 1);
           }
         }
       }
     });
+
+    if (this.mtl) {
+      for (let i = 0; i < this.mtl.elements.length; i++) {
+        const element = this.mtl.elements[i];
+        element.commit()
+      }
+      let buffer = this.draw
+      this.draw = this.drawWithMTL
+      this.drawWithMTL = this.draw
+    }
 
     this.vertexesBuffer = this.webgl.createBuffer();
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
@@ -191,7 +216,15 @@ export default class Object extends Entity {
     this.afterLoadHidden = false
   }
 
-  public onload() {}
+  public addOnLoadHandler (func: Function) {
+    this.onLoadHandlers.push(func)
+  }
+
+  public onload() {
+    this.onLoadHandlers.forEach(element => {
+      element(this)
+    });
+  }
 
   /**
    * Async load object using ajax and compile on load.
@@ -204,11 +237,37 @@ export default class Object extends Entity {
     objectsLoader.open("GET", path);
     objectsLoader.onreadystatechange = function() {
       if (objectsLoader.readyState == 4) {
-        self.compile(objectsLoader.responseText);
-        self.onload();
+        if (this.mtl || !this.mtlReuqired) {
+          self.compile(objectsLoader.responseText);
+          self.onload();
+          self.objLoaded = true
+        } else {
+          this.mtlReuqired = () => {
+            self.objLoaded = true
+            self.compile(objectsLoader.responseText);
+            self.onload();
+          }
+        }
       }
     };
     objectsLoader.send();
+  }
+
+  public async loadMTL(path: string) {
+    let loader = new XMLHttpRequest();
+    this.mtlReuqired = true
+    loader.open("GET", path)
+    loader.onreadystatechange = () => {
+      if (loader.readyState == 4) {
+        this.mtl = new MTL(loader.responseText, this.engine, path)
+        if (this.objLoaded) {
+          this.mtlReuqired()
+        }
+      } else {
+        console.log('Error loading MTL')
+      }
+    }
+    loader.send()
   }
 
   public useMaterial(material: Material) {
@@ -217,6 +276,78 @@ export default class Object extends Entity {
     this.draw = () => {
       material.drawObject(this);
     };
+  }
+
+  private drawWithMTL(): void {
+    if (!this.hidden && this.shaderProgram) {
+      this.shaderProgram.use();
+
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
+      this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
+
+      this.mtl.elements.forEach(elem => {
+        if (elem.texture != null) {
+          this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, elem.texture.textureBlockLocation);
+        } else {
+          this.engine.webgl.uniform1i(this.shaderProgram.textureLocation, this.texture.textureBlockLocation);
+        }
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, elem.vertexesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.texcoordLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, elem.textureCoordinatesBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.texcoordLocation, 2, this.engine.webgl.FLOAT, false, 0, 0);
+
+        this.engine.webgl.enableVertexAttribArray(this.shaderProgram.normalLocation);
+        this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, elem.normalsBuffer);
+        this.engine.webgl.vertexAttribPointer(this.shaderProgram.normalLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);
+
+        this.engine.webgl.drawArrays(this.engine.webgl.TRIANGLES, 0, elem.vertexes.length / 3);
+      });
+    }
+  }
+
+  public copy (): Object {
+    let obj = new Object(this.engine)
+    for (let attr in {...this}) {
+      obj[attr] = this[attr]
+    }
+    let copyAttrs = (object, original) => {
+      object.vertexes = original.vertexes
+      object.normals = original.normals
+      object.textureCoordinates = original.textureCoordinates
+      object.vertexesBuffer = original.vertexesBuffer
+      object.normalsBuffer = original.normalsBuffer
+      object.textureCoordinatesBuffer = original.textureCoordinatesBuffer
+      object.mtl = original.mtl
+      object.draw = original.draw
+      object.maxBaseSize = original.maxBaseSize
+      object.maxSize = original.maxSize
+      object.shaderProgram = original.shaderProgram
+    }
+
+    obj.position = this.position.copy()
+    obj.scaling = this.scaling.copy()
+    obj.rotation = this.rotation.copy()
+
+    obj.hide = () => {
+      obj.hidden = true
+    }
+
+    obj.show = () => {
+      obj.hidden = false
+    }
+    obj.hide()
+
+    this.addOnLoadHandler(() => {
+      copyAttrs(obj, this)
+      this.engine.objectLoaded(obj)
+      obj.show()
+    })
+
+    return obj
   }
 }
 

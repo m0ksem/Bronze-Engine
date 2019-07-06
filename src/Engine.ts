@@ -143,7 +143,7 @@ export class Engine {
   }
 
   public addObject(object: Entity): void {
-    if (object.texture.alpha) {
+    if (object.texture.alpha || object.mtl) {
       this._objectsWithAlpha.push(object);
     } else {
       this._objectsWithoutAlpha.push(object);
@@ -203,7 +203,7 @@ export class Engine {
   public objectLoaded(object: Entity) {
     let objectsCount = this.objects.length;
     if (this.ui) {
-      objectsCount += this.ui!.objects.length;
+      objectsCount += this.ui.objects.length;
     }
 
     this._loadedObjectsCount += 1;
@@ -343,7 +343,7 @@ export class Engine {
 
     let objectsCount = this.objects.length;
     if (this.ui) {
-      objectsCount += this.ui!.objects.length + 1;
+      objectsCount += this.ui.objects.length + 1;
     }
 
     if (this._loadedObjectsCount == objectsCount) {
@@ -401,7 +401,7 @@ export class Engine {
     for (let i = this._objectsWithoutAlpha.length; i--;) {
       const object = this._objectsWithoutAlpha[i];
       object.updateMatrixes();
-      if (object.checkCollision) {
+      if (camera.collisions && object.checkCollision) {
         object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
           this.camera!.isCollision = true;
@@ -412,7 +412,7 @@ export class Engine {
     for (let i = this._objectsWithAlpha.length; i--;) {
       const object = this._objectsWithAlpha[i];
       object.updateMatrixes();
-      if (object.checkCollision) {
+      if (camera.collisions && object.checkCollision) {
         object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
           this.camera!.isCollision = true;
@@ -424,10 +424,12 @@ export class Engine {
 
     this.camera!.computeMatrix();
 
-    this.ui!.objects.forEach(object => {
-      object.updateMatrixes();
-      object.update();
-    });
+    if (this.ui) {
+      this.ui.objects.forEach(object => {
+        object.updateMatrixes();
+        object.update();
+      });
+    }
 
     this._objectsWithoutAlpha.forEach((element, index) => {
       element.update();
@@ -467,7 +469,9 @@ export class Engine {
       this.webgl.uniform1f(shader.lightMinValueLocation, this.globalLightMinValue);
     });
 
-    this.ui!.draw();
+    if (this.ui) {
+      this.ui.draw();
+    }
 
     this.objects.forEach(async (object) => {
       await object.draw();
@@ -477,7 +481,9 @@ export class Engine {
       object.draw();
     });
 
-    this.ui!.drawUI();
+    if (this.ui) {
+      this.ui.drawUI();
+    }
   }
 
   private infoConsoleLog() {
