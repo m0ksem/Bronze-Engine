@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -180,7 +180,7 @@ module.exports = _getPrototypeOf;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(12);
+var _typeof = __webpack_require__(13);
 
 var assertThisInitialized = __webpack_require__(2);
 
@@ -221,7 +221,7 @@ module.exports = _inherits;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(11);
+module.exports = __webpack_require__(12);
 
 
 /***/ }),
@@ -274,9 +274,9 @@ var getPrototypeOf = __webpack_require__(4);
 
 var setPrototypeOf = __webpack_require__(10);
 
-var isNativeFunction = __webpack_require__(13);
+var isNativeFunction = __webpack_require__(14);
 
-var construct = __webpack_require__(14);
+var construct = __webpack_require__(15);
 
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
@@ -331,6 +331,33 @@ module.exports = _setPrototypeOf;
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var defineProperty = __webpack_require__(0);
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+module.exports = _objectSpread;
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1062,7 +1089,7 @@ try {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -1084,7 +1111,7 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 function _isNativeFunction(fn) {
@@ -1094,7 +1121,7 @@ function _isNativeFunction(fn) {
 module.exports = _isNativeFunction;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var setPrototypeOf = __webpack_require__(10);
@@ -1132,7 +1159,7 @@ function _construct(Parent, args, Class) {
 module.exports = _construct;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2702,7 +2729,7 @@ function () {
   }, {
     key: "addObject",
     value: function addObject(object) {
-      if (object.texture.alpha) {
+      if (object.texture.alpha || object.mtl) {
         this._objectsWithAlpha.push(object);
       } else {
         this._objectsWithoutAlpha.push(object);
@@ -2991,6 +3018,7 @@ function () {
                     this["debugger"].updateInfo();
                   }
 
+                  this.camera.isCollision = false;
                   this.controls.mouse.movement.x = 0;
                   this.controls.mouse.movement.y = 0;
                 }
@@ -3001,9 +3029,10 @@ function () {
                   object = this._objectsWithoutAlpha[i];
                   object.updateMatrixes();
 
-                  if (object.checkCollision) {
+                  if (camera.collisions && object.checkCollision) {
                     object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
                       _this3.camera.moving[coordinate] = 0;
+                      _this3.camera.isCollision = true;
                     });
                   }
                 }
@@ -3013,19 +3042,23 @@ function () {
 
                   _object.updateMatrixes();
 
-                  if (_object.checkCollision) {
+                  if (camera.collisions && _object.checkCollision) {
                     _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
                       _this3.camera.moving[coordinate] = 0;
+                      _this3.camera.isCollision = true;
                     });
                   }
                 }
 
                 this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
                 this.camera.computeMatrix();
-                this.ui.objects.forEach(function (object) {
-                  object.updateMatrixes();
-                  object.update();
-                });
+
+                if (this.ui) {
+                  this.ui.objects.forEach(function (object) {
+                    object.updateMatrixes();
+                    object.update();
+                  });
+                }
 
                 this._objectsWithoutAlpha.forEach(function (element, index) {
                   element.update();
@@ -3094,7 +3127,11 @@ function () {
 
                   _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
                 });
-                this.ui.draw();
+
+                if (this.ui) {
+                  this.ui.draw();
+                }
+
                 this.objects.forEach(
                 /*#__PURE__*/
                 function () {
@@ -3125,7 +3162,9 @@ function () {
                   object.draw();
                 });
 
-                this.ui.drawUI();
+                if (this.ui) {
+                  this.ui.drawUI();
+                }
 
               case 11:
               case "end":
@@ -3806,6 +3845,11 @@ function () {
     value: function show() {
       this.hidden = false;
     }
+  }, {
+    key: "copy",
+    value: function copy() {} // let obj = new Entity(this.engine)
+    // return Object.assign(obj, this)
+
     /**
      * Deletes this object from engine.
      */
@@ -3967,7 +4011,7 @@ function () {
    */
 
   /**
-   * Vector3 for animated
+   * Vector3 for animated moving.
    */
 
   /**
@@ -3976,6 +4020,10 @@ function () {
 
   /**
    * True if camera have collisions.
+   */
+
+  /**
+   * True if collision has occurred.
    */
   function Camera(engine) {
     classCallCheck_default()(this, Camera);
@@ -4005,6 +4053,8 @@ function () {
     defineProperty_default()(this, "collisionBox", new Entity_CollisionBox());
 
     defineProperty_default()(this, "collisions", true);
+
+    defineProperty_default()(this, "isCollision", false);
 
     defineProperty_default()(this, "engine", void 0);
 
@@ -4064,6 +4114,7 @@ function () {
       this.moving.x = 0;
       this.moving.y = 0;
       this.moving.z = 0;
+      this.isCollision = true;
     }
     /**
      * Absolutely sets position for camera.
@@ -4090,9 +4141,9 @@ function () {
     }
     /**
      * Smooth moving camera.
-     * @param x 
-     * @param y 
-     * @param z 
+     * @param x
+     * @param y
+     * @param z
      */
 
   }, {
@@ -6020,7 +6071,117 @@ function (_CubeTexture) {
   return ReflectionTexture;
 }(CubeTexture_CubeTexture);
 /* harmony default export */ var textures_ReflectionTexture = (ReflectionTexture_ReflectionTexture);
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/objectSpread.js
+var objectSpread = __webpack_require__(11);
+var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
+
+// CONCATENATED MODULE: ./src/objects/mtl/MTL.ts
+
+
+
+
+var MTL_MTL =
+/*#__PURE__*/
+function () {
+  function MTL(fileText, engine, path) {
+    var _this = this;
+
+    classCallCheck_default()(this, MTL);
+
+    defineProperty_default()(this, "elements", []);
+
+    var splitted = fileText.split("\n");
+    var currentMTL;
+    splitted.forEach(function (row) {
+      var words = row.split(' ');
+
+      for (var i = words.length; i--;) {
+        if (words[i] == "" || words[i] == "\r") words.splice(i, 1);
+      }
+
+      if (words[0] == "newmtl") {
+        currentMTL = new MTL_MTLElement(words[1], engine.webgl);
+
+        _this.elements.push(currentMTL);
+      }
+
+      if (words[0] == "map_Kd") {
+        var texture = new SimpleTexture_SimpleTexture(engine);
+        var p = path.split('/');
+        p.splice(-1, 1);
+        p = p.join('/');
+        texture.loadFrom(p + words[1]);
+        texture.aplha = true;
+        currentMTL.texture = texture;
+      }
+    });
+  }
+
+  createClass_default()(MTL, [{
+    key: "getElementByName",
+    value: function getElementByName(name) {
+      for (var i = 0; i < this.elements.length; i++) {
+        var element = this.elements[i];
+
+        if (element.name == name) {
+          return element;
+        }
+      }
+    }
+  }]);
+
+  return MTL;
+}();
+var MTL_MTLElement =
+/*#__PURE__*/
+function () {
+  function MTLElement(name, webgl) {
+    classCallCheck_default()(this, MTLElement);
+
+    defineProperty_default()(this, "webgl", void 0);
+
+    defineProperty_default()(this, "name", void 0);
+
+    defineProperty_default()(this, "vertexes", []);
+
+    defineProperty_default()(this, "textureCoordinates", []);
+
+    defineProperty_default()(this, "normals", []);
+
+    defineProperty_default()(this, "vertexesBuffer", null);
+
+    defineProperty_default()(this, "textureCoordinatesBuffer", null);
+
+    defineProperty_default()(this, "normalsBuffer", null);
+
+    defineProperty_default()(this, "texture", void 0);
+
+    this.name = name;
+    this.webgl = webgl;
+  }
+
+  createClass_default()(MTLElement, [{
+    key: "commit",
+    value: function commit() {
+      this.vertexesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
+      this.textureCoordinatesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
+      this.normalsBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
+    }
+  }]);
+
+  return MTLElement;
+}();
 // CONCATENATED MODULE: ./src/objects/Object.ts
+
+
+
+
 
 
 
@@ -6045,6 +6206,14 @@ function (_Entity) {
     defineProperty_default()(assertThisInitialized_default()(_this), "_drawingMode", void 0);
 
     defineProperty_default()(assertThisInitialized_default()(_this), "afterLoadHidden", false);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mtl", null);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "onLoadHandlers", []);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mtlReuqired", false);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "objLoaded", false);
 
     _this._drawingMode = _this.webgl.TRIANGLES;
     _this.hidden = true;
@@ -6109,6 +6278,10 @@ function (_Entity) {
         y: [0, 0],
         z: [0, 0]
       };
+      var currentMTL = null;
+      var currentVertexes = this.vertexes;
+      var currentNormals = this.normals;
+      var currentTextureCoords = this.textureCoordinates;
       splitted.forEach(function (element) {
         var values = element.split(" ");
         var name = 0;
@@ -6148,9 +6321,14 @@ function (_Entity) {
 
           vertexes.push([v1, v2, v3]);
         } else if (values[name] == "vn") {
-          normals.push([Number(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
+          normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
         } else if (values[name] == "vt") {
           textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
+        } else if (_this2.mtl != null && values[name] == "usemtl") {
+          currentMTL = _this2.mtl.getElementByName(values[1]);
+          currentVertexes = currentMTL.vertexes;
+          currentNormals = currentMTL.normals;
+          currentTextureCoords = currentMTL.textureCoordinates;
         } else if (values[name] == "f") {
           // Transform 4 > faces to triangles
           var faces = [values[1], values[2], values[3]];
@@ -6175,29 +6353,39 @@ function (_Entity) {
             var normalPosition = indexes[2];
             if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
             vertexes[vertexPosition - 1].forEach(function (coordinate) {
-              _this2.vertexes.push(coordinate);
+              currentVertexes.push(coordinate);
             });
 
-            if (textureCoordinatePosition != 0 && textureCoords[textureCoordinatePosition - 1] != undefined) {
-              textureCoords[textureCoordinatePosition - 1].forEach(function (textureCoordinate) {
-                _this2.textureCoordinates.push(textureCoordinate);
-              });
+            if (textureCoords[textureCoordinatePosition - 1] != undefined) {
+              currentTextureCoords.push(textureCoords[textureCoordinatePosition - 1][0]);
+              currentTextureCoords.push(Math.abs(1 - textureCoords[textureCoordinatePosition - 1][1]));
             } else {
-              _this2.textureCoordinates.push(1);
-
-              _this2.textureCoordinates.push(1);
+              currentTextureCoords.push(1);
+              currentTextureCoords.push(1);
             }
 
             if (indexes[2] != undefined) {
               normals[normalPosition - 1].forEach(function (normal) {
-                _this2.normals.push(normal);
+                currentNormals.push(normal);
               });
             } else {
-              _this2.normals.push(1, 1, 1);
+              currentNormals.push(1, 1, 1);
             }
           }
         }
       });
+
+      if (this.mtl) {
+        for (var i = 0; i < this.mtl.elements.length; i++) {
+          var element = this.mtl.elements[i];
+          element.commit();
+        }
+
+        var buffer = this.draw;
+        this.draw = this.drawWithMTL;
+        this.drawWithMTL = this.draw;
+      }
+
       this.vertexesBuffer = this.webgl.createBuffer();
       this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
       this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
@@ -6237,8 +6425,19 @@ function (_Entity) {
       this.afterLoadHidden = false;
     }
   }, {
+    key: "addOnLoadHandler",
+    value: function addOnLoadHandler(func) {
+      this.onLoadHandlers.push(func);
+    }
+  }, {
     key: "onload",
-    value: function onload() {}
+    value: function onload() {
+      var _this3 = this;
+
+      this.onLoadHandlers.forEach(function (element) {
+        element(_this3);
+      });
+    }
     /**
      * Async load object using ajax and compile on load.
      * @param {String} path
@@ -6254,24 +6453,164 @@ function (_Entity) {
 
       objectsLoader.onreadystatechange = function () {
         if (objectsLoader.readyState == 4) {
-          self.compile(objectsLoader.responseText);
-          self.onload();
+          if (this.mtl || !this.mtlReuqired) {
+            self.compile(objectsLoader.responseText);
+            self.onload();
+            self.objLoaded = true;
+          } else {
+            this.mtlReuqired = function () {
+              self.objLoaded = true;
+              self.compile(objectsLoader.responseText);
+              self.onload();
+            };
+          }
         }
       };
 
       objectsLoader.send();
     }
   }, {
+    key: "loadMTL",
+    value: function () {
+      var _loadMTL = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(path) {
+        var _this4 = this;
+
+        var loader;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                loader = new XMLHttpRequest();
+                this.mtlReuqired = true;
+                loader.open("GET", path);
+
+                loader.onreadystatechange = function () {
+                  if (loader.readyState == 4) {
+                    _this4.mtl = new MTL_MTL(loader.responseText, _this4.engine, path);
+
+                    if (_this4.objLoaded) {
+                      _this4.mtlReuqired();
+                    }
+                  } else {
+                    console.log('Error loading MTL');
+                  }
+                };
+
+                loader.send();
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function loadMTL(_x) {
+        return _loadMTL.apply(this, arguments);
+      }
+
+      return loadMTL;
+    }()
+  }, {
     key: "useMaterial",
     value: function useMaterial(material) {
-      var _this3 = this;
+      var _this5 = this;
 
       material.defaultDraw = this.draw;
       material.object = this;
 
       this.draw = function () {
-        material.drawObject(_this3);
+        material.drawObject(_this5);
       };
+    }
+  }, {
+    key: "drawWithMTL",
+    value: function drawWithMTL() {
+      var _this6 = this;
+
+      if (!this.hidden && this.shaderProgram) {
+        this.shaderProgram.use();
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
+        this.mtl.elements.forEach(function (elem) {
+          if (elem.texture != null) {
+            _this6.engine.webgl.uniform1i(_this6.shaderProgram.textureLocation, elem.texture.textureBlockLocation);
+          } else {
+            _this6.engine.webgl.uniform1i(_this6.shaderProgram.textureLocation, _this6.texture.textureBlockLocation);
+          }
+
+          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.positionLocation);
+
+          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.vertexesBuffer);
+
+          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.positionLocation, 3, _this6.engine.webgl.FLOAT, false, 0, 0);
+
+          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.texcoordLocation);
+
+          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.textureCoordinatesBuffer);
+
+          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.texcoordLocation, 2, _this6.engine.webgl.FLOAT, false, 0, 0);
+
+          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.normalLocation);
+
+          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.normalsBuffer);
+
+          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.normalLocation, 3, _this6.engine.webgl.FLOAT, false, 0, 0);
+
+          _this6.engine.webgl.drawArrays(_this6.engine.webgl.TRIANGLES, 0, elem.vertexes.length / 3);
+        });
+      }
+    }
+  }, {
+    key: "copy",
+    value: function copy() {
+      var _this7 = this;
+
+      var obj = new Object(this.engine);
+
+      for (var attr in objectSpread_default()({}, this)) {
+        obj[attr] = this[attr];
+      }
+
+      var copyAttrs = function copyAttrs(object, original) {
+        object.vertexes = original.vertexes;
+        object.normals = original.normals;
+        object.textureCoordinates = original.textureCoordinates;
+        object.vertexesBuffer = original.vertexesBuffer;
+        object.normalsBuffer = original.normalsBuffer;
+        object.textureCoordinatesBuffer = original.textureCoordinatesBuffer;
+        object.mtl = original.mtl;
+        object.draw = original.draw;
+        object.maxBaseSize = original.maxBaseSize;
+        object.maxSize = original.maxSize;
+        object.shaderProgram = original.shaderProgram;
+      };
+
+      obj.position = this.position.copy();
+      obj.scaling = this.scaling.copy();
+      obj.rotation = this.rotation.copy();
+
+      obj.hide = function () {
+        obj.hidden = true;
+      };
+
+      obj.show = function () {
+        obj.hidden = false;
+      };
+
+      obj.hide();
+      this.addOnLoadHandler(function () {
+        copyAttrs(obj, _this7);
+
+        _this7.engine.objectLoaded(obj);
+
+        obj.show();
+      });
+      return obj;
     }
   }, {
     key: "drawingMode",
