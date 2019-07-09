@@ -42,24 +42,8 @@ fragmentShader.send(null);
 let selectedObjectShader = engine.shaders.addProgram("buildings", vertexShader.responseText, fragmentShader.responseText, options);
 engine.shaders.shadersRequireLights.push(engine.shaders.buildings)
 
-// let skyboxTexture = new Bronze.CubeTexture(engine);
-// skyboxTexture.setImagesFromPath(
-//   "./assets/skybox/rt.png",
-//   "./assets/skybox/lf.png",
-//   "./assets/skybox/up.png",
-//   "./assets/skybox/dn.png",
-//   "./assets/skybox/bk.png",
-//   "./assets/skybox/ft.png"
-// );
 let skyboxTexture = new Bronze.CubeTexture(engine)
     skyboxTexture.setSkybox('./assets/skybox/skybox.png')
-
-// let gridTexture = new Bronze.SimpleTexture(engine)
-//     gridTexture.setColor(255, 255, 255, 255)
-//     gridTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
-//     gridTexture.setMipmapGenerationMethod(gridTexture.QUICK_GENERATE)
-//     gridTexture.loadFrom('./assets/textures/grid.png')
-
 
 let skybox = new Bronze.Skybox(engine);
 skybox.setTexture(skyboxTexture);
@@ -133,14 +117,6 @@ controls.setControlFunction(() => {
         }
     }
 
-    if (controls.mouse.buttons[0] || controls.pointerLocked || controls.touch.actionBeforeMove == 'click') {
-        if (controls.keys[17]) {
-            camera.rotate(0, 0, (controls.mouse.movement.y / 10)) //+ controls.mouse.movement.x / 10) / 2))
-        } else {
-            camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
-        }
-    }
-
     car.position.z = posZ
     camera.position.z = posZ + 150
     moonLight.setPosition(1500, 500, posZ + 1000)
@@ -155,5 +131,4 @@ controls.setControlFunction(() => {
     }
 })
 
-// Run engine
 engine.run()
