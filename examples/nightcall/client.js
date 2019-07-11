@@ -116,6 +116,10 @@ controls.setControlFunction(() => {
             }
         }
     }
+    
+    if (controls.mouse.buttons[0] || controls.pointerLocked || controls.touch.actionBeforeMove == 'click') {
+        camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0)
+    }
 
     car.position.z = posZ
     camera.position.z = posZ + 150
