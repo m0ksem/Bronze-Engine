@@ -10,6 +10,7 @@ import Light from "./lights/Light";
 import { distance, Vector3 } from "./math/Vector3";
 import BronzeError from "./debug/Error";
 import { ColorTexture } from "./textures/ColorTexture";
+import Object from "./objects/Object";
 
 export class Engine {
   public div: HTMLDivElement;
@@ -143,7 +144,7 @@ export class Engine {
   }
 
   public addObject(object: Entity): void {
-    if (object.texture.alpha || object.mtl) {
+    if (object.texture.alpha || (object instanceof Object && object.mtl)) {
       this._objectsWithAlpha.push(object);
     } else {
       this._objectsWithoutAlpha.push(object);
@@ -394,6 +395,8 @@ export class Engine {
       this.camera.isCollision = false
       this.controls.mouse.movement.x = 0;
       this.controls.mouse.movement.y = 0;
+    } else {
+      return
     }
 
     this.selectedObject = null;
@@ -401,8 +404,8 @@ export class Engine {
     for (let i = this._objectsWithoutAlpha.length; i--;) {
       const object = this._objectsWithoutAlpha[i];
       object.updateMatrixes();
-      if (camera.collisions && object.checkCollision) {
-        object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
+      if (this.camera.collisions && object.checkCollision) {
+        object.checkCollision(this.camera.position, this.camera!.moving, this.camera.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
           this.camera!.isCollision = true;
         });
@@ -412,7 +415,7 @@ export class Engine {
     for (let i = this._objectsWithAlpha.length; i--;) {
       const object = this._objectsWithAlpha[i];
       object.updateMatrixes();
-      if (camera.collisions && object.checkCollision) {
+      if (this.camera.collisions && object.checkCollision) {
         object.checkCollision(this.camera!.position, this.camera!.moving, this.camera!.collisionBox, (coordinate: string) => {
           this.camera!.moving[coordinate] = 0;
           this.camera!.isCollision = true;
@@ -490,7 +493,7 @@ export class Engine {
     console.log();
     console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
     console.log();
-    console.info("   Version : 0.3.00");
+    console.info("   Version : 0.3.002");
     console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
     console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
     console.info("   Author  : https://github.com/m0ksem");

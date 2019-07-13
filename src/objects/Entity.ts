@@ -498,11 +498,6 @@ export abstract class Entity {
     this.hidden = false;
   }
 
-  public copy (): Entity {
-    // let obj = new Entity(this.engine)
-    // return Object.assign(obj, this)
-  }
-
   /**
    * Deletes this object from engine.
    */

@@ -165,6 +165,13 @@ module.exports = _createClass;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(12);
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 function _getPrototypeOf(o) {
@@ -177,7 +184,7 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _typeof = __webpack_require__(13);
@@ -195,7 +202,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var setPrototypeOf = __webpack_require__(10);
@@ -216,13 +223,6 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(12);
-
 
 /***/ }),
 /* 8 */
@@ -270,7 +270,7 @@ module.exports = _asyncToGenerator;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(5);
 
 var setPrototypeOf = __webpack_require__(10);
 
@@ -1900,7 +1900,7 @@ function transpose(matrix) {
   translateX: translateX
 });
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(7);
+var regenerator = __webpack_require__(4);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
@@ -1908,11 +1908,11 @@ var asyncToGenerator = __webpack_require__(8);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(5);
+var possibleConstructorReturn = __webpack_require__(6);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(4);
+var getPrototypeOf = __webpack_require__(5);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
@@ -1920,7 +1920,7 @@ var assertThisInitialized = __webpack_require__(2);
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(6);
+var inherits = __webpack_require__(7);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
@@ -2588,703 +2588,10 @@ function (_Texture) {
   return ColorTexture;
 }(Texture_Texture);
 /* harmony default export */ var textures_ColorTexture = (ColorTexture_ColorTexture);
-// CONCATENATED MODULE: ./src/Engine.ts
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/objectSpread.js
+var objectSpread = __webpack_require__(11);
+var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
 
-
-
-
-
-
-
-
-
-
-var Engine_Engine =
-/*#__PURE__*/
-function () {
-  function Engine(div) {
-    var _this = this;
-
-    classCallCheck_default()(this, Engine);
-
-    defineProperty_default()(this, "div", void 0);
-
-    defineProperty_default()(this, "canvas", void 0);
-
-    defineProperty_default()(this, "webgl", void 0);
-
-    defineProperty_default()(this, "width", void 0);
-
-    defineProperty_default()(this, "height", void 0);
-
-    defineProperty_default()(this, "camera", null);
-
-    defineProperty_default()(this, "debugger", null);
-
-    defineProperty_default()(this, "controls", null);
-
-    defineProperty_default()(this, "lightsPositions", []);
-
-    defineProperty_default()(this, "lightsRanges", []);
-
-    defineProperty_default()(this, "globalLightMinValue", 0.5);
-
-    defineProperty_default()(this, "noTexture", void 0);
-
-    defineProperty_default()(this, "reflections", false);
-
-    defineProperty_default()(this, "status", "Creating");
-
-    defineProperty_default()(this, "selectedObject", null);
-
-    defineProperty_default()(this, "shaders", void 0);
-
-    defineProperty_default()(this, "textures", []);
-
-    defineProperty_default()(this, "lights", []);
-
-    defineProperty_default()(this, "_ui", null);
-
-    defineProperty_default()(this, "_objectsWithoutAlpha", []);
-
-    defineProperty_default()(this, "_objectsWithAlpha", []);
-
-    defineProperty_default()(this, "_resourcesLoaded", false);
-
-    defineProperty_default()(this, "_texturesLoaded", false);
-
-    defineProperty_default()(this, "_objectsLoaded", false);
-
-    defineProperty_default()(this, "_loadedObjectsCount", 0);
-
-    defineProperty_default()(this, "_loadedTexturesCount", 0);
-
-    defineProperty_default()(this, "_onResourcesLoadedHandlers", []);
-
-    defineProperty_default()(this, "_onObjectSelectedHandlers", []);
-
-    defineProperty_default()(this, "_running", false);
-
-    defineProperty_default()(this, "_onRun", []);
-
-    defineProperty_default()(this, "_onFrameHandlers", []);
-
-    this.div = div;
-    this.width = div.offsetWidth;
-    this.height = div.offsetHeight;
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = div.offsetWidth;
-    this.canvas.height = div.offsetHeight;
-    this.webgl = getWebGL(this.canvas);
-    this.addOnResourcesLoadedListener(function () {
-      if (!_this.reflections) {
-        _this.appendCanvas();
-
-        _this.status = "Drawing";
-      } else {
-        _this.status = "Creating reflections";
-      }
-    });
-    this.shaders = new Shaders_Shaders(this.webgl);
-    this.shaders["default"].use();
-    this.webgl.viewport(0, 0, this.width, this.height);
-    this.webgl.enable(this.webgl.CULL_FACE);
-    this.webgl.enable(this.webgl.DEPTH_TEST);
-    this.noTexture = new ColorTexture_ColorTexture(this);
-    this.infoConsoleLog();
-  }
-
-  createClass_default()(Engine, [{
-    key: "appendCanvas",
-    value: function appendCanvas() {
-      this.div.appendChild(this.canvas);
-      this.onCanvasResized();
-    }
-    /**
-     * Attach camera to engine.
-     * @param camera
-     */
-
-  }, {
-    key: "setCamera",
-    value: function setCamera(camera) {
-      this.camera = camera;
-    }
-    /**
-     * Update drawing parameters for correct drawing resized canvas. Use it when canvas resized.
-     */
-
-  }, {
-    key: "onCanvasResized",
-    value: function onCanvasResized() {
-      if (this.canvas.clientWidth != 0) {
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
-        this.width = this.canvas.clientWidth;
-        this.height = this.canvas.clientHeight;
-      }
-
-      this.webgl.viewport(0, 0, this.width, this.height);
-    }
-  }, {
-    key: "addObject",
-    value: function addObject(object) {
-      if (object.texture.alpha || object.mtl) {
-        this._objectsWithAlpha.push(object);
-      } else {
-        this._objectsWithoutAlpha.push(object);
-      }
-    }
-    /**
-     * Removes objects if its exist
-     */
-
-  }, {
-    key: "removeObject",
-    value: function removeObject(object) {
-      var index = -1;
-
-      if (object.texture.alpha) {
-        index = this._objectsWithAlpha.indexOf(object);
-
-        if (index == -1) {
-          console.warn("Objects", this.objects);
-          new debug_Error("Object not found");
-        }
-
-        return this._objectsWithAlpha.splice(index, 1)[0];
-      } else {
-        index = this._objectsWithoutAlpha.indexOf(object);
-
-        if (index == -1) {
-          console.warn("Objects", this.objects);
-          new debug_Error("Object not found");
-        }
-
-        return this._objectsWithoutAlpha.splice(index, 1)[0];
-      }
-    }
-  }, {
-    key: "addOnObjectSelectedListener",
-    value: function addOnObjectSelectedListener(callback) {
-      this._onObjectSelectedHandlers.push(callback);
-    }
-  }, {
-    key: "addOnResourcesLoadedListener",
-    value: function addOnResourcesLoadedListener(callback) {
-      this._onResourcesLoadedHandlers.push(callback);
-    }
-    /**
-     * Function should be executed when texture loaded and ready to use.
-     */
-
-  }, {
-    key: "textureLoaded",
-    value: function textureLoaded(texture) {
-      this._loadedTexturesCount += 1;
-      texture.loaded = true;
-
-      if (this.running && this._loadedTexturesCount == this.textures.length) {
-        this._texturesLoaded = true;
-
-        if (this.objectsLoaded) {
-          this._resourcesLoaded = true;
-
-          this._onResourcesLoadedHandlers.forEach(function (func) {
-            func();
-          });
-        }
-      }
-    }
-    /**
-     * Function should be executed when object loaded and ready to use.
-     */
-
-  }, {
-    key: "objectLoaded",
-    value: function objectLoaded(object) {
-      var objectsCount = this.objects.length;
-
-      if (this.ui) {
-        objectsCount += this.ui.objects.length;
-      }
-
-      this._loadedObjectsCount += 1;
-      object.loaded = true;
-
-      if (this.running && this._loadedObjectsCount >= objectsCount) {
-        this._objectsLoaded = true;
-
-        if (this._texturesLoaded) {
-          this._resourcesLoaded = true;
-
-          this._onResourcesLoadedHandlers.forEach(function (func) {
-            func();
-          });
-        }
-      }
-    }
-  }, {
-    key: "setDrawingRange",
-    value: function setDrawingRange(range) {
-      if (this.camera != null) {
-        this.camera.range = range;
-      } else {
-        throw 'Failed to set drawing range. Camera wasn\'t set.';
-      }
-    }
-  }, {
-    key: "drawToFrameBuffer",
-    value: function drawToFrameBuffer(framebuffer, width, height) {
-      var update = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var webgl = this.webgl;
-      webgl.bindFramebuffer(webgl.FRAMEBUFFER, framebuffer);
-      webgl.enable(this.webgl.CULL_FACE);
-      webgl.enable(this.webgl.DEPTH_TEST);
-      webgl.clearColor(0, 0, 0, 0);
-      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
-      webgl.viewport(0, 0, width, height);
-
-      if (update) {
-        this.update();
-      }
-
-      this.draw();
-      webgl.bindFramebuffer(webgl.FRAMEBUFFER, null);
-      webgl.clearColor(0, 0, 0, 0);
-      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
-    }
-  }, {
-    key: "captureFrame",
-    value: function captureFrame(camera, options) {
-      var currentCamera = this.camera;
-      var currentCanvasSize = [this.canvas.width, this.canvas.height];
-      var drawUI = false;
-      var imageHeight = 128;
-      var imageWidth = 128;
-      var background = "rgba(0, 0, 0, 0)";
-      var backgroundAlpha = 1;
-      var imageAlpha = 1;
-      var noDrawObjects = [];
-
-      if (options != null) {
-        drawUI = options.drawUI || drawUI;
-        imageHeight = options.height || imageHeight;
-        imageWidth = options.width || imageWidth;
-        background = options.background || background;
-        backgroundAlpha = options.backgroundAlpha || backgroundAlpha;
-        imageAlpha = options.imageAlpha || imageAlpha;
-        noDrawObjects = options.noDrawObjects || [];
-      }
-
-      this.width = imageWidth;
-      this.height = imageHeight;
-      this.canvas.width = imageWidth;
-      this.canvas.height = imageHeight;
-      this.onCanvasResized();
-      this.camera = camera;
-      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-      this.shaders["default"].use();
-      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
-      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
-      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
-      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
-      this.update();
-
-      for (var i = 0; i < this.objects.length; i++) {
-        var object = this.objects[i];
-
-        if (noDrawObjects.indexOf(object) == -1) {
-          if (drawUI || !object.UIElement) {
-            object.draw();
-          }
-        }
-      }
-
-      var frame = document.createElement("canvas");
-      frame.height = this.canvas.height;
-      frame.width = this.canvas.width;
-      var context = frame.getContext("2d");
-      context.globalAlpha = backgroundAlpha;
-
-      if (typeof background === "string") {
-        context.fillStyle = background;
-        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      } else if (background.constructor === HTMLImageElement) {
-        context.drawImage(background, 0, 0, frame.width, frame.height);
-      }
-
-      context.globalAlpha = imageAlpha;
-      context.drawImage(this.canvas, 0, 0);
-      this.camera = currentCamera;
-      this.canvas.width = currentCanvasSize[0];
-      this.canvas.height = currentCanvasSize[1];
-      this.width = currentCanvasSize[0];
-      this.height = currentCanvasSize[1];
-      this.onCanvasResized();
-      return frame;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      this.beforeFrame();
-      this.update();
-      this.draw();
-    }
-  }, {
-    key: "run",
-    value: function run() {
-      var _this2 = this;
-
-      _engine = this;
-      this._running = true;
-      this.status = "Loading resources";
-
-      if (this._loadedTexturesCount == this.textures.length) {
-        this._texturesLoaded = true;
-      }
-
-      var objectsCount = this.objects.length;
-
-      if (this.ui) {
-        objectsCount += this.ui.objects.length + 1;
-      }
-
-      if (this._loadedObjectsCount == objectsCount) {
-        this._objectsLoaded = true;
-
-        if (this.textureLoaded) {
-          this._resourcesLoaded = true;
-
-          this._onResourcesLoadedHandlers.forEach(function (func) {
-            func(_this2.textures.length);
-          });
-        }
-      }
-
-      requestAnimationFrameEngine();
-
-      for (var i = 0; i < this._onRun.length; i++) {
-        this._onRun[i];
-      }
-    }
-  }, {
-    key: "stop",
-    value: function stop() {
-      this._running = false;
-    }
-  }, {
-    key: "addOnFrameHandler",
-    value: function addOnFrameHandler(callback) {
-      this._onFrameHandlers.push(callback);
-
-      return callback;
-    }
-  }, {
-    key: "removeOnFrameHandler",
-    value: function removeOnFrameHandler(func) {
-      var index = this._onFrameHandlers.indexOf(func);
-
-      this._onFrameHandlers.splice(index, 1);
-    }
-  }, {
-    key: "beforeFrame",
-    value: function beforeFrame() {
-      for (var i = 0; i < this._onFrameHandlers.length; i++) {
-        var func = this._onFrameHandlers[i];
-        func();
-      }
-    }
-  }, {
-    key: "update",
-    value: function () {
-      var _update = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee() {
-        var _this3 = this;
-
-        var i, object, _i, _object, _i2;
-
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (this.camera && this.controls && this.controls.controlFunction) {
-                  this.camera.moving.set(0, 0, 0);
-                  this.camera.moving.add(this.camera.animatedMoving);
-                  this.controls.controlFunction();
-
-                  if (this["debugger"] != null) {
-                    this["debugger"].updateInfo();
-                  }
-
-                  this.camera.isCollision = false;
-                  this.controls.mouse.movement.x = 0;
-                  this.controls.mouse.movement.y = 0;
-                }
-
-                this.selectedObject = null;
-
-                for (i = this._objectsWithoutAlpha.length; i--;) {
-                  object = this._objectsWithoutAlpha[i];
-                  object.updateMatrixes();
-
-                  if (camera.collisions && object.checkCollision) {
-                    object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
-                      _this3.camera.moving[coordinate] = 0;
-                      _this3.camera.isCollision = true;
-                    });
-                  }
-                }
-
-                for (_i = this._objectsWithAlpha.length; _i--;) {
-                  _object = this._objectsWithAlpha[_i];
-
-                  _object.updateMatrixes();
-
-                  if (camera.collisions && _object.checkCollision) {
-                    _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
-                      _this3.camera.moving[coordinate] = 0;
-                      _this3.camera.isCollision = true;
-                    });
-                  }
-                }
-
-                this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
-                this.camera.computeMatrix();
-
-                if (this.ui) {
-                  this.ui.objects.forEach(function (object) {
-                    object.updateMatrixes();
-                    object.update();
-                  });
-                }
-
-                this._objectsWithoutAlpha.forEach(function (element, index) {
-                  element.update();
-
-                  if (element.texture.alpha) {
-                    _this3._objectsWithAlpha.push(element);
-
-                    _this3._objectsWithoutAlpha.splice(index, 1);
-                  }
-                });
-
-                this._objectsWithAlpha.sort(function (a, b) {
-                  return distance(b.position, _this3.camera.position) - distance(a.position, _this3.camera.position);
-                });
-
-                this._objectsWithAlpha.forEach(function (element) {
-                  element.update();
-                });
-
-                if (this.selectedObject && this._onObjectSelectedHandlers.length > 0) {
-                  for (_i2 = 0; _i2 < this._onObjectSelectedHandlers.length; _i2++) {
-                    this._onObjectSelectedHandlers[_i2]();
-                  }
-                }
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function update() {
-        return _update.apply(this, arguments);
-      }
-
-      return update;
-    }()
-  }, {
-    key: "draw",
-    value: function () {
-      var _draw = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee3() {
-        var _this4 = this;
-
-        return regenerator_default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-                this.shaders["default"].use();
-                this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
-                this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
-                this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
-                this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
-                this.shaders.shadersRequireLights.forEach(function (shader) {
-                  shader.use();
-
-                  _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
-
-                  _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
-
-                  _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
-
-                  _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
-                });
-
-                if (this.ui) {
-                  this.ui.draw();
-                }
-
-                this.objects.forEach(
-                /*#__PURE__*/
-                function () {
-                  var _ref = asyncToGenerator_default()(
-                  /*#__PURE__*/
-                  regenerator_default.a.mark(function _callee2(object) {
-                    return regenerator_default.a.wrap(function _callee2$(_context2) {
-                      while (1) {
-                        switch (_context2.prev = _context2.next) {
-                          case 0:
-                            _context2.next = 2;
-                            return object.draw();
-
-                          case 2:
-                          case "end":
-                            return _context2.stop();
-                        }
-                      }
-                    }, _callee2);
-                  }));
-
-                  return function (_x) {
-                    return _ref.apply(this, arguments);
-                  };
-                }());
-
-                this._objectsWithAlpha.forEach(function (object) {
-                  object.draw();
-                });
-
-                if (this.ui) {
-                  this.ui.drawUI();
-                }
-
-              case 11:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function draw() {
-        return _draw.apply(this, arguments);
-      }
-
-      return draw;
-    }()
-  }, {
-    key: "infoConsoleLog",
-    value: function infoConsoleLog() {
-      console.log();
-      console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
-      console.log();
-      console.info("   Version : 0.3.00");
-      console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
-      console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
-      console.info("   Author  : https://github.com/m0ksem");
-      console.log();
-    }
-  }, {
-    key: "ui",
-    set: function set(v) {
-      this._ui = v;
-      var objectsCount = this.objects.length + this.ui.objects.length;
-      this._loadedObjectsCount += 1;
-
-      if (this.running && this._loadedObjectsCount == objectsCount) {
-        this._objectsLoaded = true;
-
-        if (this._texturesLoaded) {
-          this._resourcesLoaded = true;
-
-          this._onResourcesLoadedHandlers.forEach(function (func) {
-            func();
-          });
-        }
-      }
-    },
-    get: function get() {
-      return this._ui;
-    }
-  }, {
-    key: "objects",
-    get: function get() {
-      return this._objectsWithoutAlpha.concat(this._objectsWithAlpha);
-    }
-  }, {
-    key: "resourcesLoaded",
-    get: function get() {
-      return this._resourcesLoaded;
-    }
-  }, {
-    key: "texturesLoaded",
-    get: function get() {
-      return this._texturesLoaded;
-    }
-  }, {
-    key: "objectsLoaded",
-    get: function get() {
-      return this._objectsLoaded;
-    }
-  }, {
-    key: "running",
-    get: function get() {
-      return this._running;
-    }
-  }]);
-
-  return Engine;
-}();
-/* harmony default export */ var src_Engine = (Engine_Engine);
-
-var _engine;
-/**
- * RequestAnimationFrame wrapper for Engine rendering.
- * @private
- */
-
-
-function requestAnimationFrameEngine() {
-  requestAnimationFrame(requestAnimationFrameEngine);
-
-  if (!_engine.running) {
-    return;
-  }
-
-  _engine.render();
-}
-
-(function () {
-  var lastTime = 0;
-  var vendors = ["ms", "moz", "webkit", "o"];
-  var win = window;
-
-  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = win[vendors[x] + "RequestAnimationFrame"];
-    window.cancelAnimationFrame = win[vendors[x] + "CancelAnimationFrame"] || win[vendors[x] + "CancelRequestAnimationFrame"];
-  }
-
-  if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback) {
-    var currTime = new Date().getTime();
-    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    var id = window.setTimeout(function () {
-      callback(currTime + timeToCall);
-    }, timeToCall);
-    lastTime = currTime + timeToCall;
-    return id;
-  };
-  if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) {
-    clearTimeout(id);
-  };
-})();
 // CONCATENATED MODULE: ./src/objects/Entity.ts
 
 
@@ -3845,11 +3152,6 @@ function () {
     value: function show() {
       this.hidden = false;
     }
-  }, {
-    key: "copy",
-    value: function copy() {} // let obj = new Entity(this.engine)
-    // return Object.assign(obj, this)
-
     /**
      * Deletes this object from engine.
      */
@@ -3951,6 +3253,1494 @@ function () {
 
 
 /* harmony default export */ var objects_Entity = (Entity_Entity);
+// CONCATENATED MODULE: ./src/textures/SimpleTexture.ts
+
+
+
+
+
+
+
+
+
+var SimpleTexture_SimpleTexture =
+/*#__PURE__*/
+function (_Texture) {
+  inherits_default()(SimpleTexture, _Texture);
+
+  function SimpleTexture(engine, path) {
+    var _this;
+
+    classCallCheck_default()(this, SimpleTexture);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(SimpleTexture).call(this, engine));
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "textureBlockLocation", -1);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mipmapFilter", 'LINEAR');
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "AUTO_GENERATE", 0);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "QUICK_GENERATE", 1);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_mipmap", []);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_onTextureLoadedHandlers", []);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_width", -1);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_height", -1);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_image", new Image());
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_mipmapGenerationMethod", -1);
+
+    _this.engine = engine;
+    _this.textureBlockLocation = _this.engine.textures.length;
+
+    _this.engine.textures.push(assertThisInitialized_default()(_this));
+
+    var webgl = _this.engine.webgl;
+    _this.webglTexture = webgl.createTexture();
+    webgl.activeTexture(webgl.TEXTURE0 + _this.textureBlockLocation);
+    webgl.bindTexture(webgl.TEXTURE_2D, _this.webglTexture);
+    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, _this.color);
+    return _this;
+  }
+
+  createClass_default()(SimpleTexture, [{
+    key: "setMipmapGenerationMethod",
+    value: function setMipmapGenerationMethod(method) {
+      this._mipmapGenerationMethod = method;
+    }
+  }, {
+    key: "setSize",
+    value: function setSize(width, height) {
+      this.width = width;
+      this.height = height;
+      this._image.width = width;
+      this._image.height = height;
+
+      if (this.loaded) {
+        this._createWebglTexture();
+      }
+    }
+  }, {
+    key: "_createWebglTexture",
+    value: function _createWebglTexture() {
+      var webgl = this.engine.webgl;
+      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
+      var mipmapFilter;
+      var mipmapRequire = true;
+
+      switch (this.mipmapFilter) {
+        case 'NEAREST':
+          mipmapFilter = webgl.NEAREST;
+          mipmapRequire = false;
+          break;
+
+        case 'LINEAR':
+          mipmapFilter = webgl.LINEAR;
+          mipmapRequire = false;
+          break;
+
+        case 'NEAREST_MIPMAP_NEAREST':
+          mipmapFilter = webgl.NEAREST_MIPMAP_NEAREST;
+          break;
+
+        case 'LINEAR_MIPMAP_NEAREST':
+          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
+          break;
+
+        case 'NEAREST_MIPMAP_LINEAR':
+          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
+          break;
+
+        case 'LINEAR_MIPMAP_LINEAR':
+          mipmapFilter = webgl.LINEAR_MIPMAP_LINEAR;
+          break;
+
+        default:
+          mipmapRequire = false;
+          mipmapFilter = webgl.LINEAR;
+          break;
+      }
+
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, mipmapFilter);
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
+
+      if (this._mipmapGenerationMethod == this.QUICK_GENERATE) {
+        if (this.width / this.height == 2) {
+          var i = this.height;
+          var offsetX = 0;
+
+          while (true) {
+            var tempCanvas = document.createElement("canvas");
+            tempCanvas.width = i;
+            tempCanvas.height = i;
+            var tempCanvasContext = tempCanvas.getContext("2d");
+            tempCanvasContext.drawImage(this._image, offsetX, 0, i, i, 0, 0, i, i);
+
+            this._mipmap.push(tempCanvas);
+
+            if (i == 1) {
+              break;
+            }
+
+            offsetX += i;
+            i = i / 2;
+          }
+        } else {
+          return console.warn('Wrong _image sizes for quick generation _mipmap.');
+        }
+      }
+
+      if (mipmapRequire && !(this._mipmapGenerationMethod == this.AUTO_GENERATE)) {
+        if (this._mipmap.length > 0) {
+          this._mipmap.forEach(function (mip, level) {
+            webgl.texImage2D(webgl.TEXTURE_2D, level, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, mip);
+          });
+        } else {
+          console.warn('Need to generate mipmaps for texture:');
+          console.warn(this);
+        }
+      } else {
+        webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, this._image);
+      }
+
+      if ((mipmapRequire || this._mipmapGenerationMethod == this.AUTO_GENERATE) && isPowerOf2(this._width) && isPowerOf2(this._height)) {
+        webgl.generateMipmap(webgl.TEXTURE_2D);
+      } else {
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
+      }
+    }
+  }, {
+    key: "loadFrom",
+    value: function loadFrom(path) {
+      var _this2 = this;
+
+      this._image.src = path;
+
+      this._image.addEventListener('load', function () {
+        _this2.engine.textureLoaded(_this2);
+
+        _this2.loaded = true;
+
+        for (var i = 0; i < _this2._onTextureLoadedHandlers.length; i++) {
+          _this2._onTextureLoadedHandlers[i]();
+        }
+
+        if (_this2._height == -1 || _this2._width == -1) {
+          _this2._height = _this2._image.height;
+          _this2._width = _this2._image.width;
+        }
+
+        _this2._createWebglTexture();
+      });
+    }
+  }, {
+    key: "image",
+    get: function get() {
+      return this._image;
+    }
+  }, {
+    key: "height",
+    set: function set(v) {
+      this._height = v;
+      this._image.height = v;
+    },
+    get: function get() {
+      return this._height;
+    }
+  }, {
+    key: "width",
+    set: function set(v) {
+      this._width = v;
+      this._image.width = v;
+    },
+    get: function get() {
+      return this._width;
+    }
+  }]);
+
+  return SimpleTexture;
+}(Texture_Texture);
+/* harmony default export */ var textures_SimpleTexture = (SimpleTexture_SimpleTexture);
+// CONCATENATED MODULE: ./src/objects/mtl/MTL.ts
+
+
+
+
+var MTL_MTL =
+/*#__PURE__*/
+function () {
+  function MTL(fileText, engine, path) {
+    var _this = this;
+
+    classCallCheck_default()(this, MTL);
+
+    defineProperty_default()(this, "elements", []);
+
+    var splitted = fileText.split("\n");
+    var currentMTL;
+    splitted.forEach(function (row) {
+      var words = row.split(' ');
+
+      for (var i = words.length; i--;) {
+        if (words[i] == "" || words[i] == "\r") words.splice(i, 1);
+      }
+
+      if (words[0] == "newmtl") {
+        currentMTL = new MTL_MTLElement(words[1], engine);
+
+        _this.elements.push(currentMTL);
+      }
+
+      if (words[0] == "map_Kd") {
+        var texture = new SimpleTexture_SimpleTexture(engine);
+        var p = path.split('/');
+        p.splice(-1, 1);
+        p = p.join('/');
+        texture.loadFrom(p + words[1]);
+        texture.alpha = true;
+        currentMTL.texture = texture;
+      }
+    });
+  }
+
+  createClass_default()(MTL, [{
+    key: "getElementByName",
+    value: function getElementByName(name) {
+      for (var i = 0; i < this.elements.length; i++) {
+        var element = this.elements[i];
+
+        if (element.name == name) {
+          return element;
+        }
+      }
+
+      return null;
+    }
+  }]);
+
+  return MTL;
+}();
+var MTL_MTLElement =
+/*#__PURE__*/
+function () {
+  function MTLElement(name, engine) {
+    classCallCheck_default()(this, MTLElement);
+
+    defineProperty_default()(this, "webgl", void 0);
+
+    defineProperty_default()(this, "name", void 0);
+
+    defineProperty_default()(this, "vertexes", []);
+
+    defineProperty_default()(this, "textureCoordinates", []);
+
+    defineProperty_default()(this, "normals", []);
+
+    defineProperty_default()(this, "vertexesBuffer", null);
+
+    defineProperty_default()(this, "textureCoordinatesBuffer", null);
+
+    defineProperty_default()(this, "normalsBuffer", null);
+
+    defineProperty_default()(this, "texture", void 0);
+
+    this.name = name;
+    this.webgl = engine.webgl;
+    this.texture = engine.noTexture;
+  }
+
+  createClass_default()(MTLElement, [{
+    key: "commit",
+    value: function commit() {
+      this.vertexesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
+      this.textureCoordinatesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
+      this.normalsBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
+    }
+  }]);
+
+  return MTLElement;
+}();
+// CONCATENATED MODULE: ./src/objects/Object.ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Object_Object =
+/*#__PURE__*/
+function (_Entity) {
+  inherits_default()(Object, _Entity);
+
+  function Object(engine) {
+    var _this;
+
+    classCallCheck_default()(this, Object);
+
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Object).call(this, engine));
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "_drawingMode", void 0);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "afterLoadHidden", false);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mtl", null);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "onLoadHandlers", []);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mtlRequired", false);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "mtlRequiredFunction", null);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "objLoaded", false);
+
+    _this._drawingMode = _this.webgl.TRIANGLES;
+    _this.hidden = true;
+    _this.name = "Just object :)";
+    return _this;
+  }
+  /**
+   * Sets how WebGL will draw object
+   * @param {String} mode
+   */
+
+
+  createClass_default()(Object, [{
+    key: "setDrawingMode",
+    value: function setDrawingMode(mode) {
+      switch (mode) {
+        case "TRIANGLES":
+          this._drawingMode = this.webgl.TRIANGLES;
+          break;
+
+        case "DEFAULT":
+          this._drawingMode = this.webgl.TRIANGLES;
+          break;
+
+        case "TRIANGLE_FAN":
+          this._drawingMode = this.webgl.TRIANGLE_FAN;
+          break;
+
+        case "FAN":
+          this._drawingMode = this.webgl.TRIANGLE_FAN;
+          break;
+
+        case "STRIP":
+          this.webgl.TRIANGLE_STRIP;
+          break;
+
+        case "TRIANGLE_STRIP":
+          this.webgl.TRIANGLE_STRIP;
+          break;
+
+        default:
+          throw Error("Wrong drawing mode. See WebGL drawing mods.");
+      }
+    }
+  }, {
+    key: "compile",
+
+    /**
+     * Function to compile object from text of .obj file.
+     * @param {String} fileText
+     * @public
+     */
+    value: function compile(fileText) {
+      var _this2 = this;
+
+      var vertexes = [];
+      var textureCoords = [];
+      var normals = [];
+      var splitted = fileText.split("\n");
+      var collisionBox = {
+        x: [0, 0],
+        y: [0, 0],
+        z: [0, 0]
+      };
+      var currentMTL = null;
+      var currentVertexes = this.vertexes;
+      var currentNormals = this.normals;
+      var currentTextureCoords = this.textureCoordinates;
+      splitted.forEach(function (element) {
+        var values = element.split(" ");
+        var name = 0;
+
+        for (var i = values.length; i--;) {
+          if (values[i] == "" || values[i] == "\r") values.splice(i, 1);
+        }
+
+        if (values[name] == "v") {
+          var v1 = parseFloat(values[1]);
+          var v2 = parseFloat(values[2]);
+          var v3 = parseFloat(values[3]);
+
+          if (collisionBox.x[1] < v1) {
+            collisionBox.x[1] = v1;
+          }
+
+          if (collisionBox.y[1] < v2) {
+            collisionBox.y[1] = v2;
+          }
+
+          if (collisionBox.z[1] < v3) {
+            collisionBox.z[1] = v3;
+          }
+
+          if (collisionBox.x[0] > v1) {
+            collisionBox.x[0] = v1;
+          }
+
+          if (collisionBox.y[0] > v2) {
+            collisionBox.y[0] = v2;
+          }
+
+          if (collisionBox.z[0] > v3) {
+            collisionBox.z[0] = v3;
+          }
+
+          vertexes.push([v1, v2, v3]);
+        } else if (values[name] == "vn") {
+          normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
+        } else if (values[name] == "vt") {
+          textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
+        } else if (_this2.mtl != null && values[name] == "usemtl") {
+          currentMTL = _this2.mtl.getElementByName(values[1]);
+
+          if (currentMTL == undefined) {
+            return;
+          }
+
+          currentVertexes = currentMTL.vertexes;
+          currentNormals = currentMTL.normals;
+          currentTextureCoords = currentMTL.textureCoordinates;
+        } else if (values[name] == "f") {
+          var faces = [values[1], values[2], values[3]];
+
+          if (values.length - 1 > 3) {
+            for (var _i = 4; _i < values.length; _i++) {
+              faces.push(values[_i - 3]);
+              faces.push(values[_i - 1]);
+              faces.push(values[_i]);
+            }
+          }
+
+          for (var _i2 = 0; _i2 < faces.length; _i2++) {
+            var point = faces[_i2];
+            var indexes = point.split("/").map(function (el) {
+              return Number(el);
+            });
+            var vertexPosition = indexes[0];
+            if (vertexPosition <= 0) vertexPosition = vertexes.length + vertexPosition + 1;
+            var textureCoordinatePosition = indexes[1];
+            if (textureCoordinatePosition < 0) textureCoordinatePosition = textureCoords.length + textureCoordinatePosition + 1;
+            var normalPosition = indexes[2];
+            if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
+            vertexes[vertexPosition - 1].forEach(function (coordinate) {
+              currentVertexes.push(coordinate);
+            });
+
+            if (textureCoords[textureCoordinatePosition - 1] != undefined) {
+              currentTextureCoords.push(textureCoords[textureCoordinatePosition - 1][0]);
+              currentTextureCoords.push(Math.abs(1 - textureCoords[textureCoordinatePosition - 1][1]));
+            } else {
+              currentTextureCoords.push(1);
+              currentTextureCoords.push(1);
+            }
+
+            if (indexes[2] != undefined) {
+              normals[normalPosition - 1].forEach(function (normal) {
+                currentNormals.push(normal);
+              });
+            } else {
+              currentNormals.push(1, 1, 1);
+            }
+          }
+        }
+      });
+
+      if (this.mtl) {
+        for (var i = 0; i < this.mtl.elements.length; i++) {
+          var element = this.mtl.elements[i];
+          element.commit();
+        }
+
+        var buffer = this.draw;
+        this.draw = this.drawWithMTL;
+        this.drawWithMTL = this.draw;
+      }
+
+      this.vertexesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
+      this.textureCoordinatesBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
+      this.normalsBuffer = this.webgl.createBuffer();
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
+      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
+      this.maxBaseSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0]);
+      this.minBaseSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1]);
+      this.maxSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0]);
+      this.minSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1]);
+      this.maxSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
+      this.minSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
+      this.collisionBox.maxPoint = this.maxBaseSize;
+      this.collisionBox.minPoint = this.minBaseSize;
+      this.engine.objectLoaded(this);
+      this.hidden = this.afterLoadHidden;
+
+      this.hide = function () {
+        _this2.hidden = true;
+      };
+
+      this.show = function () {
+        _this2.hidden = false;
+      };
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.afterLoadHidden = true;
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      this.afterLoadHidden = false;
+    }
+  }, {
+    key: "addOnLoadHandler",
+    value: function addOnLoadHandler(func) {
+      this.onLoadHandlers.push(func);
+    }
+  }, {
+    key: "onload",
+    value: function onload() {
+      var _this3 = this;
+
+      this.onLoadHandlers.forEach(function (element) {
+        element(_this3);
+      });
+    }
+    /**
+     * Async load object using ajax and compile on load.
+     * @param {String} path
+     * @public
+     */
+
+  }, {
+    key: "loadFromObj",
+    value: function loadFromObj(path) {
+      var _this4 = this;
+
+      var self = this;
+      var objectsLoader = new XMLHttpRequest();
+      objectsLoader.open("GET", path);
+
+      objectsLoader.onreadystatechange = function () {
+        if (objectsLoader.readyState == 4) {
+          if (_this4.mtl || !_this4.mtlRequired) {
+            self.compile(objectsLoader.responseText);
+            self.onload();
+            self.objLoaded = true;
+          } else {
+            _this4.mtlRequiredFunction = function () {
+              self.objLoaded = true;
+              self.compile(objectsLoader.responseText);
+              self.onload();
+            };
+          }
+        }
+      };
+
+      objectsLoader.send();
+    }
+  }, {
+    key: "loadMTL",
+    value: function () {
+      var _loadMTL = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(path) {
+        var _this5 = this;
+
+        var loader;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                loader = new XMLHttpRequest();
+                this.mtlRequired = true;
+                loader.open("GET", path);
+
+                loader.onreadystatechange = function () {
+                  if (loader.readyState == 4) {
+                    _this5.mtl = new MTL_MTL(loader.responseText, _this5.engine, path);
+
+                    if (_this5.objLoaded && _this5.mtlRequiredFunction) {
+                      _this5.mtlRequiredFunction();
+                    } else {
+                      new debug_Error('No MTL required function');
+                    }
+                  } else {
+                    console.log('Error loading MTL');
+                  }
+                };
+
+                loader.send();
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function loadMTL(_x) {
+        return _loadMTL.apply(this, arguments);
+      }
+
+      return loadMTL;
+    }()
+  }, {
+    key: "useMaterial",
+    value: function useMaterial(material) {
+      var _this6 = this;
+
+      material.defaultDraw = this.draw;
+      material.object = this;
+
+      this.draw = function () {
+        material.drawObject(_this6);
+      };
+    }
+  }, {
+    key: "drawWithMTL",
+    value: function drawWithMTL() {
+      var _this7 = this;
+
+      if (!this.hidden && this.shaderProgram && this.mtl) {
+        this.shaderProgram.use();
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
+        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
+        this.mtl.elements.forEach(function (elem) {
+          if (elem.texture != null) {
+            _this7.engine.webgl.uniform1i(_this7.shaderProgram.textureLocation, elem.texture.textureBlockLocation);
+          } else {
+            _this7.engine.webgl.uniform1i(_this7.shaderProgram.textureLocation, _this7.texture.textureBlockLocation);
+          }
+
+          _this7.engine.webgl.enableVertexAttribArray(_this7.shaderProgram.positionLocation);
+
+          _this7.engine.webgl.bindBuffer(_this7.engine.webgl.ARRAY_BUFFER, elem.vertexesBuffer);
+
+          _this7.engine.webgl.vertexAttribPointer(_this7.shaderProgram.positionLocation, 3, _this7.engine.webgl.FLOAT, false, 0, 0);
+
+          _this7.engine.webgl.enableVertexAttribArray(_this7.shaderProgram.texcoordLocation);
+
+          _this7.engine.webgl.bindBuffer(_this7.engine.webgl.ARRAY_BUFFER, elem.textureCoordinatesBuffer);
+
+          _this7.engine.webgl.vertexAttribPointer(_this7.shaderProgram.texcoordLocation, 2, _this7.engine.webgl.FLOAT, false, 0, 0);
+
+          _this7.engine.webgl.enableVertexAttribArray(_this7.shaderProgram.normalLocation);
+
+          _this7.engine.webgl.bindBuffer(_this7.engine.webgl.ARRAY_BUFFER, elem.normalsBuffer);
+
+          _this7.engine.webgl.vertexAttribPointer(_this7.shaderProgram.normalLocation, 3, _this7.engine.webgl.FLOAT, false, 0, 0);
+
+          _this7.engine.webgl.drawArrays(_this7.engine.webgl.TRIANGLES, 0, elem.vertexes.length / 3);
+        });
+      }
+    }
+  }, {
+    key: "copy",
+    value: function copy() {
+      var _this8 = this;
+
+      var obj = new Object(this.engine);
+
+      for (var attr in objectSpread_default()({}, this)) {
+        // @ts-ignore - These are two completely identical objects.
+        obj[attr] = this[attr];
+      }
+
+      var copyAttrs = function copyAttrs(object, original) {
+        object.vertexes = original.vertexes;
+        object.normals = original.normals;
+        object.textureCoordinates = original.textureCoordinates;
+        object.vertexesBuffer = original.vertexesBuffer;
+        object.normalsBuffer = original.normalsBuffer;
+        object.textureCoordinatesBuffer = original.textureCoordinatesBuffer;
+        object.mtl = original.mtl;
+        object.draw = original.draw;
+        object.maxBaseSize = original.maxBaseSize;
+        object.maxSize = original.maxSize;
+        object.shaderProgram = original.shaderProgram;
+      };
+
+      obj.position = this.position.copy();
+      obj.scaling = this.scaling.copy();
+      obj.rotation = this.rotation.copy();
+
+      obj.hide = function () {
+        obj.hidden = true;
+      };
+
+      obj.show = function () {
+        obj.hidden = false;
+      };
+
+      obj.hide();
+      this.addOnLoadHandler(function () {
+        copyAttrs(obj, _this8);
+
+        _this8.engine.objectLoaded(obj);
+
+        obj.show();
+      });
+      return obj;
+    }
+  }, {
+    key: "drawingMode",
+    set: function set(value) {
+      this._drawingMode = value;
+    },
+    get: function get() {
+      return this._drawingMode;
+    }
+  }]);
+
+  return Object;
+}(Entity_Entity);
+
+
+
+// CONCATENATED MODULE: ./src/Engine.ts
+
+
+
+
+
+
+
+
+
+
+
+var Engine_Engine =
+/*#__PURE__*/
+function () {
+  function Engine(div) {
+    var _this = this;
+
+    classCallCheck_default()(this, Engine);
+
+    defineProperty_default()(this, "div", void 0);
+
+    defineProperty_default()(this, "canvas", void 0);
+
+    defineProperty_default()(this, "webgl", void 0);
+
+    defineProperty_default()(this, "width", void 0);
+
+    defineProperty_default()(this, "height", void 0);
+
+    defineProperty_default()(this, "camera", null);
+
+    defineProperty_default()(this, "debugger", null);
+
+    defineProperty_default()(this, "controls", null);
+
+    defineProperty_default()(this, "lightsPositions", []);
+
+    defineProperty_default()(this, "lightsRanges", []);
+
+    defineProperty_default()(this, "globalLightMinValue", 0.5);
+
+    defineProperty_default()(this, "noTexture", void 0);
+
+    defineProperty_default()(this, "reflections", false);
+
+    defineProperty_default()(this, "status", "Creating");
+
+    defineProperty_default()(this, "selectedObject", null);
+
+    defineProperty_default()(this, "shaders", void 0);
+
+    defineProperty_default()(this, "textures", []);
+
+    defineProperty_default()(this, "lights", []);
+
+    defineProperty_default()(this, "_ui", null);
+
+    defineProperty_default()(this, "_objectsWithoutAlpha", []);
+
+    defineProperty_default()(this, "_objectsWithAlpha", []);
+
+    defineProperty_default()(this, "_resourcesLoaded", false);
+
+    defineProperty_default()(this, "_texturesLoaded", false);
+
+    defineProperty_default()(this, "_objectsLoaded", false);
+
+    defineProperty_default()(this, "_loadedObjectsCount", 0);
+
+    defineProperty_default()(this, "_loadedTexturesCount", 0);
+
+    defineProperty_default()(this, "_onResourcesLoadedHandlers", []);
+
+    defineProperty_default()(this, "_onObjectSelectedHandlers", []);
+
+    defineProperty_default()(this, "_running", false);
+
+    defineProperty_default()(this, "_onRun", []);
+
+    defineProperty_default()(this, "_onFrameHandlers", []);
+
+    this.div = div;
+    this.width = div.offsetWidth;
+    this.height = div.offsetHeight;
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = div.offsetWidth;
+    this.canvas.height = div.offsetHeight;
+    this.webgl = getWebGL(this.canvas);
+    this.addOnResourcesLoadedListener(function () {
+      if (!_this.reflections) {
+        _this.appendCanvas();
+
+        _this.status = "Drawing";
+      } else {
+        _this.status = "Creating reflections";
+      }
+    });
+    this.shaders = new Shaders_Shaders(this.webgl);
+    this.shaders["default"].use();
+    this.webgl.viewport(0, 0, this.width, this.height);
+    this.webgl.enable(this.webgl.CULL_FACE);
+    this.webgl.enable(this.webgl.DEPTH_TEST);
+    this.noTexture = new ColorTexture_ColorTexture(this);
+    this.infoConsoleLog();
+  }
+
+  createClass_default()(Engine, [{
+    key: "appendCanvas",
+    value: function appendCanvas() {
+      this.div.appendChild(this.canvas);
+      this.onCanvasResized();
+    }
+    /**
+     * Attach camera to engine.
+     * @param camera
+     */
+
+  }, {
+    key: "setCamera",
+    value: function setCamera(camera) {
+      this.camera = camera;
+    }
+    /**
+     * Update drawing parameters for correct drawing resized canvas. Use it when canvas resized.
+     */
+
+  }, {
+    key: "onCanvasResized",
+    value: function onCanvasResized() {
+      if (this.canvas.clientWidth != 0) {
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+        this.width = this.canvas.clientWidth;
+        this.height = this.canvas.clientHeight;
+      }
+
+      this.webgl.viewport(0, 0, this.width, this.height);
+    }
+  }, {
+    key: "addObject",
+    value: function addObject(object) {
+      if (object.texture.alpha || object instanceof Object_Object && object.mtl) {
+        this._objectsWithAlpha.push(object);
+      } else {
+        this._objectsWithoutAlpha.push(object);
+      }
+    }
+    /**
+     * Removes objects if its exist
+     */
+
+  }, {
+    key: "removeObject",
+    value: function removeObject(object) {
+      var index = -1;
+
+      if (object.texture.alpha) {
+        index = this._objectsWithAlpha.indexOf(object);
+
+        if (index == -1) {
+          console.warn("Objects", this.objects);
+          new debug_Error("Object not found");
+        }
+
+        return this._objectsWithAlpha.splice(index, 1)[0];
+      } else {
+        index = this._objectsWithoutAlpha.indexOf(object);
+
+        if (index == -1) {
+          console.warn("Objects", this.objects);
+          new debug_Error("Object not found");
+        }
+
+        return this._objectsWithoutAlpha.splice(index, 1)[0];
+      }
+    }
+  }, {
+    key: "addOnObjectSelectedListener",
+    value: function addOnObjectSelectedListener(callback) {
+      this._onObjectSelectedHandlers.push(callback);
+    }
+  }, {
+    key: "addOnResourcesLoadedListener",
+    value: function addOnResourcesLoadedListener(callback) {
+      this._onResourcesLoadedHandlers.push(callback);
+    }
+    /**
+     * Function should be executed when texture loaded and ready to use.
+     */
+
+  }, {
+    key: "textureLoaded",
+    value: function textureLoaded(texture) {
+      this._loadedTexturesCount += 1;
+      texture.loaded = true;
+
+      if (this.running && this._loadedTexturesCount == this.textures.length) {
+        this._texturesLoaded = true;
+
+        if (this.objectsLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    }
+    /**
+     * Function should be executed when object loaded and ready to use.
+     */
+
+  }, {
+    key: "objectLoaded",
+    value: function objectLoaded(object) {
+      var objectsCount = this.objects.length;
+
+      if (this.ui) {
+        objectsCount += this.ui.objects.length;
+      }
+
+      this._loadedObjectsCount += 1;
+      object.loaded = true;
+
+      if (this.running && this._loadedObjectsCount >= objectsCount) {
+        this._objectsLoaded = true;
+
+        if (this._texturesLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    }
+  }, {
+    key: "setDrawingRange",
+    value: function setDrawingRange(range) {
+      if (this.camera != null) {
+        this.camera.range = range;
+      } else {
+        throw 'Failed to set drawing range. Camera wasn\'t set.';
+      }
+    }
+  }, {
+    key: "drawToFrameBuffer",
+    value: function drawToFrameBuffer(framebuffer, width, height) {
+      var update = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var webgl = this.webgl;
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, framebuffer);
+      webgl.enable(this.webgl.CULL_FACE);
+      webgl.enable(this.webgl.DEPTH_TEST);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+      webgl.viewport(0, 0, width, height);
+
+      if (update) {
+        this.update();
+      }
+
+      this.draw();
+      webgl.bindFramebuffer(webgl.FRAMEBUFFER, null);
+      webgl.clearColor(0, 0, 0, 0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT);
+    }
+  }, {
+    key: "captureFrame",
+    value: function captureFrame(camera, options) {
+      var currentCamera = this.camera;
+      var currentCanvasSize = [this.canvas.width, this.canvas.height];
+      var drawUI = false;
+      var imageHeight = 128;
+      var imageWidth = 128;
+      var background = "rgba(0, 0, 0, 0)";
+      var backgroundAlpha = 1;
+      var imageAlpha = 1;
+      var noDrawObjects = [];
+
+      if (options != null) {
+        drawUI = options.drawUI || drawUI;
+        imageHeight = options.height || imageHeight;
+        imageWidth = options.width || imageWidth;
+        background = options.background || background;
+        backgroundAlpha = options.backgroundAlpha || backgroundAlpha;
+        imageAlpha = options.imageAlpha || imageAlpha;
+        noDrawObjects = options.noDrawObjects || [];
+      }
+
+      this.width = imageWidth;
+      this.height = imageHeight;
+      this.canvas.width = imageWidth;
+      this.canvas.height = imageHeight;
+      this.onCanvasResized();
+      this.camera = camera;
+      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+      this.shaders["default"].use();
+      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
+      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
+      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
+      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+      this.update();
+
+      for (var i = 0; i < this.objects.length; i++) {
+        var object = this.objects[i];
+
+        if (noDrawObjects.indexOf(object) == -1) {
+          if (drawUI || !object.UIElement) {
+            object.draw();
+          }
+        }
+      }
+
+      var frame = document.createElement("canvas");
+      frame.height = this.canvas.height;
+      frame.width = this.canvas.width;
+      var context = frame.getContext("2d");
+      context.globalAlpha = backgroundAlpha;
+
+      if (typeof background === "string") {
+        context.fillStyle = background;
+        context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      } else if (background.constructor === HTMLImageElement) {
+        context.drawImage(background, 0, 0, frame.width, frame.height);
+      }
+
+      context.globalAlpha = imageAlpha;
+      context.drawImage(this.canvas, 0, 0);
+      this.camera = currentCamera;
+      this.canvas.width = currentCanvasSize[0];
+      this.canvas.height = currentCanvasSize[1];
+      this.width = currentCanvasSize[0];
+      this.height = currentCanvasSize[1];
+      this.onCanvasResized();
+      return frame;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.beforeFrame();
+      this.update();
+      this.draw();
+    }
+  }, {
+    key: "run",
+    value: function run() {
+      var _this2 = this;
+
+      _engine = this;
+      this._running = true;
+      this.status = "Loading resources";
+
+      if (this._loadedTexturesCount == this.textures.length) {
+        this._texturesLoaded = true;
+      }
+
+      var objectsCount = this.objects.length;
+
+      if (this.ui) {
+        objectsCount += this.ui.objects.length + 1;
+      }
+
+      if (this._loadedObjectsCount == objectsCount) {
+        this._objectsLoaded = true;
+
+        if (this.textureLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func(_this2.textures.length);
+          });
+        }
+      }
+
+      requestAnimationFrameEngine();
+
+      for (var i = 0; i < this._onRun.length; i++) {
+        this._onRun[i];
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this._running = false;
+    }
+  }, {
+    key: "addOnFrameHandler",
+    value: function addOnFrameHandler(callback) {
+      this._onFrameHandlers.push(callback);
+
+      return callback;
+    }
+  }, {
+    key: "removeOnFrameHandler",
+    value: function removeOnFrameHandler(func) {
+      var index = this._onFrameHandlers.indexOf(func);
+
+      this._onFrameHandlers.splice(index, 1);
+    }
+  }, {
+    key: "beforeFrame",
+    value: function beforeFrame() {
+      for (var i = 0; i < this._onFrameHandlers.length; i++) {
+        var func = this._onFrameHandlers[i];
+        func();
+      }
+    }
+  }, {
+    key: "update",
+    value: function () {
+      var _update = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var _this3 = this;
+
+        var i, object, _i, _object, _i2;
+
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(this.camera && this.controls && this.controls.controlFunction)) {
+                  _context.next = 10;
+                  break;
+                }
+
+                this.camera.moving.set(0, 0, 0);
+                this.camera.moving.add(this.camera.animatedMoving);
+                this.controls.controlFunction();
+
+                if (this["debugger"] != null) {
+                  this["debugger"].updateInfo();
+                }
+
+                this.camera.isCollision = false;
+                this.controls.mouse.movement.x = 0;
+                this.controls.mouse.movement.y = 0;
+                _context.next = 11;
+                break;
+
+              case 10:
+                return _context.abrupt("return");
+
+              case 11:
+                this.selectedObject = null;
+
+                for (i = this._objectsWithoutAlpha.length; i--;) {
+                  object = this._objectsWithoutAlpha[i];
+                  object.updateMatrixes();
+
+                  if (this.camera.collisions && object.checkCollision) {
+                    object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+                      _this3.camera.moving[coordinate] = 0;
+                      _this3.camera.isCollision = true;
+                    });
+                  }
+                }
+
+                for (_i = this._objectsWithAlpha.length; _i--;) {
+                  _object = this._objectsWithAlpha[_i];
+
+                  _object.updateMatrixes();
+
+                  if (this.camera.collisions && _object.checkCollision) {
+                    _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+                      _this3.camera.moving[coordinate] = 0;
+                      _this3.camera.isCollision = true;
+                    });
+                  }
+                }
+
+                this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
+                this.camera.computeMatrix();
+
+                if (this.ui) {
+                  this.ui.objects.forEach(function (object) {
+                    object.updateMatrixes();
+                    object.update();
+                  });
+                }
+
+                this._objectsWithoutAlpha.forEach(function (element, index) {
+                  element.update();
+
+                  if (element.texture.alpha) {
+                    _this3._objectsWithAlpha.push(element);
+
+                    _this3._objectsWithoutAlpha.splice(index, 1);
+                  }
+                });
+
+                this._objectsWithAlpha.sort(function (a, b) {
+                  return distance(b.position, _this3.camera.position) - distance(a.position, _this3.camera.position);
+                });
+
+                this._objectsWithAlpha.forEach(function (element) {
+                  element.update();
+                });
+
+                if (this.selectedObject && this._onObjectSelectedHandlers.length > 0) {
+                  for (_i2 = 0; _i2 < this._onObjectSelectedHandlers.length; _i2++) {
+                    this._onObjectSelectedHandlers[_i2]();
+                  }
+                }
+
+              case 21:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function update() {
+        return _update.apply(this, arguments);
+      }
+
+      return update;
+    }()
+  }, {
+    key: "draw",
+    value: function () {
+      var _draw = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee3() {
+        var _this4 = this;
+
+        return regenerator_default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+                this.shaders["default"].use();
+                this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
+                this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
+                this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
+                this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
+                this.shaders.shadersRequireLights.forEach(function (shader) {
+                  shader.use();
+
+                  _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
+
+                  _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
+
+                  _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
+
+                  _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
+                });
+
+                if (this.ui) {
+                  this.ui.draw();
+                }
+
+                this.objects.forEach(
+                /*#__PURE__*/
+                function () {
+                  var _ref = asyncToGenerator_default()(
+                  /*#__PURE__*/
+                  regenerator_default.a.mark(function _callee2(object) {
+                    return regenerator_default.a.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            _context2.next = 2;
+                            return object.draw();
+
+                          case 2:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
+
+                this._objectsWithAlpha.forEach(function (object) {
+                  object.draw();
+                });
+
+                if (this.ui) {
+                  this.ui.drawUI();
+                }
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function draw() {
+        return _draw.apply(this, arguments);
+      }
+
+      return draw;
+    }()
+  }, {
+    key: "infoConsoleLog",
+    value: function infoConsoleLog() {
+      console.log();
+      console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
+      console.log();
+      console.info("   Version : 0.3.002");
+      console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
+      console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
+      console.info("   Author  : https://github.com/m0ksem");
+      console.log();
+    }
+  }, {
+    key: "ui",
+    set: function set(v) {
+      this._ui = v;
+      var objectsCount = this.objects.length + this.ui.objects.length;
+      this._loadedObjectsCount += 1;
+
+      if (this.running && this._loadedObjectsCount == objectsCount) {
+        this._objectsLoaded = true;
+
+        if (this._texturesLoaded) {
+          this._resourcesLoaded = true;
+
+          this._onResourcesLoadedHandlers.forEach(function (func) {
+            func();
+          });
+        }
+      }
+    },
+    get: function get() {
+      return this._ui;
+    }
+  }, {
+    key: "objects",
+    get: function get() {
+      return this._objectsWithoutAlpha.concat(this._objectsWithAlpha);
+    }
+  }, {
+    key: "resourcesLoaded",
+    get: function get() {
+      return this._resourcesLoaded;
+    }
+  }, {
+    key: "texturesLoaded",
+    get: function get() {
+      return this._texturesLoaded;
+    }
+  }, {
+    key: "objectsLoaded",
+    get: function get() {
+      return this._objectsLoaded;
+    }
+  }, {
+    key: "running",
+    get: function get() {
+      return this._running;
+    }
+  }]);
+
+  return Engine;
+}();
+/* harmony default export */ var src_Engine = (Engine_Engine);
+
+var _engine;
+/**
+ * RequestAnimationFrame wrapper for Engine rendering.
+ * @private
+ */
+
+
+function requestAnimationFrameEngine() {
+  requestAnimationFrame(requestAnimationFrameEngine);
+
+  if (!_engine.running) {
+    return;
+  }
+
+  _engine.render();
+}
+
+(function () {
+  var lastTime = 0;
+  var vendors = ["ms", "moz", "webkit", "o"];
+  var win = window;
+
+  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = win[vendors[x] + "RequestAnimationFrame"];
+    window.cancelAnimationFrame = win[vendors[x] + "CancelAnimationFrame"] || win[vendors[x] + "CancelRequestAnimationFrame"];
+  }
+
+  if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback) {
+    var currTime = new Date().getTime();
+    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+    var id = window.setTimeout(function () {
+      callback(currTime + timeToCall);
+    }, timeToCall);
+    lastTime = currTime + timeToCall;
+    return id;
+  };
+  if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) {
+    clearTimeout(id);
+  };
+})();
 // CONCATENATED MODULE: ./src/Camera.ts
 
 
@@ -4773,220 +5563,6 @@ function isTouchDevice() {
 }
 
 /* harmony default export */ var src_Controls = (Controls_Controls);
-// CONCATENATED MODULE: ./src/textures/SimpleTexture.ts
-
-
-
-
-
-
-
-
-
-var SimpleTexture_SimpleTexture =
-/*#__PURE__*/
-function (_Texture) {
-  inherits_default()(SimpleTexture, _Texture);
-
-  function SimpleTexture(engine, path) {
-    var _this;
-
-    classCallCheck_default()(this, SimpleTexture);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(SimpleTexture).call(this, engine));
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "textureBlockLocation", -1);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "mipmapFilter", 'LINEAR');
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "AUTO_GENERATE", 0);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "QUICK_GENERATE", 1);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_mipmap", []);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_onTextureLoadedHandlers", []);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_width", -1);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_height", -1);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_image", new Image());
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_mipmapGenerationMethod", -1);
-
-    _this.engine = engine;
-    _this.textureBlockLocation = _this.engine.textures.length;
-
-    _this.engine.textures.push(assertThisInitialized_default()(_this));
-
-    var webgl = _this.engine.webgl;
-    _this.webglTexture = webgl.createTexture();
-    webgl.activeTexture(webgl.TEXTURE0 + _this.textureBlockLocation);
-    webgl.bindTexture(webgl.TEXTURE_2D, _this.webglTexture);
-    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, _this.color);
-    return _this;
-  }
-
-  createClass_default()(SimpleTexture, [{
-    key: "setMipmapGenerationMethod",
-    value: function setMipmapGenerationMethod(method) {
-      this._mipmapGenerationMethod = method;
-    }
-  }, {
-    key: "setSize",
-    value: function setSize(width, height) {
-      this.width = width;
-      this.height = height;
-      this._image.width = width;
-      this._image.height = height;
-
-      if (this.loaded) {
-        this._createWebglTexture();
-      }
-    }
-  }, {
-    key: "_createWebglTexture",
-    value: function _createWebglTexture() {
-      var webgl = this.engine.webgl;
-      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
-      var mipmapFilter;
-      var mipmapRequire = true;
-
-      switch (this.mipmapFilter) {
-        case 'NEAREST':
-          mipmapFilter = webgl.NEAREST;
-          mipmapRequire = false;
-          break;
-
-        case 'LINEAR':
-          mipmapFilter = webgl.LINEAR;
-          mipmapRequire = false;
-          break;
-
-        case 'NEAREST_MIPMAP_NEAREST':
-          mipmapFilter = webgl.NEAREST_MIPMAP_NEAREST;
-          break;
-
-        case 'LINEAR_MIPMAP_NEAREST':
-          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
-          break;
-
-        case 'NEAREST_MIPMAP_LINEAR':
-          mipmapFilter = webgl.LINEAR_MIPMAP_NEAREST;
-          break;
-
-        case 'LINEAR_MIPMAP_LINEAR':
-          mipmapFilter = webgl.LINEAR_MIPMAP_LINEAR;
-          break;
-
-        default:
-          mipmapRequire = false;
-          mipmapFilter = webgl.LINEAR;
-          break;
-      }
-
-      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, mipmapFilter);
-      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
-
-      if (this._mipmapGenerationMethod == this.QUICK_GENERATE) {
-        if (this.width / this.height == 2) {
-          var i = this.height;
-          var offsetX = 0;
-
-          while (true) {
-            var tempCanvas = document.createElement("canvas");
-            tempCanvas.width = i;
-            tempCanvas.height = i;
-            var tempCanvasContext = tempCanvas.getContext("2d");
-            tempCanvasContext.drawImage(this._image, offsetX, 0, i, i, 0, 0, i, i);
-
-            this._mipmap.push(tempCanvas);
-
-            if (i == 1) {
-              break;
-            }
-
-            offsetX += i;
-            i = i / 2;
-          }
-        } else {
-          return console.warn('Wrong _image sizes for quick generation _mipmap.');
-        }
-      }
-
-      if (mipmapRequire && !(this._mipmapGenerationMethod == this.AUTO_GENERATE)) {
-        if (this._mipmap.length > 0) {
-          this._mipmap.forEach(function (mip, level) {
-            webgl.texImage2D(webgl.TEXTURE_2D, level, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, mip);
-          });
-        } else {
-          console.warn('Need to generate mipmaps for texture:');
-          console.warn(this);
-        }
-      } else {
-        webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, this._image);
-      }
-
-      if ((mipmapRequire || this._mipmapGenerationMethod == this.AUTO_GENERATE) && isPowerOf2(this._width) && isPowerOf2(this._height)) {
-        webgl.generateMipmap(webgl.TEXTURE_2D);
-      } else {
-        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
-        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
-      }
-    }
-  }, {
-    key: "loadFrom",
-    value: function loadFrom(path) {
-      var _this2 = this;
-
-      this._image.src = path;
-
-      this._image.addEventListener('load', function () {
-        _this2.engine.textureLoaded(_this2);
-
-        _this2.loaded = true;
-
-        for (var i = 0; i < _this2._onTextureLoadedHandlers.length; i++) {
-          _this2._onTextureLoadedHandlers[i]();
-        }
-
-        if (_this2._height == -1 || _this2._width == -1) {
-          _this2._height = _this2._image.height;
-          _this2._width = _this2._image.width;
-        }
-
-        _this2._createWebglTexture();
-      });
-    }
-  }, {
-    key: "image",
-    get: function get() {
-      return this._image;
-    }
-  }, {
-    key: "height",
-    set: function set(v) {
-      this._height = v;
-      this._image.height = v;
-    },
-    get: function get() {
-      return this._height;
-    }
-  }, {
-    key: "width",
-    set: function set(v) {
-      this._width = v;
-      this._image.width = v;
-    },
-    get: function get() {
-      return this._width;
-    }
-  }]);
-
-  return SimpleTexture;
-}(Texture_Texture);
-/* harmony default export */ var textures_SimpleTexture = (SimpleTexture_SimpleTexture);
 // CONCATENATED MODULE: ./src/ui/UI.ts
 
 
@@ -6071,562 +6647,6 @@ function (_CubeTexture) {
   return ReflectionTexture;
 }(CubeTexture_CubeTexture);
 /* harmony default export */ var textures_ReflectionTexture = (ReflectionTexture_ReflectionTexture);
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/objectSpread.js
-var objectSpread = __webpack_require__(11);
-var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
-
-// CONCATENATED MODULE: ./src/objects/mtl/MTL.ts
-
-
-
-
-var MTL_MTL =
-/*#__PURE__*/
-function () {
-  function MTL(fileText, engine, path) {
-    var _this = this;
-
-    classCallCheck_default()(this, MTL);
-
-    defineProperty_default()(this, "elements", []);
-
-    var splitted = fileText.split("\n");
-    var currentMTL;
-    splitted.forEach(function (row) {
-      var words = row.split(' ');
-
-      for (var i = words.length; i--;) {
-        if (words[i] == "" || words[i] == "\r") words.splice(i, 1);
-      }
-
-      if (words[0] == "newmtl") {
-        currentMTL = new MTL_MTLElement(words[1], engine.webgl);
-
-        _this.elements.push(currentMTL);
-      }
-
-      if (words[0] == "map_Kd") {
-        var texture = new SimpleTexture_SimpleTexture(engine);
-        var p = path.split('/');
-        p.splice(-1, 1);
-        p = p.join('/');
-        texture.loadFrom(p + words[1]);
-        texture.aplha = true;
-        currentMTL.texture = texture;
-      }
-    });
-  }
-
-  createClass_default()(MTL, [{
-    key: "getElementByName",
-    value: function getElementByName(name) {
-      for (var i = 0; i < this.elements.length; i++) {
-        var element = this.elements[i];
-
-        if (element.name == name) {
-          return element;
-        }
-      }
-    }
-  }]);
-
-  return MTL;
-}();
-var MTL_MTLElement =
-/*#__PURE__*/
-function () {
-  function MTLElement(name, webgl) {
-    classCallCheck_default()(this, MTLElement);
-
-    defineProperty_default()(this, "webgl", void 0);
-
-    defineProperty_default()(this, "name", void 0);
-
-    defineProperty_default()(this, "vertexes", []);
-
-    defineProperty_default()(this, "textureCoordinates", []);
-
-    defineProperty_default()(this, "normals", []);
-
-    defineProperty_default()(this, "vertexesBuffer", null);
-
-    defineProperty_default()(this, "textureCoordinatesBuffer", null);
-
-    defineProperty_default()(this, "normalsBuffer", null);
-
-    defineProperty_default()(this, "texture", void 0);
-
-    this.name = name;
-    this.webgl = webgl;
-  }
-
-  createClass_default()(MTLElement, [{
-    key: "commit",
-    value: function commit() {
-      this.vertexesBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
-      this.textureCoordinatesBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
-      this.normalsBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
-    }
-  }]);
-
-  return MTLElement;
-}();
-// CONCATENATED MODULE: ./src/objects/Object.ts
-
-
-
-
-
-
-
-
-
-
-
-
-
-var Object_Object =
-/*#__PURE__*/
-function (_Entity) {
-  inherits_default()(Object, _Entity);
-
-  function Object(engine) {
-    var _this;
-
-    classCallCheck_default()(this, Object);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Object).call(this, engine));
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "_drawingMode", void 0);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "afterLoadHidden", false);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "mtl", null);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "onLoadHandlers", []);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "mtlReuqired", false);
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "objLoaded", false);
-
-    _this._drawingMode = _this.webgl.TRIANGLES;
-    _this.hidden = true;
-    _this.name = "Just object :)";
-    return _this;
-  }
-  /**
-   * Sets how WebGL will draw object
-   * @param {String} mode
-   */
-
-
-  createClass_default()(Object, [{
-    key: "setDrawingMode",
-    value: function setDrawingMode(mode) {
-      switch (mode) {
-        case "TRIANGLES":
-          this._drawingMode = this.webgl.TRIANGLES;
-          break;
-
-        case "DEFAULT":
-          this._drawingMode = this.webgl.TRIANGLES;
-          break;
-
-        case "TRIANGLE_FAN":
-          this._drawingMode = this.webgl.TRIANGLE_FAN;
-          break;
-
-        case "FAN":
-          this._drawingMode = this.webgl.TRIANGLE_FAN;
-          break;
-
-        case "STRIP":
-          this.webgl.TRIANGLE_STRIP;
-          break;
-
-        case "TRIANGLE_STRIP":
-          this.webgl.TRIANGLE_STRIP;
-          break;
-
-        default:
-          throw Error("Wrong drawing mode. See WebGL drawing mods.");
-      }
-    }
-  }, {
-    key: "compile",
-
-    /**
-     * Function to compile object from text of .obj file.
-     * @param {String} fileText
-     * @public
-     */
-    value: function compile(fileText) {
-      var _this2 = this;
-
-      var vertexes = [];
-      var textureCoords = [];
-      var normals = [];
-      var splitted = fileText.split("\n");
-      var collisionBox = {
-        x: [0, 0],
-        y: [0, 0],
-        z: [0, 0]
-      };
-      var currentMTL = null;
-      var currentVertexes = this.vertexes;
-      var currentNormals = this.normals;
-      var currentTextureCoords = this.textureCoordinates;
-      splitted.forEach(function (element) {
-        var values = element.split(" ");
-        var name = 0;
-
-        for (var i = values.length; i--;) {
-          if (values[i] == "" || values[i] == "\r") values.splice(i, 1);
-        }
-
-        if (values[name] == "v") {
-          var v1 = parseFloat(values[1]);
-          var v2 = parseFloat(values[2]);
-          var v3 = parseFloat(values[3]);
-
-          if (collisionBox.x[1] < v1) {
-            collisionBox.x[1] = v1;
-          }
-
-          if (collisionBox.y[1] < v2) {
-            collisionBox.y[1] = v2;
-          }
-
-          if (collisionBox.z[1] < v3) {
-            collisionBox.z[1] = v3;
-          }
-
-          if (collisionBox.x[0] > v1) {
-            collisionBox.x[0] = v1;
-          }
-
-          if (collisionBox.y[0] > v2) {
-            collisionBox.y[0] = v2;
-          }
-
-          if (collisionBox.z[0] > v3) {
-            collisionBox.z[0] = v3;
-          }
-
-          vertexes.push([v1, v2, v3]);
-        } else if (values[name] == "vn") {
-          normals.push([parseFloat(values[1]), parseFloat(values[2]), parseFloat(values[3])]);
-        } else if (values[name] == "vt") {
-          textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
-        } else if (_this2.mtl != null && values[name] == "usemtl") {
-          currentMTL = _this2.mtl.getElementByName(values[1]);
-          currentVertexes = currentMTL.vertexes;
-          currentNormals = currentMTL.normals;
-          currentTextureCoords = currentMTL.textureCoordinates;
-        } else if (values[name] == "f") {
-          // Transform 4 > faces to triangles
-          var faces = [values[1], values[2], values[3]];
-
-          if (values.length - 1 > 3) {
-            for (var _i = 4; _i < values.length; _i++) {
-              faces.push(values[_i - 3]);
-              faces.push(values[_i - 1]);
-              faces.push(values[_i]);
-            }
-          }
-
-          for (var _i2 = 0; _i2 < faces.length; _i2++) {
-            var point = faces[_i2];
-            var indexes = point.split("/").map(function (el) {
-              return Number(el);
-            });
-            var vertexPosition = indexes[0];
-            if (vertexPosition <= 0) vertexPosition = vertexes.length + vertexPosition + 1;
-            var textureCoordinatePosition = indexes[1];
-            if (textureCoordinatePosition < 0) textureCoordinatePosition = textureCoords.length + textureCoordinatePosition + 1;
-            var normalPosition = indexes[2];
-            if (normalPosition < 0) normalPosition = normals.length + normalPosition + 1;
-            vertexes[vertexPosition - 1].forEach(function (coordinate) {
-              currentVertexes.push(coordinate);
-            });
-
-            if (textureCoords[textureCoordinatePosition - 1] != undefined) {
-              currentTextureCoords.push(textureCoords[textureCoordinatePosition - 1][0]);
-              currentTextureCoords.push(Math.abs(1 - textureCoords[textureCoordinatePosition - 1][1]));
-            } else {
-              currentTextureCoords.push(1);
-              currentTextureCoords.push(1);
-            }
-
-            if (indexes[2] != undefined) {
-              normals[normalPosition - 1].forEach(function (normal) {
-                currentNormals.push(normal);
-              });
-            } else {
-              currentNormals.push(1, 1, 1);
-            }
-          }
-        }
-      });
-
-      if (this.mtl) {
-        for (var i = 0; i < this.mtl.elements.length; i++) {
-          var element = this.mtl.elements[i];
-          element.commit();
-        }
-
-        var buffer = this.draw;
-        this.draw = this.drawWithMTL;
-        this.drawWithMTL = this.draw;
-      }
-
-      this.vertexesBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexesBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.vertexes), this.webgl.STATIC_DRAW);
-      this.textureCoordinatesBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.textureCoordinatesBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.textureCoordinates), this.webgl.STATIC_DRAW);
-      this.normalsBuffer = this.webgl.createBuffer();
-      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.normalsBuffer);
-      this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(this.normals), this.webgl.STATIC_DRAW);
-      this.maxBaseSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0]);
-      this.minBaseSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1]);
-      this.maxSize.set(collisionBox.x[0], collisionBox.y[0], collisionBox.z[0]);
-      this.minSize.set(collisionBox.x[1], collisionBox.y[1], collisionBox.z[1]);
-      this.maxSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
-      this.minSize.scale(this.scaling.x, this.scaling.y, this.scaling.z);
-      this.collisionBox.maxPoint = this.maxBaseSize;
-      this.collisionBox.minPoint = this.minBaseSize;
-      this.engine.objectLoaded(this);
-      this.hidden = this.afterLoadHidden;
-
-      this.hide = function () {
-        _this2.hidden = true;
-      };
-
-      this.show = function () {
-        _this2.hidden = false;
-      };
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      this.afterLoadHidden = true;
-    }
-  }, {
-    key: "show",
-    value: function show() {
-      this.afterLoadHidden = false;
-    }
-  }, {
-    key: "addOnLoadHandler",
-    value: function addOnLoadHandler(func) {
-      this.onLoadHandlers.push(func);
-    }
-  }, {
-    key: "onload",
-    value: function onload() {
-      var _this3 = this;
-
-      this.onLoadHandlers.forEach(function (element) {
-        element(_this3);
-      });
-    }
-    /**
-     * Async load object using ajax and compile on load.
-     * @param {String} path
-     * @public
-     */
-
-  }, {
-    key: "loadFromObj",
-    value: function loadFromObj(path) {
-      var self = this;
-      var objectsLoader = new XMLHttpRequest();
-      objectsLoader.open("GET", path);
-
-      objectsLoader.onreadystatechange = function () {
-        if (objectsLoader.readyState == 4) {
-          if (this.mtl || !this.mtlReuqired) {
-            self.compile(objectsLoader.responseText);
-            self.onload();
-            self.objLoaded = true;
-          } else {
-            this.mtlReuqired = function () {
-              self.objLoaded = true;
-              self.compile(objectsLoader.responseText);
-              self.onload();
-            };
-          }
-        }
-      };
-
-      objectsLoader.send();
-    }
-  }, {
-    key: "loadMTL",
-    value: function () {
-      var _loadMTL = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee(path) {
-        var _this4 = this;
-
-        var loader;
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                loader = new XMLHttpRequest();
-                this.mtlReuqired = true;
-                loader.open("GET", path);
-
-                loader.onreadystatechange = function () {
-                  if (loader.readyState == 4) {
-                    _this4.mtl = new MTL_MTL(loader.responseText, _this4.engine, path);
-
-                    if (_this4.objLoaded) {
-                      _this4.mtlReuqired();
-                    }
-                  } else {
-                    console.log('Error loading MTL');
-                  }
-                };
-
-                loader.send();
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function loadMTL(_x) {
-        return _loadMTL.apply(this, arguments);
-      }
-
-      return loadMTL;
-    }()
-  }, {
-    key: "useMaterial",
-    value: function useMaterial(material) {
-      var _this5 = this;
-
-      material.defaultDraw = this.draw;
-      material.object = this;
-
-      this.draw = function () {
-        material.drawObject(_this5);
-      };
-    }
-  }, {
-    key: "drawWithMTL",
-    value: function drawWithMTL() {
-      var _this6 = this;
-
-      if (!this.hidden && this.shaderProgram) {
-        this.shaderProgram.use();
-        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
-        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.objectRotationLocation, false, this.rotationMatrix);
-        this.engine.webgl.uniformMatrix4fv(this.shaderProgram.worldMatrixLocation, false, this.worldMatrix);
-        this.mtl.elements.forEach(function (elem) {
-          if (elem.texture != null) {
-            _this6.engine.webgl.uniform1i(_this6.shaderProgram.textureLocation, elem.texture.textureBlockLocation);
-          } else {
-            _this6.engine.webgl.uniform1i(_this6.shaderProgram.textureLocation, _this6.texture.textureBlockLocation);
-          }
-
-          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.positionLocation);
-
-          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.vertexesBuffer);
-
-          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.positionLocation, 3, _this6.engine.webgl.FLOAT, false, 0, 0);
-
-          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.texcoordLocation);
-
-          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.textureCoordinatesBuffer);
-
-          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.texcoordLocation, 2, _this6.engine.webgl.FLOAT, false, 0, 0);
-
-          _this6.engine.webgl.enableVertexAttribArray(_this6.shaderProgram.normalLocation);
-
-          _this6.engine.webgl.bindBuffer(_this6.engine.webgl.ARRAY_BUFFER, elem.normalsBuffer);
-
-          _this6.engine.webgl.vertexAttribPointer(_this6.shaderProgram.normalLocation, 3, _this6.engine.webgl.FLOAT, false, 0, 0);
-
-          _this6.engine.webgl.drawArrays(_this6.engine.webgl.TRIANGLES, 0, elem.vertexes.length / 3);
-        });
-      }
-    }
-  }, {
-    key: "copy",
-    value: function copy() {
-      var _this7 = this;
-
-      var obj = new Object(this.engine);
-
-      for (var attr in objectSpread_default()({}, this)) {
-        obj[attr] = this[attr];
-      }
-
-      var copyAttrs = function copyAttrs(object, original) {
-        object.vertexes = original.vertexes;
-        object.normals = original.normals;
-        object.textureCoordinates = original.textureCoordinates;
-        object.vertexesBuffer = original.vertexesBuffer;
-        object.normalsBuffer = original.normalsBuffer;
-        object.textureCoordinatesBuffer = original.textureCoordinatesBuffer;
-        object.mtl = original.mtl;
-        object.draw = original.draw;
-        object.maxBaseSize = original.maxBaseSize;
-        object.maxSize = original.maxSize;
-        object.shaderProgram = original.shaderProgram;
-      };
-
-      obj.position = this.position.copy();
-      obj.scaling = this.scaling.copy();
-      obj.rotation = this.rotation.copy();
-
-      obj.hide = function () {
-        obj.hidden = true;
-      };
-
-      obj.show = function () {
-        obj.hidden = false;
-      };
-
-      obj.hide();
-      this.addOnLoadHandler(function () {
-        copyAttrs(obj, _this7);
-
-        _this7.engine.objectLoaded(obj);
-
-        obj.show();
-      });
-      return obj;
-    }
-  }, {
-    key: "drawingMode",
-    set: function set(value) {
-      this._drawingMode = value;
-    },
-    get: function get() {
-      return this._drawingMode;
-    }
-  }]);
-
-  return Object;
-}(Entity_Entity);
-
-
-
 // CONCATENATED MODULE: ./src/objects/Rect.ts
 
 
@@ -6760,6 +6780,8 @@ function (_Entity) {
 
 
 
+
+
 var Skybox_Skybox =
 /*#__PURE__*/
 function (_Entity) {
@@ -6794,13 +6816,35 @@ function (_Entity) {
 
   createClass_default()(Skybox, [{
     key: "updateMatrixes",
-    value: function updateMatrixes() {
-      var temp = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
-      var cameraM = this.engine.camera.inverseRotationMatrix;
-      temp = Matrixes4_multiply(temp, cameraM);
-      temp = Matrixes4_multiply(temp, Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z));
-      this.matrix = inverse(temp);
-    }
+    value: function () {
+      var _updateMatrixes = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var temp, cameraM;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                temp = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+                cameraM = this.engine.camera.inverseRotationMatrix;
+                temp = Matrixes4_multiply(temp, cameraM);
+                temp = Matrixes4_multiply(temp, Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z));
+                this.matrix = inverse(temp);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function updateMatrixes() {
+        return _updateMatrixes.apply(this, arguments);
+      }
+
+      return updateMatrixes;
+    }()
     /**
      * Updating camera matrix for drawing Skybox
      */
@@ -6833,6 +6877,8 @@ function (_Entity) {
   return Skybox;
 }(objects_Entity);
 // CONCATENATED MODULE: ./src/objects/Grid.ts
+
+
 
 
 
@@ -6897,17 +6943,39 @@ function (_Rect) {
 
   }, {
     key: "updateMatrixes",
-    value: function updateMatrixes() {
-      var world = inverse(translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
-      world = Matrixes4_multiply(world, translation(this.position.x, this.position.y, this.position.z));
-      var rot = Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z);
-      world = Matrixes4_multiply(world, rot);
-      world = Matrixes4_multiply(world, translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
-      world = Matrixes4_multiply(world, translation(-this.minSize.x - (this.maxSize.x - this.minSize.x) / 2, -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2, -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2));
-      world = Matrixes4_multiply(world, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
-      this.worldMatrix = world;
-      this.rotationMatrix = rot;
-    }
+    value: function () {
+      var _updateMatrixes = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var world, rot;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                world = inverse(translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+                world = Matrixes4_multiply(world, translation(this.position.x, this.position.y, this.position.z));
+                rot = Matrixes4_rotation(this.rotation.x, this.rotation.y, this.rotation.z);
+                world = Matrixes4_multiply(world, rot);
+                world = Matrixes4_multiply(world, translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
+                world = Matrixes4_multiply(world, translation(-this.minSize.x - (this.maxSize.x - this.minSize.x) / 2, -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2, -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2));
+                world = Matrixes4_multiply(world, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+                this.worldMatrix = world;
+                this.rotationMatrix = rot;
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function updateMatrixes() {
+        return _updateMatrixes.apply(this, arguments);
+      }
+
+      return updateMatrixes;
+    }()
     /**
      * Updates object
      */

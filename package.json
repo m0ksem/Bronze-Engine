@@ -1,6 +1,6 @@
 {
   "name": "@m0ksem/bronze",
-  "version": "0.0.1",
+  "version": "0.3.002",
   "description": "WebGL game engine.",
   "main": "/dist/Bronze.min.js",
   "author": "Nedoshev Maksym (m0ksem)",

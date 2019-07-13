@@ -35,7 +35,7 @@ export class Skybox extends Entity {
      */
   }
 
-  public updateMatrixes() {
+  public async updateMatrixes() {
     let temp = Matrixes.perspective(this.engine.camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera!.range)
     let cameraM = this.engine.camera!.inverseRotationMatrix
     temp = Matrixes.multiply(temp, cameraM)

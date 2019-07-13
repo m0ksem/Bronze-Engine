@@ -46,7 +46,7 @@ export class Grid extends Rect {
   /**
    * Updated matrixes
    */
-  updateMatrixes(): void {
+  public async updateMatrixes() {
     let world = Matrixes.inverse(Matrixes.translation(this.rotationPoint.x, this.rotationPoint.y, this.rotationPoint.z));
     world = Matrixes.multiply(world, Matrixes.translation(this.position.x, this.position.y, this.position.z));
     let rot = Matrixes.rotation(this.rotation.x, this.rotation.y, this.rotation.z);

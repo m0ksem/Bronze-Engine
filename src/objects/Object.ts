@@ -1,15 +1,16 @@
 import { Entity } from "./Entity";
 import { Engine } from "../Engine";
 import { Material } from "../materials/Material";
-import { MTL } from "./mtl/MTL"
-import copy from '../utils/Utils.ts'
+import { MTL, MTLElement } from "./mtl/MTL"
+import BronzeError from "../debug/Error";
 
 export default class Object extends Entity {
   private _drawingMode: number;
   private afterLoadHidden = false;
   public mtl: MTL | null = null;
   public onLoadHandlers: Function[] = []
-  private mtlReuqired: bool | Function = false
+  private mtlRequired: boolean  = false
+  private mtlRequiredFunction: Function | null = null
   private objLoaded = false
 
   constructor(engine: Engine) {
@@ -75,7 +76,7 @@ export default class Object extends Entity {
       z: [0, 0]
     };
 
-    let currentMTL: MTL | null = null
+    let currentMTL: MTLElement | null = null
     let currentVertexes = this.vertexes
     let currentNormals = this.normals
     let currentTextureCoords = this.textureCoordinates
@@ -116,11 +117,13 @@ export default class Object extends Entity {
         textureCoords.push([parseFloat(values[1]), parseFloat(values[2])]);
       } else if (this.mtl != null && values[name] == "usemtl") {
         currentMTL = this.mtl.getElementByName(values[1])
+        if (currentMTL == undefined) {
+          return
+        }
         currentVertexes = currentMTL.vertexes
         currentNormals = currentMTL.normals
         currentTextureCoords = currentMTL.textureCoordinates
       } else if (values[name] == "f") {
-        // Transform 4 > faces to triangles
         const faces = [values[1], values[2], values[3]];
         if (values.length - 1 > 3) {
           for (let i = 4; i < values.length; i++) {
@@ -235,14 +238,14 @@ export default class Object extends Entity {
     let self = this;
     let objectsLoader = new XMLHttpRequest();
     objectsLoader.open("GET", path);
-    objectsLoader.onreadystatechange = function() {
+    objectsLoader.onreadystatechange = () => {
       if (objectsLoader.readyState == 4) {
-        if (this.mtl || !this.mtlReuqired) {
+        if (this.mtl || !this.mtlRequired) {
           self.compile(objectsLoader.responseText);
           self.onload();
           self.objLoaded = true
         } else {
-          this.mtlReuqired = () => {
+          this.mtlRequiredFunction = () => {
             self.objLoaded = true
             self.compile(objectsLoader.responseText);
             self.onload();
@@ -255,13 +258,15 @@ export default class Object extends Entity {
 
   public async loadMTL(path: string) {
     let loader = new XMLHttpRequest();
-    this.mtlReuqired = true
+    this.mtlRequired = true
     loader.open("GET", path)
     loader.onreadystatechange = () => {
       if (loader.readyState == 4) {
         this.mtl = new MTL(loader.responseText, this.engine, path)
-        if (this.objLoaded) {
-          this.mtlReuqired()
+        if (this.objLoaded && this.mtlRequiredFunction) {
+          this.mtlRequiredFunction()
+        } else {
+          new BronzeError('No MTL required function')
         }
       } else {
         console.log('Error loading MTL')
@@ -279,7 +284,7 @@ export default class Object extends Entity {
   }
 
   private drawWithMTL(): void {
-    if (!this.hidden && this.shaderProgram) {
+    if (!this.hidden && this.shaderProgram && this.mtl) {
       this.shaderProgram.use();
 
       this.engine.webgl.uniformMatrix4fv(this.shaderProgram.matrixLocation, false, this.matrix);
@@ -312,9 +317,10 @@ export default class Object extends Entity {
   public copy (): Object {
     let obj = new Object(this.engine)
     for (let attr in {...this}) {
+      // @ts-ignore - These are two completely identical objects.
       obj[attr] = this[attr]
     }
-    let copyAttrs = (object, original) => {
+    let copyAttrs = (object: Object, original: Object) => {
       object.vertexes = original.vertexes
       object.normals = original.normals
       object.textureCoordinates = original.textureCoordinates
