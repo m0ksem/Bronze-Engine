@@ -43,7 +43,6 @@ export class Shaders {
     this.addProgram("skybox", skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
     this.addProgram("screen", screenVertexShaderSource, screenFragmentShaderSource, options);
 
-
     this.default.use();
     this.webGL.enable(this.webGL.BLEND);
     this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
@@ -52,10 +51,10 @@ export class Shaders {
   /**
    * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
    * @public
-   * @param {String} name
-   * @param {String} vertexSource
-   * @param {String} fragmentSource
-   * @param {Object} [options]
+   * @param {String} name shader name
+   * @param {String} vertexSource shader text
+   * @param {String} fragmentSource shader text
+   * @param {Options} [options]
    */
   public addProgram(name: string, vertexSource: string, fragmentSource: string, options: Options) {
     let program = new ShaderProgram(this.webGL);
@@ -67,6 +66,31 @@ export class Shaders {
     this[name] = program;
   }
 
+
+  /**
+   * Load shader from Path
+   * @param name 
+   * @param vertexPath 
+   * @param fragmentPath 
+   * @param options 
+   */
+  public loadShaders(name: string, vertexPath: string, fragmentPath: string, options: Options) {
+    var vertexShader = new XMLHttpRequest();
+    vertexShader.open("GET", vertexPath, false);
+    vertexShader.send(null);
+    var fragmentShader = new XMLHttpRequest();
+    fragmentShader.open("GET", fragmentPath, false);
+    fragmentShader.send(null);
+
+    this.addProgram(name, vertexShader.responseText, fragmentShader.responseText, options);
+  }
+
+  /**
+   * Linking all variables from shaders.
+   * @param program 
+   * @param source 
+   * @param options 
+   */
   private _linkAllAttributesFromSource(program: ShaderProgram, source: string, options: Options) {
     let rows = source
       .split(";")
@@ -78,13 +102,12 @@ export class Shaders {
       row = row.replace(new RegExp("\n", "g"), "");
 
       let words = row.split(" ");
-      // console.log(words)
       for (let i = words.length - 1; i--; ) {
         if (words[i] === "") {
           words.splice(i, 1);
         }
       }
-      if (words[0].toLowerCase().includes("attribute")) {
+      if (words[0].toLowerCase() == "attribute") {
         let inName = words[2];
         let arraySizeIndexStart = inName.indexOf("[");
         if (arraySizeIndexStart != -1) {
@@ -99,7 +122,7 @@ export class Shaders {
           outName = outName + "Location";
         }
         program.linkAttribute(words[2], outName);
-      } else if (words[0].toLowerCase().includes("uniform")) {
+      } else if (words[0].toLowerCase() == "uniform") {
         let inName = words[2];
         let arraySizeIndexStart = inName.indexOf("[");
         if (arraySizeIndexStart != -1) {

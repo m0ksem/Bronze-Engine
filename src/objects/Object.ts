@@ -251,6 +251,9 @@ export default class Object extends Entity {
             self.onload();
           }
         }
+      } else if (objectsLoader.readyState == 0) {
+        console.log('Error in ' + this.name)
+        new BronzeError('Can not load object file.')
       }
     };
     objectsLoader.send();
@@ -265,11 +268,10 @@ export default class Object extends Entity {
         this.mtl = new MTL(loader.responseText, this.engine, path)
         if (this.objLoaded && this.mtlRequiredFunction) {
           this.mtlRequiredFunction()
-        } else {
-          new BronzeError('No MTL required function')
         }
-      } else {
-        console.log('Error loading MTL')
+      } else if (loader.readyState == 0) {
+        console.log('Error in ' + this.name)
+        new BronzeError('Can not load MTL file.')
       }
     }
     loader.send()

@@ -21,6 +21,7 @@ export abstract class Entity {
   public matrix: number[] = unit();
   public rotationMatrix: number[] = unit();
   public worldMatrix: number[] = unit();
+  public worldMatrixWithoutScaling: number[] = unit();
   public uiMatrix: number[] | null = null;
   public texture: Texture;
   public rotationInDeg: Vector3 = new Vector3(0, 0, 0);
@@ -426,6 +427,7 @@ export abstract class Entity {
       )
     );
     afterRotation = multiply(afterRotation, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+    this.worldMatrixWithoutScaling = world;
     if (this.UIElement) {
       this.uiMatrix = multiply(world, afterRotation);
       world = multiply(this.camera!.matrix, rot);

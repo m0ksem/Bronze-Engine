@@ -2,15 +2,16 @@
 
 precision mediump float;
 
-varying vec3 v_normal;
-varying vec3 v_normalTex;
 
 uniform samplerCube u_texture;
 uniform float u_lightRanges[MAX_LIGHTS];
 uniform float u_lightMinValue;
+uniform vec3 u_lightPositions[MAX_LIGHTS];
+uniform int u_lightsCount;
 
-varying vec3 v_lightsDirections[MAX_LIGHTS];
-varying float v_lightsCount;
+varying vec3 v_normal;
+varying vec3 v_normalTex;
+varying vec3 v_surfaceWorldPosition;
 
 float computeLight(vec3 direction, float range) {
     float light = dot(v_normal, normalize(direction));
@@ -26,10 +27,11 @@ float computeLight(vec3 direction, float range) {
 void main() {
     float light = 0.0;
     for (int i = 0; i < MAX_LIGHTS; i++) {
-        if (i > int(v_lightsCount)) {
+        if (i > int(u_lightsCount)) {
             break;
         }
-        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);
+        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;
+        light += computeLight(direction, u_lightRanges[i]);
     }
     
     gl_FragColor = textureCube(u_texture, v_normalTex);

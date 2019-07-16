@@ -1,3 +1,5 @@
+import { BronzeError } from './../debug/Error'
+
 export class ShaderProgram {
   [key: string]: any;
   readonly webGL: WebGLRenderingContext;
@@ -13,6 +15,10 @@ export class ShaderProgram {
     return this._program;
   }
 
+  /**
+   * Object of webgl shader.
+   * @param webGL 
+   */
   constructor(webGL: WebGLRenderingContext) {
     this.webGL = webGL;
     return this;
@@ -83,7 +89,7 @@ export class ShaderProgram {
       console.warn("Shader program: Custom name for uniform was switched from " + customName + " to " + customName + "1");
       customName = customName + "1";
     }
-
+    
     if (this._program == null) {
       throw new BronzeError("Shader program is null.");
     }
@@ -149,6 +155,9 @@ export class ShaderProgram {
     return this[customName];
   }
 
+  /**
+   * Set WebGL to use this shader.
+   */
   use() {
     this.webGL.useProgram(this.program);
   }
@@ -158,13 +167,4 @@ export class ShaderProgram {
   }
 }
 
-class BronzeError extends Error {
-  readonly name: string = "WebglError";
-
-  constructor(message: string) {
-    super(message);
-    Error.captureStackTrace(this, BronzeError);
-  }
-}
-
-export default ShaderProgram
+export default ShaderProgram;

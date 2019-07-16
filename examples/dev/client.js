@@ -177,13 +177,13 @@ let grid = new Bronze.Grid(engine)
     grid.setPosition(0, -5, 0)
     grid.setRotation(-90, 0, 0)
 
+    width = 10000, height = 10000
 let rect = new Bronze.Rect(engine)
     rect.setTexture(grassTexture)
     rect.setTextureRepeating(10, 10)
-    width = 10000, height = 10000
-    rect.setSize(width, height)
+    rect.setSize(10000, 10000)
     rect.setPosition(0, 5, 0)
-    rect.setRotation(-90, 0, 0)
+    rect.rotate(-90, 0, 0)
     rect.setRotationPoint(0, 0, 0)
 
     rect = new Bronze.Rect(engine)
@@ -279,7 +279,7 @@ let cola2 = new Bronze.Object(engine)
 
 
 let cubeObj = new Bronze.Object(engine)
-    cubeObj.setPosition(0, 15, 1500)
+    cubeObj.setPosition(-2500, 150, 00)
     cubeObj.name = "cube"
     cubeObj.loadFromObj("assets/objects/cube.obj")
     cubeObj.setRotationPoint(0, 0, 0)
