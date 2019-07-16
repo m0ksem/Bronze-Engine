@@ -1,17 +1,17 @@
 // Getting canvas
-let div = document.getElementById('bronze')
+var div = document.getElementById('bronze')
 div.width = window.innerWidth
 div.height = window.innerHeight
 
-let engine = new Bronze.Engine(div)
+var engine = new Bronze.Engine(div)
 
-window.addEventListener('resize', () => {
+window.addEventListener('resize', function () {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     engine.canvasResized()
 })
 
-let camera = new Bronze.Camera()
+var camera = new Bronze.Camera()
     camera.setPosition(0, 800, 1500)
     camera.setRotation(-45, 0, 0)
     camera.setFieldOfView(90)
@@ -19,40 +19,40 @@ let camera = new Bronze.Camera()
     engine.setCamera(camera)
     engine.setDrawingRange(100000000000000)
 
-let controls = new Bronze.Controls(engine)
+var controls = new Bronze.Controls(engine)
 controls.lockPointer(true)
 
-let debug = new Bronze.Debugger(engine)
+var debug = new Bronze.Debugger(engine)
 debug.setElement(document.getElementById('debug'))
-debug.addLog(debug.createLogView(), () => {
-    return 'Status ' + engine.status
-})
-debug.addLog(debug.createLogView(), () => {
-    return 'Mouse position ' + controls.mouse.x + ' ' + controls.mouse.y
-})
-debug.addLog(debug.createLogView(), () => {
-    return 'Mouse movement ' + controls.mouse.movement.x + ' ' + controls.mouse.movement.y
-})
-debug.addLog(debug.createLogView(), () => {
-    if (engine.selectedObject) {
-        return 'Selected object name ' + engine.selectedObject.name
-    } else {
-        return 'No objects selected'
-    }
-})
+// debug.addLog(debug.createLogView(), () => {
+//     return 'Status ' + engine.status
+// })
+// debug.addLog(debug.createLogView(), () => {
+//     return 'Mouse position ' + controls.mouse.x + ' ' + controls.mouse.y
+// })
+// debug.addLog(debug.createLogView(), () => {
+//     return 'Mouse movement ' + controls.mouse.movement.x + ' ' + controls.mouse.movement.y
+// })
+// debug.addLog(debug.createLogView(), () => {
+//     if (engine.selectedObject) {
+//         return 'Selected object name ' + engine.selectedObject.name
+//     } else {
+//         return 'No objects selected'
+//     }
+// })
 
 
-let ui = new Bronze.UI(engine)
+var ui = new Bronze.UI(engine)
 ui.appendDOMElement(debug.element)
 
 // Setting control function for camera
 controls.setSensitivity(1)
 
-controls.setControlFunction(() => {
+controls.setControlFunction(function () {
     // All coords
-    // let xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
-    // let yt = this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
-    // let zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
+    // var xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
+    // var yt = this.rotationMatrix[4] * x + this.rotationMatrix[5] * y + this.rotationMatrix[6] * z + this.rotationMatrix[7]
+    // var zt = this.rotationMatrix[8] * x + this.rotationMatrix[9] * y + this.rotationMatrix[10] * z + this.rotationMatrix[11]
     if (controls.keys[87]) {
         if (controls.keys[16]) {
             // camera.move(0, 10, 0)
@@ -106,11 +106,11 @@ controls.setControlFunction(() => {
 })
 
 engine.globalLightMinValue = 0.01
-let moonLight = new Bronze.Light(engine)
+var moonLight = new Bronze.Light(engine)
     moonLight.setPosition(10000, 9000, 10000)
     moonLight.range = 13370
     moonLight.on()
-let light = new Bronze.Light(engine)
+var light = new Bronze.Light(engine)
     light.setPosition(0, 500, -250)
     light.range = 1200
     light.on()
@@ -124,53 +124,53 @@ let light = new Bronze.Light(engine)
     light.on()
 
 // Loading textures
-let dirtTexture = new Bronze.SimpleTexture(engine)
+var dirtTexture = new Bronze.SimpleTexture(engine)
     dirtTexture.setColor(159, 136, 105, 255)
     dirtTexture.setSize(64, 64)
     dirtTexture.loadFrom("./assets/texture/dirt.jpg")
-let rjunTexture = new Bronze.SimpleTexture(engine)
+var rjunTexture = new Bronze.SimpleTexture(engine)
     rjunTexture.setColor(255, 255, 255, 255)
     rjunTexture.setSize(64, 64)
     rjunTexture.loadFrom('./assets/texture/rjun.jpg')
-let grassTexture = new Bronze.SimpleTexture(engine)
+var grassTexture = new Bronze.SimpleTexture(engine)
     grassTexture.setColor(255, 255, 255, 255)
     grassTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
     grassTexture.setMipmapGenerationMethod(grassTexture.AUTO_GENERATE)
     grassTexture.setSize(64, 64)
     grassTexture.loadFrom('./assets/texture/grass.png')
-let gridTexture = new Bronze.SimpleTexture(engine)
+var gridTexture = new Bronze.SimpleTexture(engine)
     gridTexture.setColor(255, 255, 255, 255)
     gridTexture.mipmapFilter = 'LINEAR_MIPMAP_LINEAR'
     gridTexture.setMipmapGenerationMethod(gridTexture.QUICK_GENERATE)
     gridTexture.loadFrom('./assets/texture/grid/grid.png')
-let transparentTexture = new Bronze.SimpleTexture(engine)
+var transparentTexture = new Bronze.SimpleTexture(engine)
     transparentTexture.setColor(255, 255, 255, 255)
     transparentTexture.loadFrom('./assets/texture/road.png')
     transparentTexture.alpha = true
-let transparentTextureDoor = new Bronze.SimpleTexture(engine)
+var transparentTextureDoor = new Bronze.SimpleTexture(engine)
     transparentTextureDoor.setColor(255, 255, 255, 255)
     transparentTextureDoor.loadFrom('./assets/texture/door.png')
     transparentTextureDoor.alpha = true
-let colaTexture = new Bronze.SimpleTexture(engine)
+var colaTexture = new Bronze.SimpleTexture(engine)
     colaTexture.setColor(255, 255, 255, 255)
     colaTexture.loadFrom('./assets/texture/cola.png')
-let woodTexture = new Bronze.SimpleTexture(engine)
+var woodTexture = new Bronze.SimpleTexture(engine)
     woodTexture.setColor(255, 255, 255, 255)
     woodTexture.loadFrom('./assets/texture/grass.png')
 
-let cubeTexture = new Bronze.CubeTexture(engine)
+var cubeTexture = new Bronze.CubeTexture(engine)
     cubeTexture.setLoadingImages(grassTexture.image, grassTexture.image, grassTexture.image, grassTexture.image, grassTexture.image, grassTexture.image)
 
-let skyboxTexture = new Bronze.CubeTexture(engine)
+var skyboxTexture = new Bronze.CubeTexture(engine)
     skyboxTexture.setSkybox('./assets/texture/skybox.png')
 
-let skybox = new Bronze.Skybox(engine)
+var skybox = new Bronze.Skybox(engine)
     skybox.setTexture(skyboxTexture)
 
-let glass = new Bronze.Glass(engine)
+var glass = new Bronze.Glass(engine)
 
 // Setting elements and objects 
-let grid = new Bronze.Grid(engine)
+var grid = new Bronze.Grid(engine)
     grid.setTexture(gridTexture)
     grid.setCellSize(1000, 1000)
     grid.setSize(50000, 50000)
@@ -178,7 +178,7 @@ let grid = new Bronze.Grid(engine)
     grid.setRotation(-90, 0, 0)
 
     width = 10000, height = 10000
-let rect = new Bronze.Rect(engine)
+var rect = new Bronze.Rect(engine)
     rect.setTexture(grassTexture)
     rect.setTextureRepeating(10, 10)
     rect.setSize(10000, 10000)
@@ -232,7 +232,7 @@ let rect = new Bronze.Rect(engine)
     rect.setPosition(0, 1000, 0)
     rect.setRotation(90, 0, 0)
 
-let deerRef = new Bronze.Object(engine)
+var deerRef = new Bronze.Object(engine)
     deerRef.name = "Deer transparent with reflection"
     deerRef.setPosition(0, 0, 0)
     deerRef.loadFromObj("assets/objects/deer.obj")
@@ -240,11 +240,11 @@ let deerRef = new Bronze.Object(engine)
     deerRef.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 1024, 0.7))
     deerRef.useMaterial(glass)
     deerRef.verticalAlign = false
-    deerRef.animate(60, (object) => {
-        object.rotate(1, 2, 3)
-    })
+    // deerRef.animate(60, (object) => {
+    //     object.rotate(1, 2, 3)
+    // })
 
-let cola1 = new Bronze.Object(engine)
+var cola1 = new Bronze.Object(engine)
     cola1.setPosition(500, 0, 1200)
     cola1.name = "box on ground"
     cola1.loadFromObj("assets/objects/cola.obj")
@@ -253,18 +253,18 @@ let cola1 = new Bronze.Object(engine)
     cola1.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 1024, 0.9))
     cola1.useMaterial(glass)
     cola1.verticalAlign = false
-    cola1.animate(60, () => {
-        cola1.rotate(0, 0.05, 0)
-    })
+    // cola1.animate(60, () => {
+    //     cola1.rotate(0, 0.05, 0)
+    // })
 
-let deer2 = new Bronze.Object(engine)
+var deer2 = new Bronze.Object(engine)
     deer2.name = "Deer normal scaled on 0.3"
     deer2.setPosition(1800, 0, 800)
     deer2.loadFromObj("assets/objects/deer.obj")
     deer2.scale(0.3, 0.3, 0.3)
     deer2.verticalAlign = false
 
-let cola2 = new Bronze.Object(engine)
+var cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
     cola2.setTexture(colaTexture)
     cola2.setPosition(100, 100, -1400)
@@ -278,7 +278,7 @@ let cola2 = new Bronze.Object(engine)
     // })
 
 
-let cubeObj = new Bronze.Object(engine)
+var cubeObj = new Bronze.Object(engine)
     cubeObj.setPosition(-2500, 150, 00)
     cubeObj.name = "cube"
     cubeObj.loadFromObj("assets/objects/cube.obj")
@@ -290,7 +290,7 @@ let cubeObj = new Bronze.Object(engine)
     cubeObj.alpha = true
     // cubeObj.verticalAlign = false
 
-let kitten = new Bronze.Object(engine)
+var kitten = new Bronze.Object(engine)
     kitten.setTexture(engine.noTexture)
     kitten.setPosition(1500, 100, 0)
     kitten.name = "Kitten"
@@ -303,27 +303,27 @@ let kitten = new Bronze.Object(engine)
     // })
     kitten.selectable = true
 
-function objectToString(obj, level = 0) {
-    let str = '{\n'
-    let keys = Object.keys(obj)
-    keys.forEach(key => {
-        let item = obj[key]
-        if (item.constructor instanceof Array) {
-            str += '\n' + objectToString(item)
-        } else if (item.constructor instanceof Number ||
-                   item.constructor instanceof String) {
-            str += key + ': ' + obj[key] + ',\n'
-        } else if (item.constructor instanceof Object) {
-            str += '\n' + objectToString(item)
-        } else {
-            str += key + ': ' + obj[key] + ',\n'
-        }
-    });
-    str += '}'
-    return str
-}
+// function objectToString(obj, level = 0) {
+//     var str = '{\n'
+//     var keys = Object.keys(obj)
+//     keys.forEach(key => {
+//         var item = obj[key]
+//         if (item.constructor instanceof Array) {
+//             str += '\n' + objectToString(item)
+//         } else if (item.constructor instanceof Number ||
+//                    item.constructor instanceof String) {
+//             str += key + ': ' + obj[key] + ',\n'
+//         } else if (item.constructor instanceof Object) {
+//             str += '\n' + objectToString(item)
+//         } else {
+//             str += key + ': ' + obj[key] + ',\n'
+//         }
+//     });
+//     str += '}'
+//     return str
+// }
 
-let uiKitten = new Bronze.Object(engine)
+var uiKitten = new Bronze.Object(engine)
     uiKitten.UIElement = true
     uiKitten.setPosition(90, 0, -100)
     uiKitten.name = "UI ELEMENT BOX"
@@ -331,9 +331,9 @@ let uiKitten = new Bronze.Object(engine)
     uiKitten.setRotationPoint(0, 0, 0)
     uiKitten.setRotation(90, 25, 0)
     uiKitten.scale(20, 20, 20)
-    uiKitten.animate(60, (object) => {
-        object.rotate(1, 2, 3)
-    })
+    // uiKitten.animate(60, (object) => {
+    //     object.rotate(1, 2, 3)
+    // })
 
 // Run engine
 engine.run()
