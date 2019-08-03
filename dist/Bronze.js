@@ -205,7 +205,7 @@ module.exports = _possibleConstructorReturn;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(10);
+var setPrototypeOf = __webpack_require__(9);
 
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -268,11 +268,26 @@ module.exports = _asyncToGenerator;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports) {
+
+function _setPrototypeOf(o, p) {
+  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+module.exports = _setPrototypeOf;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getPrototypeOf = __webpack_require__(5);
 
-var setPrototypeOf = __webpack_require__(10);
+var setPrototypeOf = __webpack_require__(9);
 
 var isNativeFunction = __webpack_require__(14);
 
@@ -313,21 +328,6 @@ function _wrapNativeSuper(Class) {
 }
 
 module.exports = _wrapNativeSuper;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-module.exports = _setPrototypeOf;
 
 /***/ }),
 /* 11 */
@@ -1124,7 +1124,7 @@ module.exports = _isNativeFunction;
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(10);
+var setPrototypeOf = __webpack_require__(9);
 
 function isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
@@ -1924,7 +1924,7 @@ var inherits = __webpack_require__(7);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
-var wrapNativeSuper = __webpack_require__(9);
+var wrapNativeSuper = __webpack_require__(10);
 var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper);
 
 // CONCATENATED MODULE: ./src/webgl/Utils.ts
@@ -2038,11 +2038,43 @@ function (_Error) {
   getWebGL: getWebGL,
   getWebGLById: getWebGLById
 });
+// CONCATENATED MODULE: ./src/debug/Error.ts
+
+
+var Error_BronzeError = function BronzeError(message) {
+  classCallCheck_default()(this, BronzeError);
+
+  throw new Error_CustomError(message);
+};
+
+var Error_CustomError = function CustomError(message) {
+  classCallCheck_default()(this, CustomError);
+
+  defineProperty_default()(this, "name", 'BronzeError');
+
+  defineProperty_default()(this, "message", void 0);
+
+  Error.apply(this, [message]);
+  this.message = message;
+};
+
+Error_CustomError.prototype = new Error();
+
+var Error_BronzeWarn = function BronzeWarn(message) {
+  classCallCheck_default()(this, BronzeWarn);
+
+  console.warn(message);
+};
+
+var Error_BronzeLog = function BronzeLog(log) {
+  classCallCheck_default()(this, BronzeLog);
+
+  console.log(log);
+};
+
+
+/* harmony default export */ var debug_Error = (Error_BronzeError);
 // CONCATENATED MODULE: ./src/webgl/ShaderProgram.ts
-
-
-
-
 
 
 
@@ -2055,6 +2087,11 @@ function () {
     get: function get() {
       return this._program;
     }
+    /**
+     * Object of webgl shader.
+     * @param webGL 
+     */
+
   }]);
 
   function ShaderProgram(webGL) {
@@ -2103,7 +2140,7 @@ function () {
           break;
 
         default:
-          throw new ShaderProgram_BronzeError("Wrong shader type.");
+          throw new Error_BronzeError("Wrong shader type.");
       }
 
       this.webGL.shaderSource(shader, source);
@@ -2112,7 +2149,7 @@ function () {
       if (!this.webGL.getShaderParameter(shader, this.webGL.COMPILE_STATUS)) {
         console.error("There are shader error:");
         console.error(this.webGL.getShaderInfoLog(shader));
-        throw new ShaderProgram_BronzeError("Could not compile shader.");
+        throw new Error_BronzeError("Could not compile shader.");
       }
     }
     /**
@@ -2126,7 +2163,7 @@ function () {
       var program = this.webGL.createProgram();
 
       if (this._vertexShader == null && this._fragmentShader == null) {
-        throw new ShaderProgram_BronzeError("Shader programs isn`t complete.");
+        throw new Error_BronzeError("Shader programs isn`t complete.");
       }
 
       this.webGL.attachShader(program, this._vertexShader);
@@ -2160,7 +2197,7 @@ function () {
       }
 
       if (this._program == null) {
-        throw new ShaderProgram_BronzeError("Shader program is null.");
+        throw new Error_BronzeError("Shader program is null.");
       }
 
       switch (type) {
@@ -2195,7 +2232,7 @@ function () {
       }
 
       if (this._program == null) {
-        throw new ShaderProgram_BronzeError("Shader program is null.");
+        throw new Error_BronzeError("Shader program is null.");
       }
 
       this[customName] = this.webGL.getAttribLocation(this.program, name);
@@ -2223,7 +2260,7 @@ function () {
       }
 
       if (this._program == null) {
-        throw new ShaderProgram_BronzeError("Shader program is null.");
+        throw new Error_BronzeError("Shader program is null.");
       }
 
       this[customName] = this.webGL.getUniformLocation(this.program, name);
@@ -2234,6 +2271,10 @@ function () {
 
       return this[customName];
     }
+    /**
+     * Set WebGL to use this shader.
+     */
+
   }, {
     key: "use",
     value: function use() {
@@ -2248,28 +2289,6 @@ function () {
 
   return ShaderProgram;
 }();
-
-var ShaderProgram_BronzeError =
-/*#__PURE__*/
-function (_Error) {
-  inherits_default()(BronzeError, _Error);
-
-  function BronzeError(message) {
-    var _this;
-
-    classCallCheck_default()(this, BronzeError);
-
-    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(BronzeError).call(this, message));
-
-    defineProperty_default()(assertThisInitialized_default()(_this), "name", "WebglError");
-
-    Error.captureStackTrace(assertThisInitialized_default()(_this), BronzeError);
-    return _this;
-  }
-
-  return BronzeError;
-}(wrapNativeSuper_default()(Error));
-
 /* harmony default export */ var webgl_ShaderProgram = (ShaderProgram_ShaderProgram);
 // CONCATENATED MODULE: ./src/webgl/Shaders.ts
 
@@ -2278,16 +2297,16 @@ function (_Error) {
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
+var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= light;\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
-var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}\r\n";
+var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\n\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
 
 /* babel-plugin-inline-import './shaders/cube-texture/fragment-shader.glsl' */
-var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
+var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
-var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}\r\n";
+var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}\r\n";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
@@ -2296,10 +2315,10 @@ var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_t
 var gridVertexShaderSource = "attribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\n\r\nuniform mat4 u_matrix;\r\nuniform vec2 u_moving;\r\nuniform vec2 u_cellSize;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_texcoord = vec2(a_texcoord.x + u_moving.x / u_cellSize.x, a_texcoord.y + (u_moving.y / u_cellSize.x));\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/fragment-shader.glsl' */
-var reflectionFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision highp float;\r\n    \r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\n\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\n        \r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(normalize(v_worldRotation), normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_normal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldRotation);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(v_lightsCount)) {\r\n            break;\r\n        }\r\n        light += computeLight(v_lightsDirections[i], u_lightRanges[i]);\r\n    }\r\n\r\n    gl_FragColor.rgb *= (light);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var reflectionFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision highp float;\r\n    \r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying float v_lightsCount;\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\nvarying vec3 v_surfaceWorldPosition;\r\n        \r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(normalize(v_worldRotation), normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    vec3 worldNormal = normalize(v_normal);\r\n    vec3 eyeToSurfaceDir = normalize(v_worldRotation);\r\n    vec3 direction = reflect(eyeToSurfaceDir, vec3(0.0, 0.0, -1.0));\r\n    \r\n    gl_FragColor = textureCube(u_texture, direction);\r\n\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n\r\n    gl_FragColor.rgb *= (light);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/reflection-texture/vertex-shader.glsl' */
-var reflectionVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform mat4 u_worldMatrix;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\nvarying vec3 v_lightsDirections[MAX_LIGHTS];\r\nvarying float v_lightsCount;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n\r\n    vec3 surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        v_lightsDirections[i] = u_lightPositions[i] - surfaceWorldPosition;\r\n    }\r\n\r\n    v_lightsCount = float(u_lightsCount);\r\n}";
+var reflectionVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform mat4 u_worldMatrix;\r\n\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\nvarying vec3 v_surfaceWorldPosition;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
 
 /* babel-plugin-inline-import './shaders/skybox/fragment-shader.glsl' */
 var skyboxFragmentShaderSource = "    precision mediump float;\r\n     \r\n    uniform samplerCube u_texture;\r\n    uniform mat4 u_matrix;\r\n     \r\n    varying vec4 v_position;\r\n    void main() {\r\n      vec4 t = u_matrix * v_position;\r\n      gl_FragColor = textureCube(u_texture, normalize(t.xyz / t.w));\r\n    }";
@@ -2344,10 +2363,10 @@ function () {
   /**
    * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
    * @public
-   * @param {String} name
-   * @param {String} vertexSource
-   * @param {String} fragmentSource
-   * @param {Object} [options]
+   * @param {String} name shader name
+   * @param {String} vertexSource shader text
+   * @param {String} fragmentSource shader text
+   * @param {Options} [options]
    */
 
 
@@ -2362,6 +2381,32 @@ function () {
       program = this._linkAllAttributesFromSource(program, fragmentSource, options);
       this[name] = program;
     }
+    /**
+     * Load shader from Path
+     * @param name 
+     * @param vertexPath 
+     * @param fragmentPath 
+     * @param options 
+     */
+
+  }, {
+    key: "loadShaders",
+    value: function loadShaders(name, vertexPath, fragmentPath, options) {
+      var vertexShader = new XMLHttpRequest();
+      vertexShader.open("GET", vertexPath, false);
+      vertexShader.send(null);
+      var fragmentShader = new XMLHttpRequest();
+      fragmentShader.open("GET", fragmentPath, false);
+      fragmentShader.send(null);
+      this.addProgram(name, vertexShader.responseText, fragmentShader.responseText, options);
+    }
+    /**
+     * Linking all variables from shaders.
+     * @param program 
+     * @param source 
+     * @param options 
+     */
+
   }, {
     key: "_linkAllAttributesFromSource",
     value: function _linkAllAttributesFromSource(program, source, options) {
@@ -2370,7 +2415,7 @@ function () {
       rows.forEach(function (row) {
         row = row.replace(new RegExp("\r", "g"), "");
         row = row.replace(new RegExp("\n", "g"), "");
-        var words = row.split(" "); // console.log(words)
+        var words = row.split(" ");
 
         for (var i = words.length - 1; i--;) {
           if (words[i] === "") {
@@ -2378,7 +2423,7 @@ function () {
           }
         }
 
-        if (words[0].toLowerCase().includes("attribute")) {
+        if (words[0].toLowerCase() == "attribute") {
           var inName = words[2];
           var arraySizeIndexStart = inName.indexOf("[");
 
@@ -2397,7 +2442,7 @@ function () {
           }
 
           program.linkAttribute(words[2], outName);
-        } else if (words[0].toLowerCase().includes("uniform")) {
+        } else if (words[0].toLowerCase() == "uniform") {
           var _inName = words[2];
 
           var _arraySizeIndexStart = _inName.indexOf("[");
@@ -2447,42 +2492,6 @@ var Shaders_Extensions = function Extensions() {
   classCallCheck_default()(this, Extensions);
 };
 /* harmony default export */ var webgl_Shaders = (Shaders_Shaders);
-// CONCATENATED MODULE: ./src/debug/Error.ts
-
-
-var Error_BronzeError = function BronzeError(message) {
-  classCallCheck_default()(this, BronzeError);
-
-  throw new Error_CustomError(message);
-};
-
-var Error_CustomError = function CustomError(message) {
-  classCallCheck_default()(this, CustomError);
-
-  defineProperty_default()(this, "name", 'BronzeError');
-
-  defineProperty_default()(this, "message", void 0);
-
-  Error.apply(this, [message]);
-  this.message = message;
-};
-
-Error_CustomError.prototype = new Error();
-
-var Error_BronzeWarn = function BronzeWarn(message) {
-  classCallCheck_default()(this, BronzeWarn);
-
-  console.warn(message);
-};
-
-var Error_BronzeLog = function BronzeLog(log) {
-  classCallCheck_default()(this, BronzeLog);
-
-  console.log(log);
-};
-
-
-/* harmony default export */ var debug_Error = (Error_BronzeError);
 // CONCATENATED MODULE: ./src/textures/Texture.ts
 
 
@@ -2631,6 +2640,8 @@ function () {
     defineProperty_default()(this, "rotationMatrix", unit());
 
     defineProperty_default()(this, "worldMatrix", unit());
+
+    defineProperty_default()(this, "worldMatrixWithoutScaling", unit());
 
     defineProperty_default()(this, "uiMatrix", null);
 
@@ -3064,6 +3075,7 @@ function () {
                 afterRotation = rot;
                 afterRotation = Matrixes4_multiply(afterRotation, translation(-this.minSize.x - (this.maxSize.x - this.minSize.x) / 2, -this.minSize.y - (this.maxSize.y - this.minSize.y) / 2, -this.minSize.z - (this.maxSize.z - this.minSize.z) / 2));
                 afterRotation = Matrixes4_multiply(afterRotation, scaling(this.scaling.x, this.scaling.y, this.scaling.z));
+                this.worldMatrixWithoutScaling = world;
 
                 if (this.UIElement) {
                   this.uiMatrix = Matrixes4_multiply(world, afterRotation);
@@ -3075,7 +3087,7 @@ function () {
                 this.worldMatrix = world;
                 this.rotationMatrix = rot;
 
-              case 9:
+              case 10:
               case "end":
                 return _context4.stop();
             }
@@ -3868,6 +3880,9 @@ function (_Entity) {
               self.onload();
             };
           }
+        } else if (objectsLoader.readyState == 0) {
+          console.log('Error in ' + _this4.name);
+          new debug_Error('Can not load object file.');
         }
       };
 
@@ -3896,11 +3911,10 @@ function (_Entity) {
 
                     if (_this5.objLoaded && _this5.mtlRequiredFunction) {
                       _this5.mtlRequiredFunction();
-                    } else {
-                      new debug_Error('No MTL required function');
                     }
-                  } else {
-                    console.log('Error loading MTL');
+                  } else if (loader.readyState == 0) {
+                    console.log('Error in ' + _this5.name);
+                    new debug_Error('Can not load MTL file.');
                   }
                 };
 
