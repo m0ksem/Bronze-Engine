@@ -5284,7 +5284,7 @@ function () {
     } else {
       var _lastMousePosition = null;
       engine.div.addEventListener("mousemove", function (event) {
-        if (_this.isFocused) {
+        if (!_this._focusOnlyIfClick || _this.isFocused) {
           if (!_this.pointerLocked) {
             var mousePos = engine.div.getBoundingClientRect();
             var x = event.clientX - mousePos.left;
@@ -5316,7 +5316,7 @@ function () {
         if (x < canvasPos.right && x > canvasPos.left && y < canvasPos.bottom && y > canvasPos.top) {
           _this.mouseOverCanvas = true;
 
-          if (!_this._focusOnlyIfClick && !_this.isFocused) {
+          if (!_this._focusOnlyIfClick || !_this.isFocused) {
             engine.div.focus();
           }
         } else {
@@ -5354,7 +5354,7 @@ function () {
     }
   }
   /**
-   * Sets mode when user need click to focus canvas
+   * Sets mode when user need click to focus canvas.
    */
 
 
@@ -5365,7 +5365,16 @@ function () {
       this._focusOnlyIfClick = bool;
     }
     /**
-     * Set sensitivity for mouse movement
+     * Sets auto focus and deletes click for focus. Canvas always focused.
+     */
+
+  }, {
+    key: "autoFocus",
+    value: function autoFocus() {
+      this._focusOnlyIfClick = false;
+    }
+    /**
+     * Set sensitivity for mouse movement.
      * @default 1
      * @param sensitivity
      */
@@ -5486,7 +5495,6 @@ function () {
   }, {
     key: "lockPointer",
     value: function lockPointer(bool) {
-      bool = bool || !this._lockPointer;
       this._lockPointer = bool;
     }
   }, {

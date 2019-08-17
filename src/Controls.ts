@@ -221,7 +221,7 @@ export class Controls {
     } else {
       let lastMousePosition: null | Vector2 = null;
       engine.div.addEventListener("mousemove", event => {
-          if (this.isFocused) {
+          if (!this._focusOnlyIfClick || this.isFocused) {
             if (!this.pointerLocked) {
               let mousePos = engine.div.getBoundingClientRect();
               let x = event.clientX - mousePos.left;
@@ -259,7 +259,7 @@ export class Controls {
           y > canvasPos.top
         ) {
           this.mouseOverCanvas = true;
-          if (!this._focusOnlyIfClick && !this.isFocused) {
+          if (!this._focusOnlyIfClick || !this.isFocused) {
             engine.div.focus();
           }
         } else {
@@ -301,7 +301,7 @@ export class Controls {
   }
 
   /**
-   * Sets mode when user need click to focus canvas
+   * Sets mode when user need click to focus canvas.
    */
   public clickForFocus(bool: boolean) {
     bool = bool || !this._focusOnlyIfClick;
@@ -309,7 +309,14 @@ export class Controls {
   }
 
   /**
-   * Set sensitivity for mouse movement
+   * Sets auto focus and deletes click for focus. Canvas always focused.
+   */
+  public autoFocus() {
+    this._focusOnlyIfClick = false
+  }
+
+  /**
+   * Set sensitivity for mouse movement.
    * @default 1
    * @param sensitivity
    */
@@ -409,7 +416,6 @@ export class Controls {
    * @param {boolean} [bool]
    */
   public lockPointer(bool: boolean) {
-    bool = bool || !this._lockPointer;
     this._lockPointer = bool;
   }
 

@@ -105,17 +105,6 @@ controls.setSensitivity(1);
 var posZ = 0;
 var currentScene = 0;
 controls.setControlFunction(function () {
-  if (controls.mouse.buttons[2] || controls.touch.actionBeforeMove == "long click") {
-    if (engine.selectedObject != null) {
-      var object = engine.selectedObject;
-      if (!controls.keys[17]) {
-        object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, controls.mouse.movement.y);
-      } else {
-        object.moveRelativeToTheCamera(0, -controls.mouse.movement.y, 0);
-      }
-    }
-  }
-
   if (controls.mouse.buttons[0] || controls.pointerLocked || controls.touch.actionBeforeMove == "click") {
     camera.rotate(controls.mouse.movement.y / 10, controls.mouse.movement.x / 10, 0);
   }
