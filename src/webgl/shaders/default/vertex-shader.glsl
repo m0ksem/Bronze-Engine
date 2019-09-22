@@ -8,8 +8,6 @@ uniform mat4 u_matrix;
 uniform mat4 u_objectRotation;
 uniform mat4 u_worldMatrix;
 
-
-
 varying vec2 v_texcoord;
 varying vec3 v_normal;
 varying vec3 v_surfaceWorldPosition;

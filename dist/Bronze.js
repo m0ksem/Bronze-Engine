@@ -5283,7 +5283,7 @@ function () {
       }, false);
     } else {
       var _lastMousePosition = null;
-      engine.div.addEventListener("mousemove", function (event) {
+      window.addEventListener("mousemove", function (event) {
         if (!_this._focusOnlyIfClick || _this.isFocused) {
           if (!_this.pointerLocked) {
             var mousePos = engine.div.getBoundingClientRect();
@@ -5328,7 +5328,7 @@ function () {
         }
       });
 
-      engine.div.onmousedown = function (event) {
+      window.onmousedown = function (event) {
         if (_this.isFocused) {
           _this.mouse.buttons[event.button] = true;
           if (_this._mouseDownHandlers[2 + event.button] != null) _this._mouseDownHandlers[2 + event.button](event);
@@ -5336,7 +5336,7 @@ function () {
         }
       };
 
-      engine.div.onmouseup = function (event) {
+      window.onmouseup = function (event) {
         _this.mouse.buttons[event.button] = false;
         if (_this._mouseUpHandlers[2 + event.button] != null) _this._mouseUpHandlers[2 + event.button](event);
         return false;

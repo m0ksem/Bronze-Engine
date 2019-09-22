@@ -26,7 +26,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server --open --mode development",
+    "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",

@@ -11,6 +11,7 @@ export class ShaderProgram {
   private _vertexShader: WebGLShader | null = null;
   private _fragmentShader: WebGLShader | null = null;
 
+  
   public get program(): WebGLProgram | null {
     return this._program;
   }
@@ -107,6 +108,8 @@ export class ShaderProgram {
     return this[customName];
   }
 
+
+  
   /**
    * Linking attribute variable of program to this object.
    * @param {String} name variable name in shader.
@@ -125,8 +128,8 @@ export class ShaderProgram {
 
     this[customName] = this.webGL.getAttribLocation(this.program!, name);
 
-    if (this[customName] == null) {
-      throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
+    if (this[customName] == null || this[customName] == -1) {
+      throw new Error("Can not link attribute " + name + ". The variable may not be used in shader.");
     }
     return this[customName];
   }
@@ -149,7 +152,7 @@ export class ShaderProgram {
 
     this[customName] = this.webGL.getUniformLocation(this.program!, name);
 
-    if (this[customName] == null) {
+    if (this[customName] == null || this[customName] == -1) {
       throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
     }
     return this[customName];

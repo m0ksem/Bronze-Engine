@@ -23,12 +23,33 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.json', '.glsl']
     },
     module: {
-        rules: [{
-            // Include ts, tsx, js, and jsx files.
-            test: /\.(ts|js|glsl)x?$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-        }],
+        rules: [
+                {
+                // Include ts, tsx, js, and jsx files.
+                test: /\.(ts|js|glsl)x?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            },
+            {
+                test: /\.glsl$/,
+                loader: 'webpack-glsl'
+            }
+        ],
+        // loaders: [
+        //     {
+        //         test: /\.ts|js$/,
+        //         exclude: /(node_modules|bower_components)/,
+        //         loader: 'babel-loader',
+        //         query: {
+        //             cacheDirectory: true,
+        //             presets: ['es2015']
+        //         }
+        //     },
+        //     {
+        //         test: /\.glsl$/,
+        //         loader: 'webpack-glsl'
+        //     }
+        // ]
     },
     optimization: {
         minimize: true,
