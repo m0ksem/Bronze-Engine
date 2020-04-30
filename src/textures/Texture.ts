@@ -49,6 +49,14 @@ export abstract class Texture {
     webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture)
     webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
   }
+
+  public setAlpha(a: number) {
+    this.color[3] = a;
+    const webgl = this.engine.webgl
+    webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation)
+    webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture)
+    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
+  }
 }
 
 export default Texture

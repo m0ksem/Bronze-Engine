@@ -26,6 +26,16 @@ export class MTL {
         texture.alpha = true
         currentMTL.texture = texture
       }
+      if (words[0] == "Kd") {
+        currentMTL.texture.setColor(
+          parseFloat(words[1]) * 255, 
+          parseFloat(words[2]) * 255, 
+          parseFloat(words[3]) * 255,
+        255);
+      }
+      if (words[0] == "d") {
+        currentMTL.texture.setAlpha(parseFloat(words[1]) * 255);
+      }
     })
   }
 
