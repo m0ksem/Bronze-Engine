@@ -12,34 +12,34 @@ window.addEventListener('resize', function () {
 })
 
 var camera = new Bronze.Camera()
-    camera.setPosition(0, 800, 1500)
-    camera.setRotation(-45, 0, 0)
+    camera.setPosition(1500, 100, 1500)
+    camera.setRotation(0, 0, 0)
     camera.setFieldOfView(90)
     camera.setCubeCollisionBox(100)
     engine.setCamera(camera)
     engine.setDrawingRange(100000000000000)
 
 var controls = new Bronze.Controls(engine)
-controls.lockPointer(true)
+// controls.lockPointer(true)
 
 var debug = new Bronze.Debugger(engine)
 debug.setElement(document.getElementById('debug'))
-// debug.addLog(debug.createLogView(), () => {
-//     return 'Status ' + engine.status
-// })
-// debug.addLog(debug.createLogView(), () => {
-//     return 'Mouse position ' + controls.mouse.x + ' ' + controls.mouse.y
-// })
-// debug.addLog(debug.createLogView(), () => {
-//     return 'Mouse movement ' + controls.mouse.movement.x + ' ' + controls.mouse.movement.y
-// })
-// debug.addLog(debug.createLogView(), () => {
-//     if (engine.selectedObject) {
-//         return 'Selected object name ' + engine.selectedObject.name
-//     } else {
-//         return 'No objects selected'
-//     }
-// })
+debug.addLog(debug.createLogView(), () => {
+    return 'Status ' + engine.status
+})
+debug.addLog(debug.createLogView(), () => {
+    return 'Mouse position ' + controls.mouse.x + ' ' + controls.mouse.y
+})
+debug.addLog(debug.createLogView(), () => {
+    return 'Mouse movement ' + controls.mouse.movement.x + ' ' + controls.mouse.movement.y
+})
+debug.addLog(debug.createLogView(), () => {
+    if (engine.selectedObject) {
+        return 'Selected object name ' + engine.selectedObject.name
+    } else {
+        return 'No objects selected'
+    }
+})
 
 
 var ui = new Bronze.UI(engine)
@@ -84,7 +84,7 @@ controls.setControlFunction(function () {
 
 
     if (controls.mouse.buttons[2] || controls.touch.actionBeforeMove == 'long click') {
-        if (engine.selectedObject != null) {
+        if (engine.selectedObject) {
             const object = engine.selectedObject
             if (!controls.keys[17]) {
                 object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, controls.mouse.movement.y)
@@ -240,6 +240,7 @@ var deerRef = new Bronze.Object(engine)
     deerRef.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 1024, 0.7))
     deerRef.useMaterial(glass)
     deerRef.verticalAlign = false
+    deerRef.selectable
     // deerRef.animate(60, (object) => {
     //     object.rotate(1, 2, 3)
     // })
@@ -263,6 +264,7 @@ var deer2 = new Bronze.Object(engine)
     deer2.loadFromObj("assets/objects/deer.obj")
     deer2.scale(0.3, 0.3, 0.3)
     deer2.verticalAlign = false
+    deer2.selectable = true
 
 var cola2 = new Bronze.Object(engine)
     cola2.UIElement = true
@@ -302,6 +304,19 @@ var kitten = new Bronze.Object(engine)
     //     object.rotate(1, 2, 3)
     // })
     kitten.selectable = true
+
+var kitten2 = new Bronze.Object(engine)
+    kitten2.setTexture(engine.noTexture)
+    kitten2.setPosition(1300, 100, 0)
+    kitten2.name = "Kitten"
+    kitten2.loadFromObj("assets/objects/kitten.obj")
+    kitten2.setRotation(0, 180, 0)
+    kitten2.scale(100, 100, 100)
+    kitten2.verticalAlign = false
+    // kitten.animate(60, (object) => {
+    //     object.rotate(1, 2, 3)
+    // })
+    kitten2.selectable = true
 
 // function objectToString(obj, level = 0) {
 //     var str = '{\n'

@@ -91,7 +91,7 @@ export class Controls {
       this.keys[i] = false;
       this._handlers[i] = null;
     }
-    window.onkeydown = event => {
+    engine.div.onkeydown = event => {
       if (this.isFocused) {
         if (event.keyCode == 27) {
           engine.div.blur();
@@ -109,7 +109,7 @@ export class Controls {
         }
       }
     };
-    window.onkeyup = event => {
+    engine.div.onkeyup = event => {
       this.keys[event.keyCode] = false;
       return !this._rebind;
     };

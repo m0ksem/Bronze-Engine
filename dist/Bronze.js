@@ -2237,8 +2237,8 @@ function () {
 
       this[customName] = this.webGL.getAttribLocation(this.program, name);
 
-      if (this[customName] == null) {
-        throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
+      if (this[customName] == null || this[customName] == -1) {
+        throw new Error("Can not link attribute " + name + ". The variable may not be used in shader.");
       }
 
       return this[customName];
@@ -2265,7 +2265,7 @@ function () {
 
       this[customName] = this.webGL.getUniformLocation(this.program, name);
 
-      if (this[customName] == null) {
+      if (this[customName] == null || this[customName] == -1) {
         throw new Error("Can not link uniform " + name + ". The variable may not be used in shader.");
       }
 
@@ -2300,13 +2300,13 @@ function () {
 var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= light;\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
-var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\n\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
+var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
 
 /* babel-plugin-inline-import './shaders/cube-texture/fragment-shader.glsl' */
-var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, v_normalTex);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= (light);\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}\r\n";
+var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nuniform samplerCube u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = textureCube(u_texture, normalize(v_normalTex));\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= light;\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
-var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n    v_normalTex = normalize(a_position.xyz);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}\r\n";
+var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\n// attribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n\r\n    v_normalTex = normalize(a_position.xyz);\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
@@ -2529,7 +2529,7 @@ function () {
   createClass_default()(Texture, [{
     key: "setColor",
     value: function setColor(r, g, b, a) {
-      if (r.constructor instanceof String) {
+      if (!g) {
         var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
 
         if (rgb == null) {
@@ -2538,13 +2538,22 @@ function () {
         }
 
         this.color = new Uint8Array([parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]), 255]);
-      } else if (r.constructor === Number && g != undefined && b != undefined && a != undefined) {
+      } else if (g != undefined && b != undefined && a != undefined) {
         this.color = new Uint8Array([Number(r), g, b, a]);
       } else {
         new debug_Error('Wrong color');
         return;
       }
 
+      var webgl = this.engine.webgl;
+      webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
+      webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture);
+      webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
+    }
+  }, {
+    key: "setAlpha",
+    value: function setAlpha(a) {
+      this.color[3] = a;
       var webgl = this.engine.webgl;
       webgl.activeTexture(webgl.TEXTURE0 + this.textureBlockLocation);
       webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture);
@@ -3280,7 +3289,7 @@ var SimpleTexture_SimpleTexture =
 function (_Texture) {
   inherits_default()(SimpleTexture, _Texture);
 
-  function SimpleTexture(engine, path) {
+  function SimpleTexture(engine) {
     var _this;
 
     classCallCheck_default()(this, SimpleTexture);
@@ -3517,6 +3526,14 @@ function () {
         texture.loadFrom(p + words[1]);
         texture.alpha = true;
         currentMTL.texture = texture;
+      }
+
+      if (words[0] == "Kd") {
+        currentMTL.texture.setColor(parseFloat(words[1]) * 255, parseFloat(words[2]) * 255, parseFloat(words[3]) * 255, 255);
+      }
+
+      if (words[0] == "d") {
+        currentMTL.texture.setAlpha(parseFloat(words[1]) * 255);
       }
     });
   }
@@ -5145,7 +5162,7 @@ function () {
       this._handlers[i] = null;
     }
 
-    window.onkeydown = function (event) {
+    engine.div.onkeydown = function (event) {
       if (_this.isFocused) {
         if (event.keyCode == 27) {
           engine.div.blur();
@@ -5167,7 +5184,7 @@ function () {
       }
     };
 
-    window.onkeyup = function (event) {
+    engine.div.onkeyup = function (event) {
       _this.keys[event.keyCode] = false;
       return !_this._rebind;
     };
@@ -5283,7 +5300,7 @@ function () {
       }, false);
     } else {
       var _lastMousePosition = null;
-      window.addEventListener("mousemove", function (event) {
+      engine.div.addEventListener("mousemove", function (event) {
         if (!_this._focusOnlyIfClick || _this.isFocused) {
           if (!_this.pointerLocked) {
             var mousePos = engine.div.getBoundingClientRect();
@@ -5328,7 +5345,7 @@ function () {
         }
       });
 
-      window.onmousedown = function (event) {
+      engine.div.onmousedown = function (event) {
         if (_this.isFocused) {
           _this.mouse.buttons[event.button] = true;
           if (_this._mouseDownHandlers[2 + event.button] != null) _this._mouseDownHandlers[2 + event.button](event);
@@ -5336,7 +5353,7 @@ function () {
         }
       };
 
-      window.onmouseup = function (event) {
+      engine.div.onmouseup = function (event) {
         _this.mouse.buttons[event.button] = false;
         if (_this._mouseUpHandlers[2 + event.button] != null) _this._mouseUpHandlers[2 + event.button](event);
         return false;

@@ -16,7 +16,7 @@ export class SimpleTexture extends Texture {
   private _image: HTMLImageElement = new Image()
   private _mipmapGenerationMethod: number = -1
 
-  constructor(engine: Engine, path?: string) {
+  constructor(engine: Engine) {
     super(engine)
     this.engine = engine
     this.textureBlockLocation = this.engine.textures.length

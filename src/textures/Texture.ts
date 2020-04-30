@@ -29,16 +29,17 @@ export abstract class Texture {
   public setColor (hexColor: string): void
 
   public setColor(r: number | string, g?: number, b?: number, a?: number): void {
-    if (r.constructor instanceof String) {
+    if (!g) {
       let rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
       if (rgb == null) {
         new BronzeError('Wrong hex color!')
         return
       }
       this.color = new Uint8Array([
-        parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]), 255
+        parseInt(rgb[1], 16), parseInt(rgb[2], 16), parseInt(rgb[3], 16), 255
       ])
-    } else if (r.constructor === Number && g != undefined && b != undefined && a != undefined) {
+      console.log(this.color)
+    } else if (g != undefined && b != undefined && a != undefined) {
       this.color = new Uint8Array([Number(r), g, b, a])
     } else {
       new BronzeError('Wrong color')
