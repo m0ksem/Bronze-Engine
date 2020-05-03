@@ -3,6 +3,8 @@ import fragmentShaderSource from "./shaders/default/fragment-shader.glsl";
 import vertexShaderSource from "./shaders/default/vertex-shader.glsl";
 import cubeFragmentShaderSource from "./shaders/cube-texture/fragment-shader.glsl";
 import cubeVertexShaderSource from "./shaders/cube-texture/vertex-shader.glsl";
+import noLightvertexShaderSource from "./shaders/no-light/vertex-shader.glsl";
+import noLightCubeFragmentShaderSource from "./shaders/no-light/fragment-shader.glsl";
 import gridFragmentShaderSource from "./shaders/grid/fragment-shader.glsl";
 import gridVertexShaderSource from "./shaders/grid/vertex-shader.glsl";
 import reflectionFragmentShaderSource from "./shaders/reflection-texture/fragment-shader.glsl";
@@ -13,13 +15,7 @@ import screenFragmentShaderSource from "./shaders/screen/fragment-shader.glsl";
 import screenVertexShaderSource from "./shaders/screen/vertex-shader.glsl";
 
 export class Shaders {
-  /**
-   * Extensions objects that allow you to use extensions which was added by addExtension()
-   */
   public extensions: Extensions = new Extensions();
-  /**
-   * WebGL where attached shaders.
-   */
   readonly webGL: WebGLRenderingContext;
 
   public shadersRequireLights: ShaderProgram[] = [];
@@ -36,12 +32,19 @@ export class Shaders {
 
     this.addExtension("anisotropic", "EXT_texture_filter_anisotropic");
     this.addExtension("standard", "OES_standard_derivatives");
+  
     this.addProgram("default", vertexShaderSource, fragmentShaderSource, options);
+    this.addProgram("no-light", noLightvertexShaderSource, noLightCubeFragmentShaderSource, options);
     this.addProgram("cube", cubeVertexShaderSource, cubeFragmentShaderSource, options);
     this.addProgram("grid", gridVertexShaderSource, gridFragmentShaderSource, options);
     this.addProgram("reflection", reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
     this.addProgram("skybox", skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
     this.addProgram("screen", screenVertexShaderSource, screenFragmentShaderSource, options);
+
+    this.shadersRequireLights.push(this.default);
+    this.shadersRequireLights.push(this.cube);
+    this.shadersRequireLights.push(this.reflection);
+    this.shadersRequireLights.push(this.default);
 
     this.default.use();
     this.webGL.enable(this.webGL.BLEND);

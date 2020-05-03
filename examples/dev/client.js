@@ -48,6 +48,8 @@ ui.appendDOMElement(debug.element)
 // Setting control function for camera
 controls.setSensitivity(1)
 
+let toCameraRange = null;
+
 controls.setControlFunction(function () {
     // All coords
     // var xt = this.rotationMatrix[0] * x + this.rotationMatrix[1] * y + this.rotationMatrix[2] * z + this.rotationMatrix[3]
@@ -87,11 +89,14 @@ controls.setControlFunction(function () {
         if (engine.selectedObject) {
             const object = engine.selectedObject
             if (!controls.keys[17]) {
-                object.moveRelativeToTheCamera(controls.mouse.movement.x, 0, controls.mouse.movement.y)
+                toCameraRange = toCameraRange || Bronze.Vector3.distance(object.camera.position, object.position);
+                object.moveRelativeToTheCamera(controls.mouse.x, controls.mouse.y, toCameraRange)
             } else {
                 object.moveRelativeToTheCamera(0, -controls.mouse.movement.y, 0)
             }
         }
+    } else {
+        toCameraRange = null;
     }
 
     if (controls.mouse.buttons[0] || controls.pointerLocked || controls.touch.actionBeforeMove == 'click') {
@@ -106,19 +111,19 @@ controls.setControlFunction(function () {
 })
 
 engine.globalLightMinValue = 0.01
-var moonLight = new Bronze.Light(engine)
-    moonLight.setPosition(10000, 9000, 10000)
-    moonLight.range = 13370
-    moonLight.on()
+// var moonLight = new Bronze.Light(engine)
+//     moonLight.setPosition(10000, 9000, 10000)
+//     moonLight.range = 20000
+//     moonLight.on()
 var light = new Bronze.Light(engine)
-    light.setPosition(0, 500, -250)
-    light.range = 1200
-    light.on()
-    light = new Bronze.Light(engine)
-    light.setPosition(0, 500, 800)
-    light.range = 3200
-    light.on()
-    light = new Bronze.Light(engine)
+    // light.setPosition(0, 500, -250)
+    // light.range = 1200
+    // light.on()
+    // light = new Bronze.Light(engine)
+    // light.setPosition(0, 500, 800)
+    // light.range = 3200
+    // light.on()
+    // light = new Bronze.Light(engine)
     light.setPosition(2000, 500, 800)
     light.range = 2000
     light.on()
@@ -254,13 +259,13 @@ var cola1 = new Bronze.Object(engine)
     cola1.setTexture(new Bronze.ReflectionTexture(engine, 'rgba(117, 171, 188, 0.2)', 1024, 0.9))
     cola1.useMaterial(glass)
     cola1.verticalAlign = false
-    // cola1.animate(60, () => {
-    //     cola1.rotate(0, 0.05, 0)
-    // })
+    cola1.animate(60, () => {
+        cola1.rotate(0, 0.2, 0)
+    })
 
 var deer2 = new Bronze.Object(engine)
     deer2.name = "Deer normal scaled on 0.3"
-    deer2.setPosition(1800, 0, 800)
+    deer2.setPosition(2000, 0, 800)
     deer2.loadFromObj("assets/objects/deer.obj")
     deer2.scale(0.3, 0.3, 0.3)
     deer2.verticalAlign = false

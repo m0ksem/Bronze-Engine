@@ -1,6 +1,5 @@
 import { Engine } from "../Engine";
 import { Texture } from "./Texture";
-import {isPowerOf2} from '../math/Mathematics'
 
 export class ColorTexture extends Texture {
   public textureBlockLocation: number = -1

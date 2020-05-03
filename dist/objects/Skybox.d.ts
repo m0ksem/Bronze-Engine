@@ -2,7 +2,7 @@ import { Engine } from '../Engine';
 import Entity from './Entity';
 export declare class Skybox extends Entity {
     constructor(engine: Engine);
-    updateMatrixes(): void;
+    updateMatrixes(): Promise<void>;
     /**
      * Updating camera matrix for drawing Skybox
      */

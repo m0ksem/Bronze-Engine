@@ -287,13 +287,9 @@ export class Engine {
 
     this.camera = camera;
     this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-    this.shaders.default.use();
-    this.webgl.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
-    this.webgl.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
-    this.webgl.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
-    this.webgl.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
-
+    
     this.update();
+    this.setLights();
 
     for (let i = 0; i < this.objects.length; i++) {
       const object = this.objects[i];
@@ -349,7 +345,7 @@ export class Engine {
 
     if (this._loadedObjectsCount == objectsCount) {
       this._objectsLoaded = true;
-      if (this.textureLoaded) {
+      if (this._texturesLoaded) {
         this._resourcesLoaded = true;
         this._onResourcesLoadedHandlers.forEach(func => {
           func(this.textures.length);
@@ -384,7 +380,7 @@ export class Engine {
     }
   }
 
-  private async update() {
+  private update() {
     if (this.camera && this.controls && this.controls.controlFunction) {
       this.camera.moving.set(0, 0, 0);
       this.camera.moving.add(this.camera.animatedMoving);
@@ -457,27 +453,35 @@ export class Engine {
     }
   }
 
-  private async draw() {
-    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-    this.shaders.default.use();
-    this.webgl.uniform3fv(this.shaders.default.lightPositionsLocation, this.lightsPositions);
-    this.webgl.uniform1fv(this.shaders.default.lightRangesLocation, this.lightsRanges);
-    this.webgl.uniform1i(this.shaders.default.lightsCountLocation, this.lights.length);
-    this.webgl.uniform1f(this.shaders.default.lightMinValueLocation, this.globalLightMinValue);
+  private setLights() {
+    let positions: number[] = [];
+    const ranges: number[] = [];
+    const lightsOn = this.lights.filter((light) => light.isOn);
+    lightsOn.forEach(light => { 
+      positions = positions.concat(light.position.toArray());
+      ranges.push(light.range);
+    });
+
     this.shaders.shadersRequireLights.forEach(shader => {
       shader.use();
-      this.webgl.uniform3fv(shader.lightPositionsLocation, this.lightsPositions);
-      this.webgl.uniform1fv(shader.lightRangesLocation, this.lightsRanges);
-      this.webgl.uniform1i(shader.lightsCountLocation, this.lights.length);
+      this.webgl.uniform3fv(shader.lightPositionsLocation, positions);
+      this.webgl.uniform1fv(shader.lightRangesLocation, ranges);
+      this.webgl.uniform1i(shader.lightsCountLocation, lightsOn.length - 1);
       this.webgl.uniform1f(shader.lightMinValueLocation, this.globalLightMinValue);
     });
+  }
+
+  private draw() {
+    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+    
+    this.setLights();
 
     if (this.ui) {
       this.ui.draw();
     }
 
-    this.objects.forEach(async (object) => {
-      await object.draw();
+    this.objects.forEach((object) => {
+      object.draw();
     });
 
     this._objectsWithAlpha.forEach(object => {
@@ -493,8 +497,8 @@ export class Engine {
     console.log();
     console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
     console.log();
-    console.info("   Version : 0.3.002");
-    console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
+    console.info("   Version : 0.3.003");
+    console.info("   Docs  : http://m0ksem.github.io/Bronze-Engine/docs/global");
     console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
     console.info("   Author  : https://github.com/m0ksem");
     console.log();

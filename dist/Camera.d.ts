@@ -6,7 +6,7 @@ import { Engine } from "./Engine";
  * @class
  * @constructor
  */
-export default class Camera {
+export declare class Camera {
     /**
      * Field of view for drawing in angles.
      */
@@ -50,6 +50,10 @@ export default class Camera {
      */
     moving: Vector3;
     /**
+     * Vector3 for animated moving.
+     */
+    animatedMoving: Vector3;
+    /**
      * Collision box for camera.
      */
     collisionBox: CollisionBox;
@@ -57,7 +61,11 @@ export default class Camera {
      * True if camera have collisions.
      */
     collisions: boolean;
-    readonly engine: Engine;
+    /**
+     * True if collision has occurred.
+     */
+    isCollision: boolean;
+    engine: Engine;
     private _position;
     constructor(engine: Engine);
     /**
@@ -101,6 +109,13 @@ export default class Camera {
      */
     move(x: number, y: number, z: number): void;
     /**
+     * Smooth moving camera.
+     * @param x
+     * @param y
+     * @param z
+     */
+    moveAnimate(x: number, y: number, z: number, time?: number): void;
+    /**
      * Rotate for x, y, z degrees.
      */
     rotate(x: number, y: number, z: number): void;
@@ -116,4 +131,4 @@ export default class Camera {
      */
     computeMatrix(): void;
 }
-export { Camera };
+export default Camera;

@@ -1,6 +1,6 @@
 import { Engine } from "../Engine";
 import { Texture } from "./Texture";
-export default class SimpleTexture extends Texture {
+export declare class SimpleTexture extends Texture {
     textureBlockLocation: number;
     mipmapFilter: string;
     readonly AUTO_GENERATE: number;
@@ -11,7 +11,7 @@ export default class SimpleTexture extends Texture {
     private _height;
     private _image;
     private _mipmapGenerationMethod;
-    constructor(engine: Engine, path?: string);
+    constructor(engine: Engine);
     readonly image: HTMLImageElement;
     height: number;
     width: number;
@@ -20,4 +20,4 @@ export default class SimpleTexture extends Texture {
     private _createWebglTexture;
     loadFrom(path: string): void;
 }
-export { SimpleTexture };
+export default SimpleTexture;

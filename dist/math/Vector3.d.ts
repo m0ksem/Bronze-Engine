@@ -1,4 +1,4 @@
-export default class Vector3 {
+export declare class Vector3 {
     [key: string]: any;
     x: number;
     y: number;
@@ -10,6 +10,8 @@ export default class Vector3 {
     scale(x: number, y: number, z: number): void;
     toArray(): number[];
     copy(): Vector3;
+    add(vector: Vector3): void;
+    sub(vector: Vector3): void;
 }
 /**
  * Normalize a vector.
@@ -49,4 +51,9 @@ export declare function multiply(matrix1: Array<number>, matrix2: Array<number>)
  * @public
  */
 export declare function distance(vector1: Vector3, vector2: Vector3): number;
-export { Vector3 };
+export declare function length(vector: Vector3): number;
+export declare function angleBetweenVectors(vector1: Vector3, vector2: Vector3): number;
+declare const _default: {
+    Vector3: typeof Vector3;
+};
+export default _default;

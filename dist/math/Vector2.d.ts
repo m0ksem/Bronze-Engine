@@ -1,4 +1,4 @@
-export default class Vector2 {
+export declare class Vector2 {
     [key: string]: any;
     x: number;
     y: number;
@@ -25,4 +25,18 @@ export declare function multiply(matrix1: Array<number>, matrix2: Array<number>)
  * @public
  */
 export declare function distance(vector1: Vector2, vector2: Vector2): number;
-export { Vector2 };
+export declare function length(vector: {
+    x: number;
+    y: number;
+}): number;
+export declare function angleBetweenVectors(vector1: {
+    x: number;
+    y: number;
+}, vector2: {
+    x: number;
+    y: number;
+}): number;
+declare const _default: {
+    Vector2: typeof Vector2;
+};
+export default _default;

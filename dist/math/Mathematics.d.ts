@@ -10,6 +10,8 @@ export declare function radToDeg(radians: number): number;
  * @return  radians
  */
 export declare function degToRad(degrees: number): number;
+export declare function dropCircle(deg: number): number;
+export declare function dropCircleRad(rad: number): number;
 /**
  * Returns true if value is square.
  * @param value

@@ -1,12 +1,13 @@
 import { Engine } from "../Engine";
 import { Camera } from "../Camera";
 import { Texture } from "../textures/Texture";
-import { Vector3 } from "../math/Vector3";
+import { Vector3, distance } from "../math/Vector3";
 import { angleBetweenVectors } from "../math/Vector2";
 import { BronzeError } from "../debug/Error";
 import ShaderProgram from "../webgl/ShaderProgram";
 import { degToRad } from "../math/Mathematics";
 import { translation, rotation, scaling, perspective, multiply, transformVector, unit, rotationY, rotationZ, inverse } from "../math/Matrixes4";
+import { multiplyVector4 } from "../math/Matrixes4";
 
 export abstract class Entity {
   public name: string = "Just entity :)";
@@ -144,7 +145,7 @@ export abstract class Entity {
 
   public setPosition(value: any, y?: number, z?: number): void {
     if (value.constructor === Vector3) {
-      this.position = value;
+      this.position.set(value.x, value.y, value.z);
     } else if (value.constructor === Array) {
       if (!this.UIElement) {
         this._position.set(value[0], value[1], value[2]);
@@ -165,15 +166,25 @@ export abstract class Entity {
   }
 
   public moveRelativeToTheCamera(x: number, y: number, z: number): void {
-    // let matrix = perspective(this.engine.camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera!.range);
-    // matrix = multiply(matrix, this.engine.camera!.inverseMatrix);
-    // matrix = multiply(matrix, translation(this.position.x, this.position.y, this.position.z))
-    // let pos = transformVector(inverse(this.matrix), [x, y, 0, 1])
+    const camera = this.engine.camera!;
+    x = (x / this.engine.width - 0.5) / 0.5;
+    y = (y / this.engine.height - 0.5) / -0.5;
+    x = Math.floor(x * 100) / 100;
+    y = Math.floor(y * 100) / 100;
+    let matrix = perspective(camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, camera!.range);
+    let trans = translation(camera.position.x, camera.position.y, camera!.position.z)
+    matrix = multiply(matrix, inverse(trans));
+    let m = multiplyVector4(inverse(matrix), [x, y, z, 1])
+    m[2] = -z
+    m[0] *= z;
+    m[1] *= z;
 
-    // console.log(pos)
-
-    // position = transformVector(this.camera!.rotationMatrix, position);
-    this._position.move(x, y, z);
+    m = multiplyVector4(inverse(camera.rotationMatrix), m);
+    const newPos = camera.position.copy();
+    newPos.x += Math.floor(m[0]);
+    newPos.y += Math.floor(m[1]);
+    newPos.z += Math.floor(m[2]);
+    this.position.set(newPos.x, newPos.y, newPos.z);
   }
 
   /**

@@ -51,6 +51,12 @@ export class Vector3 {
     this.y -= vector.y
     this.z -= vector.z
   }
+
+  public fromArray(array: number[]) {
+    this.x = array[0]
+    this.y = array[1]
+    this.z = array[2]
+  }
 }
 
 /**

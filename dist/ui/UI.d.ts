@@ -2,12 +2,13 @@ import { Engine } from "../Engine";
 import { Entity } from "../objects/Entity";
 import { Texture } from "../textures/Texture";
 import ShaderProgram from "../webgl/ShaderProgram";
+import { SimpleTexture } from "../textures/SimpleTexture";
 /**
  * @class
  * @constructor
  * @param {Engine} e
  */
-export default class UI {
+export declare class UI {
     canvas: HTMLCanvasElement;
     div: HTMLDivElement;
     width: number;
@@ -18,12 +19,13 @@ export default class UI {
     objects: Array<Entity>;
     htmlElements: Array<uiHTMLElement>;
     engine: Engine;
+    Screen: typeof Screen;
+    images: uiHTMLImage[];
     private webgl;
     private _screen;
     private _texture;
     private _webglTexture;
     private frameBuffer;
-    Screen: typeof Screen;
     constructor(engine: Engine);
     /**
      * Adds object to draw.
@@ -41,6 +43,9 @@ export default class UI {
      * @param position.vertical from 0 to 100
      */
     appendDOMElement(element: HTMLElement, name: string): HTMLElement;
+    addImage(image: HTMLImageElement, width: number, height: number, x: number, y: number): uiHTMLImage;
+    hide(element: HTMLElement | SimpleTexture | uiHTMLElement): void;
+    show(element: HTMLElement | SimpleTexture): void;
     /**
      * Draws image on canvas. Read about addImage
      * @param image
@@ -50,7 +55,7 @@ export default class UI {
      * Clear canvas
      */
     clearCanvas(): void;
-    draw(): void;
+    draw(): Promise<void>;
     drawUI(): void;
 }
 declare class Screen {
@@ -59,7 +64,6 @@ declare class Screen {
     shaderProgram: ShaderProgram;
     vertexes: number[];
     textureCoords: number[];
-    normals: number[];
     vertexesBuffer: any;
     coordsBuffer: any;
     normalBuffer: any;
@@ -71,8 +75,16 @@ declare class Screen {
 export declare class uiHTMLElement {
     name: string;
     el: HTMLElement;
+    hidden: boolean;
     constructor(name: string, el: HTMLElement);
     hide(): void;
     show(): void;
 }
-export { UI };
+export declare class uiHTMLImage extends uiHTMLElement {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    constructor(name: string, el: HTMLImageElement, x: number, y: number, width: number, height: number);
+}
+export default UI;

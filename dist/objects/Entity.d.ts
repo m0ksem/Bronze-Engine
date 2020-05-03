@@ -3,7 +3,7 @@ import { Camera } from "../Camera";
 import { Texture } from "../textures/Texture";
 import { Vector3 } from "../math/Vector3";
 import ShaderProgram from "../webgl/ShaderProgram";
-export default abstract class Entity {
+export declare abstract class Entity {
     name: string;
     loaded: boolean;
     verticalAlign: boolean;
@@ -16,12 +16,26 @@ export default abstract class Entity {
     matrix: number[];
     rotationMatrix: number[];
     worldMatrix: number[];
+    worldMatrixWithoutScaling: number[];
+    uiMatrix: number[] | null;
     texture: Texture;
     rotationInDeg: Vector3;
     rotation: Vector3;
     rotationSelf: Vector3;
     rotationPoint: Vector3;
     scaling: Vector3;
+    selectable: boolean;
+    relativeToCameraPosition: {
+        max: {
+            x: number;
+            y: number;
+        };
+        min: {
+            x: number;
+            y: number;
+        };
+        depth: number;
+    };
     protected _engine: Engine;
     protected webgl: WebGLRenderingContext;
     protected camera: Camera | null;
@@ -94,6 +108,8 @@ export default abstract class Entity {
      * @param z
      */
     scale(x: number, y: number, z: number): void;
+    scaleToPixels(x: number, y: number, z: number): void;
+    scaleToPixelsX(x: number): void;
     /**
      * Resize objects to pixels
      * @param x pixels
@@ -102,12 +118,16 @@ export default abstract class Entity {
      */
     resize(x: number, y: number, z: number): void;
     setTexture(texture: Texture): void;
-    checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function): void;
+    checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function): Promise<void>;
     useShader(shader: ShaderProgram): void;
-    updateMatrixes(): void;
+    updateRelativeToCameraPosition(): Promise<void>;
+    getPositionOnScreen(): Promise<void>;
+    updateMatrixes(): Promise<void>;
     update(): void;
     draw(): void;
     animate(fps: number, animateFunction: (object: Entity) => void): any;
+    hide(): void;
+    show(): void;
     /**
      * Deletes this object from engine.
      */
@@ -116,5 +136,8 @@ export default abstract class Entity {
 declare class CollisionBox {
     maxPoint: Vector3;
     minPoint: Vector3;
+    points: Vector3[];
+    generatePoints(): void;
 }
-export { Entity, CollisionBox };
+export { CollisionBox };
+export default Entity;

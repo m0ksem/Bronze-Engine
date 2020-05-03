@@ -15,3 +15,4 @@ export declare class ReflectionTexture extends CubeTexture {
     protected generate(): void;
     protected bindCubeTexture(): void;
 }
+export default ReflectionTexture;

@@ -5,7 +5,7 @@ import { Engine } from "../Engine";
  * @class
  * @constructor
  */
-export default class Debugger {
+export declare class Debugger {
     logArray: {
         view: HTMLElement;
         output: Function;
@@ -18,4 +18,7 @@ export default class Debugger {
     addView(view: HTMLElement): void;
     updateInfo(): void;
 }
-export { Debugger };
+declare const _default: {
+    Debugger: typeof Debugger;
+};
+export default _default;

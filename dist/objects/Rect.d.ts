@@ -1,6 +1,6 @@
 import { Entity } from "./Entity";
 import { Engine } from "../Engine";
-export default class Rect extends Entity {
+export declare class Rect extends Entity {
     width: number;
     height: number;
     name: string;
@@ -19,6 +19,12 @@ export default class Rect extends Entity {
      */
     setSize(width: number, height: number): void;
     /**
+     * Sets size for one cell in pixels
+     * @param width
+     * @param height
+     */
+    setCellSize(width: number, height: number): void;
+    /**
      * Repeats texture on rect.
      * @param x count for x
      * @param y count for y
@@ -26,4 +32,4 @@ export default class Rect extends Entity {
      */
     setTextureRepeating(x: number, y: number): void;
 }
-export { Rect };
+export default Rect;

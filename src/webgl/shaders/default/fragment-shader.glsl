@@ -2,7 +2,6 @@
 
 precision mediump float;
 
-
 uniform sampler2D u_texture;
 uniform float u_lightRanges[MAX_LIGHTS];
 uniform float u_lightMinValue;

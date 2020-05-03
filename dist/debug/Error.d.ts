@@ -1,4 +1,4 @@
-export default class BronzeError {
+export declare class BronzeError {
     constructor(message: string);
 }
 declare class BronzeWarn {
@@ -7,4 +7,5 @@ declare class BronzeWarn {
 declare class BronzeLog {
     constructor(log: any);
 }
-export { BronzeError, BronzeWarn, BronzeLog };
+export { BronzeWarn, BronzeLog };
+export default BronzeError;

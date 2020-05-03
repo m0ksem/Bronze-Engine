@@ -1,23 +1,33 @@
+import ShaderProgram from "./ShaderProgram";
 export declare class Shaders {
-    /**
-     * Extensions objects that allow you to use extensions which was added by addExtension()
-     */
     extensions: Extensions;
-    /**
-     * WebGL where attached shaders.
-     */
     readonly webGL: WebGLRenderingContext;
+    shadersRequireLights: ShaderProgram[];
     [key: string]: any;
     constructor(webGL: WebGLRenderingContext);
     /**
      * Creates shaders program with {name} and add its to this objects. Auto linking uniforms and attributes.
      * @public
-     * @param {String} name
-     * @param {String} vertexSource
-     * @param {String} fragmentSource
-     * @param {Object} [options]
+     * @param {String} name shader name
+     * @param {String} vertexSource shader text
+     * @param {String} fragmentSource shader text
+     * @param {Options} [options]
      */
     addProgram(name: string, vertexSource: string, fragmentSource: string, options: Options): void;
+    /**
+     * Load shader from Path
+     * @param name
+     * @param vertexPath
+     * @param fragmentPath
+     * @param options
+     */
+    loadShaders(name: string, vertexPath: string, fragmentPath: string, options: Options): void;
+    /**
+     * Linking all variables from shaders.
+     * @param program
+     * @param source
+     * @param options
+     */
     private _linkAllAttributesFromSource;
     /**
      * Adds extension form webgl to this object with custom name
@@ -26,14 +36,11 @@ export declare class Shaders {
      */
     addExtension(name: string, nameInWebGL: string): void;
 }
-declare class Options extends Object {
+export declare class Options {
     addLocationMarker: boolean;
     removePrefixes: boolean;
 }
-declare class Extensions extends Object {
+export declare class Extensions {
     [key: string]: any;
 }
-declare const _default: {
-    Shaders: typeof Shaders;
-};
-export default _default;
+export default Shaders;

@@ -22,7 +22,6 @@ export class ShaderProgram {
    */
   constructor(webGL: WebGLRenderingContext) {
     this.webGL = webGL;
-    return this;
   }
 
   /**

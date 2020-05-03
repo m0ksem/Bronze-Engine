@@ -21,10 +21,6 @@ export class Glass extends Material {
     if (object.texture.loaded && object.loaded) {
       this.shaderProgram!.use()
       this.webgl.uniformMatrix4fv(this.shaderProgram!.cameraLocation, false, this.engine.camera!.matrix)
-      this.webgl.uniform3fv(this.shaderProgram!.lightPositionsLocation, this.engine.lightsPositions)
-      this.webgl.uniform1fv(this.shaderProgram!.lightRangesLocation, this.engine.lightsRanges)
-      this.webgl.uniform1i(this.shaderProgram!.lightsCountLocation, this.engine.lights.length)
-      this.webgl.uniform1f(this.shaderProgram!.lightMinValueLocation, this.engine.globalLightMinValue)
 
       this.engine.webgl.enableVertexAttribArray(this.shaderProgram!.positionLocation)
       this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, object.vertexesBuffer)

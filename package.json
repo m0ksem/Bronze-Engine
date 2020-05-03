@@ -1,15 +1,17 @@
 {
   "name": "@m0ksem/bronze",
-  "version": "0.3.003",
+  "version": "0.3.004",
   "description": "WebGL game engine.",
-  "main": "/dist/Bronze.min.js",
   "author": "Nedoshev Maksym (m0ksem)",
+  "main": "dist/Bronze.js",
+  "typings": "dist/Bronze.d.ts",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/m0ksem/Bronze-Engine.git"
-  },
-  "dependencies": {
-
   },
   "scripts": {
     "dev": "webpack-dev-server --mode development",

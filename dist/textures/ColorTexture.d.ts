@@ -1,7 +1,7 @@
 import { Engine } from "../Engine";
 import { Texture } from "./Texture";
-export default class SimpleTexture extends Texture {
+export declare class ColorTexture extends Texture {
     textureBlockLocation: number;
     constructor(engine: Engine);
 }
-export { SimpleTexture };
+export default ColorTexture;

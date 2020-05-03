@@ -1,5 +1,5 @@
 import { Engine } from "../Engine";
-export default abstract class Texture {
+export declare abstract class Texture {
     alpha: boolean;
     color: Uint8Array;
     engine: Engine;
@@ -20,5 +20,6 @@ export default abstract class Texture {
      * @param hexColor
      */
     setColor(hexColor: string): void;
+    setAlpha(a: number): void;
 }
-export { Texture };
+export default Texture;

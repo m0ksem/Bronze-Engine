@@ -6,7 +6,7 @@ import Entity from "../objects/Entity";
  * @param {Engine} engine
  * @param {Object} [object]
  */
-export default class Glass extends Material {
+export declare class Glass extends Material {
     constructor(engine: Engine, object: Entity);
     /**
      * Draws object using this material.
@@ -14,4 +14,7 @@ export default class Glass extends Material {
      */
     drawObject(object: Entity): void;
 }
-export { Glass };
+declare const _default: {
+    Glass: typeof Glass;
+};
+export default _default;

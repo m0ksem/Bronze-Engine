@@ -1,12 +1,12 @@
 import UI from "./ui/UI";
 import Camera from "./Camera";
-import Texture from "./textures/Texture";
+import { Texture } from "./textures/Texture";
 import Entity from "./objects/Entity";
-import Debugger from "./debug/Debugger";
-import Controls from "./Controls";
+import { Debugger } from "./debug/Debugger";
+import { Controls } from "./Controls";
 import { Shaders } from "./webgl/Shaders";
 import Light from "./lights/Light";
-import ColorTexture from "./textures/ColorTexture";
+import { ColorTexture } from "./textures/ColorTexture";
 export declare class Engine {
     div: HTMLDivElement;
     canvas: HTMLCanvasElement;
@@ -22,6 +22,7 @@ export declare class Engine {
     noTexture: ColorTexture;
     reflections: boolean;
     status: string;
+    selectedObject: Entity | null;
     readonly shaders: Shaders;
     readonly textures: Array<Texture>;
     readonly lights: Array<Light>;
@@ -34,17 +35,16 @@ export declare class Engine {
     private _loadedObjectsCount;
     private _loadedTexturesCount;
     private _onResourcesLoadedHandlers;
-    private _selectedObject;
     private _onObjectSelectedHandlers;
     private _running;
     private _onRun;
+    private _onFrameHandlers;
     constructor(div: HTMLDivElement);
     ui: UI | null;
     readonly objects: Entity[];
     readonly resourcesLoaded: boolean;
     readonly texturesLoaded: boolean;
     readonly objectsLoaded: boolean;
-    readonly selectedObject: Entity | null;
     readonly running: boolean;
     appendCanvas(): void;
     /**
@@ -60,7 +60,7 @@ export declare class Engine {
     /**
      * Removes objects if its exist
      */
-    removeObject(object: Entity): void;
+    removeObject(object: Entity): Entity;
     addOnObjectSelectedListener(callback: Function): void;
     addOnResourcesLoadedListener(callback: Function): void;
     /**
@@ -72,6 +72,7 @@ export declare class Engine {
      */
     objectLoaded(object: Entity): void;
     setDrawingRange(range: number): void;
+    drawToFrameBuffer(framebuffer: WebGLFramebuffer, width: number, height: number, update?: boolean): void;
     captureFrame(camera: Camera, options?: {
         background?: string | HTMLImageElement;
         width?: number;
@@ -84,7 +85,12 @@ export declare class Engine {
     render(): void;
     run(): void;
     stop(): void;
+    addOnFrameHandler(callback: Function): Function;
+    removeOnFrameHandler(func: Function): void;
+    private beforeFrame;
     private update;
+    private setLights;
     private draw;
     private infoConsoleLog;
 }
+export default Engine;

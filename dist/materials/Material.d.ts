@@ -23,4 +23,4 @@ interface MaterialInterface {
     drawObject(object: Entity): void;
     defaultDraw: Function | null;
 }
-export {};
+export default Material;

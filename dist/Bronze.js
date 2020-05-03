@@ -165,13 +165,6 @@ module.exports = _createClass;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(12);
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports) {
 
 function _getPrototypeOf(o) {
@@ -184,10 +177,10 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(13);
+var _typeof = __webpack_require__(12);
 
 var assertThisInitialized = __webpack_require__(2);
 
@@ -202,7 +195,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var setPrototypeOf = __webpack_require__(9);
@@ -223,6 +216,13 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(15);
+
 
 /***/ }),
 /* 8 */
@@ -285,13 +285,13 @@ module.exports = _setPrototypeOf;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(5);
+var getPrototypeOf = __webpack_require__(4);
 
 var setPrototypeOf = __webpack_require__(9);
 
-var isNativeFunction = __webpack_require__(14);
+var isNativeFunction = __webpack_require__(13);
 
-var construct = __webpack_require__(15);
+var construct = __webpack_require__(14);
 
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
@@ -358,6 +358,76 @@ module.exports = _objectSpread;
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports) {
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+function _isNativeFunction(fn) {
+  return Function.toString.call(fn).indexOf("[native code]") !== -1;
+}
+
+module.exports = _isNativeFunction;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var setPrototypeOf = __webpack_require__(9);
+
+function isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _construct(Parent, args, Class) {
+  if (isNativeReflectConstruct()) {
+    module.exports = _construct = Reflect.construct;
+  } else {
+    module.exports = _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+
+  return _construct.apply(null, arguments);
+}
+
+module.exports = _construct;
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1089,76 +1159,6 @@ try {
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-function _isNativeFunction(fn) {
-  return Function.toString.call(fn).indexOf("[native code]") !== -1;
-}
-
-module.exports = _isNativeFunction;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(9);
-
-function isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-
-  try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _construct(Parent, args, Class) {
-  if (isNativeReflectConstruct()) {
-    module.exports = _construct = Reflect.construct;
-  } else {
-    module.exports = _construct = function _construct(Parent, args, Class) {
-      var a = [null];
-      a.push.apply(a, args);
-      var Constructor = Function.bind.apply(Parent, a);
-      var instance = new Constructor();
-      if (Class) setPrototypeOf(instance, Class.prototype);
-      return instance;
-    };
-  }
-
-  return _construct.apply(null, arguments);
-}
-
-module.exports = _construct;
-
-/***/ }),
 /* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1339,6 +1339,13 @@ function () {
       this.x -= vector.x;
       this.y -= vector.y;
       this.z -= vector.z;
+    }
+  }, {
+    key: "fromArray",
+    value: function fromArray(array) {
+      this.x = array[0];
+      this.y = array[1];
+      this.z = array[2];
     }
   }]);
 
@@ -1899,20 +1906,12 @@ function transpose(matrix) {
   translation: translation,
   translateX: translateX
 });
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(4);
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(8);
-var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
-
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__(6);
+var possibleConstructorReturn = __webpack_require__(5);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__(5);
+var getPrototypeOf = __webpack_require__(4);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/assertThisInitialized.js
@@ -1920,7 +1919,7 @@ var assertThisInitialized = __webpack_require__(2);
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/inherits.js
-var inherits = __webpack_require__(7);
+var inherits = __webpack_require__(6);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js
@@ -2114,7 +2113,6 @@ function () {
     defineProperty_default()(this, "_fragmentShader", null);
 
     this.webGL = webGL;
-    return this;
   }
   /**
    * Compiling and attaching shader to this program.
@@ -2297,7 +2295,7 @@ function () {
 
 
 /* babel-plugin-inline-import './shaders/default/fragment-shader.glsl' */
-var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= light;\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
+var fragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump float;\r\n\r\nuniform sampler2D u_texture;\r\nuniform float u_lightRanges[MAX_LIGHTS];\r\nuniform float u_lightMinValue;\r\nuniform vec3 u_lightPositions[MAX_LIGHTS];\r\nuniform int u_lightsCount;\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\nfloat computeLight(vec3 direction, float range) {\r\n    float light = dot(v_normal, normalize(direction));\r\n    float k = (range - length(direction)) / range;\r\n    if (k < 0.0) k = 0.0;\r\n    light = light * k;\r\n    if (light < u_lightMinValue) {\r\n        light = u_lightMinValue;\r\n    }\r\n    return light;\r\n}\r\n\r\nvoid main() {\r\n    float light = 0.0;\r\n\r\n    for (int i = 0; i < MAX_LIGHTS; i++) {\r\n        if (i > int(u_lightsCount)) {\r\n            break;\r\n        }\r\n        vec3 direction = u_lightPositions[i] - v_surfaceWorldPosition;\r\n        light += computeLight(direction, u_lightRanges[i]);\r\n    }\r\n    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= light;\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/default/vertex-shader.glsl' */
 var vertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
@@ -2307,6 +2305,12 @@ var cubeFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision mediump f
 
 /* babel-plugin-inline-import './shaders/cube-texture/vertex-shader.glsl' */
 var cubeVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\n// attribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec3 v_normal;\r\nvarying vec3 v_normalTex;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n\r\n    v_normalTex = normalize(a_position.xyz);\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
+
+/* babel-plugin-inline-import './shaders/no-light/vertex-shader.glsl' */
+var noLightvertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec2 a_texcoord;\r\nattribute vec4 a_normal;\r\n\r\nuniform mat4 u_matrix;\r\nuniform mat4 u_objectRotation;\r\nuniform mat4 u_worldMatrix;\r\n\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceWorldPosition;\r\n\r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    \r\n    v_texcoord = a_texcoord;\r\n    v_normal = vec3(u_objectRotation * a_normal);\r\n\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
+
+/* babel-plugin-inline-import './shaders/no-light/fragment-shader.glsl' */
+var noLightCubeFragmentShaderSource = "precision mediump float;\r\n\r\nuniform sampler2D u_texture;\r\n\r\n\r\nvarying vec3 v_surfaceWorldPosition;\r\nvarying vec2 v_texcoord;\r\nvarying vec3 v_normal;\r\n\r\n\r\nvoid main() {    \r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n    if (gl_FragColor.a == 0.0) {\r\n        discard;\r\n    }\r\n    gl_FragColor.rgb *= gl_FragColor.a;\r\n}";
 
 /* babel-plugin-inline-import './shaders/grid/fragment-shader.glsl' */
 var gridFragmentShaderSource = "precision mediump float;\r\n\r\nvarying vec2 v_texcoord;\r\n\r\nuniform sampler2D u_texture;\r\n\r\nvoid main() {\r\n    gl_FragColor = texture2D(u_texture, v_texcoord);\r\n}";
@@ -2321,7 +2325,7 @@ var reflectionFragmentShaderSource = "#define MAX_LIGHTS 28\r\n\r\nprecision hig
 var reflectionVertexShaderSource = "#define MAX_LIGHTS 28\r\n\r\nattribute vec4 a_position;\r\nattribute vec3 a_normal;\r\n    \r\nuniform mat4 u_matrix;\r\nuniform mat4 u_rotationMatrix;\r\nuniform mat4 u_worldMatrix;\r\n\r\n\r\nvarying vec3 v_worldRotation;\r\nvarying vec3 v_normal;\r\nvarying vec3 v_surfaceToLightDirection;\r\nvarying vec3 v_surfaceWorldPosition;\r\n    \r\nvoid main() {\r\n    gl_Position = u_matrix * a_position;\r\n    v_worldRotation = (u_rotationMatrix * a_position).xyz;\r\n    v_normal =  vec3(a_normal);\r\n    v_surfaceWorldPosition = (u_worldMatrix  * a_position).xyz;\r\n}";
 
 /* babel-plugin-inline-import './shaders/skybox/fragment-shader.glsl' */
-var skyboxFragmentShaderSource = "    precision mediump float;\r\n     \r\n    uniform samplerCube u_texture;\r\n    uniform mat4 u_matrix;\r\n     \r\n    varying vec4 v_position;\r\n    void main() {\r\n      vec4 t = u_matrix * v_position;\r\n      gl_FragColor = textureCube(u_texture, normalize(t.xyz / t.w));\r\n    }";
+var skyboxFragmentShaderSource = "precision mediump float;\r\n  \r\nuniform samplerCube u_texture;\r\nuniform mat4 u_matrix;\r\n  \r\nvarying vec4 v_position;\r\nvoid main() {\r\n  vec4 t = u_matrix * v_position;\r\n  gl_FragColor = textureCube(u_texture, normalize(t.xyz / t.w));\r\n}";
 
 /* babel-plugin-inline-import './shaders/skybox/vertex-shader.glsl' */
 var skyboxVertexShaderSource = "attribute vec4 a_position;\r\nvarying vec4 v_position;\r\nvoid main() {\r\n    v_position = a_position;\r\n    gl_Position = a_position;\r\n    gl_Position.z = .9999999;\r\n}";
@@ -2351,11 +2355,16 @@ function () {
     this.addExtension("anisotropic", "EXT_texture_filter_anisotropic");
     this.addExtension("standard", "OES_standard_derivatives");
     this.addProgram("default", vertexShaderSource, fragmentShaderSource, options);
+    this.addProgram("no-light", noLightvertexShaderSource, noLightCubeFragmentShaderSource, options);
     this.addProgram("cube", cubeVertexShaderSource, cubeFragmentShaderSource, options);
     this.addProgram("grid", gridVertexShaderSource, gridFragmentShaderSource, options);
     this.addProgram("reflection", reflectionVertexShaderSource, reflectionFragmentShaderSource, options);
     this.addProgram("skybox", skyboxVertexShaderSource, skyboxFragmentShaderSource, options);
     this.addProgram("screen", screenVertexShaderSource, screenFragmentShaderSource, options);
+    this.shadersRequireLights.push(this["default"]);
+    this.shadersRequireLights.push(this.cube);
+    this.shadersRequireLights.push(this.reflection);
+    this.shadersRequireLights.push(this["default"]);
     this["default"].use();
     this.webGL.enable(this.webGL.BLEND);
     this.webGL.blendFunc(this.webGL.ONE, this.webGL.ONE_MINUS_SRC_ALPHA);
@@ -2537,7 +2546,8 @@ function () {
           return;
         }
 
-        this.color = new Uint8Array([parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]), 255]);
+        this.color = new Uint8Array([parseInt(rgb[1], 16), parseInt(rgb[2], 16), parseInt(rgb[3], 16), 255]);
+        console.log(this.color);
       } else if (g != undefined && b != undefined && a != undefined) {
         this.color = new Uint8Array([Number(r), g, b, a]);
       } else {
@@ -2610,7 +2620,16 @@ function (_Texture) {
 var objectSpread = __webpack_require__(11);
 var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread);
 
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
+var regenerator = __webpack_require__(7);
+var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__(8);
+var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
+
 // CONCATENATED MODULE: ./src/objects/Entity.ts
+
 
 
 
@@ -2720,7 +2739,7 @@ function () {
     key: "setPosition",
     value: function setPosition(value, y, z) {
       if (value.constructor === Vector3_Vector3) {
-        this.position = value;
+        this.position.set(value.x, value.y, value.z);
       } else if (value.constructor === Array) {
         if (!this.UIElement) {
           this._position.set(value[0], value[1], value[2]);
@@ -2743,13 +2762,24 @@ function () {
   }, {
     key: "moveRelativeToTheCamera",
     value: function moveRelativeToTheCamera(x, y, z) {
-      // let matrix = perspective(this.engine.camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera!.range);
-      // matrix = multiply(matrix, this.engine.camera!.inverseMatrix);
-      // matrix = multiply(matrix, translation(this.position.x, this.position.y, this.position.z))
-      // let pos = transformVector(inverse(this.matrix), [x, y, 0, 1])
-      // console.log(pos)
-      // position = transformVector(this.camera!.rotationMatrix, position);
-      this._position.move(x, y, z);
+      var camera = this.engine.camera;
+      x = (x / this.engine.width - 0.5) / 0.5;
+      y = (y / this.engine.height - 0.5) / -0.5;
+      x = Math.floor(x * 100) / 100;
+      y = Math.floor(y * 100) / 100;
+      var matrix = perspective(camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, camera.range);
+      var trans = translation(camera.position.x, camera.position.y, camera.position.z);
+      matrix = Matrixes4_multiply(matrix, inverse(trans));
+      var m = multiplyVector4(inverse(matrix), [x, y, z, 1]);
+      m[2] = -z;
+      m[0] *= z;
+      m[1] *= z;
+      m = multiplyVector4(inverse(camera.rotationMatrix), m);
+      var newPos = camera.position.copy();
+      newPos.x += Math.floor(m[0]);
+      newPos.y += Math.floor(m[1]);
+      newPos.z += Math.floor(m[2]);
+      this.position.set(newPos.x, newPos.y, newPos.z);
     }
     /**
      * Set rotation for x, y, z axis.
@@ -4075,8 +4105,6 @@ function (_Entity) {
 
 
 
-
-
 var Engine_Engine =
 /*#__PURE__*/
 function () {
@@ -4362,12 +4390,8 @@ function () {
       this.onCanvasResized();
       this.camera = camera;
       this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-      this.shaders["default"].use();
-      this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
-      this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
-      this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
-      this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
       this.update();
+      this.setLights();
 
       for (var i = 0; i < this.objects.length; i++) {
         var object = this.objects[i];
@@ -4431,7 +4455,7 @@ function () {
       if (this._loadedObjectsCount == objectsCount) {
         this._objectsLoaded = true;
 
-        if (this.textureLoaded) {
+        if (this._texturesLoaded) {
           this._resourcesLoaded = true;
 
           this._onResourcesLoadedHandlers.forEach(function (func) {
@@ -4475,206 +4499,142 @@ function () {
     }
   }, {
     key: "update",
-    value: function () {
-      var _update = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee() {
-        var _this3 = this;
+    value: function update() {
+      var _this3 = this;
 
-        var i, object, _i, _object, _i2;
+      if (this.camera && this.controls && this.controls.controlFunction) {
+        this.camera.moving.set(0, 0, 0);
+        this.camera.moving.add(this.camera.animatedMoving);
+        this.controls.controlFunction();
 
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!(this.camera && this.controls && this.controls.controlFunction)) {
-                  _context.next = 10;
-                  break;
-                }
+        if (this["debugger"] != null) {
+          this["debugger"].updateInfo();
+        }
 
-                this.camera.moving.set(0, 0, 0);
-                this.camera.moving.add(this.camera.animatedMoving);
-                this.controls.controlFunction();
-
-                if (this["debugger"] != null) {
-                  this["debugger"].updateInfo();
-                }
-
-                this.camera.isCollision = false;
-                this.controls.mouse.movement.x = 0;
-                this.controls.mouse.movement.y = 0;
-                _context.next = 11;
-                break;
-
-              case 10:
-                return _context.abrupt("return");
-
-              case 11:
-                this.selectedObject = null;
-
-                for (i = this._objectsWithoutAlpha.length; i--;) {
-                  object = this._objectsWithoutAlpha[i];
-                  object.updateMatrixes();
-
-                  if (this.camera.collisions && object.checkCollision) {
-                    object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
-                      _this3.camera.moving[coordinate] = 0;
-                      _this3.camera.isCollision = true;
-                    });
-                  }
-                }
-
-                for (_i = this._objectsWithAlpha.length; _i--;) {
-                  _object = this._objectsWithAlpha[_i];
-
-                  _object.updateMatrixes();
-
-                  if (this.camera.collisions && _object.checkCollision) {
-                    _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
-                      _this3.camera.moving[coordinate] = 0;
-                      _this3.camera.isCollision = true;
-                    });
-                  }
-                }
-
-                this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
-                this.camera.computeMatrix();
-
-                if (this.ui) {
-                  this.ui.objects.forEach(function (object) {
-                    object.updateMatrixes();
-                    object.update();
-                  });
-                }
-
-                this._objectsWithoutAlpha.forEach(function (element, index) {
-                  element.update();
-
-                  if (element.texture.alpha) {
-                    _this3._objectsWithAlpha.push(element);
-
-                    _this3._objectsWithoutAlpha.splice(index, 1);
-                  }
-                });
-
-                this._objectsWithAlpha.sort(function (a, b) {
-                  return distance(b.position, _this3.camera.position) - distance(a.position, _this3.camera.position);
-                });
-
-                this._objectsWithAlpha.forEach(function (element) {
-                  element.update();
-                });
-
-                if (this.selectedObject && this._onObjectSelectedHandlers.length > 0) {
-                  for (_i2 = 0; _i2 < this._onObjectSelectedHandlers.length; _i2++) {
-                    this._onObjectSelectedHandlers[_i2]();
-                  }
-                }
-
-              case 21:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function update() {
-        return _update.apply(this, arguments);
+        this.camera.isCollision = false;
+        this.controls.mouse.movement.x = 0;
+        this.controls.mouse.movement.y = 0;
+      } else {
+        return;
       }
 
-      return update;
-    }()
+      this.selectedObject = null;
+
+      for (var i = this._objectsWithoutAlpha.length; i--;) {
+        var object = this._objectsWithoutAlpha[i];
+        object.updateMatrixes();
+
+        if (this.camera.collisions && object.checkCollision) {
+          object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+            _this3.camera.moving[coordinate] = 0;
+            _this3.camera.isCollision = true;
+          });
+        }
+      }
+
+      for (var _i = this._objectsWithAlpha.length; _i--;) {
+        var _object = this._objectsWithAlpha[_i];
+
+        _object.updateMatrixes();
+
+        if (this.camera.collisions && _object.checkCollision) {
+          _object.checkCollision(this.camera.position, this.camera.moving, this.camera.collisionBox, function (coordinate) {
+            _this3.camera.moving[coordinate] = 0;
+            _this3.camera.isCollision = true;
+          });
+        }
+      }
+
+      this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
+      this.camera.computeMatrix();
+
+      if (this.ui) {
+        this.ui.objects.forEach(function (object) {
+          object.updateMatrixes();
+          object.update();
+        });
+      }
+
+      this._objectsWithoutAlpha.forEach(function (element, index) {
+        element.update();
+
+        if (element.texture.alpha) {
+          _this3._objectsWithAlpha.push(element);
+
+          _this3._objectsWithoutAlpha.splice(index, 1);
+        }
+      });
+
+      this._objectsWithAlpha.sort(function (a, b) {
+        return distance(b.position, _this3.camera.position) - distance(a.position, _this3.camera.position);
+      });
+
+      this._objectsWithAlpha.forEach(function (element) {
+        element.update();
+      });
+
+      if (this.selectedObject && this._onObjectSelectedHandlers.length > 0) {
+        for (var _i2 = 0; _i2 < this._onObjectSelectedHandlers.length; _i2++) {
+          this._onObjectSelectedHandlers[_i2]();
+        }
+      }
+    }
+  }, {
+    key: "setLights",
+    value: function setLights() {
+      var _this4 = this;
+
+      var positions = [];
+      var ranges = [];
+      var lightsOn = this.lights.filter(function (light) {
+        return light.isOn;
+      });
+      lightsOn.forEach(function (light) {
+        positions = positions.concat(light.position.toArray());
+        ranges.push(light.range);
+      });
+      this.shaders.shadersRequireLights.forEach(function (shader) {
+        shader.use();
+
+        _this4.webgl.uniform3fv(shader.lightPositionsLocation, positions);
+
+        _this4.webgl.uniform1fv(shader.lightRangesLocation, ranges);
+
+        _this4.webgl.uniform1i(shader.lightsCountLocation, lightsOn.length - 1);
+
+        _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
+      });
+    }
   }, {
     key: "draw",
-    value: function () {
-      var _draw = asyncToGenerator_default()(
-      /*#__PURE__*/
-      regenerator_default.a.mark(function _callee3() {
-        var _this4 = this;
+    value: function draw() {
+      this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+      this.setLights();
 
-        return regenerator_default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
-                this.shaders["default"].use();
-                this.webgl.uniform3fv(this.shaders["default"].lightPositionsLocation, this.lightsPositions);
-                this.webgl.uniform1fv(this.shaders["default"].lightRangesLocation, this.lightsRanges);
-                this.webgl.uniform1i(this.shaders["default"].lightsCountLocation, this.lights.length);
-                this.webgl.uniform1f(this.shaders["default"].lightMinValueLocation, this.globalLightMinValue);
-                this.shaders.shadersRequireLights.forEach(function (shader) {
-                  shader.use();
-
-                  _this4.webgl.uniform3fv(shader.lightPositionsLocation, _this4.lightsPositions);
-
-                  _this4.webgl.uniform1fv(shader.lightRangesLocation, _this4.lightsRanges);
-
-                  _this4.webgl.uniform1i(shader.lightsCountLocation, _this4.lights.length);
-
-                  _this4.webgl.uniform1f(shader.lightMinValueLocation, _this4.globalLightMinValue);
-                });
-
-                if (this.ui) {
-                  this.ui.draw();
-                }
-
-                this.objects.forEach(
-                /*#__PURE__*/
-                function () {
-                  var _ref = asyncToGenerator_default()(
-                  /*#__PURE__*/
-                  regenerator_default.a.mark(function _callee2(object) {
-                    return regenerator_default.a.wrap(function _callee2$(_context2) {
-                      while (1) {
-                        switch (_context2.prev = _context2.next) {
-                          case 0:
-                            _context2.next = 2;
-                            return object.draw();
-
-                          case 2:
-                          case "end":
-                            return _context2.stop();
-                        }
-                      }
-                    }, _callee2);
-                  }));
-
-                  return function (_x) {
-                    return _ref.apply(this, arguments);
-                  };
-                }());
-
-                this._objectsWithAlpha.forEach(function (object) {
-                  object.draw();
-                });
-
-                if (this.ui) {
-                  this.ui.drawUI();
-                }
-
-              case 11:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function draw() {
-        return _draw.apply(this, arguments);
+      if (this.ui) {
+        this.ui.draw();
       }
 
-      return draw;
-    }()
+      this.objects.forEach(function (object) {
+        object.draw();
+      });
+
+      this._objectsWithAlpha.forEach(function (object) {
+        object.draw();
+      });
+
+      if (this.ui) {
+        this.ui.drawUI();
+      }
+    }
   }, {
     key: "infoConsoleLog",
     value: function infoConsoleLog() {
       console.log();
       console.log("   %c%s", "color: rgba(247, 137, 74, 1); text-align: center; font-size: 16px; font-weight: 700", "Bronze Engine is running");
       console.log();
-      console.info("   Version : 0.3.002");
-      console.info("   Docs  : http://m0ksem.design/Bronze-Engine/docs/global");
+      console.info("   Version : 0.3.003");
+      console.info("   Docs  : http://m0ksem.github.io/Bronze-Engine/docs/global");
       console.info("   GitHub  : https://github.com/m0ksem/Bronze-Engine");
       console.info("   Author  : https://github.com/m0ksem");
       console.log();
@@ -7080,19 +7040,13 @@ function () {
 
     defineProperty_default()(this, "engine", void 0);
 
-    defineProperty_default()(this, "_position", new Vector3_Vector3(0, 0, 0));
+    defineProperty_default()(this, "position", new Vector3_Vector3(0, 0, 0));
 
-    defineProperty_default()(this, "_range", 2000);
+    defineProperty_default()(this, "range", 2000);
 
     defineProperty_default()(this, "_color", new Uint8Array([255, 255, 255, 255]));
 
-    defineProperty_default()(this, "_index", -1);
-
     defineProperty_default()(this, "_on", false);
-
-    defineProperty_default()(this, "_positionsWritten", false);
-
-    defineProperty_default()(this, "_rangeWritten", false);
 
     lightsCount++;
 
@@ -7101,37 +7055,18 @@ function () {
     }
 
     this.engine = engine;
-    this._range = 2000;
-    this._on = false;
+    this.engine.lights.push(this);
   }
-  /**
-    Range of light
-   */
-
 
   createClass_default()(Light, [{
     key: "setPosition",
     value: function setPosition(value, y, z) {
       if (value.constructor === Vector3_Vector3) {
-        this._position = value;
-        return;
+        this.position.set(value.x, value.y, value.z);
       } else if (value.constructor === Array) {
-        this._position.set(value[0], value[1], value[2]);
-
-        return;
+        this.position.set(value[0], value[1], value[2]);
       } else {
-        this._position.set(value, y, z);
-
-        if (this._on && !this._positionsWritten) {
-          this.engine.lightsPositions.push(value);
-          this.engine.lightsPositions.push(y);
-          this.engine.lightsPositions.push(z);
-          this._positionsWritten = true;
-        } else if (this._on) {
-          this.engine.lightsPositions[this._index * 3 + 0] = value;
-          this.engine.lightsPositions[this._index * 3 + 1] = y;
-          this.engine.lightsPositions[this._index * 3 + 2] = z;
-        }
+        this.position.set(value, y, z);
       }
     }
     /**
@@ -7176,11 +7111,7 @@ function () {
   }, {
     key: "on",
     value: function on() {
-      this._index = this.engine.lights.length;
       this._on = true;
-      this.engine.lights.push(this);
-      this.position = this._position;
-      this.range = this._range;
     }
     /**
      * Turn off light. Remove this light from drawing process.
@@ -7189,60 +7120,19 @@ function () {
   }, {
     key: "off",
     value: function off() {
-      var index = this._index;
-      this.engine.lights.splice(index, 1);
-      this.engine.lightsPositions.splice(index * 3 + 0, 3);
-      this.engine.lightsRanges.splice(index, 1);
-      this._positionsWritten = false;
-      this._rangeWritten = false;
+      this._on = false;
     }
   }, {
     key: "destroy",
     value: function destroy() {
       this.off();
+      this.engine.lights.splice(this.engine.lights.indexOf(this), 1);
     }
   }, {
-    key: "range",
-    set: function set(value) {
-      this._range = value;
-
-      if (this._on && !this._rangeWritten) {
-        this.engine.lightsRanges.push(value);
-        this._rangeWritten = true;
-      } else if (this._on) {
-        this.engine.lightsRanges[this._index] = value;
-      }
-    }
-    /**
-     * Range of light
-     */
-    ,
+    key: "isOn",
     get: function get() {
-      return this._range;
+      return this._on;
     }
-  }, {
-    key: "position",
-    set: function set(value) {
-      this._position = value;
-
-      if (this._on && !this._positionsWritten) {
-        this.engine.lightsPositions.push(value.x);
-        this.engine.lightsPositions.push(value.y);
-        this.engine.lightsPositions.push(value.z);
-        this._positionsWritten = true;
-      } else if (this._on) {
-        this.engine.lightsPositions[this._index * 3 + 0] = value.x;
-        this.engine.lightsPositions[this._index * 3 + 1] = value.y;
-        this.engine.lightsPositions[this._index * 3 + 2] = value.z;
-      }
-    },
-    get: function get() {
-      return this._position;
-    }
-    /**
-     * Sets position for object. Using another vector.
-     */
-
   }]);
 
   return Light;
@@ -7351,10 +7241,6 @@ function (_Material) {
       if (object.texture.loaded && object.loaded) {
         this.shaderProgram.use();
         this.webgl.uniformMatrix4fv(this.shaderProgram.cameraLocation, false, this.engine.camera.matrix);
-        this.webgl.uniform3fv(this.shaderProgram.lightPositionsLocation, this.engine.lightsPositions);
-        this.webgl.uniform1fv(this.shaderProgram.lightRangesLocation, this.engine.lightsRanges);
-        this.webgl.uniform1i(this.shaderProgram.lightsCountLocation, this.engine.lights.length);
-        this.webgl.uniform1f(this.shaderProgram.lightMinValueLocation, this.engine.globalLightMinValue);
         this.engine.webgl.enableVertexAttribArray(this.shaderProgram.positionLocation);
         this.engine.webgl.bindBuffer(this.engine.webgl.ARRAY_BUFFER, object.vertexesBuffer);
         this.engine.webgl.vertexAttribPointer(this.shaderProgram.positionLocation, 3, this.engine.webgl.FLOAT, false, 0, 0);

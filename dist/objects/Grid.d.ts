@@ -17,7 +17,7 @@ export declare class Grid extends Rect {
     /**
      * Updated matrixes
      */
-    updateMatrixes(): void;
+    updateMatrixes(): Promise<void>;
     /**
      * Updates object
      */
@@ -35,3 +35,4 @@ export declare class Grid extends Rect {
      */
     setSize(width: number, height: number): void;
 }
+export default Grid;

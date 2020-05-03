@@ -1,4 +1,4 @@
-import Texture from "./Texture";
+import { Texture } from "./Texture";
 import { Engine } from "../Engine";
 /**
  * Cube texture.
@@ -36,3 +36,4 @@ export declare class CubeTexture extends Texture {
     setSkybox(path: string): void;
     protected bindCubeTexture(): void;
 }
+export default CubeTexture;

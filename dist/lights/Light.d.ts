@@ -1,34 +1,15 @@
 import { Engine } from "../Engine";
 import { Vector3 } from "../math/Vector3";
-export default class Light {
+export declare class Light {
     engine: Engine;
-    private _position;
-    private _range;
-    private _color;
-    private _index;
-    private _on;
-    private _positionsWritten;
-    private _rangeWritten;
-    constructor(engine: Engine);
-    /**
-      Range of light
-     */
-    /**
-    * Range of light
-    */
-    range: number;
     position: Vector3;
-    /**
-     * Sets position for object. Using another vector.
-     */
+    range: number;
+    private _color;
+    private _on;
+    constructor(engine: Engine);
+    readonly isOn: Boolean;
     setPosition(vector: Vector3): void;
-    /**
-     * Sets position for object. Using array of coordinates.
-     */
     setPosition(array: number[]): void;
-    /**
-     * Sets position for object. Using coordinates.
-     */
     setPosition(x: number, y: number, z: number): void;
     /**
      * Move light
@@ -58,5 +39,6 @@ export default class Light {
      * Turn off light. Remove this light from drawing process.
      */
     off(): void;
+    destroy(): void;
 }
-export { Light };
+export default Light;

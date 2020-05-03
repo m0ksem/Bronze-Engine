@@ -1,4 +1,4 @@
-export default class ShaderProgram {
+export declare class ShaderProgram {
     [key: string]: any;
     readonly webGL: WebGLRenderingContext;
     readonly VERTEX_SHADER: string;
@@ -9,6 +9,10 @@ export default class ShaderProgram {
     private _vertexShader;
     private _fragmentShader;
     readonly program: WebGLProgram | null;
+    /**
+     * Object of webgl shader.
+     * @param webGL
+     */
     constructor(webGL: WebGLRenderingContext);
     /**
      * Compiling and attaching shader to this program.
@@ -39,6 +43,10 @@ export default class ShaderProgram {
      * @param {String} [customName] variable name in this object. By default its {name}.
      */
     linkUniform(name: string, customName: string): any;
+    /**
+     * Set WebGL to use this shader.
+     */
     use(): void;
     useIn(webGL: WebGLRenderingContext): void;
 }
+export default ShaderProgram;
