@@ -1,7 +1,7 @@
 import { Entity } from "./Entity";
 import { Engine } from "../Engine";
 import { Material } from "../materials/Material";
-import { MTL, MTLElement } from "./mtl/MTL"
+import { MTL, MTLElement } from "./mtl"
 import BronzeError from "../debug/Error";
 
 export default class Object extends Entity {
@@ -9,9 +9,11 @@ export default class Object extends Entity {
   private afterLoadHidden = false;
   public mtl: MTL | null = null;
   public onLoadHandlers: Function[] = []
+  public compileState: number = -1
   private mtlRequired: boolean  = false
   private mtlRequiredFunction: Function | null = null
   private objLoaded = false
+  private objFileText: String = ''
 
   constructor(engine: Engine) {
     super(engine);
@@ -65,7 +67,11 @@ export default class Object extends Entity {
    * @param {String} fileText
    * @public
    */
-  public compile(fileText: String) {
+  public compile(fileText?: String, statusUpdated?: Function) {
+    if (fileText) {
+      this.objFileText = fileText;
+    }
+    fileText = fileText || this.objFileText;
     let vertexes: number[][] = [];
     let textureCoords: number[][] = [];
     let normals: number[][] = [];
@@ -81,7 +87,9 @@ export default class Object extends Entity {
     let currentNormals = this.normals
     let currentTextureCoords = this.textureCoordinates
 
-    splitted.forEach(element => {
+    const splittedLength = splitted.length;
+    splitted.forEach((element, i) => {
+      if (statusUpdated) statusUpdated(i / splittedLength)
       let values = element.split(" ");
       let name = 0;
       for (let i = values.length; i--; ) {
@@ -240,14 +248,15 @@ export default class Object extends Entity {
     objectsLoader.open("GET", path);
     objectsLoader.onreadystatechange = () => {
       if (objectsLoader.readyState == 4) {
+        this.objFileText = objectsLoader.responseText;
         if (this.mtl || !this.mtlRequired) {
-          self.compile(objectsLoader.responseText);
+          self.compile();
           self.onload();
           self.objLoaded = true
         } else {
           this.mtlRequiredFunction = () => {
             self.objLoaded = true
-            self.compile(objectsLoader.responseText);
+            self.compile();
             self.onload();
           }
         }

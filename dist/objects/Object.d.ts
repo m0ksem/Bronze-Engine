@@ -1,7 +1,7 @@
 import { Entity } from "./Entity";
 import { Engine } from "../Engine";
 import { Material } from "../materials/Material";
-import { MTL } from "./mtl/MTL";
+import { MTL } from "./mtl";
 export default class Object extends Entity {
     private _drawingMode;
     private afterLoadHidden;
@@ -10,6 +10,7 @@ export default class Object extends Entity {
     private mtlRequired;
     private mtlRequiredFunction;
     private objLoaded;
+    private objFileText;
     constructor(engine: Engine);
     /**
      * Sets how WebGL will draw object
@@ -22,7 +23,7 @@ export default class Object extends Entity {
      * @param {String} fileText
      * @public
      */
-    compile(fileText: String): void;
+    compile(fileText?: String): void;
     hide(): void;
     show(): void;
     addOnLoadHandler(func: Function): void;

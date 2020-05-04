@@ -2690,11 +2690,13 @@ function () {
     defineProperty_default()(this, "relativeToCameraPosition", {
       max: {
         x: 0,
-        y: 0
+        y: 0,
+        z: 0
       },
       min: {
         x: 0,
-        y: 0
+        y: 0,
+        z: 0
       },
       depth: 0
     });
@@ -2891,6 +2893,8 @@ function () {
     key: "setTexture",
     value: function setTexture(texture) {
       this.texture = texture;
+      this.engine.removeObject(this);
+      this.engine.addObject(this);
     }
   }, {
     key: "checkCollision",
@@ -2993,7 +2997,7 @@ function () {
                 xs = [this.collisionBox.maxPoint.x, this.collisionBox.minPoint.x];
                 ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y];
                 zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z];
-                smallest = [1000000, 1000000];
+                smallest = [1000000, 1000000, 10000000];
                 biggest = [-1000000, -1000000, -1000000];
 
                 for (ix = 0; ix < 2; ix++) {
@@ -3008,11 +3012,10 @@ function () {
                       coordsInPixels[0] = coordsInPixels[0] / coordsInPixels[3];
                       coordsInPixels[1] = coordsInPixels[1] / coordsInPixels[3];
                       coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * this.engine.width;
-                      coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.engine.height;
-                      coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
-                      coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
-                      coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0];
-                      coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1];
+                      coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.engine.height; // coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
+                      // coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
+                      // coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0];
+                      // coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1];
 
                       if (coordsInPixels[0] < smallest[0]) {
                         smallest[0] = coordsInPixels[0];
@@ -3028,6 +3031,8 @@ function () {
 
                       if (coordsInPixels[2] > biggest[2]) {
                         biggest[2] = coordsInPixels[2];
+                      } else if (coordsInPixels[2] < smallest[2]) {
+                        smallest[2] = coordsInPixels[2];
                       }
                     }
                   }
@@ -3036,13 +3041,15 @@ function () {
                 this.relativeToCameraPosition = {
                   max: {
                     x: biggest[0],
-                    y: biggest[1]
+                    y: biggest[1],
+                    z: smallest[1]
                   },
                   min: {
                     x: smallest[0],
-                    y: smallest[1]
+                    y: smallest[1],
+                    z: smallest[2]
                   },
-                  depth: biggest[2]
+                  depth: smallest[2]
                 };
 
               case 7:
@@ -3073,9 +3080,13 @@ function () {
                 return this.updateRelativeToCameraPosition();
 
               case 2:
-                if (this.engine.controls.mouse.x > this.relativeToCameraPosition.min.x && this.engine.controls.mouse.x < this.relativeToCameraPosition.max.x && this.engine.controls.mouse.y > this.relativeToCameraPosition.min.y && this.engine.controls.mouse.y < this.relativeToCameraPosition.max.y) {
-                  if (this.engine.selectedObject == null || this.engine.selectedObject.relativeToCameraPosition.depth >= this.relativeToCameraPosition.depth) {
+                if (this.engine.controls.mouse.x > this.relativeToCameraPosition.min.x && this.engine.controls.mouse.x < this.relativeToCameraPosition.max.x && this.engine.controls.mouse.y > this.relativeToCameraPosition.min.y && this.engine.controls.mouse.y < this.relativeToCameraPosition.max.y && this.relativeToCameraPosition.depth > 0) {
+                  if (this.engine.selectedObject == null) {
                     this.engine.selectedObject = this;
+                  } else {
+                    if (this.engine.selectedObject.relativeToCameraPosition.depth < this.relativeToCameraPosition.depth) {
+                      this.engine.selectedObject = this;
+                    }
                   }
                 }
 
@@ -3424,6 +3435,7 @@ function (_Texture) {
         if (this.width / this.height == 2) {
           var i = this.height;
           var offsetX = 0;
+          this._mipmap = [];
 
           while (true) {
             var tempCanvas = document.createElement("canvas");
@@ -3461,6 +3473,8 @@ function (_Texture) {
 
       if ((mipmapRequire || this._mipmapGenerationMethod == this.AUTO_GENERATE) && isPowerOf2(this._width) && isPowerOf2(this._height)) {
         webgl.generateMipmap(webgl.TEXTURE_2D);
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
+        webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
       } else {
         webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
         webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
@@ -3518,12 +3532,13 @@ function (_Texture) {
   return SimpleTexture;
 }(Texture_Texture);
 /* harmony default export */ var textures_SimpleTexture = (SimpleTexture_SimpleTexture);
-// CONCATENATED MODULE: ./src/objects/mtl/MTL.ts
+// CONCATENATED MODULE: ./src/objects/mtl/index.ts
 
 
 
 
-var MTL_MTL =
+
+var mtl_MTL =
 /*#__PURE__*/
 function () {
   function MTL(fileText, engine, path) {
@@ -3543,7 +3558,7 @@ function () {
       }
 
       if (words[0] == "newmtl") {
-        currentMTL = new MTL_MTLElement(words[1], engine);
+        currentMTL = new mtl_MTLElement(words[1], engine);
 
         _this.elements.push(currentMTL);
       }
@@ -3585,7 +3600,7 @@ function () {
 
   return MTL;
 }();
-var MTL_MTLElement =
+var mtl_MTLElement =
 /*#__PURE__*/
 function () {
   function MTLElement(name, engine) {
@@ -3611,7 +3626,7 @@ function () {
 
     this.name = name;
     this.webgl = engine.webgl;
-    this.texture = engine.noTexture;
+    this.texture = new ColorTexture_ColorTexture(engine);
   }
 
   createClass_default()(MTLElement, [{
@@ -3666,11 +3681,15 @@ function (_Entity) {
 
     defineProperty_default()(assertThisInitialized_default()(_this), "onLoadHandlers", []);
 
+    defineProperty_default()(assertThisInitialized_default()(_this), "compileState", -1);
+
     defineProperty_default()(assertThisInitialized_default()(_this), "mtlRequired", false);
 
     defineProperty_default()(assertThisInitialized_default()(_this), "mtlRequiredFunction", null);
 
     defineProperty_default()(assertThisInitialized_default()(_this), "objLoaded", false);
+
+    defineProperty_default()(assertThisInitialized_default()(_this), "objFileText", '');
 
     _this._drawingMode = _this.webgl.TRIANGLES;
     _this.hidden = true;
@@ -3723,9 +3742,14 @@ function (_Entity) {
      * @param {String} fileText
      * @public
      */
-    value: function compile(fileText) {
+    value: function compile(fileText, statusUpdated) {
       var _this2 = this;
 
+      if (fileText) {
+        this.objFileText = fileText;
+      }
+
+      fileText = fileText || this.objFileText;
       var vertexes = [];
       var textureCoords = [];
       var normals = [];
@@ -3739,12 +3763,14 @@ function (_Entity) {
       var currentVertexes = this.vertexes;
       var currentNormals = this.normals;
       var currentTextureCoords = this.textureCoordinates;
-      splitted.forEach(function (element) {
+      var splittedLength = splitted.length;
+      splitted.forEach(function (element, i) {
+        if (statusUpdated) statusUpdated(i / splittedLength);
         var values = element.split(" ");
         var name = 0;
 
-        for (var i = values.length; i--;) {
-          if (values[i] == "" || values[i] == "\r") values.splice(i, 1);
+        for (var _i = values.length; _i--;) {
+          if (values[_i] == "" || values[_i] == "\r") values.splice(_i, 1);
         }
 
         if (values[name] == "v") {
@@ -3795,15 +3821,15 @@ function (_Entity) {
           var faces = [values[1], values[2], values[3]];
 
           if (values.length - 1 > 3) {
-            for (var _i = 4; _i < values.length; _i++) {
-              faces.push(values[_i - 3]);
-              faces.push(values[_i - 1]);
-              faces.push(values[_i]);
+            for (var _i2 = 4; _i2 < values.length; _i2++) {
+              faces.push(values[_i2 - 3]);
+              faces.push(values[_i2 - 1]);
+              faces.push(values[_i2]);
             }
           }
 
-          for (var _i2 = 0; _i2 < faces.length; _i2++) {
-            var point = faces[_i2];
+          for (var _i3 = 0; _i3 < faces.length; _i3++) {
+            var point = faces[_i3];
             var indexes = point.split("/").map(function (el) {
               return Number(el);
             });
@@ -3916,14 +3942,16 @@ function (_Entity) {
 
       objectsLoader.onreadystatechange = function () {
         if (objectsLoader.readyState == 4) {
+          _this4.objFileText = objectsLoader.responseText;
+
           if (_this4.mtl || !_this4.mtlRequired) {
-            self.compile(objectsLoader.responseText);
+            self.compile();
             self.onload();
             self.objLoaded = true;
           } else {
             _this4.mtlRequiredFunction = function () {
               self.objLoaded = true;
-              self.compile(objectsLoader.responseText);
+              self.compile();
               self.onload();
             };
           }
@@ -3954,7 +3982,7 @@ function (_Entity) {
 
                 loader.onreadystatechange = function () {
                   if (loader.readyState == 4) {
-                    _this5.mtl = new MTL_MTL(loader.responseText, _this5.engine, path);
+                    _this5.mtl = new mtl_MTL(loader.responseText, _this5.engine, path);
 
                     if (_this5.objLoaded && _this5.mtlRequiredFunction) {
                       _this5.mtlRequiredFunction();
@@ -4249,26 +4277,23 @@ function () {
     key: "removeObject",
     value: function removeObject(object) {
       var index = -1;
+      index = this._objectsWithAlpha.indexOf(object);
 
-      if (object.texture.alpha) {
-        index = this._objectsWithAlpha.indexOf(object);
-
-        if (index == -1) {
-          console.warn("Objects", this.objects);
-          new debug_Error("Object not found");
-        }
-
-        return this._objectsWithAlpha.splice(index, 1)[0];
-      } else {
-        index = this._objectsWithoutAlpha.indexOf(object);
-
-        if (index == -1) {
-          console.warn("Objects", this.objects);
-          new debug_Error("Object not found");
-        }
-
-        return this._objectsWithoutAlpha.splice(index, 1)[0];
+      if (index !== -1) {
+        this._objectsWithAlpha.splice(index, 1)[0];
+        return;
       }
+
+      index = this._objectsWithoutAlpha.indexOf(object);
+
+      if (index !== -1) {
+        this._objectsWithoutAlpha.splice(index, 1)[0];
+        return;
+      }
+
+      console.warn("Objects", this.objects);
+      new debug_Error("Object not found");
+      return;
     }
   }, {
     key: "addOnObjectSelectedListener",
@@ -7436,6 +7461,8 @@ function () {
 /* concated harmony reexport ReflectionTexture */__webpack_require__.d(__webpack_exports__, "ReflectionTexture", function() { return ReflectionTexture_ReflectionTexture; });
 /* concated harmony reexport Entity */__webpack_require__.d(__webpack_exports__, "Entity", function() { return Entity_Entity; });
 /* concated harmony reexport CollisionBox */__webpack_require__.d(__webpack_exports__, "CollisionBox", function() { return Entity_CollisionBox; });
+/* concated harmony reexport MTL */__webpack_require__.d(__webpack_exports__, "MTL", function() { return mtl_MTL; });
+/* concated harmony reexport MTLElement */__webpack_require__.d(__webpack_exports__, "MTLElement", function() { return mtl_MTLElement; });
 /* concated harmony reexport Object */__webpack_require__.d(__webpack_exports__, "Object", function() { return Object_Object; });
 /* concated harmony reexport Rect */__webpack_require__.d(__webpack_exports__, "Rect", function() { return Rect_Rect; });
 /* concated harmony reexport Skybox */__webpack_require__.d(__webpack_exports__, "Skybox", function() { return Skybox_Skybox; });
@@ -7448,6 +7475,7 @@ function () {
 /* concated harmony reexport Vector3 */__webpack_require__.d(__webpack_exports__, "Vector3", function() { return Vector3_namespaceObject; });
 /* concated harmony reexport Matrixes4 */__webpack_require__.d(__webpack_exports__, "Matrixes4", function() { return Matrixes4_namespaceObject; });
 /* concated harmony reexport Vector2 */__webpack_require__.d(__webpack_exports__, "Vector2", function() { return Vector2_namespaceObject; });
+
 
 
 

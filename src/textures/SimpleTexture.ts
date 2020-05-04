@@ -102,6 +102,7 @@ export class SimpleTexture extends Texture {
       if (this.width / this.height == 2) {
         let i = this.height
         let offsetX = 0
+        this._mipmap = []
         while (true) {
           let tempCanvas = document.createElement("canvas");
           tempCanvas.width = i
@@ -135,6 +136,8 @@ export class SimpleTexture extends Texture {
 
     if ((mipmapRequire || this._mipmapGenerationMethod == this.AUTO_GENERATE) && isPowerOf2(this._width) && isPowerOf2(this._height)) {
       webgl.generateMipmap(webgl.TEXTURE_2D)
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
+      webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
     } else {
       webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
       webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);

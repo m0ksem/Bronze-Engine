@@ -12,6 +12,7 @@ export declare class Vector3 {
     copy(): Vector3;
     add(vector: Vector3): void;
     sub(vector: Vector3): void;
+    fromArray(array: number[]): void;
 }
 /**
  * Normalize a vector.

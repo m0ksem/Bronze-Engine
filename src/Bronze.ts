@@ -16,6 +16,7 @@ export { CubeTexture } from "./textures/CubeTexture";
 export { ReflectionTexture } from "./textures/ReflectionTexture";
 
 export * from "./objects/Entity";
+export { MTL, MTLElement } from "./objects/mtl";
 export { Object } from "./objects/Object";
 export { Rect } from "./objects/Rect";
 export { Skybox } from "./objects/Skybox";

@@ -34,11 +34,13 @@ export abstract class Entity {
   public relativeToCameraPosition = {
     max: {
       x: 0,
-      y: 0
+      y: 0,
+      z: 0
     },
     min: {
       x: 0,
-      y: 0
+      y: 0,
+      z: 0
     },
     depth: 0
   };
@@ -290,6 +292,8 @@ export abstract class Entity {
 
   public setTexture(texture: Texture) {
     this.texture = texture;
+    this.engine.removeObject(this)
+    this.engine.addObject(this)
   }
 
   public async checkCollision(position: Vector3, moving: Vector3, movingObjectCollisionBox: CollisionBox, callback: Function) {
@@ -355,7 +359,7 @@ export abstract class Entity {
     let ys = [this.collisionBox.maxPoint.y, this.collisionBox.minPoint.y];
     let zs = [this.collisionBox.maxPoint.z, this.collisionBox.minPoint.z];
 
-    let smallest = [1000000, 1000000];
+    let smallest = [1000000, 1000000, 10000000];
     let biggest = [-1000000, -1000000, -1000000];
 
     for (let ix = 0; ix < 2; ix++) {
@@ -372,11 +376,11 @@ export abstract class Entity {
           coordsInPixels[0] = (coordsInPixels[0] * 0.5 + 0.5) * this.engine.width;
           coordsInPixels[1] = (coordsInPixels[1] * -0.5 + 0.5) * this.engine.height;
 
-          coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
-          coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
+          // coordsInPixels[0] = coordsInPixels[0] < 0 ? 0 : coordsInPixels[0];
+          // coordsInPixels[1] = coordsInPixels[1] < 0 ? 0 : coordsInPixels[1];
 
-          coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0];
-          coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1];
+          // coordsInPixels[0] = coordsInPixels[0] > this.engine.width ? this.engine.width : coordsInPixels[0];
+          // coordsInPixels[1] = coordsInPixels[1] > this.engine.height ? this.engine.height : coordsInPixels[1];
 
           if (coordsInPixels[0] < smallest[0]) {
             smallest[0] = coordsInPixels[0];
@@ -390,6 +394,8 @@ export abstract class Entity {
           }
           if (coordsInPixels[2] > biggest[2]) {
             biggest[2] = coordsInPixels[2];
+          } else if (coordsInPixels[2] < smallest[2]) {
+            smallest[2] = coordsInPixels[2]
           }
         }
       }
@@ -398,13 +404,15 @@ export abstract class Entity {
     this.relativeToCameraPosition = {
       max: {
         x: biggest[0],
-        y: biggest[1]
+        y: biggest[1],
+        z: smallest[1],
       },
       min: {
         x: smallest[0],
-        y: smallest[1]
+        y: smallest[1],
+        z: smallest[2],
       },
-      depth: biggest[2]
+      depth: smallest[2]
     };
   }
 
@@ -414,10 +422,15 @@ export abstract class Entity {
       this.engine.controls!.mouse.x > this.relativeToCameraPosition.min.x &&
       this.engine.controls!.mouse.x < this.relativeToCameraPosition.max.x &&
       this.engine.controls!.mouse.y > this.relativeToCameraPosition.min.y &&
-      this.engine.controls!.mouse.y < this.relativeToCameraPosition.max.y
+      this.engine.controls!.mouse.y < this.relativeToCameraPosition.max.y &&
+      this.relativeToCameraPosition.depth > 0
     ) {
-      if (this.engine.selectedObject == null || this.engine.selectedObject.relativeToCameraPosition.depth >= this.relativeToCameraPosition.depth) {
+      if (this.engine.selectedObject == null) {
         this.engine.selectedObject = this;
+      } else {
+        if (this.engine.selectedObject.relativeToCameraPosition.depth < this.relativeToCameraPosition.depth) {
+          this.engine.selectedObject = this;
+        }
       }
     }
   }

@@ -60,7 +60,7 @@ export declare class Engine {
     /**
      * Removes objects if its exist
      */
-    removeObject(object: Entity): Entity;
+    removeObject(object: Entity): void;
     addOnObjectSelectedListener(callback: Function): void;
     addOnResourcesLoadedListener(callback: Function): void;
     /**

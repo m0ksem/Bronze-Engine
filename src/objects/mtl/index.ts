@@ -1,6 +1,7 @@
-import { SimpleTexture } from './../../textures/SimpleTexture'
-import { Texture } from './../../textures/Texture'
-import { Engine } from './../../Engine'
+import { SimpleTexture } from '../../textures/SimpleTexture'
+import { ColorTexture  } from '../../textures/ColorTexture';
+import { Texture } from '../../textures/Texture'
+import { Engine } from '../../Engine'
 
 export class MTL {
   public elements: MTLElement[] = []
@@ -64,7 +65,7 @@ export class MTLElement {
   constructor (name: String, engine: Engine) {
     this.name = name
     this.webgl = engine.webgl
-    this.texture = engine.noTexture
+    this.texture = new ColorTexture(engine)
   }
 
   public commit () {
