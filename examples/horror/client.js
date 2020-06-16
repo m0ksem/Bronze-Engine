@@ -366,19 +366,12 @@ controls.setControlFunction(() => {
         if (moving && !scared && !camera.isCollision) {
             cameraMoving += cameraMovingDirection
             camera.rotate(0, 0, (cameraMoving - 20) / 100)
-            if (cameraMoving == 40 || cameraMoving == 0) {
+            if (cameraMoving >= 40 || cameraMoving <= 0) {
                 cameraMovingDirection *= -1
             }
             cameraMovingEnd = true
         }
-        else if (scared && moving) {
-            cameraMoving += cameraMovingDirection
-            camera.rotate(0, 0, (cameraMoving - 10) / 200)
-            if (cameraMoving >= 20 || cameraMoving <= 0) {
-                cameraMovingDirection *= -1
-            }
-            cameraMovingEnd = true
-        } else if (!moving && !scared && camera.rotation.z != 0){
+        else if (!moving && !scared && camera.rotation.z != 0){
             movingEnabled = false
             if (cameraSubstracted == 0) {
                 cameraSubstracted = Math.floor(camera.rotation.z) / 10
@@ -455,14 +448,16 @@ controls.setControlFunction(() => {
         }
 
         if (camera.position.z < -3750) {
-            camera.position.z = -2888
+            camera.position.z = -2888;
+            movingEnabled = false;
             let interval = setInterval(() => {
                 camera.position.move(0, 5, 0)
                 if (camera.position.y > 1000) {
+                    camera.collisions = false;
+                    movingEnabled = true;
                     clearInterval(interval)
                 }
             }, 16)
-            movingEnabled = false
         }
         
         checkCorridorEnd()
