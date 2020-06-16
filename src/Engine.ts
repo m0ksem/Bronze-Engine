@@ -8,7 +8,7 @@ import { Controls } from "./Controls";
 import { Shaders } from "./webgl/Shaders";
 import Light from "./lights/Light";
 import { distance, Vector3 } from "./math/Vector3";
-import BronzeError from "./debug/Error";
+import { BronzeWarn } from "./debug/Error";
 import { ColorTexture } from "./textures/ColorTexture";
 import Object from "./objects/Object";
 
@@ -167,7 +167,7 @@ export class Engine {
       return;
     }
     console.warn("Objects", this.objects);
-    new BronzeError("Object not found");
+    new BronzeWarn("Object not found");
     return
   }
 
