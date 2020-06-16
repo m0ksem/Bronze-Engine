@@ -29,7 +29,7 @@ export abstract class Texture {
   public setColor (hexColor: string): void
 
   public setColor(r: number | string, g?: number, b?: number, a?: number): void {
-    if (!g) {
+    if (g === undefined) {
       let rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
       if (rgb == null) {
         new BronzeError('Wrong hex color!')
@@ -38,7 +38,6 @@ export abstract class Texture {
       this.color = new Uint8Array([
         parseInt(rgb[1], 16), parseInt(rgb[2], 16), parseInt(rgb[3], 16), 255
       ])
-      console.log(this.color)
     } else if (g != undefined && b != undefined && a != undefined) {
       this.color = new Uint8Array([Number(r), g, b, a])
     } else {
