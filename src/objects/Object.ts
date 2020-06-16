@@ -248,17 +248,11 @@ export default class Object extends Entity {
     objectsLoader.open("GET", path);
     objectsLoader.onreadystatechange = () => {
       if (objectsLoader.readyState == 4) {
+        this.objLoaded = true;
         this.objFileText = objectsLoader.responseText;
         if (this.mtl || !this.mtlRequired) {
           self.compile();
           self.onload();
-          self.objLoaded = true
-        } else {
-          this.mtlRequiredFunction = () => {
-            self.objLoaded = true
-            self.compile();
-            self.onload();
-          }
         }
       } else if (objectsLoader.readyState == 0) {
         console.log('Error in ' + this.name)
@@ -275,8 +269,9 @@ export default class Object extends Entity {
     loader.onreadystatechange = () => {
       if (loader.readyState == 4) {
         this.mtl = new MTL(loader.responseText, this.engine, path)
-        if (this.objLoaded && this.mtlRequiredFunction) {
-          this.mtlRequiredFunction()
+        if (this.objLoaded) {
+          this.compile();
+          this.onload();
         }
       } else if (loader.readyState == 0) {
         console.log('Error in ' + this.name)
