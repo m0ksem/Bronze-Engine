@@ -2538,7 +2538,7 @@ function () {
   createClass_default()(Texture, [{
     key: "setColor",
     value: function setColor(r, g, b, a) {
-      if (!g) {
+      if (g === undefined) {
         var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(r));
 
         if (rgb == null) {
@@ -2547,7 +2547,6 @@ function () {
         }
 
         this.color = new Uint8Array([parseInt(rgb[1], 16), parseInt(rgb[2], 16), parseInt(rgb[3], 16), 255]);
-        console.log(this.color);
       } else if (g != undefined && b != undefined && a != undefined) {
         this.color = new Uint8Array([Number(r), g, b, a]);
       } else {
@@ -3155,7 +3154,7 @@ function () {
     key: "update",
     value: function update() {
       if (!this.hidden) {
-        var matrix = perspective(this.engine.camera.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera.range);
+        var matrix = this.engine.camera.perspectiveMatrix;
 
         if (!this.UIElement) {
           matrix = Matrixes4_multiply(matrix, this.engine.camera.inverseMatrix);
@@ -3537,7 +3536,6 @@ function (_Texture) {
 
 
 
-
 var mtl_MTL =
 /*#__PURE__*/
 function () {
@@ -3571,15 +3569,18 @@ function () {
         texture.loadFrom(p + words[1]);
         texture.alpha = true;
         currentMTL.texture = texture;
-      }
+      } // if (words[0] == "Kd") {
+      //   currentMTL.texture = new ColorTexture(engine)
+      //   currentMTL.texture.setColor(
+      //     parseFloat(words[1]) * 255, 
+      //     parseFloat(words[2]) * 255, 
+      //     parseFloat(words[3]) * 255,
+      //   255);
+      // }
+      // if (words[0] == "d") {
+      //   currentMTL.texture.setAlpha(parseFloat(words[1]) * 255);
+      // }
 
-      if (words[0] == "Kd") {
-        currentMTL.texture.setColor(parseFloat(words[1]) * 255, parseFloat(words[2]) * 255, parseFloat(words[3]) * 255, 255);
-      }
-
-      if (words[0] == "d") {
-        currentMTL.texture.setAlpha(parseFloat(words[1]) * 255);
-      }
     });
   }
 
@@ -3626,7 +3627,7 @@ function () {
 
     this.name = name;
     this.webgl = engine.webgl;
-    this.texture = new ColorTexture_ColorTexture(engine);
+    this.texture = engine.noTexture;
   }
 
   createClass_default()(MTLElement, [{
@@ -3942,18 +3943,12 @@ function (_Entity) {
 
       objectsLoader.onreadystatechange = function () {
         if (objectsLoader.readyState == 4) {
+          _this4.objLoaded = true;
           _this4.objFileText = objectsLoader.responseText;
 
           if (_this4.mtl || !_this4.mtlRequired) {
             self.compile();
             self.onload();
-            self.objLoaded = true;
-          } else {
-            _this4.mtlRequiredFunction = function () {
-              self.objLoaded = true;
-              self.compile();
-              self.onload();
-            };
           }
         } else if (objectsLoader.readyState == 0) {
           console.log('Error in ' + _this4.name);
@@ -3984,8 +3979,10 @@ function (_Entity) {
                   if (loader.readyState == 4) {
                     _this5.mtl = new mtl_MTL(loader.responseText, _this5.engine, path);
 
-                    if (_this5.objLoaded && _this5.mtlRequiredFunction) {
-                      _this5.mtlRequiredFunction();
+                    if (_this5.objLoaded) {
+                      _this5.compile();
+
+                      _this5.onload();
                     }
                   } else if (loader.readyState == 0) {
                     console.log('Error in ' + _this5.name);
@@ -4292,7 +4289,7 @@ function () {
       }
 
       console.warn("Objects", this.objects);
-      new debug_Error("Object not found");
+      new Error_BronzeWarn("Object not found");
       return;
     }
   }, {
@@ -4530,6 +4527,7 @@ function () {
       if (this.camera && this.controls && this.controls.controlFunction) {
         this.camera.moving.set(0, 0, 0);
         this.camera.moving.add(this.camera.animatedMoving);
+        this.camera.computeMatrix();
         this.controls.controlFunction();
 
         if (this["debugger"] != null) {
@@ -4571,7 +4569,6 @@ function () {
       }
 
       this.camera.position.move(this.camera.moving.x, this.camera.moving.y, this.camera.moving.z);
-      this.camera.computeMatrix();
 
       if (this.ui) {
         this.ui.objects.forEach(function (object) {
@@ -4771,6 +4768,7 @@ function requestAnimationFrameEngine() {
  * @class
  * @constructor
  */
+
 var Camera_Camera =
 /*#__PURE__*/
 function () {
@@ -4842,6 +4840,8 @@ function () {
 
     defineProperty_default()(this, "range", 20000);
 
+    defineProperty_default()(this, "perspectiveMatrix", void 0);
+
     defineProperty_default()(this, "matrix", unit());
 
     defineProperty_default()(this, "rotationMatrix", unit());
@@ -4867,6 +4867,7 @@ function () {
     defineProperty_default()(this, "_position", new Vector3_Vector3(0, 400, 500));
 
     this.engine = engine;
+    this.perspectiveMatrix = perspective(this.fieldOfViewRad, engine.width, engine.height, 1, this.range);
   }
   /**
    * Camera position.
@@ -5014,6 +5015,7 @@ function () {
       this.rotationMatrix = rotation;
       this.inverseRotationMatrix = inverse(rotation);
       this.inverseMatrix = inverse(this.matrix);
+      this.perspectiveMatrix = perspective(this.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.range);
     }
   }, {
     key: "position",
