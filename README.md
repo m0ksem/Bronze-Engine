@@ -3,18 +3,18 @@
 <h4 align="center">Simple game engine based on WebGL with JavaScript.  </h4>
 
 <div style="text-align:center" align="center">
- <a href="http://m0ksem.design/Bronze-Engine/docs/globals"><b>Docs</b></a> -
+ <a href="http://m0ksem.github.io/Bronze-Engine/docs/globals"><b>Docs</b></a> -
  <a href="https://github.com/m0ksem/Bronze-Engine/projects/2"><b>Development plan</b></a> -
  <a href="https://github.com/m0ksem/Bronze-Editor"><b>Editor</b></a>
 </div>
 
 ## Examples 
 
- - 🏗 <a href="http://m0ksem.design/Bronze-Engine/examples/dev"><b>Dev polygon</b></a> - polygon for testing new features.
- - 🎯 <a href="http://m0ksem.design/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game shooter game.
- - 👻 <a href="http://m0ksem.design/Bronze-Engine/examples/horror/"><b>Horror</b></a> - the horror game, showing the possibilities of light in the engine.
- - 🧐 <a href="http://m0ksem.design/Bronze-Engine/examples/strategy/"><b>Strategy</b></a> - the game demo, showing the possibilities of camera and different shaders.
- - 🚘 <a href="https://m0ksem.design/Bronze-Engine/examples/nightcall/"><b>Nightcall</b></a> - the game demo, showing the mtl support and work with many objects of the same type.
+ - 🏗 <a href="http://m0ksem.github.io/Bronze-Engine/examples/dev"><b>Dev polygon</b></a> - polygon for testing new features.
+ - 🎯 <a href="http://m0ksem.github.io/Bronze-Engine/examples/aim-training/"><b>Aim training</b></a> - simple game shooter game.
+ - 👻 <a href="http://m0ksem.github.io/Bronze-Engine/examples/horror/"><b>Horror</b></a> - the horror game, showing the possibilities of light in the engine.
+ - 🧐 <a href="http://m0ksem.github.io/Bronze-Engine/examples/strategy/"><b>Strategy</b></a> - the game demo, showing the possibilities of camera and different shaders.
+ - 🚘 <a href="https://m0ksem.github.io/Bronze-Engine/examples/nightcall/"><b>Nightcall</b></a> - the game demo, showing the mtl support and work with many objects of the same type.
  
 ## Plans
 <a href="https://github.com/m0ksem/Bronze-Engine/projects/2">Roadmap</a>  
