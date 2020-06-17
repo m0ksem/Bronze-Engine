@@ -466,7 +466,7 @@ export abstract class Entity {
 
   public update(): void {
     if (!this.hidden) {
-      let matrix = perspective(this.engine.camera!.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.engine.camera!.range);
+      let matrix = this.engine.camera!.perspectiveMatrix;
       if (!this.UIElement) {
         matrix = multiply(matrix, this.engine.camera!.inverseMatrix);
         matrix = multiply(matrix, this.worldMatrix);

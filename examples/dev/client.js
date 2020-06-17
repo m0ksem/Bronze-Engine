@@ -11,7 +11,7 @@ window.addEventListener('resize', function () {
     engine.canvasResized()
 })
 
-var camera = new Bronze.Camera()
+var camera = new Bronze.Camera(engine)
     camera.setPosition(1500, 100, 1500)
     camera.setRotation(0, 0, 0)
     camera.setFieldOfView(90)

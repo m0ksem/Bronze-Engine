@@ -12,7 +12,7 @@ window.addEventListener("resize", () => {
   engine.canvasResized();
 });
 
-let camera = new Bronze.Camera();
+let camera = new Bronze.Camera(engine);
 camera.setPosition(0, 700, 0);
 camera.setRotation(0, 0, 0);
 camera.setFieldOfView(90);

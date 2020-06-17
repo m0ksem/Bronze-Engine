@@ -3,6 +3,7 @@ import * as Matrixes from "./math/Matrixes4";
 import { Entity, CollisionBox } from "./objects/Entity";
 import { Vector3 } from "./math/Vector3";
 import { Engine } from "./Engine";
+import { perspective } from "./math/Matrixes4";
 
 /**
  * Creates camera object.
@@ -28,6 +29,8 @@ export class Camera {
    * @default 20000
    */
   public range: number = 20000;
+
+  public perspectiveMatrix: Array<number>;
   /**
    * Matrix of camera.
    */
@@ -76,6 +79,7 @@ export class Camera {
 
   constructor(engine: Engine) {
     this.engine = engine;
+    this.perspectiveMatrix = perspective(this.fieldOfViewRad, engine.width, engine.height, 1, this.range);
   }
 
   /**
@@ -210,6 +214,7 @@ export class Camera {
     this.rotationMatrix = rotation;
     this.inverseRotationMatrix = Matrixes.inverse(rotation);
     this.inverseMatrix = Matrixes.inverse(this.matrix);
+    this.perspectiveMatrix = perspective(this.fieldOfViewRad, this.engine.width, this.engine.height, 1, this.range);
   }
 }
 

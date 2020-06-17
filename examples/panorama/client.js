@@ -12,7 +12,7 @@ var engine = new Bronze.Engine(div);
 //   engine.canvasResized();
 // });
 
-var camera = new Bronze.Camera();
+var camera = new Bronze.Camera(engine);
 camera.setPosition(0, 0, 0);
 camera.setPosition(60, 0, -300);
 camera.setRotation(0, 180, 0);

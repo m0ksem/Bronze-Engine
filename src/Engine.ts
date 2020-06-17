@@ -383,6 +383,7 @@ export class Engine {
     if (this.camera && this.controls && this.controls.controlFunction) {
       this.camera.moving.set(0, 0, 0);
       this.camera.moving.add(this.camera.animatedMoving);
+      this.camera.computeMatrix();
       this.controls.controlFunction();
       if (this.debugger != null) {
         this.debugger.updateInfo();
@@ -419,8 +420,6 @@ export class Engine {
     }
 
     this.camera!.position.move(this.camera!.moving.x, this.camera!.moving.y, this.camera!.moving.z);
-
-    this.camera!.computeMatrix();
 
     if (this.ui) {
       this.ui.objects.forEach(object => {
