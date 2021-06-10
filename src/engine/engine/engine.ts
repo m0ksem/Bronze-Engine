@@ -5,11 +5,8 @@ export class Engine {
 
   private requestAnimationFrameIndex = -1;
 
-  constructor(canvas: HTMLCanvasElement) {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-
-    this.renderer = new WebGLRenderer(canvas);
+  constructor(renderer: WebGLRenderer) {
+    this.renderer = renderer;
     this.start()
   }
 

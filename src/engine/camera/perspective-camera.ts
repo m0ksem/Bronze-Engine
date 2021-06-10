@@ -8,8 +8,12 @@ export class PerspectiveCamera {
 
   private renderer: WebGLRenderer
   private rotation: number[] = [0, 0, 0]
+  private _position: number[] = [0, 0, 0]
+  public get position(): number[] {
+    return this._position
+  }
 
-  constructor(renderer: WebGLRenderer, fov: number = 90, range: number = 9999, near: number = 1) {
+  constructor(renderer: WebGLRenderer, fov: number = 30, range: number = 999999999, near: number = 0.01) {
     this.renderer = renderer
     this._fov = fov
     this._range = range
@@ -17,10 +21,14 @@ export class PerspectiveCamera {
     this.perspectiveMatrix = this.createPerspectiveMatrix()
   }
 
-  public get matrix() {
-    const m = Matrix4.multiply(this.perspectiveMatrix, this.movementMatrix)
+  public get worldMatrix() {
+    // TODO: Optimize
     const rotationMatrix = Matrix4.rotation(this.rotation[0], this.rotation[1], this.rotation[2])
-    return Matrix4.multiply(m, rotationMatrix)
+    return Matrix4.multiply(this.movementMatrix, (rotationMatrix))
+  }
+
+  public get matrix() {
+    return Matrix4.multiply(this.perspectiveMatrix, Matrix4.inverse(this.worldMatrix))
   }
 
   private _fov: number
@@ -59,10 +67,14 @@ export class PerspectiveCamera {
   }
 
   public setPosition(x: number, y: number, z: number) {
-    this.movementMatrix = Matrix4.multiply(this.movementMatrix, Matrix4.translation(x, y, z))
+    this._position = [x, y, z]
+    this.movementMatrix = Matrix4.translation(x, y, z)
   }
 
   public move(x: number, y: number, z: number) {
-    this.movementMatrix = Matrix4.translation(x, y, z)
+    this._position = Vector.add(this._position, [x, y, z])
+    this.movementMatrix = Matrix4.translation(
+      this._position[0], this._position[1], this._position[2]
+    )
   }
 }

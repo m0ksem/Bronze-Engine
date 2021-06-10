@@ -1,5 +1,25 @@
 import { setupHook, getWebgl2Context } from "../utils"
 
+interface WebGLRendererOptions {
+  viewport?: { x: number; y: number, width: number; height: number },
+  cullFace?: boolean,
+  depthTest?: boolean
+}
+
+function applyWebGLRendererOptions(webgl: WebGL2RenderingContext, options: WebGLRendererOptions) {
+  if (options.viewport) {
+    webgl.viewport(options.viewport.x, options.viewport.y, options.viewport.width, options.viewport.height)
+  }
+
+  if (options.depthTest) {
+    webgl.enable(webgl.DEPTH_TEST)
+  }
+
+  if (options.cullFace) {
+    webgl.enable(webgl.CULL_FACE)
+  }
+}
+
 export class WebGLRenderer {
   public webgl: WebGL2RenderingContext
   public canvas: HTMLCanvasElement
@@ -16,9 +36,10 @@ export class WebGLRenderer {
   public addRenderListener: (fh: (ctx: WebGL2RenderingContext) => void) => void
   private render: (ctx: WebGL2RenderingContext) => void
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, options: WebGLRendererOptions = {}) {
     this.canvas = canvas
     this.webgl = getWebgl2Context(canvas)
+    applyWebGLRendererOptions(this.webgl, options)
 
     const beforeRenderHook = setupHook<[WebGL2RenderingContext]>()
     this.addBeforeRenderListener = beforeRenderHook.addHandler

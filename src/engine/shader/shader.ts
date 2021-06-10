@@ -72,7 +72,7 @@ export class Shader {
     const uniformRegex = /uniform .* ([^;|^\[]*)/g
     
     const rows = source.match(uniformRegex)
-    if (rows === null) { return []}
+    if (rows === null) { return [] }
 
     // `uniform type name`
     return rows.map((row) => row.split(' ')[2])
@@ -82,10 +82,10 @@ export class Shader {
     // Every string starts with uniform and ends with ';' or '['
     // '[' use for arrays. 
     // For example: `attribute vec3 u_lightPositions[MAX_LIGHTS];` -> `u_lightPositions`
-    const uniformRegex = /attribute  .* ([^;|^\[]*)/g
+    const attributeRegex = /attribute .* ([^;|^\[]*)/g
     
-    const rows = source.match(uniformRegex)
-    if (rows === null) { return []}
+    const rows = source.match(attributeRegex)
+    if (rows === null) { return [] }
 
     // `uniform type name`
     return rows.map((row) => row.split(' ')[2])
@@ -94,10 +94,15 @@ export class Shader {
   protected parseVertexShaderSource(source: string, shaderProgram: WebGLProgram) {
     this.webgl.useProgram(shaderProgram)
 
-    const names = this.getAttributeNames(source)
+    const attributes = this.getAttributeNames(source)
+    const uniforms = this.getUniformNames(source)
 
-    names.forEach((name) => {
+    attributes.forEach((name) => {
       this.attributes[name] = this.linkAttribute(name, shaderProgram)
+    })
+
+    uniforms.forEach((name) => {
+      this.uniforms[name] = this.linkUniform(name, shaderProgram)
     })
   }
 

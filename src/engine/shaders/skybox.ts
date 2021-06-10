@@ -8,8 +8,8 @@ export class SkyboxShader extends Shader {
   varying vec4 v_position;
   void main() {
       v_position = a_position;
-      gl_Position = a_position;
-      gl_Position.z = .9999999;
+      v_position.z = .9999999;
+      gl_Position = v_position;
   }
   `
 
