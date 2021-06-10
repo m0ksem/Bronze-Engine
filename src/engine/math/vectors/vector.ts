@@ -18,5 +18,15 @@ export const Vector = {
 
 
     return resultVec
+  },
+
+  arrayToXYZ(v: number[]): Vector3 {
+    return { x: v[0], y: v[1], z: v[2] }
+  },
+
+  xyzToArray(v: Vector3) {
+    return [v.x, v.y, v.z]
   }
 }
+
+export type Vector3 = { x: number, y: number, z: number }
