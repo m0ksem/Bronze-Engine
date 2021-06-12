@@ -30,3 +30,4 @@ export const Vector = {
 }
 
 export type Vector3 = { x: number, y: number, z: number }
+export type Vector3Array = [number, number, number]
