@@ -2,10 +2,10 @@ export class Keyboard {
   [key: string]: any
 
   onKeydown(e: KeyboardEvent) {
-    this[e.key] = true
+    this[e.code] = true
   }
 
   onKeyup(e: KeyboardEvent) {
-    delete this[e.key]
+    delete this[e.code]
   }
 }

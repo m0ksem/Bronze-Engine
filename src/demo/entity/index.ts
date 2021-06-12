@@ -44,13 +44,13 @@ engine.renderer.addRenderListener(() => {
     camera.rotate(controls.mouse.movement.y, controls.mouse.movement.x, 0)
   }
 
-  if (controls.keyboard.s) {
+  if (controls.keyboard.KeyS) {
     camera.move(0, 0, 0.1)
-  } else if (controls.keyboard.w) {
+  } else if (controls.keyboard.KeyW) {
     camera.move(0, 0, -0.1)
-  } else if (controls.keyboard.a) {
+  } else if (controls.keyboard.KeyA) {
     camera.move(0.1, 0, 0)
-  } else if (controls.keyboard.d) {
+  } else if (controls.keyboard.KeyD) {
     camera.move(-0.1, 0, 0)
   }
 })
