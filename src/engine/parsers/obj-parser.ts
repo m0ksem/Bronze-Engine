@@ -93,7 +93,7 @@ export class ObjParser {
     
     const objects = []
 
-    let currentObject = createObject('unamed')
+    let currentObject = createObject('unnamed')
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
 
@@ -111,7 +111,7 @@ export class ObjParser {
           .map(({ v, vt, vn }) => ({
             v:  getByIndex(currentObject.vertices, Number(v)).map((v) => parseFloat(v)),
             // vt: getByIndex(currentObject.vertices, Number(vt)).map((v) => parseFloat(v)),
-            vn: getByIndex(currentObject.vertices, Number(vn)).map((v) => parseFloat(v)),
+            vn: getByIndex(currentObject.normals, Number(vn)).map((v) => parseFloat(v)),
           }))
 
         currentObject.faces.push(...faces)
