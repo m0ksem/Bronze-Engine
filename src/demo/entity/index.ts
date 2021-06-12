@@ -22,7 +22,6 @@ const normalShader = new NormalShader(renderer.webgl)
 
 const kitten = new Object3D(engine.renderer.webgl, KittenObjSource)
 kitten.setPosition(0, 0, -10)
-kitten.setRotation(0, 0, 180)
 
 const cube = new Object3D(engine.renderer.webgl, CubeObjSource)
 cube.setPosition(-5, 0, -10)

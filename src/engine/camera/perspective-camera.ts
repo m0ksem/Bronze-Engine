@@ -1,11 +1,10 @@
 import { Matrix4 } from '../math/matrixes';
 import { WebGLRenderer } from "../renderer"
-import { Vector, Vector3 } from '../math/vectors/vector';
+import { Vector, Vector3, Vector3Array } from '../math/vectors/vector';
+import { Entity } from '../entity/entity'
 
-export class PerspectiveCamera {
+export class PerspectiveCamera extends Entity {
   private _renderer: WebGLRenderer
-  private _rotation: number[] = [0, 0, 0]
-  private _position: number[] = [0, 0, 0]
 
   perspectiveMatrix: number[] = Matrix4.unit()
   movementMatrix: number[] = Matrix4.unit()
@@ -14,6 +13,7 @@ export class PerspectiveCamera {
   matrix: number[] = Matrix4.unit()
 
   constructor(renderer: WebGLRenderer, fov: number = 30, range: number = 999999999, near: number = 0.01) {
+    super()
     this._renderer = renderer
     this._fov = fov
     this._range = range
@@ -65,8 +65,9 @@ export class PerspectiveCamera {
     this.updateMatrix()
   }
 
-  private updateWorldMatrix() {
+  protected updateWorldMatrix() {
     this.worldMatrix = Matrix4.multiply(this.movementMatrix, this.rotationMatrix)
+    this.worldMatrix = Matrix4.multiply(this.worldMatrix, this.scaleMatrix)
     this.updateMatrix()
   }
 
@@ -77,10 +78,10 @@ export class PerspectiveCamera {
     this.updateWorldMatrix()
   }
 
-  private updateRotationMatrix() {
+  protected updateRotateMatrix() {
     let rotationMatrix = Matrix4.rotationY(this.rotation.y);
     rotationMatrix = Matrix4.multiply(rotationMatrix, Matrix4.rotationX(this.rotation.x));
-    rotationMatrix = Matrix4.multiply(rotationMatrix, Matrix4.rotationZ(this.rotation.z));
+    rotationMatrix = Matrix4.multiply(rotationMatrix, Matrix4.rotationZ(this.rotation.z + Math.PI));
 
     this.rotationMatrix = rotationMatrix
 
@@ -90,12 +91,7 @@ export class PerspectiveCamera {
   private recomputeMatrix() {
     this.updatePerspectiveMatrix()
     this.updateMovementMatrix()
-    this.updateRotationMatrix()
-  }
-
-  public rotate(x: number, y: number, z: number) {
-    this._rotation = Vector.add(this._rotation, [x, y, z])
-    this.updateRotationMatrix()
+    this.updateRotateMatrix()
   }
 
   public setPosition(x: number, y: number, z: number) {
@@ -105,7 +101,7 @@ export class PerspectiveCamera {
 
   public move(x: number, y: number, z: number) {
     const rotatedVector = Matrix4.multiplyVector4(Matrix4.inverse(this.rotationMatrix), [x, y, z, 1])
-    this._position = Vector.add(this._position, rotatedVector)
+    this._position = Vector.add(this._position, rotatedVector) as Vector3Array
     this.updateMovementMatrix()
   }
 }

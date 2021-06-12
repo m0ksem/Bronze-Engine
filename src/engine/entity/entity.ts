@@ -1,9 +1,9 @@
 import { degToRad, Matrix4, Vector, Vector3, Vector3Array } from '../math'
 
 export class Entity {
-  private _rotation: Vector3Array =  [0, 0, 0]
-  private _position: Vector3Array = [0, 0, 0]
-  private _scale: Vector3Array = [0, 0, 0]
+  protected _rotation: Vector3Array =  [0, 0, 0]
+  protected _position: Vector3Array = [0, 0, 0]
+  protected _scale: Vector3Array = [0, 0, 0]
 
   positionMatrix: number[] = Matrix4.unit()
   rotationMatrix: number[] = Matrix4.unit()
@@ -57,7 +57,7 @@ export class Entity {
   }
 
   public rotate(x: number, y: number, z: number) {
-    this._rotation = [x, y, z]
+    this._rotation = Vector.add(this._rotation, [x, y, z]) as Vector3Array
     this.updateRotateMatrix()
   }
 
