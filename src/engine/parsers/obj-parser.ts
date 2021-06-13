@@ -14,17 +14,11 @@ type Face = {
 
 function createObject(name: string): {
   name: string,
-  vertices: string[][],
-  normals: string[][],
-  textureCoordinates: string[][],
   faces: Face[],
 } {
   return {
     name: name,
-    vertices: [],
-    normals: [],
-    textureCoordinates: [],
-    faces: []
+    faces: [],
   }
 }
 
@@ -74,7 +68,7 @@ function parseFace(line: string) {
     const [first, second, third] = f.split('/')
 
     if (second === "") { return { v: first, vn: third } }
-    if (!third) { return { v: first, vn: second }}
+    if (!third) { return { v: first, vt: second }}
 
     return { v: first, vt: second, vn: third }
   })
@@ -94,6 +88,10 @@ export class ObjParser {
     
     const objects = []
 
+    const vertices: string[][] = []
+    const normals: string[][] = []
+    const textureCoordinates: string[][] = []
+
     let currentObject = createObject('unnamed')
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
@@ -102,22 +100,22 @@ export class ObjParser {
         currentObject = createObject(parseObjectName(line))
         objects.push(currentObject)
       } else if (isVector(line)) {
-        currentObject.vertices.push(parseVector(line))
+        vertices.push(parseVector(line))
       } else if (isVertexNormal(line)) {
-        currentObject.normals.push(parseVertexNormal(line))
+        normals.push(parseVertexNormal(line))
       } else if (isTextureCoordinate(line)) {
-        currentObject.textureCoordinates.push(parseTextureCoordinate(line))
+        textureCoordinates.push(parseTextureCoordinate(line))
       } else if (isFace(line)) {
         const faces = parseFace(line)
           .map(({ v, vt, vn }) => {
-            const face: Face = { v: getByIndex(currentObject.vertices, Number(v)).map((num) => parseFloat(num)) }
+            const face: Face = { v: getByIndex(vertices, Number(v)).map((num) => parseFloat(num)) }
 
             if (vt !== undefined) {
-              face.vt = getByIndex(currentObject.textureCoordinates, Number(vt)).map((num) => parseFloat(num))
+              face.vt = getByIndex(textureCoordinates, Number(vt)).map((num) => parseFloat(num))
             }
 
             if (vn !== undefined) {
-              face.vn = getByIndex(currentObject.normals, Number(vn)).map((num) => parseFloat(num))
+              face.vn = getByIndex(normals, Number(vn)).map((num) => parseFloat(num))
             }
 
             return face
