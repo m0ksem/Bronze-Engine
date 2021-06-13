@@ -1,12 +1,17 @@
 import { Texture } from "./texture"
 
 export class ImageTexture extends Texture {
-  protected image = new Image(64, 64)
+  public image = new Image(64, 64)
 
   get height() { return this.image.height }
   set height(val: number) { this.image.height = val }
   get width() { return this.image.width }
   set width(val: number) { this.image.width = val }
+
+  constructor(webgl: WebGL2RenderingContext, src?: string) {
+    super(webgl)
+    if (src) { this.src = src }
+  }
 
   set src(val: string) {
     this.image.src = val

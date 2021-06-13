@@ -3,7 +3,7 @@ import { degToRad, Matrix4, Vector, Vector3, Vector3Array } from '../math'
 export class Entity {
   protected _rotation: Vector3Array =  [0, 0, 0]
   protected _position: Vector3Array = [0, 0, 0]
-  protected _scale: Vector3Array = [0, 0, 0]
+  protected _scaling: Vector3Array = [0, 0, 0]
 
   positionMatrix: number[] = Matrix4.unit()
   rotationMatrix: number[] = Matrix4.unit()
@@ -18,8 +18,8 @@ export class Entity {
     return Vector.arrayToXYZ(this._rotation)
   }
 
-  public get scale(): Vector3 {
-    return Vector.arrayToXYZ(this._scale)
+  public get scaling(): Vector3 {
+    return Vector.arrayToXYZ(this._scaling)
   }
 
   protected updateWorldMatrix() {
@@ -35,8 +35,8 @@ export class Entity {
   }
 
   protected updateScaleMatrix() {
-    this.positionMatrix = Matrix4.scaling(
-      this._scale[0], this._scale[1], this._scale[2]
+    this.scaleMatrix = Matrix4.scaling(
+      this._scaling[0], this._scaling[1], this._scaling[2]
     )
     this.updateWorldMatrix()
   }
@@ -70,5 +70,15 @@ export class Entity {
     const rotatedVector = Matrix4.multiplyVector4(Matrix4.inverse(this.rotationMatrix), [x, y, z, 1])
     this._position = Vector.add(this._position, rotatedVector) as Vector3Array
     this.updatePositionMatrix()
+  }
+
+  public setScaling(x: number, y: number, z: number) {
+    this._scaling = [x, y, z]
+    this.updateScaleMatrix()
+  }
+
+  public scale(x: number, y: number, z: number) {
+    this._scaling = Vector.add(this._scaling, [x, y, z]) as Vector3Array
+    this.updateScaleMatrix()
   }
 }

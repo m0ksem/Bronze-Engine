@@ -56,7 +56,7 @@ export class SkyboxShader extends Shader {
     return program
   }
 
-  render(matrix: number[], texture: Texture) {
+  render(cameraMatrix: number[], texture: Texture) {
     this.webgl.useProgram(this.shaderProgram)
 
     this.webgl.enableVertexAttribArray(this.attributes.a_position)
@@ -64,7 +64,7 @@ export class SkyboxShader extends Shader {
     this.webgl.vertexAttribPointer(this.attributes.a_position, 2, this.webgl.FLOAT, false, 0, 0)
 
     this.webgl.uniform1i(this.uniforms.u_texture, texture.textureIndex)
-    this.webgl.uniformMatrix4fv(this.uniforms.u_matrix, false, Matrix4.inverse(matrix))
+    this.webgl.uniformMatrix4fv(this.uniforms.u_matrix, false, Matrix4.inverse(cameraMatrix))
 
     this.webgl.drawArrays(this.webgl.TRIANGLES, 0, this.vertices.length / 2)
   }

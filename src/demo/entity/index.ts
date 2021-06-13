@@ -1,11 +1,13 @@
 import './style.css'
-import KittenObjSource from './kitten.obj?raw'
-import CubeObjSource from './cube.obj?raw'
+import PlantObjSource from './plant/plant.obj?raw'
+import PlantMtlSource from './plant/plant.mtl?raw'
+import PlantDefuseTexture from './plant/plant.jpg'
+
 import { 
   Engine, PerspectiveCamera, Controls, 
-  NormalShader, Matrix4,
+  DefuseShader, Matrix4,
   WebGLRenderer,
-  Object3D
+  Object3D, ImageTexture
 } from '../../engine'
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement
@@ -18,25 +20,19 @@ const engine = new Engine(renderer)
 const camera = new PerspectiveCamera(renderer)
 const controls = new Controls(engine)
 
-const normalShader = new NormalShader(renderer.webgl)
+const defuseShader = new DefuseShader(renderer.webgl)
 
-const kitten = new Object3D(engine.renderer.webgl, KittenObjSource)
-kitten.setPosition(0, 0, -10)
+const plant = new Object3D(engine.renderer.webgl, (PlantObjSource), PlantMtlSource)
+plant.setPosition(0, -2, -10)
 
-const cube = new Object3D(engine.renderer.webgl, CubeObjSource)
-cube.setPosition(-5, 0, -10)
+const plantDefuseTexture = new ImageTexture(renderer.webgl, PlantDefuseTexture)
 
 camera.setPosition(0, 1.5, 0)
 
 engine.renderer.addRenderListener(() => {
-  kitten.render((object, entity) => {
+  plant.render((object, entity) => {
     const matrix = Matrix4.multiply(camera.matrix, entity.worldMatrix)
-    normalShader.render(matrix, object.verticesBuffer, object.normalsBuffer, object.vertices.length)
-  })
-
-  cube.render((object, entity) => {
-    const matrix = Matrix4.multiply(camera.matrix, entity.worldMatrix)
-    normalShader.render(matrix, object.verticesBuffer, object.normalsBuffer, object.vertices.length)
+    defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer, plantDefuseTexture, object.vertices.length)
   })
 
   if (controls.mouse.left) {

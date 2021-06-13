@@ -1,6 +1,7 @@
 import { Entity } from './entity';
 import { createBuffer } from '../utils/webgl2'
 import { objParser } from '../parsers/obj-parser'
+import { mtlParser } from '../parsers/mtl-parser';
 
 /** Type from .obj wavefront */
 type NamedObject = {
@@ -22,12 +23,14 @@ export class Object3D extends Entity {
   private webgl: WebGL2RenderingContext
 
   protected objects: NamedObject[] = []
+  protected mtl: any = null
 
-  constructor(webgl: WebGL2RenderingContext, objFileSource?: string) {
+  constructor(webgl: WebGL2RenderingContext, objFileSource?: string, mtlFileSource?: string) {
     super()
     this.webgl = webgl
 
     if (objFileSource) { this.parseObj(objFileSource) }
+    if (mtlFileSource) { this.parseMtl(mtlFileSource) }
   }
 
   parseObj(objFileSource: string) {
@@ -37,6 +40,7 @@ export class Object3D extends Entity {
       name: obj.name,
       vertices: obj.vertices,
       normals: obj.normals,
+      mtl: obj.mtl,
       textureCoordinates: obj.textureCoordinates,
       verticesBuffer: createBuffer(this.webgl, obj.vertices),
       normalsBuffer: createBuffer(this.webgl, obj.normals),
@@ -44,9 +48,13 @@ export class Object3D extends Entity {
     }))
   }
 
-  render(cb: (namedObject: NamedObject, entity: Object3D) => any) {
+  parseMtl(mtlFileSource: string) {
+    this.mtl = mtlParser.parse(mtlFileSource)
+  }
+
+  render(cb: (namedObject: NamedObject, entity: Object3D, mtl?: any) => any) {
     for (let i = 0; i < this.objects.length; i++) {
-      cb(this.objects[i], this)
+      cb(this.objects[i], this, this.mtl)
     }
   }
 }

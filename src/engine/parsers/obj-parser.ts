@@ -12,9 +12,12 @@ type Face = {
   vn?: number[]
 }
 
+const unnamedObject = 'unnamed'
+
 function createObject(name: string): {
   name: string,
   faces: Face[],
+  mtl?: string
 } {
   return {
     name: name,
@@ -38,23 +41,29 @@ function isFace(line: string): boolean {
   return line.slice(0, 1) === 'f'
 }
 
+function isMtl(line: string): boolean {
+  return line.slice(0, 6) === 'usemtl'
+}
+
 function parseVector(line: string) {
   // v cordX cordY cordZ
-  return line.split(' ').slice(1)
+  return line.split(' ').slice(1).map((v) => Number(v))
 }
 
 function parseVertexNormal(line: string) {
   // vn cordX cordY cordZ
-  return line.split(' ').slice(1)
+  return line.split(' ').slice(1).map((vn) => Number(vn))
 }
 
 function parseTextureCoordinate(line: string) {
   // vt cordX cordY cordZ
-  return line.split(' ').slice(1)
+  const vt = line.split(' ').slice(1, 3)
+
+  return [Number(vt[0]), 1 - Number(vt[1])]
 }
 
 function parseFace(line: string) {
-  const parsedFaces = line.split(' ').slice(1)
+  const parsedFaces = line.split(' ').slice(1).filter((v) => v !== '')
   const faces = [parsedFaces[0], parsedFaces[1], parsedFaces[2]]
 
   // Transform non-triangles, to triangles
@@ -74,6 +83,10 @@ function parseFace(line: string) {
   })
 }
 
+function parseMtl(line: string) {
+  return line.split(' ')[1]
+}
+
 function getByIndex<T = string> (array: T[], index: number): T {
   if (index > array.length) {
     return getByIndex(array, index - array.length)
@@ -83,22 +96,36 @@ function getByIndex<T = string> (array: T[], index: number): T {
 }
 
 export class ObjParser {
+  public optimize(text: string) {
+    // Remove CLRF '\r'
+    let newText = text.split('\r').join('');
+    // Fix 3ds Max double space after v
+    newText = newText.split('v  ').join('v ');
+  
+    return newText
+  }
+
   public parse(text: string) {
     const lines = text.split('\n')
     
     const objects = []
 
-    const vertices: string[][] = []
-    const normals: string[][] = []
-    const textureCoordinates: string[][] = []
+    const vertices: number[][] = []
+    const normals: number[][] = []
+    const textureCoordinates: number[][] = []
 
-    let currentObject = createObject('unnamed')
+    let currentObject = createObject(unnamedObject)
+    objects.push(currentObject)
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
 
       if (isObjectDeclaration(line)) {
-        currentObject = createObject(parseObjectName(line))
-        objects.push(currentObject)
+        if (currentObject.name === unnamedObject) {
+          currentObject.name = parseObjectName(line)
+        } else {
+          currentObject = createObject(parseObjectName(line))
+          objects.push(currentObject)
+        }
       } else if (isVector(line)) {
         vertices.push(parseVector(line))
       } else if (isVertexNormal(line)) {
@@ -108,20 +135,22 @@ export class ObjParser {
       } else if (isFace(line)) {
         const faces = parseFace(line)
           .map(({ v, vt, vn }) => {
-            const face: Face = { v: getByIndex(vertices, Number(v)).map((num) => parseFloat(num)) }
+            const face: Face = { v: getByIndex(vertices, Number(v)) }
 
             if (vt !== undefined) {
-              face.vt = getByIndex(textureCoordinates, Number(vt)).map((num) => parseFloat(num))
+              face.vt = getByIndex(textureCoordinates, Number(vt))
             }
 
             if (vn !== undefined) {
-              face.vn = getByIndex(normals, Number(vn)).map((num) => parseFloat(num))
+              face.vn = getByIndex(normals, Number(vn))
             }
 
             return face
           })
 
         currentObject.faces.push(...faces)
+      } else if (isMtl(line)) {
+        currentObject.mtl = parseMtl(line)
       }
     }
 
@@ -132,7 +161,7 @@ export class ObjParser {
       const textureCoordinates = facesList.map((f) => f.vt || []).flat()
       const normals = facesList.map((f) => f.vn || []).flat()
 
-      return { vertices, textureCoordinates, normals, name: o.name }
+      return { vertices, textureCoordinates, normals, name: o.name, mtl: o.mtl }
     })
   }
 }

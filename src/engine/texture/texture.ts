@@ -10,7 +10,7 @@ export class Texture {
   protected color = new Uint8Array([229, 91, 91, 255])
 
   constructor(ctx: WebGL2RenderingContext) {
-    this.textureIndex =Texture.texturesCount
+    this.textureIndex = Texture.texturesCount
     Texture.texturesCount += 1
     this.webgl = ctx
     this.webglTexture = this.createWebglTexture(this.textureIndex)
