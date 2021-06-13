@@ -9,7 +9,7 @@ function parseObjectName(line: string) {
 type Face = { 
   v: number[],
   vt?: number[],
-  vn: number[]
+  vn?: number[]
 }
 
 function createObject(name: string): {
@@ -63,6 +63,7 @@ function parseFace(line: string) {
   const parsedFaces = line.split(' ').slice(1)
   const faces = [parsedFaces[0], parsedFaces[1], parsedFaces[2]]
 
+  // Transform non-triangles, to triangles
   for (let i = 3; i < parsedFaces.length; i++) {
     faces.push(parsedFaces[i - 3]);
     faces.push(parsedFaces[i - 1]);
@@ -70,12 +71,12 @@ function parseFace(line: string) {
   }
 
   return faces.map((f) => {
-    // TODO: edge-cases
-    const [v, vt, vn] = f.split('/')
+    const [first, second, third] = f.split('/')
 
-    if (vt === "") { return { v, vn } }
+    if (second === "") { return { v: first, vn: third } }
+    if (!third) { return { v: first, vn: second }}
 
-    return { v, vt, vn }
+    return { v: first, vt: second, vn: third }
   })
 }
 
@@ -108,11 +109,19 @@ export class ObjParser {
         currentObject.textureCoordinates.push(parseTextureCoordinate(line))
       } else if (isFace(line)) {
         const faces = parseFace(line)
-          .map(({ v, vt, vn }) => ({
-            v:  getByIndex(currentObject.vertices, Number(v)).map((v) => parseFloat(v)),
-            // vt: getByIndex(currentObject.vertices, Number(vt)).map((v) => parseFloat(v)),
-            vn: getByIndex(currentObject.normals, Number(vn)).map((v) => parseFloat(v)),
-          }))
+          .map(({ v, vt, vn }) => {
+            const face: Face = { v: getByIndex(currentObject.vertices, Number(v)).map((num) => parseFloat(num)) }
+
+            if (vt !== undefined) {
+              face.vt = getByIndex(currentObject.textureCoordinates, Number(vt)).map((num) => parseFloat(num))
+            }
+
+            if (vn !== undefined) {
+              face.vn = getByIndex(currentObject.normals, Number(vn)).map((num) => parseFloat(num))
+            }
+
+            return face
+          })
 
         currentObject.faces.push(...faces)
       }
@@ -122,8 +131,8 @@ export class ObjParser {
       const facesList = o.faces.flat()
       
       const vertices = facesList.map((f) => f.v).flat()
-      const textureCoordinates = facesList.map((f) => f.vt).flat()
-      const normals = facesList.map((f) => f.vn).flat()
+      const textureCoordinates = facesList.map((f) => f.vt || []).flat()
+      const normals = facesList.map((f) => f.vn || []).flat()
 
       return { vertices, textureCoordinates, normals, name: o.name }
     })

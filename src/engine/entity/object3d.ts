@@ -2,7 +2,6 @@ import { Entity } from './entity';
 import { createBuffer } from '../utils/webgl2'
 import { objParser } from '../parsers/obj-parser'
 
-// TODO: parse texture
 /** Type from .obj wavefront */
 type NamedObject = {
   /** o [name] */
@@ -11,9 +10,12 @@ type NamedObject = {
   vertices: number[]
   /** vn [x, y, z] */
   normals: number[]
+  /** vt [x, y] */
+  textureCoordinates: number[]
 
   verticesBuffer: WebGLBuffer
   normalsBuffer: WebGLBuffer
+  textureCoordinatesBuffer: WebGLBuffer
 }
 
 export class Object3D extends Entity {
@@ -35,8 +37,10 @@ export class Object3D extends Entity {
       name: obj.name,
       vertices: obj.vertices,
       normals: obj.normals,
+      textureCoordinates: obj.textureCoordinates,
       verticesBuffer: createBuffer(this.webgl, obj.vertices),
-      normalsBuffer: createBuffer(this.webgl, obj.normals)
+      normalsBuffer: createBuffer(this.webgl, obj.normals),
+      textureCoordinatesBuffer: createBuffer(this.webgl, obj.textureCoordinates)
     }))
   }
 
