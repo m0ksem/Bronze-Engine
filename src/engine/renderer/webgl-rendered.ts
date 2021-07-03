@@ -4,6 +4,7 @@ interface WebGLRendererOptions {
   viewport?: { x: number; y: number, width: number; height: number },
   cullFace?: boolean,
   depthTest?: boolean
+  blend?: boolean
 }
 
 function applyWebGLRendererOptions(webgl: WebGL2RenderingContext, options: WebGLRendererOptions) {
@@ -17,6 +18,12 @@ function applyWebGLRendererOptions(webgl: WebGL2RenderingContext, options: WebGL
 
   if (options.cullFace) {
     webgl.enable(webgl.CULL_FACE)
+  }
+
+  if (options.blend) {
+    // Enabling alpha for light
+    webgl.enable(webgl.BLEND)
+    webgl.blendFunc(webgl.SRC_ALPHA, webgl.ONE_MINUS_SRC_ALPHA)
   }
 }
 
@@ -36,7 +43,7 @@ export class WebGLRenderer {
   public addRenderListener: (fh: (ctx: WebGL2RenderingContext) => void) => void
   private render: (ctx: WebGL2RenderingContext) => void
 
-  constructor(canvas: HTMLCanvasElement, options: WebGLRendererOptions = {}) {
+  constructor(canvas: HTMLCanvasElement, options: WebGLRendererOptions = { blend: true }) {
     this.canvas = canvas
     this.webgl = getWebgl2Context(canvas)
     applyWebGLRendererOptions(this.webgl, options)
@@ -55,6 +62,7 @@ export class WebGLRenderer {
   }
 
   renderCycle() {
+    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT)
     this.beforeRender(this.webgl)
     this.render(this.webgl)
     this.afterRender(this.webgl)
