@@ -28,6 +28,7 @@ varying vec2 v_texture_coordinate;
 uniform sampler2D u_normalTexture;
 uniform sampler2D u_defuseTexture;
 uniform vec3 u_lightDirection;
+uniform float u_lightMinValue;
 
 float computeLight(vec3 direction, float range, vec3 normal, float lightMinValue) {
   float light = dot(normal, normalize(direction));
@@ -35,7 +36,7 @@ float computeLight(vec3 direction, float range, vec3 normal, float lightMinValue
   if (k < 0.0) k = 0.0;
   light = light * k;
   if (light < lightMinValue) {
-      light = lightMinValue;
+      return lightMinValue;
   }
   return light;
 }
@@ -43,7 +44,7 @@ float computeLight(vec3 direction, float range, vec3 normal, float lightMinValue
 void main() {
   vec3 normal = vec3(texture2D(u_normalTexture, v_texture_coordinate));
 
-  float light = computeLight(u_lightDirection, 999999.0, normal, 0.0);
+  float light = computeLight(u_lightDirection, 999999.0, normal, u_lightMinValue);
 
   gl_FragColor = texture2D(u_defuseTexture, v_texture_coordinate);
   gl_FragColor.rgb *= light;
@@ -82,7 +83,7 @@ void main() {
     return program
   }
 
-  render(defuseTexture: Texture, normalTexture: Texture, lightDirection: number[]) {
+  render(defuseTexture: Texture, normalTexture: Texture, lightDirection: number[], lightMinValue = 0.1) {
     this.webgl.useProgram(this.shaderProgram)
 
     this.webgl.enableVertexAttribArray(this.attributes.a_position)
@@ -92,8 +93,8 @@ void main() {
     this.webgl.uniform1i(this.uniforms.u_normalTexture, normalTexture.textureIndex)
     this.webgl.uniform1i(this.uniforms.u_defuseTexture, defuseTexture.textureIndex)
     this.webgl.uniform3fv(this.uniforms.u_lightDirection, lightDirection)
-  
-
+    this.webgl.uniform1f(this.uniforms.u_lightMinValue, lightMinValue)
+    
     this.webgl.drawArrays(this.webgl.TRIANGLES, 0, this.vertices.length / 2)
   }
 }
