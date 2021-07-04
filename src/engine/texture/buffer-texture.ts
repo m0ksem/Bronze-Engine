@@ -3,6 +3,7 @@ import { Texture } from "./texture"
 
 export class CanvasTexture extends Texture {
   public frameBuffer
+  public depthBuffer
 
   constructor(render: WebGLRenderer) {
     const { webgl } = render
@@ -14,16 +15,12 @@ export class CanvasTexture extends Texture {
 
     this.setTextureSize(render.width, render.height);
 
-    // this.webgl.viewport(0, 0, render.width, render.height);
-    // this.webgl.clearColor(0, 0, 0, 0);
-    // this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT)
+    this.depthBuffer = this.webgl.createRenderbuffer();
+    this.webgl.bindRenderbuffer(this.webgl.RENDERBUFFER, this.depthBuffer);
 
-    // const depthBuffer = this.webgl.createRenderbuffer();
-    // this.webgl.bindRenderbuffer(this.webgl.RENDERBUFFER, depthBuffer);
+    this.webgl.renderbufferStorage(this.webgl.RENDERBUFFER, this.webgl.DEPTH_COMPONENT16, render.width, render.height);
 
-    // this.webgl.renderbufferStorage(this.webgl.RENDERBUFFER, this.webgl.DEPTH_COMPONENT16, render.width, render.height);
-    // this.webgl.framebufferRenderbuffer(this.webgl.FRAMEBUFFER, this.webgl.DEPTH_ATTACHMENT, this.webgl.RENDERBUFFER, depthBuffer);
-
+    this.webgl.bindRenderbuffer(this.webgl.RENDERBUFFER, null);
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
   }
 
@@ -44,8 +41,25 @@ export class CanvasTexture extends Texture {
 
   public render(cb: (...args: any[]) => any) {
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, this.frameBuffer);
-    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT)
+
+    this.webgl.framebufferRenderbuffer(
+      this.webgl.FRAMEBUFFER,
+      this.webgl.DEPTH_ATTACHMENT,
+      this.webgl.RENDERBUFFER,
+      this.depthBuffer
+    )
+
+    this.webgl.clearDepth(1.0);
+    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+
     cb()
+
+    this.webgl.framebufferRenderbuffer(
+      this.webgl.FRAMEBUFFER,
+      this.webgl.DEPTH_ATTACHMENT,
+      this.webgl.RENDERBUFFER,
+      null
+    )
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
   }
 }
