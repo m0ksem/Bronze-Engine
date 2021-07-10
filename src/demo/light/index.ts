@@ -7,7 +7,7 @@ import {
   DirectionalLightShader,
   WebGLRenderer,
   Object3D, Matrix4,
-  CanvasTexture,
+  BufferTexture,
   NormalShader,
   DefuseShader,
   ImageTexture
@@ -25,11 +25,11 @@ const controls = new Controls(engine)
 
 const directionalLightShader = new DirectionalLightShader(renderer.webgl)
 
-const defuseTexture = new CanvasTexture(renderer)
+const defuseTexture = new BufferTexture(renderer)
 const defuseShader = new DefuseShader(renderer.webgl)
 const plantDefuseTexture = new ImageTexture(renderer.webgl, PlantDefuseTexture)
 
-const normalTexture = new CanvasTexture(renderer)
+const normalTexture = new BufferTexture(renderer)
 const normalShader = new NormalShader(renderer.webgl)
 
 const plant = new Object3D(renderer.webgl, PlantObjSource)

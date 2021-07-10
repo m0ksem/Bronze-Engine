@@ -1,7 +1,7 @@
 import { WebGLRenderer } from "..";
 import { Texture } from "./texture"
 
-export class CanvasTexture extends Texture {
+export class BufferTexture extends Texture {
   public frameBuffer
   public depthBuffer
 
