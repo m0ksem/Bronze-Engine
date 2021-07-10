@@ -49,11 +49,14 @@ engine.renderer.addRenderListener(() => {
     })
   
     defuseTexture.render(() => {
+      plantDefuseTexture.activeTexture(2)
       defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer, plantDefuseTexture, object.vertices.length)
     })
   })
 
-  directionalLightShader.render(defuseTexture, normalTexture, [1, 0, 0])
+  defuseTexture.activeTexture(0)
+  normalTexture.activeTexture(1)
+  directionalLightShader.render(defuseTexture, normalTexture, [100, 0, 0])
   
 
   if (controls.mouse.left) {

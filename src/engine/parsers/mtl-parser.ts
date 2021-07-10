@@ -29,6 +29,15 @@ function createMtl(name: string): Mtl {
 export type Mtl = { name: string, texture?: string, color: number[] }
 
 export class MtlParser {
+  public optimize(text: string) {
+    // Remove CLRF '\r'
+    let newText = text.split('\r').join('');
+    // Fix 3ds Max double space after v
+    newText = newText.split('	').join('');
+  
+    return newText
+  }
+
   public parse(text: string): Mtl[] {
     const lines = text.split('\n')
     
