@@ -17,15 +17,21 @@ const unnamedObject = 'unnamed'
 function createObject(name: string): {
   name: string,
   faces: Face[],
+  vertices: number[]
+  normals: number[]
+  textureCoordinates: number[]
   mtl?: string
 } {
   return {
     name: name,
     faces: [],
+    vertices: [],
+    normals: [],
+    textureCoordinates: [],
   }
 }
 
-function isVector(line: string): boolean {
+function isVertex(line: string): boolean {
   return line.slice(0, 2) === 'v '
 }
 
@@ -45,7 +51,7 @@ function isMtl(line: string): boolean {
   return line.slice(0, 6) === 'usemtl'
 }
 
-function parseVector(line: string) {
+function parseVertex(line: string) {
   // v cordX cordY cordZ
   return line.split(' ').slice(1).map((v) => Number(v))
 }
@@ -63,24 +69,20 @@ function parseTextureCoordinate(line: string) {
 }
 
 function parseFace(line: string) {
-  const parsedFaces = line.split(' ').slice(1).filter((v) => v !== '')
-  const faces = [parsedFaces[0], parsedFaces[1], parsedFaces[2]]
+  const parsedFaces = line.split(' ').slice(1)
+  const faces = []
+
+  // Todo move this to obj precompiler
+  if (parsedFaces[parsedFaces.length - 1] === '') { parsedFaces.splice(-1) }
 
   // Transform non-triangles, to triangles
-  for (let i = 3; i < parsedFaces.length; i++) {
-    faces.push(parsedFaces[0]);
-    faces.push(parsedFaces[i - 1]);
-    faces.push(parsedFaces[i]);
+  for (let i = 2; i < parsedFaces.length; i++) {
+    faces.push(parsedFaces[0].split('/'));
+    faces.push(parsedFaces[i - 1].split('/'));
+    faces.push(parsedFaces[i].split('/'));
   }
 
-  return faces.map((f) => {
-    const [first, second, third] = f.split('/')
-
-    if (second === "") { return { v: first, vn: third } }
-    if (!third) { return { v: first, vt: second }}
-
-    return { v: first, vt: second, vn: third }
-  })
+  return faces
 }
 
 function parseMtl(line: string) {
@@ -110,9 +112,9 @@ export class ObjParser {
     
     const objects = []
 
-    const vertices: number[][] = []
-    const normals: number[][] = []
-    const textureCoordinates: number[][] = []
+    const parsedVertices: number[][] = []
+    const parsedNormals: number[][] = []
+    const parsedTextureCoordinates: number[][] = []
 
     let currentObject = createObject(unnamedObject)
     objects.push(currentObject)
@@ -126,45 +128,33 @@ export class ObjParser {
           currentObject = createObject(parseObjectName(line))
           objects.push(currentObject)
         }
-      } else if (isVector(line)) {
-        vertices.push(parseVector(line))
+      } else if (isVertex(line)) {
+        parsedVertices.push(parseVertex(line))
       } else if (isVertexNormal(line)) {
-        normals.push(parseVertexNormal(line))
+        parsedNormals.push(parseVertexNormal(line))
       } else if (isTextureCoordinate(line)) {
-        textureCoordinates.push(parseTextureCoordinate(line))
+        parsedTextureCoordinates.push(parseTextureCoordinate(line))
       } else if (isFace(line)) {
-        const faces = parseFace(line)
-          .map(({ v, vt, vn }) => {
-            const face: Face = { v: getByIndex(vertices, Number(v)) }
+        parseFace(line)
+          .forEach(([vIndex, vtIndex, vnIndex]) => {
+            currentObject.vertices.push(...getByIndex(parsedVertices, Number(vIndex)))
 
-            if (vt !== undefined) {
-              face.vt = getByIndex(textureCoordinates, Number(vt))
+            if (vtIndex !== '') {
+              currentObject.textureCoordinates.push(...getByIndex(parsedTextureCoordinates, Number(vtIndex)))
             } else {
-              face.vt = [0, 0]
+              currentObject.textureCoordinates.push(0, 0)
             }
 
-            if (vn !== undefined) {
-              face.vn = getByIndex(normals, Number(vn))
+            if (vnIndex !== '') {
+              currentObject.normals.push(...getByIndex(parsedNormals, Number(vnIndex)))
             }
-
-            return face
           })
-
-        currentObject.faces.push(...faces)
       } else if (isMtl(line)) {
         currentObject.mtl = parseMtl(line)
       }
     }
 
-    return objects.map((o) => {
-      const facesList = o.faces.flat()
-      
-      const vertices = facesList.map((f) => f.v).flat()
-      const textureCoordinates = facesList.map((f) => f.vt || []).flat()
-      const normals = facesList.map((f) => f.vn || []).flat()
-
-      return { vertices, textureCoordinates, normals, name: o.name, mtl: o.mtl }
-    })
+    return objects
   }
 }
 
