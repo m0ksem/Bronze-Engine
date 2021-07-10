@@ -38,6 +38,9 @@ plant.setPosition(0, -2, -10)
 camera.setPosition(0, 1.5, 0)
 
 engine.renderer.addRenderListener(() => {
+  normalTexture.clear()
+  defuseTexture.clear()
+
   plant.render((object, entity) => {
     const matrix = Matrix4.multiply(camera.matrix, entity.worldMatrix)
   
@@ -48,9 +51,9 @@ engine.renderer.addRenderListener(() => {
     defuseTexture.render(() => {
       defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer, plantDefuseTexture, object.vertices.length)
     })
-    
-    directionalLightShader.render(defuseTexture, normalTexture, [1, 0, 0])
   })
+
+  directionalLightShader.render(defuseTexture, normalTexture, [1, 0, 0])
   
 
   if (controls.mouse.left) {
