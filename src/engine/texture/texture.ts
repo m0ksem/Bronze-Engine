@@ -1,19 +1,22 @@
 import { createTexture } from './utils'
 
-export class Texture {
+export abstract class Texture {
   protected static texturesCount = 0
 
   public textureIndex = -1
 
   protected webgl: WebGL2RenderingContext
-  protected webglTexture: WebGLTexture
+  protected webglTexture: WebGLTexture | null = null
   protected color = new Uint8Array([229, 91, 91, 255])
 
-  constructor(ctx: WebGL2RenderingContext) {
+  constructor(ctx: WebGL2RenderingContext, noDefaultTexture?: boolean) {
     this.textureIndex = Texture.texturesCount
     Texture.texturesCount += 1
     this.webgl = ctx
-    this.webglTexture = this.createWebglTexture(this.textureIndex)
+
+    if (!noDefaultTexture) {
+      this.webglTexture = this.createWebglTexture(this.textureIndex)
+    }
   }
 
   private createWebglTexture(index: number) {

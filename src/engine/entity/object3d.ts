@@ -1,3 +1,4 @@
+import { Mtl } from './../parsers/mtl-parser';
 import { Entity } from './entity';
 import { createBuffer } from '../utils/webgl2'
 import { objParser } from '../parsers/obj-parser'
@@ -17,13 +18,15 @@ type NamedObject = {
   verticesBuffer: WebGLBuffer
   normalsBuffer: WebGLBuffer
   textureCoordinatesBuffer: WebGLBuffer
+
+  mtl?: string
 }
 
 export class Object3D extends Entity {
   private webgl: WebGL2RenderingContext
 
-  protected objects: NamedObject[] = []
-  protected mtl: any = null
+  public objects: NamedObject[] = []
+  public mtl: Mtl[] | null = null
 
   constructor(webgl: WebGL2RenderingContext, objFileSource?: string, mtlFileSource?: string) {
     super()

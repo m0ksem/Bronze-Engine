@@ -39,6 +39,29 @@ export class CanvasTexture extends Texture {
     );
   }
 
+  public clear() {
+    this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, this.frameBuffer);
+
+    this.webgl.framebufferRenderbuffer(
+      this.webgl.FRAMEBUFFER,
+      this.webgl.DEPTH_ATTACHMENT,
+      this.webgl.RENDERBUFFER,
+      this.depthBuffer
+    )
+    
+    this.webgl.clearDepth(1.0);
+    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
+
+    this.webgl.framebufferRenderbuffer(
+      this.webgl.FRAMEBUFFER,
+      this.webgl.DEPTH_ATTACHMENT,
+      this.webgl.RENDERBUFFER,
+      null
+    )
+
+    this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, null);
+  }
+
   public render(cb: (...args: any[]) => any) {
     this.webgl.bindFramebuffer(this.webgl.FRAMEBUFFER, this.frameBuffer);
 
@@ -48,9 +71,6 @@ export class CanvasTexture extends Texture {
       this.webgl.RENDERBUFFER,
       this.depthBuffer
     )
-
-    this.webgl.clearDepth(1.0);
-    this.webgl.clear(this.webgl.COLOR_BUFFER_BIT | this.webgl.DEPTH_BUFFER_BIT);
 
     cb()
 

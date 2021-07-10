@@ -68,7 +68,7 @@ function parseFace(line: string) {
 
   // Transform non-triangles, to triangles
   for (let i = 3; i < parsedFaces.length; i++) {
-    faces.push(parsedFaces[i - 3]);
+    faces.push(parsedFaces[0]);
     faces.push(parsedFaces[i - 1]);
     faces.push(parsedFaces[i]);
   }
@@ -139,6 +139,8 @@ export class ObjParser {
 
             if (vt !== undefined) {
               face.vt = getByIndex(textureCoordinates, Number(vt))
+            } else {
+              face.vt = [0, 0]
             }
 
             if (vn !== undefined) {

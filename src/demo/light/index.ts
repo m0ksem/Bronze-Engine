@@ -46,7 +46,7 @@ engine.renderer.addRenderListener(() => {
     })
   
     defuseTexture.render(() => {
-      defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer ,plantDefuseTexture, object.vertices.length)
+      defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer, plantDefuseTexture, object.vertices.length)
     })
     
     directionalLightShader.render(defuseTexture, normalTexture, [1, 0, 0])
