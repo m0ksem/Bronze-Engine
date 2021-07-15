@@ -26,7 +26,7 @@ export class Object3D extends Entity {
   private webgl: WebGL2RenderingContext
 
   public objects: NamedObject[] = []
-  public mtl: Mtl[] | null = null
+  public mtl: { [key: string]: Mtl } = {}
 
   constructor(webgl: WebGL2RenderingContext, objFileSource?: string, mtlFileSource?: string) {
     super()

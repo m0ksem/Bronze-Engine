@@ -22,11 +22,19 @@ function parseColor(line: string) {
   return line.split(' ').slice(1).map((v) => Number(v) * 255)
 }
 
-function createMtl(name: string): Mtl {
-  return { name, color: [255, 0, 255] }
+function isSpecular(line: string) {
+  return line.slice(0, 2) === 'Ks'
 }
 
-export type Mtl = { name: string, texture?: string, color: number[] }
+function parseSpecular(line: string) {
+  return line.split(' ').slice(1).map((v) => Number(v))
+}
+
+function createMtl(name: string): Mtl {
+  return { name, color: [255, 0, 255], specular: [0.35, 0.35, 0.35] }
+}
+
+export type Mtl = { name: string, texture?: string, color: number[], specular: number[] }
 
 export class MtlParser {
   public optimize(text: string) {
@@ -38,10 +46,10 @@ export class MtlParser {
     return newText
   }
 
-  public parse(text: string): Mtl[] {
+  public parse(text: string): { [key: string]: Mtl } {
     const lines = text.split('\n')
     
-    const list = []
+    const list: { [key: string]: Mtl } = {}
     let currentMtl = null
   
     for (let index = 0; index < lines.length; index++) {
@@ -49,11 +57,13 @@ export class MtlParser {
 
       if (isMtlDeclaration(line)) {
         currentMtl = createMtl(parseMtlName(line))
-        list.push(currentMtl)
+        list[currentMtl.name] = currentMtl
       } else if (isTexture(line)) {
         currentMtl!.texture = parseTexture(line)
       } else if (isColor(line)) {
         currentMtl!.color = parseColor(line)
+      } else if (isSpecular(line)) {
+        currentMtl!.specular = parseSpecular(line)
       }
     }
 
