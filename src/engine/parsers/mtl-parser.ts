@@ -69,6 +69,12 @@ export class MtlParser {
 
     return list
   }
+
+  public mapMtl<T>(mtl: Record<string, Mtl>, cb: (mtl: Mtl) => T): { [key: string]: T} {
+    return Object
+      .values(mtl)
+      .reduce((acc, mtl) => ({ ...acc, [mtl.name]: cb(mtl) }), {})
+  }
 }
 
 export const mtlParser = new MtlParser();
