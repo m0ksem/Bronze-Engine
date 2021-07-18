@@ -75,25 +75,41 @@ function HSLToRGB([h, s, l]: number[]) {
 
 let hslColor = [0, 50, 50]
 
-// engine.renderer.addAfterRenderListener(() => {
-//   if (hslColor[0] >= 360) {
-//     hslColor[0] = 0
-//   } else {
-//     hslColor[0] = hslColor[0] + 1
-//   }
+engine.renderer.addAfterRenderListener(() => {
+  if (controls.keyboard.KeyL) { 
+    if (hslColor[0] >= 360) {
+      hslColor[0] = 0
+    } else {
+      hslColor[0] = hslColor[0] + 0.5
+    }
+  
+    light.color = HSLToRGB(hslColor)
+  }
+})
 
-//   light.color = HSLToRGB(hslColor)
-// })
-
-engine.renderer.addBeforeRenderListener(() => {
+engine.renderer.addBeforeRenderListener(() => { 
   if (controls.mouse.left) {
+    if (controls.keyboard.KeyR) {
+      house.rotate(controls.mouse.movement.y * 100, controls.mouse.movement.x * 100, 0)
+    }    
+  }
+
+  if (controls.mouse.middle) {
     camera.rotate(controls.mouse.movement.y, controls.mouse.movement.x, 0)
   }
 
   if (controls.keyboard.KeyS) {
-    camera.move(0, 0, 0.1)
+    if (controls.keyboard.ShiftLeft) {
+      camera.move(0, -0.1, 0)
+    } else {
+      camera.move(0, 0, 0.1)
+    }
   } else if (controls.keyboard.KeyW) {
-    camera.move(0, 0, -0.1)
+    if (controls.keyboard.ShiftLeft) {
+      camera.move(0, 0.1, 0)
+    } else {
+      camera.move(0, 0, -0.1)
+    }
   } else if (controls.keyboard.KeyA) {
     camera.move(0.1, 0, 0)
   } else if (controls.keyboard.KeyD) {
