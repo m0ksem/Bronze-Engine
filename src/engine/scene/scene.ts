@@ -72,44 +72,44 @@ export class Scene {
         entries.forEach(([name, o]) => {
           const matrix = Matrix4.multiply(camera.matrix, o.worldMatrix)
 
-          o.render((object, entity) => {
-            const mtl = entity.mtl[object.mtl!]
+          o.render((plane, entity) => {
+            const mtl = entity.mtl[plane.mtl]
 
             defuseMap.render(() => {
               const objectTextures = textures[name]
-              const texture = (objectTextures && objectTextures[object.mtl || 'no-texture']) || noTexture
+              const texture = (objectTextures && objectTextures[plane.mtl || 'no-texture']) || noTexture
               texture.activeTexture(0)
-              defuseShader.render(matrix, object.verticesBuffer, object.textureCoordinatesBuffer, texture, object.vertices.length)
+              defuseShader.render(matrix, plane.verticesBuffer, plane.textureCoordinatesBuffer, texture, plane.vertices.length)
             })
 
             worldPositionMap.render(() => {
-              worldPositionShader.render(matrix, entity.worldMatrix, object.verticesBuffer, object.vertices.length)
+              worldPositionShader.render(matrix, entity.worldMatrix, plane.verticesBuffer, plane.vertices.length)
             })
 
             normalMap.render(() => {
-              normalShader.render(matrix, object.verticesBuffer, object.normalsBuffer, object.vertices.length)
+              normalShader.render(matrix, plane.verticesBuffer, plane.normalsBuffer, plane.vertices.length)
             })
 
             specularColorMap.render(() => {
               colorShader.render(
                 matrix, 
-                object.verticesBuffer, 
+                plane.verticesBuffer, 
                 [...mtl.specularColor], 
-                object.vertices.length,
+                plane.vertices.length,
               )
             })
 
             shininessMap.render(() => {
               colorShader.render(
                 matrix, 
-                object.verticesBuffer, 
+                plane.verticesBuffer, 
                 [mtl.specularExponent], 
-                object.vertices.length,
+                plane.vertices.length,
               )
             })
             
             ambientMap.render(() => {
-              colorShader.render(matrix, object.verticesBuffer, entity.mtl[object.mtl!].ambient, object.vertices.length)
+              colorShader.render(matrix, plane.verticesBuffer, entity.mtl[plane.mtl!].ambient, plane.vertices.length)
             })
           })
         })

@@ -23,13 +23,14 @@ const waterTexture = new ImageTexture(renderer.webgl, WaterTexture)
 const house = new Object3D(renderer.webgl, objParser.optimize(houseObjSource), mtlParser.optimize(SceneMtlSource))
 camera.setPosition(10, 2, 10)
 
-const houseMtlTextures: Record<string, Texture> = mtlParser.mapMtl(house.mtl!, (mtl) => new ColorTexture(renderer.webgl, mtl.color.map((c) => c * 255)) )
+const houseMtlTextures: Record<string, Texture> = mtlParser.mapMtl(house.mtl, (mtl) => new ColorTexture(renderer.webgl, mtl.color.map((c) => c * 255)) )
 houseMtlTextures['agua'] = waterTexture
 
-console.log(houseMtlTextures)
+console.log(house)
 
 const light = new PointLight()
-light.setPosition(0, 2, 2)
+light.setPosition(0, 10, 2)
+light.color = [128, 128, 128]
 
 const scene = new Scene({
   renderer,

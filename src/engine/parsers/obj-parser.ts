@@ -1,34 +1,40 @@
+const UNNAMED_OBJECT_NAME = 'unnamed'
+const UNNAMED_MATERIAL_NAME = 'unnamed'
+
+export type ParsedPlane = {
+  mtl: string,
+  vertices: number[]
+  normals: number[]
+  textureCoordinates: number[]
+}
+
+export type ParsedObject = {
+  name: string,
+  planes: ParsedPlane[]
+}
+
+function createPlane(): ParsedPlane {
+  return {
+    mtl: UNNAMED_MATERIAL_NAME,
+    vertices: [],
+    normals: [],
+    textureCoordinates: [],
+  }
+}
+
+function createObject(name: string): ParsedObject {
+  return {
+    name: name,
+    planes: []
+  }
+}
+
 function isObjectDeclaration(line: string): boolean {
   return line[0] === 'o'
 }
 
 function parseObjectName(line: string) {
   return line.split(' ')[1]
-}
-
-type Face = { 
-  v: number[],
-  vt?: number[],
-  vn?: number[]
-}
-
-const unnamedObject = 'unnamed'
-
-function createObject(name: string): {
-  name: string,
-  faces: Face[],
-  vertices: number[]
-  normals: number[]
-  textureCoordinates: number[]
-  mtl?: string
-} {
-  return {
-    name: name,
-    faces: [],
-    vertices: [],
-    normals: [],
-    textureCoordinates: [],
-  }
 }
 
 function isVertex(line: string): boolean {
@@ -116,18 +122,20 @@ export class ObjParser {
     const parsedNormals: number[][] = []
     const parsedTextureCoordinates: number[][] = []
 
-    let currentObject = createObject(unnamedObject)
+    let currentObject = createObject(UNNAMED_OBJECT_NAME)
     objects.push(currentObject)
+    let currentPlane: ParsedPlane | null = null
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
 
       if (isObjectDeclaration(line)) {
-        if (currentObject.name === unnamedObject) {
+        if (currentObject.name === UNNAMED_OBJECT_NAME) {
           currentObject.name = parseObjectName(line)
         } else {
           currentObject = createObject(parseObjectName(line))
           objects.push(currentObject)
         }
+        currentPlane = null
       } else if (isVertex(line)) {
         parsedVertices.push(parseVertex(line))
       } else if (isVertexNormal(line)) {
@@ -135,22 +143,38 @@ export class ObjParser {
       } else if (isTextureCoordinate(line)) {
         parsedTextureCoordinates.push(parseTextureCoordinate(line))
       } else if (isFace(line)) {
-        parseFace(line)
-          .forEach(([vIndex, vtIndex, vnIndex]) => {
-            currentObject.vertices.push(...getByIndex(parsedVertices, Number(vIndex)))
+        if (!currentPlane) {
+          currentPlane = createPlane()
+          currentObject.planes.push(currentPlane)
+        }
 
-            if (vtIndex !== '') {
-              currentObject.textureCoordinates.push(...getByIndex(parsedTextureCoordinates, Number(vtIndex)))
-            } else {
-              currentObject.textureCoordinates.push(0, 0)
-            }
+        const faces = parseFace(line)
 
-            if (vnIndex !== '') {
-              currentObject.normals.push(...getByIndex(parsedNormals, Number(vnIndex)))
-            }
-          })
+        for (let index = 0; index < faces.length; index++) {
+          const [vIndex, vtIndex, vnIndex] = faces[index];
+          
+          currentPlane.vertices.push(...getByIndex(parsedVertices, Number(vIndex)))
+
+          if (vtIndex !== '') {
+            currentPlane.textureCoordinates.push(...getByIndex(parsedTextureCoordinates, Number(vtIndex)))
+          } else {
+            currentPlane.textureCoordinates.push(0, 0)
+          }
+
+          if (vnIndex !== '') {
+            currentPlane.normals.push(...getByIndex(parsedNormals, Number(vnIndex)))
+          }
+        }
       } else if (isMtl(line)) {
-        currentObject.mtl = parseMtl(line)
+        const mtlName = parseMtl(line)
+
+        if (currentPlane?.mtl === UNNAMED_MATERIAL_NAME) {
+          currentPlane.mtl = mtlName
+        } else {
+          currentPlane = createPlane()
+          currentPlane.mtl = mtlName
+          currentObject.planes.push(currentPlane)
+        }   
       }
     }
 

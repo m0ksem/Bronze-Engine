@@ -1,31 +1,24 @@
 import { Mtl } from './../parsers/mtl-parser';
 import { Entity } from './entity';
 import { createBuffer } from '../utils/webgl2'
-import { objParser } from '../parsers/obj-parser'
+import { objParser, ParsedPlane } from '../parsers/obj-parser'
 import { mtlParser } from '../parsers/mtl-parser';
 
-/** Type from .obj wavefront */
-type NamedObject = {
-  /** o [name] */
-  name: string
-  /** v [x, y, z] */
-  vertices: number[]
-  /** vn [x, y, z] */
-  normals: number[]
-  /** vt [x, y] */
-  textureCoordinates: number[]
-
+type Buffers = {
   verticesBuffer: WebGLBuffer
   normalsBuffer: WebGLBuffer
   textureCoordinatesBuffer: WebGLBuffer
-
-  mtl?: string
 }
+
+type Plane = ParsedPlane & Buffers
+
+/** Type from .obj wavefront */
+type BufferedObject = { name: string, planes: Plane[]  }
 
 export class Object3D extends Entity {
   private webgl: WebGL2RenderingContext
 
-  public objects: NamedObject[] = []
+  public objects: BufferedObject[] = []
   public mtl: { [key: string]: Mtl } = {}
 
   constructor(webgl: WebGL2RenderingContext, objFileSource?: string, mtlFileSource?: string) {
@@ -39,15 +32,14 @@ export class Object3D extends Entity {
   parseObj(objFileSource: string) {
     const objects = objParser.parse(objFileSource)
 
-    this.objects = objects.map((obj) => ({
-      name: obj.name,
-      vertices: obj.vertices,
-      normals: obj.normals,
-      mtl: obj.mtl,
-      textureCoordinates: obj.textureCoordinates,
-      verticesBuffer: createBuffer(this.webgl, obj.vertices),
-      normalsBuffer: createBuffer(this.webgl, obj.normals),
-      textureCoordinatesBuffer: createBuffer(this.webgl, obj.textureCoordinates)
+    this.objects = objects.map<BufferedObject>((obj) => ({
+      ...obj,
+      planes: obj.planes.map((plane) => ({
+        ...plane,
+        verticesBuffer: createBuffer(this.webgl, plane.vertices),
+        normalsBuffer: createBuffer(this.webgl, plane.normals),
+        textureCoordinatesBuffer: createBuffer(this.webgl, plane.textureCoordinates)
+      })),      
     }))
   }
 
@@ -55,9 +47,11 @@ export class Object3D extends Entity {
     this.mtl = mtlParser.parse(mtlFileSource)
   }
 
-  render(cb: (namedObject: NamedObject, entity: Object3D, mtl?: any) => any) {
-    for (let i = 0; i < this.objects.length; i++) {
-      cb(this.objects[i], this, this.mtl)
+  render(cb: (plane: Plane, entity: Object3D, mtl?: any) => any) {
+    for (let o = 0; o < this.objects.length; o++) {
+      for (let p = 0; p < this.objects[o].planes.length; p++) {
+        cb(this.objects[o].planes[p], this, this.mtl)
+      }
     }
   }
 }
