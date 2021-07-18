@@ -22,7 +22,7 @@ export class ImageTexture extends Texture {
 
   private bindTexture() {
     const { webgl } = this
-    webgl.activeTexture(webgl.TEXTURE0 + this.textureIndex)
+    webgl.bindTexture(webgl.TEXTURE_2D, this.webglTexture)
     webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, this.image);
     webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
     webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);

@@ -1,23 +1,26 @@
 import { Shader } from '../shader';
 
-export class SpecularShader extends Shader {
+export class ZDepthShader extends Shader {
   private vertexShaderSource? = `
 attribute vec4 a_position;
 
 uniform mat4 u_matrix;
+varying float v_zDepth;
 
 void main() {
-  gl_Position = u_matrix * a_position;
+  vec4 position = u_matrix * a_position;
+  gl_Position = position;
+  v_zDepth = position.z / 10.0;
 }
 `
 
   private fragmentShaderSource? = `
 precision mediump float;
 
-uniform vec3 u_specular;
+varying float v_zDepth;
 
 void main() {
-  gl_FragColor = vec4(u_specular, 1.0);
+  gl_FragColor = vec4(v_zDepth, v_zDepth, v_zDepth, 1.0);
 }
 `
 
@@ -41,7 +44,7 @@ void main() {
     return program
   }
 
-  render(matrix: number[], vertices: WebGLBuffer, specular: number[], verticesCount: number) {
+  render(matrix: number[], vertices: WebGLBuffer, verticesCount: number) {
     this.webgl.useProgram(this.shaderProgram)
 
     this.webgl.enableVertexAttribArray(this.attributes.a_position)
@@ -49,7 +52,6 @@ void main() {
     this.webgl.vertexAttribPointer(this.attributes.a_position, 3, this.webgl.FLOAT, false, 0, 0)
 
     this.webgl.uniformMatrix4fv(this.uniforms.u_matrix, false, matrix)
-    this.webgl.uniform3fv(this.uniforms.u_specular, specular)
 
     this.webgl.drawArrays(this.webgl.TRIANGLES, 0, verticesCount / 3)
   }

@@ -21,10 +21,9 @@ export abstract class Texture {
     this.textureIndex = index
   }
 
-  private createWebglTexture(index: number) {
+  protected createWebglTexture(index: number) {
     const { webgl } = this
     const webglTexture = createTexture(webgl)
-    webgl.activeTexture(webgl.TEXTURE0 + index)
     webgl.bindTexture(webgl.TEXTURE_2D, webglTexture)
     webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 1, 1, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, this.color);
     webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);

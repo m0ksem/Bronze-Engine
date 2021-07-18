@@ -23,7 +23,11 @@ function applyWebGLRendererOptions(webgl: WebGL2RenderingContext, options: WebGL
   if (options.blend) {
     // Enabling alpha for light
     webgl.enable(webgl.BLEND)
-    webgl.blendFunc(webgl.SRC_ALPHA, webgl.ONE_MINUS_SRC_ALPHA)
+    webgl.blendFunc(webgl.ONE, webgl.ONE_MINUS_SRC_ALPHA)
+  }
+
+  if (!webgl.getExtension("EXT_color_buffer_float")) {
+    console.error("FLOAT color buffer not available");
   }
 }
 

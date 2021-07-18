@@ -101,7 +101,7 @@ export class PerspectiveCamera extends Entity {
 
   public move(x: number, y: number, z: number) {
     const rotatedVector = Matrix4.multiplyVector4(Matrix4.inverse(this.rotationMatrix), [x, y, z, 1])
-    this._position = Vector.add(this._position, rotatedVector) as Vector3Array
+    this._position = Vector.add(this._position, rotatedVector).slice(0, 3) as Vector3Array
     this.updateMovementMatrix()
   }
 }

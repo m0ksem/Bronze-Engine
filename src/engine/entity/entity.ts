@@ -1,9 +1,9 @@
 import { degToRad, Matrix4, Vector, Vector3, Vector3Array } from '../math'
 
 export class Entity {
-  protected _rotation: Vector3Array =  [0, 0, 0]
-  protected _position: Vector3Array = [0, 0, 0]
-  protected _scaling: Vector3Array = [0, 0, 0]
+  _rotation: Vector3Array =  [0, 0, 0]
+  _position: Vector3Array = [0, 0, 0]
+  _scaling: Vector3Array = [0, 0, 0]
 
   positionMatrix: number[] = Matrix4.unit()
   rotationMatrix: number[] = Matrix4.unit()

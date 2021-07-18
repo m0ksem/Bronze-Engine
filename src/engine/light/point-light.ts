@@ -6,6 +6,7 @@ export class PointLight {
   _position: Vector3Array = [0, 0, 0]
 
   range: number = DEFAULT_RANGE
+  color: number[] = [255, 255, 255]
   minLight: number = 0.1
 
   public get position(): Vector3 {
