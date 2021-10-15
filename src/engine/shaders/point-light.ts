@@ -48,10 +48,8 @@ float computeLight(vec3 direction, float range, vec3 normal, float lightMinValue
   float k = (range - length(direction)) / range;
   if (k < 0.0) k = 0.0;
   light = light * k;
-  if (light < lightMinValue) {
-      return lightMinValue;
-  }
-  return light;
+
+  return max(light, lightMinValue);
 }
 
 void main() {
@@ -74,9 +72,9 @@ void main() {
   vec3 diffuse = temp * lightColor;
 
   float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), shininess);
-  vec3 specular = spec * lightColor * 0.5; 
+  vec3 specular = spec * lightColor; 
 
-  gl_FragColor = vec4((diffuse + ambient + specular) * objectColor, 1.0);
+  gl_FragColor = vec4((specular + diffuse + ambientColor * 0.1) * objectColor, 1.0);
 }
 `
 

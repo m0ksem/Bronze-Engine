@@ -15,22 +15,22 @@ canvas.height = window.innerHeight
 
 const renderer = new WebGLRenderer(canvas, { cullFace: false, depthTest: true, blend: true })
 const engine = new Engine(renderer)
+const controls = new Controls(engine)
 
 const camera = new PerspectiveCamera(renderer)
-const controls = new Controls(engine)
+camera.setPosition(0, 10, 50)
 
 const waterTexture = new ImageTexture(renderer.webgl, WaterTexture)
 const house = new Object3D(renderer.webgl, objParser.optimize(houseObjSource), mtlParser.optimize(SceneMtlSource))
-camera.setPosition(10, 2, 10)
+
+house.setScaling(10, 10, 10)
 
 const houseMtlTextures: Record<string, Texture> = mtlParser.mapMtl(house.mtl, (mtl) => new ColorTexture(renderer.webgl, mtl.color.map((c) => c * 255)) )
 houseMtlTextures['agua'] = waterTexture
 
-console.log(house)
-
 const light = new PointLight()
-light.setPosition(0, 10, 2)
-light.color = [128, 128, 128]
+light.setPosition(0, 50, 0)
+light.minLight = 0.5
 
 const scene = new Scene({
   renderer,
@@ -87,7 +87,7 @@ engine.renderer.addAfterRenderListener(() => {
   }
 })
 
-engine.renderer.addBeforeRenderListener(() => { 
+engine.renderer.addBeforeRenderListener(() => {
   if (controls.mouse.left) {
     if (controls.keyboard.KeyR) {
       house.rotate(controls.mouse.movement.y * 100, controls.mouse.movement.x * 100, 0)
